@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 /**
@@ -36,5 +37,14 @@ class Individual {
 
     int size() {
         return chromosome.length;
+    }
+
+    // Override
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        Arrays.stream(chromosome).forEach(gene -> sb.append(gene));
+        return sb.toString();
     }
 }
