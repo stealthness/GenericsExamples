@@ -4,4 +4,8 @@
 public class Individual {
     public Individual(int[] emptyChromosome) {
     }
+
+    public int[] getChromosome() {
+        return null;
+    }
 }

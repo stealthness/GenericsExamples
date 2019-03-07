@@ -8,8 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class IndividualTest {
 
-    int[] emptyChromosome,evenChromosome,completeChromosome;
-    Individual emptyIndividual,evenIndividual,completeIndividual;
+    private int[] emptyChromosome,evenChromosome,completeChromosome;
+    private Individual emptyIndividual,evenIndividual,completeIndividual;
 
     @BeforeEach
     void setUp(){
@@ -26,4 +26,18 @@ class IndividualTest {
         assertEquals(Individual.class,emptyIndividual.getClass());
     }
 
+    @Test
+    void testGetEmptyChromosome(){
+        assertEquals(emptyChromosome,emptyIndividual.getChromosome());
+    }
+
+    @Test
+    void testGetEvenChromosome(){
+        assertEquals(evenChromosome,evenIndividual.getChromosome());
+    }
+
+    @Test
+    void testGetCompleteChromosome(){
+        assertEquals(completeChromosome,completeIndividual.getChromosome());
+    }
 }
