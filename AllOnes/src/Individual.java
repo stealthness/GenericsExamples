@@ -11,4 +11,8 @@ class Individual {
     int[] getChromosome() {
         return this.chromosome;
     }
+
+    public int getGene(int gene) {
+        return -1;
+    }
 }

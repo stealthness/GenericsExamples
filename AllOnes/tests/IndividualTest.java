@@ -1,6 +1,9 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -39,5 +42,11 @@ class IndividualTest {
     @Test
     void testGetCompleteChromosome(){
         assertEquals(completeChromosome,completeIndividual.getChromosome());
+    }
+
+    @Test
+    void testGetGeneFromEmptyIndividual(){
+        IntStream.range(0,emptyChromosome.length).forEach(gene -> assertEquals(0,emptyIndividual.getGene(gene)));
+
     }
 }
