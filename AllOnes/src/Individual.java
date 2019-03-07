@@ -1,3 +1,5 @@
+import java.util.stream.IntStream;
+
 /**
  * Created by Stephen West on 07/03/2019.
  */
@@ -11,7 +13,11 @@ class Individual {
         this.chromosome = chromosome;
     }
 
-    public Individual(int chromosomeLength) {
+    Individual(int chromosomeLength) {
+        this.chromosome = new int[chromosomeLength];
+        IntStream.range(0,chromosomeLength).forEach(i ->{
+            this.chromosome[i] = (Math.random() > 0.5)?1:0;
+        });
     }
 
     // getters and setters

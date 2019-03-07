@@ -85,7 +85,21 @@ class IndividualTest {
     @Test
     void testCreateRandomChromosome(){
         Individual individual = new Individual(CHROMOSOME_LENGTH);
-        int[] chromosome = individual.getChromosome();
         assertTrue(Arrays.stream(individual.getChromosome()).allMatch(gene -> gene == 0 || gene == 1));
+    }
+
+    @Test
+    void testToStrongEmptyIndividual(){
+        assertEquals("00000000",emptyIndividual.toString());
+    }
+
+    @Test
+    void testToStrongCompleteIndividual(){
+        assertEquals("11111111",completeIndividual.toString());
+    }
+
+    @Test
+    void testToStrongEvenIndividual(){
+        assertEquals("11100001",evenIndividual.toString());
     }
 }
