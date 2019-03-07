@@ -1,9 +1,11 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by Stephen West on 07/03/2019.
@@ -70,5 +72,20 @@ class IndividualTest {
             completeIndividual.setGene(gene,0);
             assertEquals(emptyChromosome[gene],completeIndividual.getGene(gene));
         });
+    }
+
+    @Test
+    void testSetGeneToOne(){
+        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> {
+            emptyIndividual.setGene(gene,1);
+            assertEquals(completeChromosome[gene],emptyIndividual.getGene(gene));
+        });
+    }
+
+    @Test
+    void testCreateRandomChromosome(){
+        Individual individual = new Individual(CHROMOSOME_LENGTH);
+        int[] chromosome = individual.getChromosome();
+        assertTrue(Arrays.stream(individual.getChromosome()).allMatch(gene -> gene == 0 || gene == 1));
     }
 }
