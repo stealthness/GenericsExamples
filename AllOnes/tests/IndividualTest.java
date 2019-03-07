@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -11,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 class IndividualTest {
 
+    private static final int CHROMOSOME_LENGTH = 8;
     private int[] emptyChromosome,evenChromosome,completeChromosome;
     private Individual emptyIndividual,evenIndividual,completeIndividual;
 
@@ -46,17 +46,21 @@ class IndividualTest {
 
     @Test
     void testGetGeneFromEmptyIndividual(){
-        IntStream.range(0,emptyChromosome.length).forEach(gene -> assertEquals(0,emptyIndividual.getGene(gene)));
-
+        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> assertEquals(0,emptyIndividual.getGene(gene)));
     }
 
     @Test
-    void testGetGeneFromECompleteIndividual(){
-        IntStream.range(0,completeChromosome.length).forEach(gene -> assertEquals(1,completeIndividual.getGene(gene)));
+    void testGetGeneFromCompleteIndividual(){
+        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> assertEquals(1,completeIndividual.getGene(gene)));
+    }
+
+    @Test
+    void testGetGeneFromEvenIndividual(){
+        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> assertEquals(evenChromosome[gene],evenIndividual.getGene(gene)));
     }
 
     @Test
     void testSize(){
-        assertEquals(emptyChromosome.length,emptyIndividual.size());
+        assertEquals(CHROMOSOME_LENGTH,emptyIndividual.size());
     }
 }
