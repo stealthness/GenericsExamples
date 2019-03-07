@@ -49,4 +49,14 @@ class IndividualTest {
         IntStream.range(0,emptyChromosome.length).forEach(gene -> assertEquals(0,emptyIndividual.getGene(gene)));
 
     }
+
+    @Test
+    void testGetGeneFromECompleteIndividual(){
+        IntStream.range(0,completeChromosome.length).forEach(gene -> assertEquals(1,completeIndividual.getGene(gene)));
+    }
+
+    @Test
+    void testSize(){
+        assertEquals(emptyChromosome.length,emptyIndividual.size());
+    }
 }

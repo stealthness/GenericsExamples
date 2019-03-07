@@ -12,7 +12,11 @@ class Individual {
         return this.chromosome;
     }
 
-    public int getGene(int gene) {
+    int getGene(int gene) {
         return chromosome[gene];
+    }
+
+    public int size() {
+        return -1;
     }
 }
