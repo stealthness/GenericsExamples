@@ -44,7 +44,7 @@ class Individual {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        Arrays.stream(chromosome).forEach(gene -> sb.append(gene));
+        Arrays.stream(chromosome).forEach(sb::append);
         return sb.toString();
     }
 }
