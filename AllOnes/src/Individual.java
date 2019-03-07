@@ -16,9 +16,7 @@ class Individual {
 
     Individual(int chromosomeLength) {
         this.chromosome = new int[chromosomeLength];
-        IntStream.range(0,chromosomeLength).forEach(i ->{
-            this.chromosome[i] = (Math.random() > 0.5)?1:0;
-        });
+        IntStream.range(0,chromosomeLength).forEach(i -> this.chromosome[i] = (Math.random() > 0.5)?1:0);
     }
 
     // getters and setters
