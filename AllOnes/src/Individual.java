@@ -1,11 +1,14 @@
 /**
  * Created by Stephen West on 07/03/2019.
  */
-public class Individual {
-    public Individual(int[] emptyChromosome) {
+class Individual {
+    private int[] chromosome;
+
+    Individual(int[] chromosome) {
+        this.chromosome = chromosome;
     }
 
-    public int[] getChromosome() {
-        return null;
+    int[] getChromosome() {
+        return this.chromosome;
     }
 }
