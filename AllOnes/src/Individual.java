@@ -19,4 +19,7 @@ class Individual {
     int size() {
         return chromosome.length;
     }
+
+    public void setGene(int gene, int value) {
+    }
 }

@@ -63,4 +63,12 @@ class IndividualTest {
     void testSize(){
         assertEquals(CHROMOSOME_LENGTH,emptyIndividual.size());
     }
+
+    @Test
+    void testSetGeneToZero(){
+        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> {
+            completeIndividual.setGene(gene,0);
+            assertEquals(emptyChromosome[gene],emptyIndividual.getGene(gene));
+        });
+    }
 }
