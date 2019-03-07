@@ -16,7 +16,7 @@ class Individual {
         return chromosome[gene];
     }
 
-    public int size() {
-        return -1;
+    int size() {
+        return chromosome.length;
     }
 }
