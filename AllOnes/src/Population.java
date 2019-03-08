@@ -1,6 +1,6 @@
 class Population {
 
-    Individual[] individuals;
+    private Individual[] individuals;
 
     Population(int populationSize) {
         individuals = new Individual[populationSize];
@@ -10,11 +10,11 @@ class Population {
         return  individuals.length;
     }
 
-    public void initialize() {
+    void initialize() {
 
     }
 
-    public Individual[] getIndividuals() {
+    Individual[] getIndividuals() {
         return null;
     }
 

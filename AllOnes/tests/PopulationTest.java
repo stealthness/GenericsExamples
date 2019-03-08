@@ -10,9 +10,9 @@ class PopulationTest {
 
     private static final int POP_SIZE = 20;
     private static final int CHROMO_SIZE = 8;
-    Population population;
-    Individual emptyIndividual,evenIndividual,completeIndividual;
-    int[] emptyChromosome,evenChromosome,completeChromosome;
+    private Population population;
+    private Individual emptyIndividual,evenIndividual,completeIndividual;
+    private int[] emptyChromosome,evenChromosome,completeChromosome;
 
     @BeforeEach
     void setUp(){
