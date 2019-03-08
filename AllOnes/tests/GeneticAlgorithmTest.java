@@ -11,11 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class GeneticAlgorithmTest {
 
-    static final int POP_SIZE = 10;
-    static final int CHROMO_SIZE = 8;
-    static final int ELITISM = 0;
-    static final double CROSSOVER_RATE = 0.95;
-    static final double MUTATION_RATE = 0.01;
+    private static final int POP_SIZE = 10;
+    private static final int CHROMO_SIZE = 8;
+    private static final int ELITISM = 0;
+    private static final double CROSSOVER_RATE = 0.95;
+    private static final double MUTATION_RATE = 0.01;
 
     private Population emptyPopulation,evenPopulation,completePopulation;
     private Individual emptyIndividual,evenIndividual,completeIndividual;
@@ -36,28 +36,39 @@ class GeneticAlgorithmTest {
         evenIndividual = new Individual(evenChromosome);
         completeIndividual = new Individual(completeChromosome);
 
-        IntStream.range(0,POP_SIZE).forEach(i ->{
-            Arrays.stream(emptyPopulation.getIndividuals()).forEach(individual -> individual = emptyIndividual);
-            Arrays.stream(evenPopulation.getIndividuals()).forEach(individual -> individual = evenIndividual);
-            Arrays.stream(completePopulation.getIndividuals()).forEach(individual -> individual = completeIndividual);
-        });
+        emptyPopulation = new Population(CHROMO_SIZE);
+        evenPopulation = new Population(CHROMO_SIZE);
+        completePopulation = new Population(CHROMO_SIZE);
+
+
+        emptyPopulation.initialize(POP_SIZE);
+        evenPopulation.initialize(POP_SIZE);
+        completePopulation.initialize(POP_SIZE);
+
+        Arrays.stream(emptyPopulation.getIndividuals()).forEach(individual -> individual.setChromosome(emptyChromosome));
+        Arrays.stream(evenPopulation.getIndividuals()).forEach(individual -> individual.setChromosome(evenChromosome));
+        Arrays.stream(completePopulation.getIndividuals()).forEach(individual -> individual.setChromosome(completeChromosome));
     }
 
     @Test
     void testCreate(){
         assertNotNull(ga);
+        assertNotNull(emptyChromosome);
+        assertNotNull(emptyIndividual);
+        assertNotNull(emptyPopulation);
     }
 
     @Test
     void testSetPopulationToEmpty(){
-        ga.setPopulatation(emptyPopulation);
+        ga.setPopulation(emptyPopulation);
+        assertEquals(emptyIndividual.toString(),emptyPopulation.getIndividuals()[0].toString());
         assertTrue(Arrays.stream(ga.getPopulation().getIndividuals())
                 .allMatch(individual -> individual.toString().equals(emptyIndividual.toString())));
     }
 
     @Test
     void testSetPopulationToComplete(){
-        ga.setPopulatation(completePopulation);
+        ga.setPopulation(completePopulation);
         assertTrue(Arrays.stream(ga.getPopulation().getIndividuals())
                 .allMatch(individual -> individual.toString().equals(completeIndividual.toString())));
     }

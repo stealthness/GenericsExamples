@@ -7,6 +7,7 @@ public class GeneticAlgorithm {
     private final double crossoverRate;
     private final double mutationRate;
     private final int elitism;
+    private Population population;
 
     public GeneticAlgorithm(int popSize, double crossoverRate, double mutationRate, int elitism) {
         this.popSize = popSize;
@@ -15,11 +16,12 @@ public class GeneticAlgorithm {
         this.elitism = elitism;
     }
 
-    public void setPopulatation(Population population) {
+    public void setPopulation(Population population) {
+        this.population = population;
 
     }
 
     public Population getPopulation() {
-        return null;
+        return this.population;
     }
 }

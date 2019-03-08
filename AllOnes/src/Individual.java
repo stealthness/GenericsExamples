@@ -45,6 +45,10 @@ class Individual {
         return this.chromosome;
     }
 
+    public void setChromosome(int[] chromosome) {
+        this.chromosome = chromosome;
+    }
+
     int getGene(int gene) {
         return chromosome[gene];
     }
