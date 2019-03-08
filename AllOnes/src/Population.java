@@ -26,10 +26,6 @@ class Population {
         this.individuals[index] = individual;
     }
 
-    Individual getIndividual(int index) {
-        return individuals[index];
-    }
-
     void evaluateFitness(){
         Arrays.stream(individuals).forEach(individual -> individual.evaluateFitness());
         this.fitness = Arrays.stream(individuals).mapToDouble(Individual::getFitness).sum()/(double)individuals.length;
