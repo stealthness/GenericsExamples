@@ -11,6 +11,7 @@ class PopulationTest {
 
     private static final int POP_SIZE = 20;
     private static final int CHROMO_SIZE = 8;
+    private static final double TOL = 0.01;
     private Population population;
     private Individual emptyIndividual,evenIndividual,completeIndividual;
     private int[] emptyChromosome,evenChromosome,completeChromosome;
@@ -60,10 +61,31 @@ class PopulationTest {
                 .allMatch(individual -> completeIndividual.toString().equals(individual.toString())));
     }
 
+    @Test
+    void testGetFitnessForCompleteIndividuals(){
+        setAllIndividualsInPopulationTo(completeIndividual);
+        assertEquals(1.0, population.getFitness(),TOL);
+    }
+
+    @Test
+    void testGetFitnessForEvenIndividuals(){
+        setAllIndividualsInPopulationTo(evenIndividual);
+        assertEquals(0.5, population.getFitness(),TOL);
+    }
+    @Test
+    void testGetFitnessForEmptyIndividuals(){
+        setAllIndividualsInPopulationTo(emptyIndividual);
+        assertEquals(0.0, population.getFitness(),TOL);
+    }
+
+    // helper methods
+
     private void setAllIndividualsInPopulationTo(Individual individual){
         population.initialize(CHROMO_SIZE);
         IntStream.range(0,POP_SIZE).forEach(i -> population.setIndividual(i,individual));
     }
+
+
 
 
 }

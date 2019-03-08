@@ -27,4 +27,8 @@ class Population {
     Individual getIndividual(int index) {
         return individuals[index];
     }
+
+    public double getFitness() {
+        return -1.0;
+    }
 }
