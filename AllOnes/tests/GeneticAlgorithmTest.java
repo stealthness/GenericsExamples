@@ -95,9 +95,17 @@ class GeneticAlgorithmTest {
 
     @Test
     void testSelectParent(){
-        Population population = ga.initPopulation(CHROMO_SIZE);
-        Individual selectedIndividual = ga.selectParent(population);
-        assertTrue(Arrays.stream(population.getIndividuals()).anyMatch(individual -> individual.equals(selectedIndividual)));
+        int count = 0;
+        while (count++ < 100){
+            Population population = ga.initPopulation(CHROMO_SIZE);
+            Individual selectedIndividual = ga.selectParent(population);
+            assertTrue(Arrays.stream(population.getIndividuals()).anyMatch(individual -> individual.equals(selectedIndividual)));
+        }
+    }
+
+    @Test
+    void testCrossover(){
+
     }
 
 }

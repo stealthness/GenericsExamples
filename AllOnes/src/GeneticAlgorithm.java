@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 /**
  * Created by Stephen West on 08/03/2019.
@@ -38,6 +39,19 @@ public class GeneticAlgorithm {
     }
 
     Individual selectParent(Population population) {
-        return null;
+
+        // Spin roulette Wheel
+        double populationFitness = population.getFitness();
+        double rouletteWheelPosition = Math.random() * populationFitness;
+
+        // Find Parent
+        double spinWheel = 0.0;
+        for (Individual individual : population.getIndividuals()){
+            spinWheel += individual.getFitness();
+            if(spinWheel >= rouletteWheelPosition){
+                return  individual;
+            }
+        }
+        return population.getIndividuals()[this.popSize - 1];
     }
 }
