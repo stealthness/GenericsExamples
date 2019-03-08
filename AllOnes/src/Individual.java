@@ -11,6 +11,8 @@ class Individual {
     private int[] chromosome;
     private double fitness;
 
+    // Constructors
+
     Individual(int[] chromosome) {
         this.chromosome = chromosome;
     }
@@ -18,6 +20,23 @@ class Individual {
     Individual(int chromosomeLength) {
         this.chromosome = new int[chromosomeLength];
         IntStream.range(0,chromosomeLength).forEach(i -> this.chromosome[i] = (Math.random() > 0.5)?1:0);
+    }
+
+    // Methods
+
+    /**
+     * Evaluates the fitness of the chromosome
+     * fitness = sum of gene of value 1 divided by chromosome length
+     */
+    void evaluateFitness() {
+        this.fitness = (double)Arrays.stream(chromosome).sum()/(double)this.size();
+    }
+
+    /**
+     * @return the fitness of an individual
+     */
+    double getFitness() {
+        return this.fitness;
     }
 
     // getters and setters
@@ -46,17 +65,4 @@ class Individual {
         Arrays.stream(chromosome).forEach(sb::append);
         return sb.toString();
     }
-
-    /**
-     * Evaluates the fitness of the chromosome
-     * fitness = sum of gene of value 1 divided by chromosome length
-     */
-    void evaluateFitness() {
-        this.fitness = (double)Arrays.stream(chromosome).sum()/(double)this.size();
-    }
-
-    double getFitness() {
-        return this.fitness;
-    }
-
 }
