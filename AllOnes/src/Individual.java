@@ -45,4 +45,11 @@ class Individual {
         Arrays.stream(chromosome).forEach(sb::append);
         return sb.toString();
     }
+
+    void evaluateFitness() {
+    }
+
+    int getFitness() {
+        return -1;
+    }
 }

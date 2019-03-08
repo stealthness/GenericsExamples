@@ -102,4 +102,22 @@ class IndividualTest {
     void testToStrongEvenIndividual(){
         assertEquals("11100001",evenIndividual.toString());
     }
+
+    @Test
+    void testGetFitnessForEmptyIndividual(){
+        emptyIndividual.evaluateFitness();
+        assertEquals(0,emptyIndividual.getFitness());
+    }
+
+    @Test
+    void testGetFitnessForEvenIndividual(){
+        evenIndividual.evaluateFitness();
+        assertEquals(0,evenIndividual.getFitness());
+    }
+
+    @Test
+    void testGetFitnessForCompleteIndividual(){
+        completeIndividual.evaluateFitness();
+        assertEquals(0,completeIndividual.getFitness());
+    }
 }
