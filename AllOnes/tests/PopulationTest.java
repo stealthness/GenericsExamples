@@ -64,17 +64,20 @@ class PopulationTest {
     @Test
     void testGetFitnessForCompleteIndividuals(){
         setAllIndividualsInPopulationTo(completeIndividual);
+        population.evaluateFitness();
         assertEquals(1.0, population.getFitness(),TOL);
     }
 
     @Test
     void testGetFitnessForEvenIndividuals(){
         setAllIndividualsInPopulationTo(evenIndividual);
+        population.evaluateFitness();
         assertEquals(0.5, population.getFitness(),TOL);
     }
     @Test
     void testGetFitnessForEmptyIndividuals(){
         setAllIndividualsInPopulationTo(emptyIndividual);
+        population.evaluateFitness();
         assertEquals(0.0, population.getFitness(),TOL);
     }
 

@@ -1,8 +1,10 @@
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 class Population {
 
     private Individual[] individuals;
+    private double fitness;
 
     Population(int populationSize) {
         individuals = new Individual[populationSize];
@@ -28,7 +30,13 @@ class Population {
         return individuals[index];
     }
 
-    public double getFitness() {
-        return -1.0;
+    void evaluateFitness(){
+        Arrays.stream(individuals).forEach(individual -> individual.evaluateFitness());
+        this.fitness = Arrays.stream(individuals).mapToDouble(Individual::getFitness).sum()/(double)individuals.length;
+
+    }
+
+    double getFitness() {
+        return this.fitness;
     }
 }
