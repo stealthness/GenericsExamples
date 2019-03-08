@@ -29,4 +29,15 @@ public class GeneticAlgorithm {
     void evaluateFitness(Population population) {
         population.evaluateFitness();
     }
+
+    Population initPopulation(int chromosomeSize) {
+        Population population = new Population(this.popSize);
+        population.initialize(chromosomeSize);
+        population.evaluateFitness();
+        return population;
+    }
+
+    Individual selectParent(Population population) {
+        return null;
+    }
 }

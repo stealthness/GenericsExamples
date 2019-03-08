@@ -93,4 +93,11 @@ class GeneticAlgorithmTest {
         assertEquals(expFitness,ga.getFitness(population),TOL);
     }
 
+    @Test
+    void testSelectParent(){
+        Population population = ga.initPopulation(CHROMO_SIZE);
+        Individual selectedIndividual = ga.selectParent(population);
+        assertTrue(Arrays.stream(population.getIndividuals()).anyMatch(individual -> individual.equals(selectedIndividual)));
+    }
+
 }
