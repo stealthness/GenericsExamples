@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * Created by Stephen West on 08/03/2019.
  */
@@ -23,5 +25,13 @@ public class GeneticAlgorithm {
 
     public Population getPopulation() {
         return this.population;
+    }
+
+    public Individual getFitess(int index) {
+         return Arrays.stream(population.getIndividuals()).sorted().skip(index).findFirst().orElse(null);
+    }
+
+    public void evaluateFitness() {
+        this.population.evaluateFitness();
     }
 }

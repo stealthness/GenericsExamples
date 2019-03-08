@@ -62,4 +62,12 @@ class Population {
     double getFitness() {
         return this.fitness;
     }
+
+    // Override
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        return sb.toString();
+    }
 }

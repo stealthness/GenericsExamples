@@ -121,4 +121,17 @@ class IndividualTest {
         completeIndividual.evaluateFitness();
         assertEquals(1.0,completeIndividual.getFitness(),TOL);
     }
+
+    @Test
+    void testCompleteIndividualIsGreaterThanEmptyIndividual(){
+        completeIndividual.evaluateFitness();
+        emptyIndividual.evaluateFitness();
+        assertEquals(-1,completeIndividual.compareTo(emptyIndividual));
+    }
+    @Test
+    void testEvenIndividualIsGreaterThanEmptyIndividual(){
+        evenIndividual.evaluateFitness();
+        emptyIndividual.evaluateFitness();
+        assertEquals(-1,evenIndividual.compareTo(emptyIndividual));
+    }
 }

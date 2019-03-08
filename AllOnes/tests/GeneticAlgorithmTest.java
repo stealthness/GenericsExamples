@@ -2,7 +2,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,6 +49,7 @@ class GeneticAlgorithmTest {
         Arrays.stream(completePopulation.getIndividuals()).forEach(individual -> individual.setChromosome(completeChromosome));
     }
 
+
     @Test
     void testCreate(){
         assertNotNull(ga);
@@ -71,6 +71,32 @@ class GeneticAlgorithmTest {
         ga.setPopulation(completePopulation);
         assertTrue(Arrays.stream(ga.getPopulation().getIndividuals())
                 .allMatch(individual -> individual.toString().equals(completeIndividual.toString())));
+    }
+
+    @Test
+    void testGetPopulationSetToEmpty(){
+        ga.setPopulation(emptyPopulation);
+        Population population = ga.getPopulation();
+        assertTrue(Arrays.stream(population.getIndividuals())
+                .allMatch(individual -> individual.toString().equals(emptyIndividual.toString())));
+    }
+
+    @Test
+    void testGetPopulationSetToComplete(){
+        ga.setPopulation(completePopulation);
+        Population population = ga.getPopulation();
+        assertTrue(Arrays.stream(population.getIndividuals())
+                .allMatch(individual -> individual.toString().equals(completeIndividual.toString())));
+    }
+
+    @Test
+    void testGetFitess(){
+        ga.setPopulation(emptyPopulation);
+        ga.getPopulation().setIndividual(3,completeIndividual);
+        ga.evaluateFitness();
+        assertTrue(ga.getPopulation().getFitness()>0.0);
+        assertEquals("11111111", ga.getFitess(0).toString());
+        assertEquals("00000000", ga.getFitess(1).toString());
     }
 
 }

@@ -4,7 +4,7 @@ import java.util.stream.IntStream;
 /**
  * Created by Stephen West on 07/03/2019.
  */
-class Individual {
+class Individual implements Comparable{
 
     // Fields
 
@@ -68,5 +68,18 @@ class Individual {
         StringBuilder sb = new StringBuilder();
         Arrays.stream(chromosome).forEach(sb::append);
         return sb.toString();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (fitness <0){
+            this.evaluateFitness();
+        }
+        if (fitness < ((Individual)o).fitness){
+            return 1;
+        } else if (fitness > ((Individual)o).fitness){
+            return -1;
+        }
+        return 0;
     }
 }
