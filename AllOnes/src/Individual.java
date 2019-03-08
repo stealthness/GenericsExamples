@@ -9,6 +9,7 @@ class Individual {
     // Fields
 
     private int[] chromosome;
+    private double fitness;
 
     Individual(int[] chromosome) {
         this.chromosome = chromosome;
@@ -46,10 +47,15 @@ class Individual {
         return sb.toString();
     }
 
+    /**
+     * Evaluates the fitness of the chromosome
+     * fitness = sum of gene of value 1 divided by chromosome length
+     */
     void evaluateFitness() {
+        this.fitness = (double)Arrays.stream(chromosome).sum()/(double)this.size();
     }
 
-    int getFitness() {
-        return -1;
+    double getFitness() {
+        return this.fitness;
     }
 }

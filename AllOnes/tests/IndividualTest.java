@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class IndividualTest {
 
     private static final int CHROMOSOME_LENGTH = 8;
+    private static final double TOL = 0.01;
     private int[] emptyChromosome,evenChromosome,completeChromosome;
     private Individual emptyIndividual,evenIndividual,completeIndividual;
 
@@ -106,18 +107,18 @@ class IndividualTest {
     @Test
     void testGetFitnessForEmptyIndividual(){
         emptyIndividual.evaluateFitness();
-        assertEquals(0,emptyIndividual.getFitness());
+        assertEquals(0,emptyIndividual.getFitness(),TOL);
     }
 
     @Test
     void testGetFitnessForEvenIndividual(){
         evenIndividual.evaluateFitness();
-        assertEquals(0,evenIndividual.getFitness());
+        assertEquals(0.5,evenIndividual.getFitness(),TOL);
     }
 
     @Test
     void testGetFitnessForCompleteIndividual(){
         completeIndividual.evaluateFitness();
-        assertEquals(0,completeIndividual.getFitness());
+        assertEquals(1.0,completeIndividual.getFitness(),TOL);
     }
 }
