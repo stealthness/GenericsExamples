@@ -34,7 +34,7 @@ class PopulationTest {
 
     @Test
     void testInitializePopulation(){
-        population.initialize();
+        population.initialize(CHROMO_SIZE);
         Arrays.stream(population.getIndividuals()).forEach(individual -> {
             assertEquals(CHROMO_SIZE,individual.size());
             assertTrue(Arrays.stream(individual.getChromosome()).allMatch(gene -> gene == 0 || gene == 1));

@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 class Population {
 
     private Individual[] individuals;
@@ -10,12 +13,14 @@ class Population {
         return  individuals.length;
     }
 
-    void initialize() {
-
+    void initialize(int chromosomeSize) {
+        IntStream.range(0,this.size()).forEach(i -> individuals[i] = new Individual(chromosomeSize));
     }
 
     Individual[] getIndividuals() {
-        return null;
+        return this.individuals;
     }
+
+
 
 }
