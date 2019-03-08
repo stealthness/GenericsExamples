@@ -2,6 +2,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -37,10 +38,31 @@ class PopulationTest {
         population.initialize(CHROMO_SIZE);
         Arrays.stream(population.getIndividuals()).forEach(individual -> {
             assertEquals(CHROMO_SIZE,individual.size());
-            assertTrue(Arrays.stream(individual.getChromosome()).allMatch(gene -> gene == 0 || gene == 1));
+            assertTrue(Arrays.stream(individual.getChromosome())
+                    .allMatch(gene -> gene == 0 || gene == 1));
         });
     }
 
+    @Test
+    void testSetPopulationAllToEmpty(){
+        population.initialize(CHROMO_SIZE);
+
+        IntStream.range(0,POP_SIZE).forEach(i -> population.setIndividual(i,emptyIndividual));
+
+        assertTrue(Arrays.stream(population.getIndividuals())
+                .allMatch(individual -> emptyIndividual.toString().equals(individual.toString())));
+    }
+
+
+    @Test
+    void testSetPopulationAllToComplete(){
+        population.initialize(CHROMO_SIZE);
+
+        IntStream.range(0,POP_SIZE).forEach(i -> population.setIndividual(i,completeIndividual));
+
+        assertTrue(Arrays.stream(population.getIndividuals())
+                .allMatch(individual -> completeIndividual.toString().equals(individual.toString())));
+    }
 
 
 }

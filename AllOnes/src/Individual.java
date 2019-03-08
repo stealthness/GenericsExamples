@@ -58,4 +58,5 @@ class Individual {
     double getFitness() {
         return this.fitness;
     }
+
 }

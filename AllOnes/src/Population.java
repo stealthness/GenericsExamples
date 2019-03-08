@@ -21,6 +21,11 @@ class Population {
         return this.individuals;
     }
 
+    void setIndividual(int index, Individual individual) {
+        this.individuals[index] = individual;
+    }
 
-
+    Individual getIndividual(int index) {
+        return individuals[index];
+    }
 }
