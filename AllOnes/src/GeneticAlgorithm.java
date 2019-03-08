@@ -9,29 +9,24 @@ public class GeneticAlgorithm {
     private final double crossoverRate;
     private final double mutationRate;
     private final int elitism;
-    private Population population;
 
-    public GeneticAlgorithm(int popSize, double crossoverRate, double mutationRate, int elitism) {
+    GeneticAlgorithm(int popSize, double crossoverRate, double mutationRate, int elitism) {
         this.popSize = popSize;
         this.crossoverRate = crossoverRate;
         this.mutationRate = mutationRate;
         this.elitism = elitism;
     }
 
-    public void setPopulation(Population population) {
-        this.population = population;
-
+    double getFitness(Population population){
+        population.evaluateFitness();
+        return population.getFitness();
     }
 
-    public Population getPopulation() {
-        return this.population;
-    }
-
-    public Individual getFitess(int index) {
+    Individual getFitessIndividual(int index, Population population) {
          return Arrays.stream(population.getIndividuals()).sorted().skip(index).findFirst().orElse(null);
     }
 
-    public void evaluateFitness() {
-        this.population.evaluateFitness();
+    void evaluateFitness(Population population) {
+        population.evaluateFitness();
     }
 }

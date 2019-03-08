@@ -15,6 +15,7 @@ class GeneticAlgorithmTest {
     private static final int ELITISM = 0;
     private static final double CROSSOVER_RATE = 0.95;
     private static final double MUTATION_RATE = 0.01;
+    private static final double TOL = 0.01;
 
     private Population emptyPopulation,evenPopulation,completePopulation;
     private Individual emptyIndividual,evenIndividual,completeIndividual;
@@ -58,45 +59,38 @@ class GeneticAlgorithmTest {
         assertNotNull(emptyPopulation);
     }
 
+
+
     @Test
-    void testSetPopulationToEmpty(){
-        ga.setPopulation(emptyPopulation);
-        assertEquals(emptyIndividual.toString(),emptyPopulation.getIndividuals()[0].toString());
-        assertTrue(Arrays.stream(ga.getPopulation().getIndividuals())
-                .allMatch(individual -> individual.toString().equals(emptyIndividual.toString())));
+    void testGetFitessIndividual(){
+        Population population = emptyPopulation;
+        population.setIndividual(3,completeIndividual);
+        population.setIndividual(5,evenIndividual);
+        ga.evaluateFitness(population);
+        assertTrue(ga.getFitness(population)>0.0);
+        assertEquals(completeIndividual.toString(), ga.getFitessIndividual(0,population).toString());
+        assertEquals(evenIndividual.toString(), ga.getFitessIndividual(1,population).toString());
+        assertEquals(emptyIndividual.toString(), ga.getFitessIndividual(2,population).toString());
     }
 
     @Test
-    void testSetPopulationToComplete(){
-        ga.setPopulation(completePopulation);
-        assertTrue(Arrays.stream(ga.getPopulation().getIndividuals())
-                .allMatch(individual -> individual.toString().equals(completeIndividual.toString())));
+    void testEvaluateEmptyPopulation(){
+        testEvaluatePopulation(0.0,emptyPopulation);
     }
 
     @Test
-    void testGetPopulationSetToEmpty(){
-        ga.setPopulation(emptyPopulation);
-        Population population = ga.getPopulation();
-        assertTrue(Arrays.stream(population.getIndividuals())
-                .allMatch(individual -> individual.toString().equals(emptyIndividual.toString())));
+    void testEvaluateEvenPopulation(){
+        testEvaluatePopulation(0.5,evenPopulation);
     }
 
     @Test
-    void testGetPopulationSetToComplete(){
-        ga.setPopulation(completePopulation);
-        Population population = ga.getPopulation();
-        assertTrue(Arrays.stream(population.getIndividuals())
-                .allMatch(individual -> individual.toString().equals(completeIndividual.toString())));
+    void testEvaluateCompletePopulation(){
+        testEvaluatePopulation(1.0,completePopulation);
     }
 
-    @Test
-    void testGetFitess(){
-        ga.setPopulation(emptyPopulation);
-        ga.getPopulation().setIndividual(3,completeIndividual);
-        ga.evaluateFitness();
-        assertTrue(ga.getPopulation().getFitness()>0.0);
-        assertEquals("11111111", ga.getFitess(0).toString());
-        assertEquals("00000000", ga.getFitess(1).toString());
+    void testEvaluatePopulation(double expFitness, Population population){
+        ga.evaluateFitness(population);
+        assertEquals(expFitness,ga.getFitness(population),TOL);
     }
 
 }

@@ -45,7 +45,7 @@ class Individual implements Comparable{
         return this.chromosome;
     }
 
-    public void setChromosome(int[] chromosome) {
+    void setChromosome(int[] chromosome) {
         this.chromosome = chromosome;
     }
 
