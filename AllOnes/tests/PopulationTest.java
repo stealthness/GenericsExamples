@@ -45,9 +45,7 @@ class PopulationTest {
 
     @Test
     void testSetPopulationAllToEmpty(){
-        population.initialize(CHROMO_SIZE);
-
-        IntStream.range(0,POP_SIZE).forEach(i -> population.setIndividual(i,emptyIndividual));
+        setAllIndividualsInPopulationTo(emptyIndividual);
 
         assertTrue(Arrays.stream(population.getIndividuals())
                 .allMatch(individual -> emptyIndividual.toString().equals(individual.toString())));
@@ -56,12 +54,15 @@ class PopulationTest {
 
     @Test
     void testSetPopulationAllToComplete(){
-        population.initialize(CHROMO_SIZE);
-
-        IntStream.range(0,POP_SIZE).forEach(i -> population.setIndividual(i,completeIndividual));
+        setAllIndividualsInPopulationTo(completeIndividual);
 
         assertTrue(Arrays.stream(population.getIndividuals())
                 .allMatch(individual -> completeIndividual.toString().equals(individual.toString())));
+    }
+
+    private void setAllIndividualsInPopulationTo(Individual individual){
+        population.initialize(CHROMO_SIZE);
+        IntStream.range(0,POP_SIZE).forEach(i -> population.setIndividual(i,individual));
     }
 
 
