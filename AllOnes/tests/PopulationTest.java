@@ -1,7 +1,10 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PopulationTest {
 
@@ -21,12 +24,21 @@ class PopulationTest {
         evenIndividual = new Individual(evenChromosome);
         completeIndividual = new Individual(completeChromosome);
 
-        population = new Population(POP_SIZE, CHROMO_SIZE);
+        population = new Population(POP_SIZE);
     }
 
     @Test
     void testSize(){
         assertEquals(POP_SIZE,population.size());
+    }
+
+    @Test
+    void testInitializePopulation(){
+        population.initialize();
+        Arrays.stream(population.getIndividuals()).forEach(individual -> {
+            assertEquals(CHROMO_SIZE,individual.size());
+            assertTrue(Arrays.stream(individual.getChromosome()).allMatch(gene -> gene == 0 || gene == 1));
+        });
     }
 
 }

@@ -1,12 +1,21 @@
-public class Population {
+class Population {
 
     Individual[] individuals;
 
-    public Population(int popSize, int chromoSize) {
+    Population(int populationSize) {
+        individuals = new Individual[populationSize];
+    }
+
+    int size() {
+        return  individuals.length;
+    }
+
+    public void initialize() {
 
     }
 
-    public int size() {
-        return  -1;
+    public Individual[] getIndividuals() {
+        return null;
     }
+
 }
