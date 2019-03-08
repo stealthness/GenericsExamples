@@ -14,4 +14,12 @@ public class GeneticAlgorithm {
         this.mutationRate = mutationRate;
         this.elitism = elitism;
     }
+
+    public void setPopulatation(Population population) {
+
+    }
+
+    public Population getPopulation() {
+        return null;
+    }
 }
