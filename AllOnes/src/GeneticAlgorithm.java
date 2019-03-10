@@ -54,4 +54,10 @@ public class GeneticAlgorithm {
         }
         return population.getIndividuals()[this.popSize - 1];
     }
+
+   boolean solutionFound(Population population) {
+       return Arrays.stream(population.getIndividuals())
+               .anyMatch(individual -> Arrays.stream(individual.getChromosome())
+                       .allMatch(gene ->gene==1));
+    }
 }

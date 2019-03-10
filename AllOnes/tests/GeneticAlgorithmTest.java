@@ -108,4 +108,14 @@ class GeneticAlgorithmTest {
 
     }
 
+    @Test
+    void testSolutionFoundIsFalseForEmptyPopulation(){
+        assertFalse(ga.solutionFound(emptyPopulation));
+    }
+
+    @Test
+    void testSolutionFoundIsTrueForOneCompleteIndividualInEmptyPopulation(){
+        emptyPopulation.setIndividual(3,completeIndividual);
+        assertTrue(ga.solutionFound(emptyPopulation));
+    }
 }
