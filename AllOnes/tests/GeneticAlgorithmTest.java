@@ -2,6 +2,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,14 +37,14 @@ class GeneticAlgorithmTest {
         evenIndividual = new Individual(evenChromosome);
         completeIndividual = new Individual(completeChromosome);
 
-        emptyPopulation = new Population(CHROMO_SIZE);
-        evenPopulation = new Population(CHROMO_SIZE);
-        completePopulation = new Population(CHROMO_SIZE);
+        emptyPopulation = new Population(POP_SIZE);
+        evenPopulation = new Population(POP_SIZE);
+        completePopulation = new Population(POP_SIZE);
 
 
-        emptyPopulation.initialize(POP_SIZE);
-        evenPopulation.initialize(POP_SIZE);
-        completePopulation.initialize(POP_SIZE);
+        emptyPopulation.initialize(CHROMO_SIZE);
+        evenPopulation.initialize(CHROMO_SIZE);
+        completePopulation.initialize(CHROMO_SIZE);
 
         Arrays.stream(emptyPopulation.getIndividuals()).forEach(individual -> individual.setChromosome(emptyChromosome));
         Arrays.stream(evenPopulation.getIndividuals()).forEach(individual -> individual.setChromosome(evenChromosome));
@@ -105,7 +106,6 @@ class GeneticAlgorithmTest {
 
     @Test
     void testCrossover(){
-
     }
 
     @Test
@@ -117,5 +117,29 @@ class GeneticAlgorithmTest {
     void testSolutionFoundIsTrueForOneCompleteIndividualInEmptyPopulation(){
         emptyPopulation.setIndividual(3,completeIndividual);
         assertTrue(ga.solutionFound(emptyPopulation));
+    }
+
+    @Test
+    void testCrossoverPopulationOnEmptyPopulation(){
+        Population crossoverPopulation;
+        crossoverPopulation = ga.crossoverPopulation(emptyPopulation);
+        assertTrue(IntStream.range(0,POP_SIZE).allMatch(i -> crossoverPopulation.getIndividuals()[i].equals(emptyPopulation.getIndividuals()[i])));
+    }
+
+    @Test
+    void testCrossoverPopulationOnCompletePopulation(){
+        Population crossoverPopulation;
+        crossoverPopulation = ga.crossoverPopulation(completePopulation);
+
+        assertTrue(IntStream.range(0,POP_SIZE).allMatch(i -> crossoverPopulation.getIndividuals()[i].toString().equals(completePopulation.getIndividuals()[i].toString())));
+    }
+
+    @Test
+    void testCrossoverPopulationOnRandomPopulation(){
+        Population crossoverPopulation;
+        Population population = new Population(POP_SIZE);
+        population.initialize(CHROMO_SIZE);
+        crossoverPopulation = ga.crossoverPopulation(population);
+        assertFalse(IntStream.range(0,POP_SIZE).allMatch(i -> crossoverPopulation.getIndividuals()[i].equals(emptyPopulation.getIndividuals()[i])));
     }
 }

@@ -5,6 +5,7 @@ public class AllOnes {
     private static final double CROSSOVER_RATE = 0.95;
     private static final double MUTATION_RATE = 0.01;
     private static final int ELITISM = 0;
+    private static final int MAX_GENERATION = 1000;
 
     public static void main(String[] args) {
         AllOnes allOnes = new AllOnes();
@@ -21,7 +22,8 @@ public class AllOnes {
 
         // loop
 
-        while (ga.solutionFound(population)){
+        int generation = 0;
+        while (!ga.solutionFound(population) && ++generation < MAX_GENERATION){
 
             // apply crossovers
 
@@ -31,6 +33,7 @@ public class AllOnes {
 
         }
 
+        System.out.println("end");
 
     }
 }

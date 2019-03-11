@@ -82,4 +82,9 @@ class Individual implements Comparable{
         }
         return 0;
     }
+
+    @Override
+    public boolean equals(Object o){
+        return IntStream.range(0,this.size()).allMatch(i-> getGene(i) == ((Individual)o).getGene(i));
+    }
 }

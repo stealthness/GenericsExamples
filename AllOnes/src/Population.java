@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 class Population {
 
@@ -68,6 +69,7 @@ class Population {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
+        Arrays.stream(this.getIndividuals()).forEach(individual -> sb.append(individual.toString()+System.lineSeparator()));
         return sb.toString();
     }
 }
