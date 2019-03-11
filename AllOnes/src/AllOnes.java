@@ -26,6 +26,7 @@ public class AllOnes {
         while (!ga.solutionFound(population) && ++generation < MAX_GENERATION){
 
             // apply crossovers
+            newPopulation = ga.crossoverPopulation(population);
 
             // apply mutation
 

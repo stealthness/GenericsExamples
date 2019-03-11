@@ -131,7 +131,7 @@ class GeneticAlgorithmTest {
         Population crossoverPopulation;
         crossoverPopulation = ga.crossoverPopulation(completePopulation);
 
-        assertTrue(IntStream.range(0,POP_SIZE).allMatch(i -> crossoverPopulation.getIndividuals()[i].toString().equals(completePopulation.getIndividuals()[i].toString())));
+        assertTrue(IntStream.range(0,POP_SIZE).allMatch(i -> crossoverPopulation.getIndividuals()[i].equals(completePopulation.getIndividuals()[i])));
     }
 
     @Test
@@ -140,6 +140,6 @@ class GeneticAlgorithmTest {
         Population population = new Population(POP_SIZE);
         population.initialize(CHROMO_SIZE);
         crossoverPopulation = ga.crossoverPopulation(population);
-        assertFalse(IntStream.range(0,POP_SIZE).allMatch(i -> crossoverPopulation.getIndividuals()[i].equals(emptyPopulation.getIndividuals()[i])));
+        assertFalse(IntStream.range(0,POP_SIZE).allMatch(i -> crossoverPopulation.getIndividuals()[i].equals(population.getIndividuals()[i])));
     }
 }
