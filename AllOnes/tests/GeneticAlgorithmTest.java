@@ -142,4 +142,19 @@ class GeneticAlgorithmTest {
         crossoverPopulation = ga.crossoverPopulation(population);
         assertFalse(IntStream.range(0,POP_SIZE).allMatch(i -> crossoverPopulation.getIndividuals()[i].equals(population.getIndividuals()[i])));
     }
+
+    @Test
+    void testMutateGens(){
+        GeneticAlgorithm gaExtream = new GeneticAlgorithm(POP_SIZE,0,1,0);
+        Population pop = new Population(POP_SIZE);
+        pop.initialize(CHROMO_SIZE);
+        Arrays.stream(pop.getIndividuals()).forEach(individual -> individual.setChromosome(evenChromosome));
+        Population resultPopulation = gaExtream.mutatePopulation(evenPopulation);
+        System.out.println(resultPopulation);
+        System.out.println(evenPopulation);
+        assertTrue(IntStream.range(0,POP_SIZE)
+                .allMatch(i -> IntStream.range(0,CHROMO_SIZE)
+                        .noneMatch(gene -> resultPopulation.getIndividuals()[i].getGene(gene) == evenPopulation.getIndividuals()[i].getGene(gene))));
+        fail();
+    }
 }

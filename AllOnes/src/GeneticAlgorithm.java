@@ -20,22 +20,24 @@ public class GeneticAlgorithm {
 
     /**
      * get the average fitness of the population
+     *
      * @param population
      * @return
      */
-    double getFitness(Population population){
+    double getFitness(Population population) {
         population.evaluateFitness();
         return population.getFitness();
     }
 
     /**
      * Returns the an individuals that is the index position of fitness amongst the population
+     *
      * @param index
      * @param population
      * @return
      */
     Individual getFitessIndividual(int index, Population population) {
-         return Arrays.stream(population.getIndividuals()).sorted().skip(index).findFirst().orElse(null);
+        return Arrays.stream(population.getIndividuals()).sorted().skip(index).findFirst().orElse(null);
     }
 
     void evaluateFitness(Population population) {
@@ -44,6 +46,7 @@ public class GeneticAlgorithm {
 
     /**
      * Create a new Population of initialised individuals and sets their fitness values.
+     *
      * @param chromosomeSize, sets the the size of the individuals chromosome.
      * @return population, with all individuals intialised and fitness value set.
      */
@@ -56,6 +59,7 @@ public class GeneticAlgorithm {
 
     /**
      * Selects an individual at random weighted by their fitness level.
+     *
      * @param population to slect an individual from.
      * @return selected individual
      */
@@ -67,10 +71,10 @@ public class GeneticAlgorithm {
 
         // Find Parent
         double spinWheel = 0.0;
-        for (Individual individual : population.getIndividuals()){
+        for (Individual individual : population.getIndividuals()) {
             spinWheel += individual.getFitness();
-            if(spinWheel >= rouletteWheelPosition){
-                return  individual;
+            if (spinWheel >= rouletteWheelPosition) {
+                return individual;
             }
         }
         return population.getIndividuals()[this.popSize - 1];
@@ -78,47 +82,65 @@ public class GeneticAlgorithm {
 
     /**
      * Returns true is any individual's fitness has a value of 1, false otherwise
+     *
      * @param population
      * @return
      */
-   boolean solutionFound(Population population) {
-       return Arrays.stream(population.getIndividuals())
-               .anyMatch(individual -> Arrays.stream(individual.getChromosome())
-                       .allMatch(gene ->gene==1));
+    boolean solutionFound(Population population) {
+        return Arrays.stream(population.getIndividuals())
+                .anyMatch(individual -> Arrays.stream(individual.getChromosome())
+                        .allMatch(gene -> gene == 1));
     }
 
-    Population crossoverPopulation(Population population){
-       Population newPopulation = new Population(popSize);
+    Population crossoverPopulation(Population population) {
+        Population newPopulation = new Population(popSize);
 
-       // loop of population by fitness and apply crossover
-        IntStream.range(0,popSize).forEach(i-> {
+        // loop of population by fitness and apply crossover
+        IntStream.range(0, popSize).forEach(i -> {
 
             // do wee apply to this individual
 
             // select parent 1
-            Individual parent1 = getFitessIndividual(i,population);
-            if ( Math.random() < crossoverRate ){
+            Individual parent1 = getFitessIndividual(i, population);
+            if (Math.random() < crossoverRate) {
 
                 // select parent 2 at random
                 Individual parent2 = selectParent(population);
 
-                newPopulation.setIndividual(i,crossover(parent1,parent2));
-            } else{
-                newPopulation.setIndividual(i,parent1);
+                newPopulation.setIndividual(i, crossover(parent1, parent2));
+            } else {
+                newPopulation.setIndividual(i, parent1);
             }
 
         });
 
-       return newPopulation;
+        return newPopulation;
     }
 
     private Individual crossover(Individual parent1, Individual parent2) {
-       int chromosomeLength = parent1.size();
-       Individual offspring = new Individual(chromosomeLength);
-       IntStream.range(0,chromosomeLength).forEach(i -> {
-           int newGene = (Math.random() > 0.5) ? parent1.getGene(i) : parent2.getGene(i);
-           offspring.setGene(i, newGene);
-       });
-       return offspring;
+        int chromosomeLength = parent1.size();
+        Individual offspring = new Individual(chromosomeLength);
+        IntStream.range(0, chromosomeLength).forEach(i -> {
+            int newGene = (Math.random() > 0.5) ? parent1.getGene(i) : parent2.getGene(i);
+            offspring.setGene(i, newGene);
+        });
+        return offspring;
+    }
+
+    Population mutatePopulation(Population population) {
+        System.out.println("1");
+        System.out.println(population);
+        int chromosomeLength = population.getIndividuals()[0].size();
+        IntStream.range(0,popSize).forEach(i -> {
+            IntStream.range(0,chromosomeLength).forEach(gene -> population.getIndividuals()[i].setGene(gene, 3));
+        });
+
+//        Arrays.stream(population.getIndividuals()).forEach(individual -> Arrays.stream(individual.getChromosome()).forEach(gene ->{
+//            gene = (gene == 1)?4:5;
+//        }));
+
+        System.out.println("2");
+        System.out.println(population);
+        return population;
     }
 }

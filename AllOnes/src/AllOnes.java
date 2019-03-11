@@ -29,13 +29,15 @@ public class AllOnes {
             newPopulation = ga.crossoverPopulation(population);
 
             // apply mutation
+            newPopulation = ga.mutatePopulation(newPopulation);
 
             // update
 
             population = newPopulation;
-
+            System.out.println(ga.getFitness(population));
+            System.out.println(ga.getFitessIndividual(0,population));
         }
-
+        System.out.println(generation);
         System.out.println("end");
 
     }
