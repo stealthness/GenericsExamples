@@ -94,13 +94,17 @@ public class GeneticAlgorithm {
         IntStream.range(0,popSize).forEach(i-> {
 
             // do wee apply to this individual
+
+            // select parent 1
+            Individual parent1 = getFitessIndividual(i,population);
             if ( Math.random() < crossoverRate ){
 
-                // select parent 1
-                Individual parent1 = getFitessIndividual(i,population);
+                // select parent 2 at random
                 Individual parent2 = selectParent(population);
 
                 newPopulation.setIndividual(i,crossover(parent1,parent2));
+            } else{
+                newPopulation.setIndividual(i,parent1);
             }
 
         });

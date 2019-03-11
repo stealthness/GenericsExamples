@@ -32,6 +32,8 @@ public class AllOnes {
 
             // update
 
+            population = newPopulation;
+
         }
 
         System.out.println("end");
