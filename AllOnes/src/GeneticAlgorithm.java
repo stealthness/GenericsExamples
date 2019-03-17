@@ -130,9 +130,21 @@ public class GeneticAlgorithm {
     Population mutatePopulation(Population population) {
         System.out.println("1");
         System.out.println(population);
+        population.setGene(1,1,1);
         int chromosomeLength = population.getIndividuals()[0].size();
-        IntStream.range(0,popSize).forEach(i -> {
-            IntStream.range(0,chromosomeLength).forEach(gene -> population.getIndividuals()[i].setGene(gene, 3));
+        IntStream.range(0,popSize).forEach(ind -> {
+
+            System.out.println("before:"+population.getIndividuals()[ind]);
+            IntStream.range(0,chromosomeLength).forEach(gene -> {
+                int newValue = (population.getGene(ind,gene)==1)?6:3;
+
+
+                System.out.print(newValue+", ");
+                population.setGene(ind,gene, newValue);
+            });
+            System.out.println();
+            System.out.print(ind+"; ");System.out.println();
+            System.out.println("after:"+population.getIndividuals()[ind]);
         });
 
 //        Arrays.stream(population.getIndividuals()).forEach(individual -> Arrays.stream(individual.getChromosome()).forEach(gene ->{

@@ -54,7 +54,7 @@ class Population {
      * @param individual
      */
     void setIndividual(int index, Individual individual) {
-        this.individuals[index] = individual;
+        IntStream.range(0,this.individuals[0].size()).forEach(gene -> this.setGene(index, gene, individual.getGene(gene)));
     }
 
     /**
@@ -71,5 +71,13 @@ class Population {
         StringBuilder sb = new StringBuilder();
         Arrays.stream(this.getIndividuals()).forEach(individual -> sb.append(individual.toString()+System.lineSeparator()));
         return sb.toString();
+    }
+
+    public void setGene(int individualIndex, int geneIndex, int newValue) {
+        this.getIndividuals()[individualIndex].setGene(geneIndex,newValue);
+    }
+
+    public int getGene(int individualIndex, int geneIndex) {
+        return this.getIndividuals()[individualIndex].getGene(geneIndex);
     }
 }

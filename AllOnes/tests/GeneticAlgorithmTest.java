@@ -148,13 +148,13 @@ class GeneticAlgorithmTest {
         GeneticAlgorithm gaExtream = new GeneticAlgorithm(POP_SIZE,0,1,0);
         Population pop = new Population(POP_SIZE);
         pop.initialize(CHROMO_SIZE);
-        Arrays.stream(pop.getIndividuals()).forEach(individual -> individual.setChromosome(evenChromosome));
-        Population resultPopulation = gaExtream.mutatePopulation(evenPopulation);
+        Arrays.stream(pop.getIndividuals()).forEach(individual -> individual.setChromosome(new int[]{1,1,0,0,0,1,0,1}));
+        Population resultPopulation = gaExtream.mutatePopulation(pop);
         System.out.println(resultPopulation);
         System.out.println(evenPopulation);
         assertTrue(IntStream.range(0,POP_SIZE)
-                .allMatch(i -> IntStream.range(0,CHROMO_SIZE)
-                        .noneMatch(gene -> resultPopulation.getIndividuals()[i].getGene(gene) == evenPopulation.getIndividuals()[i].getGene(gene))));
+                .allMatch(ind -> IntStream.range(0,CHROMO_SIZE)
+                        .noneMatch(gene -> resultPopulation.getGene(ind,gene) == evenPopulation.getGene(ind,gene))));
         fail();
     }
 }

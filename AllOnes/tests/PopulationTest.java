@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PopulationTest {
 
@@ -86,6 +85,21 @@ class PopulationTest {
     private void setAllIndividualsInPopulationTo(Individual individual){
         population.initialize(CHROMO_SIZE);
         IntStream.range(0,POP_SIZE).forEach(i -> population.setIndividual(i,individual));
+    }
+
+
+    @Test
+    void testSetGeneToOneForEmptyPopulation(){
+        setAllIndividualsInPopulationTo(emptyIndividual);
+        assertEquals(0,population.getGene(0,0));
+        assertTrue(IntStream.range(0,POP_SIZE)
+                .allMatch(ind-> IntStream.range(0,CHROMO_SIZE)
+                        .allMatch(gene -> (0==population.getGene(ind,gene)))));
+        population.setGene(0,0,1);
+        assertFalse(IntStream.range(0,POP_SIZE)
+                .allMatch(ind-> IntStream.range(0,CHROMO_SIZE)
+                        .allMatch(gene -> (0==population.getGene(ind,gene)))));
+        assertEquals(1,population.getGene(0,0));
     }
 
 
