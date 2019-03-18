@@ -46,7 +46,7 @@ class Individual implements Comparable{
     }
 
     void setChromosome(int[] chromosome) {
-        IntStream.range(0,chromosome.length-1).forEach(gene ->{
+        IntStream.range(0,chromosome.length).forEach(gene ->{
             this.chromosome[gene] = chromosome[gene];
         });
     }

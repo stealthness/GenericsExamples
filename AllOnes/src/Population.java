@@ -1,6 +1,5 @@
 import java.util.Arrays;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 class Population {
 
@@ -8,6 +7,7 @@ class Population {
 
     private Individual[] individuals;
     private double fitness;
+    private int chromosomeSize = -1;
 
     // Constructors
 
@@ -22,6 +22,7 @@ class Population {
      * @param chromosomeSize
      */
     void initialize(int chromosomeSize) {
+        this.chromosomeSize = chromosomeSize;
         IntStream.range(0,this.size()).forEach(i -> individuals[i] = new Individual(chromosomeSize));
     }
 
@@ -54,7 +55,7 @@ class Population {
      * @param individual
      */
     void setIndividual(int index, Individual individual) {
-        IntStream.range(0,this.individuals[0].size()).forEach(gene -> this.setGene(index, gene, individual.getGene(gene)));
+        IntStream.range(0,this.chromosomeSize).forEach(gene -> this.setGene(index, gene, individual.getGene(gene)));
     }
 
     /**
@@ -79,5 +80,9 @@ class Population {
 
     public int getGene(int individualIndex, int geneIndex) {
         return this.getIndividuals()[individualIndex].getGene(geneIndex);
+    }
+
+    public int getChromosomeSize() {
+        return this.chromosomeSize;
     }
 }

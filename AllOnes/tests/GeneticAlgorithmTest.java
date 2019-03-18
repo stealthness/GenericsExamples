@@ -129,9 +129,9 @@ class GeneticAlgorithmTest {
     @Test
     void testCrossoverPopulationOnCompletePopulation(){
         Population crossoverPopulation;
+        assertNotNull(completePopulation);
         crossoverPopulation = ga.crossoverPopulation(completePopulation);
-
-        assertTrue(IntStream.range(0,POP_SIZE).allMatch(i -> crossoverPopulation.getIndividuals()[i].equals(completePopulation.getIndividuals()[i])));
+        assertTrue(IntStream.range(0,POP_SIZE).allMatch(ind ->crossoverPopulation.getIndividuals()[ind].equals(completePopulation.getIndividuals()[ind])));
     }
 
     @Test
@@ -144,17 +144,25 @@ class GeneticAlgorithmTest {
     }
 
     @Test
-    void testMutateGens(){
-        GeneticAlgorithm gaExtream = new GeneticAlgorithm(POP_SIZE,0,1,0);
-        Population pop = new Population(POP_SIZE);
-        pop.initialize(CHROMO_SIZE);
-        Arrays.stream(pop.getIndividuals()).forEach(individual -> individual.setChromosome(new int[]{1,1,0,0,0,1,0,1}));
-        Population resultPopulation = gaExtream.mutatePopulation(pop);
+    void testMutateGensEvenGenes(){
+
+        // Intialise
+        GeneticAlgorithm gaExtreme = new GeneticAlgorithm(POP_SIZE,0,1,0);
+        Population population = new Population(POP_SIZE);
+        population.initialize(CHROMO_SIZE);
+        Arrays.stream(population.getIndividuals())
+                .forEach(individual -> individual.setChromosome(new int[]{1,1,1,0,0,0,1,0}));
+
+        // Mutate1,1,1,0,0,0,1,0
+        Population resultPopulation = gaExtreme.mutatePopulation(population);
         System.out.println(resultPopulation);
-        System.out.println(evenPopulation);
         assertTrue(IntStream.range(0,POP_SIZE)
                 .allMatch(ind -> IntStream.range(0,CHROMO_SIZE)
                         .noneMatch(gene -> resultPopulation.getGene(ind,gene) == evenPopulation.getGene(ind,gene))));
-        fail();
+        assertTrue(IntStream.range(0,POP_SIZE)
+                .allMatch(ind -> {
+                    System.out.println(resultPopulation.getIndividuals()[ind]);
+                    return resultPopulation.getIndividuals()[ind].equals(new Individual(new int[]{0,0,0,1,1,1,0,1}));
+                }));
     }
 }

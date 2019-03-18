@@ -3,7 +3,7 @@ public class AllOnes {
     private static final int POP_SIZE = 50;
     private static final int CHROMO_SIZE = 10;
     private static final double CROSSOVER_RATE = 0.95;
-    private static final double MUTATION_RATE = 0.01;
+    private static final double MUTATION_RATE = 0.2;
     private static final int ELITISM = 0;
     private static final int MAX_GENERATION = 1000;
 
@@ -37,7 +37,8 @@ public class AllOnes {
             System.out.println(ga.getFitness(population));
             System.out.println(ga.getFitessIndividual(0,population));
         }
-        System.out.println(generation);
+        System.out.println(population);
+        System.out.println("generation:"+generation);
         System.out.println("end");
 
     }
