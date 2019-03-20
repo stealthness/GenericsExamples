@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,7 +14,7 @@ class GAUtilsTest {
 
     private static final double TOL = 0.001;
     private int[] emptyChromosome,evenChromosome,completeChromosome,thirdChromosome;
-    private Individual emptyIndividual,evenIndividual,completeIndividual;
+    private Individual emptyIndividual,evenIndividual,completeIndividual,thirdIndividual;
     private Population population;
     private GeneticAlgorithm ga;
     @BeforeEach
@@ -26,6 +27,7 @@ class GAUtilsTest {
         emptyIndividual = new Individual(emptyChromosome);
         evenIndividual = new Individual(evenChromosome);
         completeIndividual = new Individual(completeChromosome);
+        thirdIndividual = new Individual(thirdChromosome);
 
         population = new Population(10);
         population.initialize(8);
@@ -114,6 +116,41 @@ class GAUtilsTest {
         population.setIndividual(9,emptyIndividual);
         actIndividual = ga.selectParent(GAUtils.sillySelectLastIndividual,population);
         IndividualTest.assertEqualIndividuals(emptyIndividual,actIndividual);
+    }
+
+    @Test
+    void testSelectWeightedWheelParent(){
+        population = buildPopulation(emptyIndividual);
+        population.setIndividual(0,completeIndividual);
+        var actIndividual = ga.selectParent(GAUtils.selectWeightedWheelParent,population);
+        IndividualTest.assertEqualIndividuals(completeIndividual,actIndividual);
+
+        IntStream.range(0,100).forEach(i-> {
+            population = buildPopulation(emptyIndividual);
+            var index = (int)Math.random()*9;
+            population.setIndividual(index,completeIndividual);
+            IndividualTest.assertEqualIndividuals(completeIndividual,ga.selectParent(GAUtils.selectWeightedWheelParent,population));
+
+        });
+
+        IntStream.range(0,100).forEach(i-> {
+            population = buildPopulation(emptyIndividual);
+            IntStream.range(1,3).forEach(j-> population.setIndividual((int)Math.random()*9,thirdIndividual));
+
+            IndividualTest.assertEqualIndividuals(thirdChromosome,ga.selectParent(GAUtils.selectWeightedWheelParent,population));
+
+        });
+    }
+
+    // private helper method
+
+    private Population buildPopulation(Individual individual){
+        population = new Population(10);
+        population.initialize(8);
+
+        IntStream.range(0,population.size()).forEach(i -> population.setIndividual(i,individual));
+        population.evaluateFitness();
+        return population;
     }
 
 }
