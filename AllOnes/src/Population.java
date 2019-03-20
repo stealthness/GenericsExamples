@@ -38,7 +38,7 @@ class Population {
 
 
     void evaluateFitness(Function<Individual,Double> fitnessFunction){
-        Arrays.stream(individuals).forEach(Individual::evaluateFitness);
+        Arrays.stream(individuals).forEach(individual -> individual.evaluateFitness(fitnessFunction));
         this.fitness = Arrays.stream(individuals).mapToDouble(Individual::getFitness).sum()/(double)individuals.length;
     }
 
