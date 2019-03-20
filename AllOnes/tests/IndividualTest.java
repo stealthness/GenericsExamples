@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by Stephen West on 07/03/2019.
@@ -27,6 +26,16 @@ class IndividualTest {
         completeIndividual = new Individual(completeChromosome);
     }
 
+    private void assertEqualIndividuals(Individual actIndividual, Individual expIndividual){
+        assertTrue(IntStream.range(0,expIndividual.size())
+                .allMatch(i-> actIndividual.getGene(i) == expIndividual.getGene(i)));
+    }
+
+    private void assertEqualIndividuals(int[] actChromosome, Individual expIndividual){
+        assertTrue(IntStream.range(0,expIndividual.size())
+                .allMatch(i-> actChromosome[i] == expIndividual.getGene(i)));
+    }
+
     @Test
     void testCreate(){
         assertEquals(Individual.class,emptyIndividual.getClass());
@@ -34,17 +43,24 @@ class IndividualTest {
 
     @Test
     void testGetEmptyChromosome(){
-        assertEquals(emptyChromosome,emptyIndividual.getChromosome());
+        assertEqualIndividuals(emptyChromosome,emptyIndividual);
+    }
+
+    @Test
+    void testGetEmptyChromosomeAfterChangingEmptyIndividual(){
+        assertEqualIndividuals(emptyChromosome,emptyIndividual);
+        emptyChromosome[1] = 1;
+        assertEqualIndividuals(new int[]{0,0,0,0,0,0,0,0,0,0},emptyIndividual);
     }
 
     @Test
     void testGetEvenChromosome(){
-        assertEquals(evenChromosome,evenIndividual.getChromosome());
+        assertEqualIndividuals(evenChromosome,evenIndividual);
     }
 
     @Test
     void testGetCompleteChromosome(){
-        assertEquals(completeChromosome,completeIndividual.getChromosome());
+        assertEqualIndividuals(completeChromosome, completeIndividual);
     }
 
     @Test

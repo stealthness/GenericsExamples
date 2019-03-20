@@ -14,7 +14,8 @@ class Individual implements Comparable{
     // Constructors
 
     Individual(int[] chromosome) {
-        this.chromosome = chromosome;
+        this.chromosome = new int[chromosome.length];
+        IntStream.range(0,this.size()).forEach(i -> this.setGene(i,chromosome[i]));
     }
 
     Individual(int chromosomeLength) {
