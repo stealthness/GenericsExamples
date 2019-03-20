@@ -16,6 +16,11 @@ class IndividualTest {
     private int[] emptyChromosome,evenChromosome,completeChromosome;
     private Individual emptyIndividual,evenIndividual,completeIndividual;
 
+    static void assertEqualIndividuals(Individual actIndividual, Individual expIndividual){
+        assertTrue(IntStream.range(0,expIndividual.size())
+                .allMatch(i-> actIndividual.getGene(i) == expIndividual.getGene(i)));
+    }
+
     @BeforeEach
     void setUp(){
         emptyChromosome = new int[]{0,0,0,0,0,0,0,0};
@@ -26,10 +31,7 @@ class IndividualTest {
         completeIndividual = new Individual(completeChromosome);
     }
 
-    private void assertEqualIndividuals(Individual actIndividual, Individual expIndividual){
-        assertTrue(IntStream.range(0,expIndividual.size())
-                .allMatch(i-> actIndividual.getGene(i) == expIndividual.getGene(i)));
-    }
+
 
     private void assertEqualIndividuals(int[] actChromosome, Individual expIndividual){
         assertTrue(IntStream.range(0,expIndividual.size())

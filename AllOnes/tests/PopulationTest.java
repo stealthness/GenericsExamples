@@ -46,16 +46,14 @@ class PopulationTest {
     @Test
     void testSetPopulationAllToEmpty(){
         setAllIndividualsInPopulationTo(emptyIndividual);
-
         assertTrue(Arrays.stream(population.getIndividuals())
                 .allMatch(individual -> emptyIndividual.toString().equals(individual.toString())));
-    }
 
+    }
 
     @Test
     void testSetPopulationAllToComplete(){
         setAllIndividualsInPopulationTo(completeIndividual);
-
         assertTrue(Arrays.stream(population.getIndividuals())
                 .allMatch(individual -> completeIndividual.toString().equals(individual.toString())));
     }
@@ -104,27 +102,24 @@ class PopulationTest {
 
 
     @Test
-    void testEvenPopluationWithSillyLastFitnessFunctions(){
-        var evenPopulation = new Population(10);
-        evenPopulation.initialize(8);
-        IntStream.range(0,10).forEach(i -> evenPopulation.setIndividual(i,evenIndividual));
-        evenPopulation.evaluateFitness();
-        assertEquals(0.5,evenPopulation.getFitness(),TOL);
+    void testEvenPopulationWithSillyLastFitnessFunctions(){
+        setAllIndividualsInPopulationTo(evenIndividual);
+        population.evaluateFitness();
+        assertEquals(0.5,population.getFitness(),TOL);
 
-        evenPopulation.evaluateFitness(GAUtils.sillyLastGeneFitness);
-        assertEquals(0.0,evenPopulation.getFitness(),TOL);
+        population.evaluateFitness(GAUtils.sillyLastGeneFitness);
+        assertEquals(0.0,population.getFitness(),TOL);
     }
 
     @Test
-    void testEvenPopluationWithSillyFirstFitnessFunctions(){
-        var evenPopulation = new Population(10);
-        evenPopulation.initialize(8);
-        IntStream.range(0,10).forEach(i -> evenPopulation.setIndividual(i,evenIndividual));
-        evenPopulation.evaluateFitness();
-        assertEquals(0.5,evenPopulation.getFitness(),TOL);
+    void testEvenPopulationWithSillyFirstFitnessFunctions(){
 
-        evenPopulation.evaluateFitness(GAUtils.sillyFirstGeneFitness);
-        assertEquals(1.0,evenPopulation.getFitness(),TOL);
+        setAllIndividualsInPopulationTo(evenIndividual);
+        population.evaluateFitness();
+        assertEquals(0.5,population.getFitness(),TOL);
+
+        population.evaluateFitness(GAUtils.sillyFirstGeneFitness);
+        assertEquals(1.0,population.getFitness(),TOL);
     }
 
 
