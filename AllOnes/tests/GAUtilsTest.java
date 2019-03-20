@@ -48,7 +48,7 @@ class GAUtilsTest {
     }
     @Test
     void testSillyLastGeneFitnessReturnsFirstGeneOfEvenIndividual(){
-        assertEquals(1, GAUtils.sillyLastGeneFitness.apply(evenIndividual));
+        assertEquals(0, GAUtils.sillyLastGeneFitness.apply(evenIndividual));
     }
     @Test
     void testSillyLastGeneFitnessReturnsFirstGeneOfCompleteIndividual(){

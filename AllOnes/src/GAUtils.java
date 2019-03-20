@@ -8,5 +8,5 @@ public class GAUtils {
     static Function<Individual, Double> sillyFirstGeneFitness = individual -> (double)individual.getGene(0);
 
 
-    static Function<Individual, Double> sillyLastGeneFitness = individual -> (double)individual.getGene(0);
+    static Function<Individual, Double> sillyLastGeneFitness = individual -> (double)individual.getGene(individual.size()-1);
 }
