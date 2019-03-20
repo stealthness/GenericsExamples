@@ -103,6 +103,29 @@ class PopulationTest {
     }
 
 
+    @Test
+    void testEvenPopluationWithSillyLastFitnessFunctions(){
+        var evenPopulation = new Population(10);
+        evenPopulation.initialize(8);
+        IntStream.range(0,10).forEach(i -> evenPopulation.setIndividual(i,evenIndividual));
+        evenPopulation.evaluateFitness();
+        assertEquals(0.5,evenPopulation.getFitness(),TOL);
+
+        evenPopulation.evaluateFitness(GAUtils.sillyLastGeneFitness);
+        assertEquals(0.0,evenPopulation.getFitness(),TOL);
+    }
+
+    @Test
+    void testEvenPopluationWithSillyFirstFitnessFunctions(){
+        var evenPopulation = new Population(10);
+        evenPopulation.initialize(8);
+        IntStream.range(0,10).forEach(i -> evenPopulation.setIndividual(i,evenIndividual));
+        evenPopulation.evaluateFitness();
+        assertEquals(0.5,evenPopulation.getFitness(),TOL);
+
+        evenPopulation.evaluateFitness(GAUtils.sillyFirstGeneFitness);
+        assertEquals(1.0,evenPopulation.getFitness(),TOL);
+    }
 
 
 }
