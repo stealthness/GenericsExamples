@@ -70,17 +70,24 @@ public class GeneticAlgorithm {
         // Spin roulette Wheel
         double populationFitness = population.getFitness();
         double rouletteWheelPosition = Math.random() * populationFitness;
-
+        System.out.println(rouletteWheelPosition);
         // Find Parent
         double spinWheel = 0.0;
         for (Individual individual : population.getIndividuals()) {
             spinWheel += individual.getFitness();
-            if (spinWheel >= rouletteWheelPosition) {
+            System.out.println(spinWheel);
+            if (spinWheel <= rouletteWheelPosition) {
                 return individual;
             }
         }
         return population.getIndividuals()[this.popSize - 1];
     }
+
+    Individual selectParent(Function<Population,Individual> selector,Population population) {
+        return selector.apply(population);
+    }
+
+
 
     /**
      * Returns true is any individual's fitness has a value of 1, false otherwise

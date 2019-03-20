@@ -2,6 +2,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -10,18 +12,32 @@ import static org.junit.jupiter.api.Assertions.*;
 class GAUtilsTest {
 
     private static final double TOL = 0.001;
-    private int[] emptyChromosome,evenChromosome,completeChromosome;
+    private int[] emptyChromosome,evenChromosome,completeChromosome,thirdChromosome;
     private Individual emptyIndividual,evenIndividual,completeIndividual;
-
+    private Population population;
+    private GeneticAlgorithm ga;
     @BeforeEach
     void SetUp(){
         emptyChromosome = new int[]{0,0,0,0,0,0,0,0};
         evenChromosome = new int[]{1,1,1,0,0,0,1,0};
         completeChromosome = new int[]{1,1,1,1,1,1,1,1};
+        thirdChromosome = new int[]{1,1,0,1,0,0,0,0};
 
         emptyIndividual = new Individual(emptyChromosome);
         evenIndividual = new Individual(evenChromosome);
         completeIndividual = new Individual(completeChromosome);
+
+        population = new Population(10);
+        population.initialize(8);
+        Arrays.stream(population.getIndividuals()).forEach(individual -> individual.setChromosome(thirdChromosome));
+        population.setIndividual(0,evenIndividual);
+        population.setIndividual(4,completeIndividual);
+        population.setIndividual(9,emptyIndividual);
+
+        ga = new GeneticAlgorithm(8,1.0,0.0,0);
+
+
+
     }
 
     // Test using fitness function returns the last gene
@@ -68,6 +84,36 @@ class GAUtilsTest {
     @Test
     void testGetMeanGeneFitnessReturnsFirstGeneOfCompleteIndividual(){
         assertEquals(1, GAUtils.getMeanGeneFitness.apply(completeIndividual),TOL);
+    }
+
+    // Test using selection functions that return a selected individual from a population
+
+    @Test
+    void testSillyFirstIndividualSelection(){
+        ga.evaluateFitness(population);
+        var actIndividual = ga.selectParent(GAUtils.sillySelectFirstIndividual,population);
+        IndividualTest.assertEqualIndividuals(evenIndividual,actIndividual);
+
+        actIndividual = ga.selectParent(GAUtils.sillySelectFirstIndividual,population);
+        IndividualTest.assertEqualIndividuals(evenIndividual,actIndividual);
+
+        population.setIndividual(0,completeIndividual);
+        actIndividual = ga.selectParent(GAUtils.sillySelectFirstIndividual,population);
+        IndividualTest.assertEqualIndividuals(completeIndividual,actIndividual);
+    }
+
+    @Test
+    void testSillyLastIndividualSelection(){
+        ga.evaluateFitness(population);
+        var actIndividual = ga.selectParent(GAUtils.sillySelectLastIndividual,population);
+        IndividualTest.assertEqualIndividuals(emptyIndividual,actIndividual);
+
+        actIndividual = ga.selectParent(GAUtils.sillySelectLastIndividual,population);
+        IndividualTest.assertEqualIndividuals(emptyIndividual,actIndividual);
+
+        population.setIndividual(9,emptyIndividual);
+        actIndividual = ga.selectParent(GAUtils.sillySelectLastIndividual,population);
+        IndividualTest.assertEqualIndividuals(emptyIndividual,actIndividual);
     }
 
 }

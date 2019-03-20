@@ -21,6 +21,10 @@ class IndividualTest {
                 .allMatch(i-> actIndividual.getGene(i) == expIndividual.getGene(i)));
     }
 
+    static void assertEqualIndividuals(int[] actChromosome, Individual expIndividual){
+        assertEqualIndividuals(new Individual(actChromosome),expIndividual);
+    }
+
     @BeforeEach
     void setUp(){
         emptyChromosome = new int[]{0,0,0,0,0,0,0,0};
@@ -33,10 +37,6 @@ class IndividualTest {
 
 
 
-    private void assertEqualIndividuals(int[] actChromosome, Individual expIndividual){
-        assertTrue(IntStream.range(0,expIndividual.size())
-                .allMatch(i-> actChromosome[i] == expIndividual.getGene(i)));
-    }
 
     @Test
     void testCreate(){
@@ -50,7 +50,7 @@ class IndividualTest {
 
     @Test
     void testGetEmptyChromosomeAfterChangingEmptyIndividual(){
-        assertEqualIndividuals(emptyChromosome,emptyIndividual);
+        IndividualTest.assertEqualIndividuals(emptyChromosome,emptyIndividual);
         emptyChromosome[1] = 1;
         assertEqualIndividuals(new int[]{0,0,0,0,0,0,0,0,0,0},emptyIndividual);
     }
@@ -87,18 +87,16 @@ class IndividualTest {
 
     @Test
     void testSetGeneToZero(){
-        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> {
-            completeIndividual.setGene(gene,0);
-            assertEquals(emptyChromosome[gene],completeIndividual.getGene(gene));
-        });
+        // switch an complete chromosome to a empty chromosome
+        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> completeIndividual.setGene(gene,0));
+        assertEqualIndividuals(emptyChromosome,completeIndividual);
     }
 
     @Test
     void testSetGeneToOne(){
-        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> {
-            emptyIndividual.setGene(gene,1);
-            assertEquals(completeChromosome[gene],emptyIndividual.getGene(gene));
-        });
+        // switch an empty chromosome to a complete chromosome
+        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> emptyIndividual.setGene(gene,1));
+        assertEqualIndividuals(completeChromosome,emptyIndividual);
     }
 
     @Test
@@ -108,24 +106,24 @@ class IndividualTest {
     }
 
     @Test
-    void testToStrongEmptyIndividual(){
+    void testToStringEmptyIndividual(){
         assertEquals("00000000",emptyIndividual.toString());
     }
 
     @Test
-    void testToStrongCompleteIndividual(){
+    void testToStringCompleteIndividual(){
         assertEquals("11111111",completeIndividual.toString());
     }
 
     @Test
-    void testToStrongEvenIndividual(){
+    void testToStringEvenIndividual(){
         assertEquals("11100001",evenIndividual.toString());
     }
 
     @Test
     void testGetFitnessForEmptyIndividual(){
         emptyIndividual.evaluateFitness();
-        assertEquals(0,emptyIndividual.getFitness(),TOL);
+        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
     }
 
     @Test
@@ -164,6 +162,7 @@ class IndividualTest {
         emptyIndividual.evaluateFitness();
         assertEquals(-1,completeIndividual.compareTo(emptyIndividual));
     }
+
     @Test
     void testEvenIndividualIsGreaterThanEmptyIndividual(){
         evenIndividual.evaluateFitness();

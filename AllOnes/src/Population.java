@@ -7,7 +7,7 @@ class Population {
     // Fields
 
     private Individual[] individuals;
-    private double fitness;
+    private double fitness = -1.0;
     private int chromosomeSize = -1;
 
     // Constructors

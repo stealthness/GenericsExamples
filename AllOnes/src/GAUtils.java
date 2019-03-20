@@ -38,4 +38,10 @@ class GAUtils {
         return offspring;
     };
 
+    // Select Parent
+
+    static Function<Population,Individual> sillySelectFirstIndividual = (population -> population.getIndividuals()[0]);
+
+    static Function<Population,Individual> sillySelectLastIndividual = (population -> population.getIndividuals()[population.size()-1]);
+
 }
