@@ -24,7 +24,7 @@ class GAUtilsTest {
         completeIndividual = new Individual(completeChromosome);
     }
 
-
+    // Test using fitness function returns the last gene
 
 
     @Test
@@ -38,6 +38,21 @@ class GAUtilsTest {
     @Test
     void testSillyFirstGeneFitnessReturnsFirstGeneOfCompleteIndividual(){
         assertEquals(1, GAUtils.sillyFirstGeneFitness.apply(completeIndividual));
+    }
+
+    // Test using fitness function returns the last gene
+
+    @Test
+    void testSillyLastGeneFitnessReturnsFirstGeneOfEmptyIndividual(){
+        assertEquals(0, GAUtils.sillyLastGeneFitness.apply(emptyIndividual));
+    }
+    @Test
+    void testSillyLastGeneFitnessReturnsFirstGeneOfEvenIndividual(){
+        assertEquals(1, GAUtils.sillyLastGeneFitness.apply(evenIndividual));
+    }
+    @Test
+    void testSillyLastGeneFitnessReturnsFirstGeneOfCompleteIndividual(){
+        assertEquals(1, GAUtils.sillyLastGeneFitness.apply(completeIndividual));
     }
 
 }
