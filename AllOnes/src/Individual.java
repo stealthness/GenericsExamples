@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 /**
@@ -31,6 +32,10 @@ class Individual implements Comparable{
      */
     void evaluateFitness() {
         this.fitness = (double)Arrays.stream(chromosome).sum()/(double)this.size();
+    }
+
+    void evaluateFitness(Function<Individual,Double> fitnessFunction){
+        this.fitness = fitnessFunction.apply(this);
     }
 
     /**

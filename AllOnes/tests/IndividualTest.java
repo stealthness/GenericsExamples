@@ -127,14 +127,32 @@ class IndividualTest {
     }
 
     @Test
+    void testGetFitnessByFunctionalMethodForEmptyIndividual(){
+        emptyIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
+        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
+    }
+
+    @Test
     void testGetFitnessForEvenIndividual(){
         evenIndividual.evaluateFitness();
         assertEquals(0.5,evenIndividual.getFitness(),TOL);
     }
 
     @Test
+    void testGetFitnessByFunctionalMethodForEvenIndividual(){
+        evenIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
+        assertEquals(0.5,evenIndividual.getFitness(),TOL);
+    }
+
+    @Test
     void testGetFitnessForCompleteIndividual(){
         completeIndividual.evaluateFitness();
+        assertEquals(1.0,completeIndividual.getFitness(),TOL);
+    }
+
+    @Test
+    void testGetFitnessByFunctionalMethodForCompleteIndividual(){
+        completeIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
         assertEquals(1.0,completeIndividual.getFitness(),TOL);
     }
 
@@ -150,4 +168,7 @@ class IndividualTest {
         emptyIndividual.evaluateFitness();
         assertEquals(-1,evenIndividual.compareTo(emptyIndividual));
     }
+
+
+
 }

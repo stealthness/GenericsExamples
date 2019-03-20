@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 class Population {
@@ -31,9 +32,14 @@ class Population {
      * fitness = sum of fitness of individuals in population divided by population size
      */
     void evaluateFitness(){
+        evaluateFitness(GAUtils.getMeanGeneFitness);
+
+    }
+
+
+    void evaluateFitness(Function<Individual,Double> fitnessFunction){
         Arrays.stream(individuals).forEach(Individual::evaluateFitness);
         this.fitness = Arrays.stream(individuals).mapToDouble(Individual::getFitness).sum()/(double)individuals.length;
-
     }
 
     // Setter and Getters

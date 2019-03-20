@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 /**
@@ -10,6 +11,7 @@ public class GeneticAlgorithm {
     private final double crossoverRate;
     private final double mutationRate;
     private final int elitism;
+    private Function<Individual,Double> fitnessFunction = GAUtils.getMeanGeneFitness;
 
     GeneticAlgorithm(int popSize, double crossoverRate, double mutationRate, int elitism) {
         this.popSize = popSize;
@@ -147,5 +149,13 @@ public class GeneticAlgorithm {
         });
 
         return population;
+    }
+
+    public Function<Individual, Double> getFitnessFunction() {
+        return fitnessFunction;
+    }
+
+    public void setFitnessFunction(Function<Individual, Double> fitnessFunction) {
+        this.fitnessFunction = fitnessFunction;
     }
 }
