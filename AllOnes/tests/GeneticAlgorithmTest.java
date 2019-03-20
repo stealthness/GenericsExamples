@@ -69,9 +69,10 @@ class GeneticAlgorithmTest {
         population.setIndividual(5,evenIndividual);
         ga.evaluateFitness(population);
         assertTrue(ga.getFitness(population)>0.0);
-        assertEquals(completeIndividual.toString(), ga.getFitessIndividual(0,population).toString());
-        assertEquals(evenIndividual.toString(), ga.getFitessIndividual(1,population).toString());
-        assertEquals(emptyIndividual.toString(), ga.getFitessIndividual(2,population).toString());
+        IndividualTest.assertEqualIndividuals(completeIndividual,ga.getFitessIndividual(0,population));
+        IndividualTest.assertEqualIndividuals(evenIndividual,ga.getFitessIndividual(1,population));
+        IndividualTest.assertEqualIndividuals(emptyIndividual,ga.getFitessIndividual(2,population));
+
     }
 
     @Test
