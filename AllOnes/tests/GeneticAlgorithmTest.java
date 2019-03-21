@@ -156,13 +156,11 @@ class GeneticAlgorithmTest {
 
         // Mutate1,1,1,0,0,0,1,0
         Population resultPopulation = gaExtreme.mutatePopulation(population);
-        System.out.println(resultPopulation);
         assertTrue(IntStream.range(0,POP_SIZE)
                 .allMatch(ind -> IntStream.range(0,CHROMO_SIZE)
                         .noneMatch(gene -> resultPopulation.getGene(ind,gene) == evenPopulation.getGene(ind,gene))));
         assertTrue(IntStream.range(0,POP_SIZE)
                 .allMatch(ind -> {
-                    System.out.println(resultPopulation.getIndividuals()[ind]);
                     return resultPopulation.getIndividuals()[ind].equals(new Individual(new int[]{0,0,0,1,1,1,0,1}));
                 }));
     }

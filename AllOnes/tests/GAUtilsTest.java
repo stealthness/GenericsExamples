@@ -119,24 +119,30 @@ class GAUtilsTest {
     }
 
     @Test
-    void testSelectWeightedWheelParent(){
+    void testSelectWeightedWheelParentWithOneOptions() {
         population = buildPopulation(emptyIndividual);
-        population.setIndividual(0,completeIndividual);
-        var actIndividual = ga.selectParent(GAUtils.selectWeightedWheelParent,population);
-        IndividualTest.assertEqualIndividuals(completeIndividual,actIndividual);
+        population.setIndividual(0, completeIndividual);
+        var actIndividual = ga.selectParent(GAUtils.selectWeightedWheelParent, population);
+        IndividualTest.assertEqualIndividuals(completeIndividual, actIndividual);
 
-        IntStream.range(0,100).forEach(i-> {
+        IntStream.range(0, 100).forEach(i -> {
             population = buildPopulation(emptyIndividual);
-            var index = (int)Math.random()*9;
-            population.setIndividual(index,completeIndividual);
-            IndividualTest.assertEqualIndividuals(completeIndividual,ga.selectParent(GAUtils.selectWeightedWheelParent,population));
+            var index = (int) (Math.random() * 9);
+            population.setIndividual(index, completeIndividual);
+            population.evaluateFitness();
+            IndividualTest.assertEqualIndividuals(completeIndividual, ga.selectParent(GAUtils.selectWeightedWheelParent, population));
 
         });
+    }
+
+    @Test
+    void testSelectWeightedWheelParentWithThreeOptions(){
 
         IntStream.range(0,100).forEach(i-> {
             population = buildPopulation(emptyIndividual);
-            IntStream.range(1,3).forEach(j-> population.setIndividual((int)Math.random()*9,thirdIndividual));
+            IntStream.range(0,3).forEach(j-> population.setIndividual((int)(Math.random()*9),thirdIndividual));
 
+            population.evaluateFitness();
             IndividualTest.assertEqualIndividuals(thirdChromosome,ga.selectParent(GAUtils.selectWeightedWheelParent,population));
 
         });

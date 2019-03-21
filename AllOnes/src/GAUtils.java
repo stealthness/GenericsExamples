@@ -49,13 +49,11 @@ class GAUtils {
         // Spin roulette Wheel
         double populationFitness = population.getFitness();
         double rouletteWheelPosition = Math.random() * populationFitness;
-        System.out.println(rouletteWheelPosition);
         // Find Parent
         double spinWheel = 0.0;
         for (Individual individual : population.getIndividuals()) {
             spinWheel += individual.getFitness();
-            System.out.println(spinWheel);
-            if (spinWheel <= rouletteWheelPosition) {
+            if (spinWheel >= rouletteWheelPosition) {
                 return individual;
             }
         }
