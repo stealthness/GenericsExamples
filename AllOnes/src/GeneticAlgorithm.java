@@ -23,8 +23,8 @@ public class GeneticAlgorithm {
     /**
      * get the average fitness of the population
      *
-     * @param population
-     * @return
+     * @param population of individuals
+     * @return the average fitness
      */
     double getFitness(Population population) {
         population.evaluateFitness();
@@ -34,9 +34,9 @@ public class GeneticAlgorithm {
     /**
      * Returns the an individuals that is the index position of fitness amongst the population
      *
-     * @param index
-     * @param population
-     * @return
+     * @param index the index of the fitess Individual in the population
+     * @param population is a population of Individuals
+     * @return individual that is index of fitness in the population
      */
     Individual getFitessIndividual(int index, Population population) {
         return Arrays.stream(population.getIndividuals()).sorted().skip(index).findFirst().orElse(null);
@@ -62,13 +62,20 @@ public class GeneticAlgorithm {
     /**
      * Selects an individual at random weighted by their fitness level.
      *
-     * @param population to slect an individual from.
-     * @return selected individual
+     * @param population of individuals each containing a chromosome of a possible solution.
+     * @return selected individual from the population (default method GAUtils.selectWeightedWheelParent).
      */
     Individual selectParent(Population population) {
         return selectParent(GAUtils.selectWeightedWheelParent,population);
     }
 
+    /**
+     * Selects a parent from population using selector function.
+     *
+     * @param selector a function that selects parent from the population.
+     * @param population of individuals each containing a chromosome of a possible solution.
+     * @return selected individual from the population.
+     */
     Individual selectParent(Function<Population,Individual> selector,Population population) {
         return selector.apply(population);
     }
@@ -78,13 +85,11 @@ public class GeneticAlgorithm {
     /**
      * Returns true is any individual's fitness has a value of 1, false otherwise
      *
-     * @param population
-     * @return
+     * @param population of individuals each containing a chromosome of a possible solution
+     * @return true if a solution is found, false otherwise
      */
     boolean solutionFound(Population population) {
-        return Arrays.stream(population.getIndividuals())
-                .anyMatch(individual -> Arrays.stream(individual.getChromosome())
-                        .allMatch(gene -> gene == 1));
+        return this.getFitessIndividual(0,population).getFitness() >= 1.0;
     }
 
     /**

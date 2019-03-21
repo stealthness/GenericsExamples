@@ -117,6 +117,7 @@ class GeneticAlgorithmTest {
     @Test
     void testSolutionFoundIsTrueForOneCompleteIndividualInEmptyPopulation(){
         emptyPopulation.setIndividual(3,completeIndividual);
+        emptyPopulation.evaluateFitness();
         assertTrue(ga.solutionFound(emptyPopulation));
     }
 
