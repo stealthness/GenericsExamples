@@ -28,7 +28,7 @@ class IndividualTest {
     @BeforeEach
     void setUp(){
         emptyChromosome = new int[]{0,0,0,0,0,0,0,0};
-        evenChromosome = new int[]{1,1,1,0,0,0,0,1};
+        evenChromosome = new int[]{1,1,1,0,0,0,1,0};
         completeChromosome = new int[]{1,1,1,1,1,1,1,1};
         emptyIndividual = new Individual(emptyChromosome);
         evenIndividual = new Individual(evenChromosome);
@@ -117,42 +117,47 @@ class IndividualTest {
 
     @Test
     void testToStringEvenIndividual(){
-        assertEquals("11100001",evenIndividual.toString());
+        assertEquals("11100010",evenIndividual.toString());
     }
+
+    // Test Fitness
 
     @Test
     void testGetFitnessForEmptyIndividual(){
         emptyIndividual.evaluateFitness();
         assertEquals(0.0,emptyIndividual.getFitness(),TOL);
-    }
-
-    @Test
-    void testGetFitnessByFunctionalMethodForEmptyIndividual(){
         emptyIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
         assertEquals(0.0,emptyIndividual.getFitness(),TOL);
+        emptyIndividual.evaluateFitness(GAUtils.sillyFirstGeneFitness);
+        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
+        emptyIndividual.evaluateFitness(GAUtils.sillyLastGeneFitness);
+        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
+
     }
 
     @Test
     void testGetFitnessForEvenIndividual(){
         evenIndividual.evaluateFitness();
         assertEquals(0.5,evenIndividual.getFitness(),TOL);
-    }
-
-    @Test
-    void testGetFitnessByFunctionalMethodForEvenIndividual(){
         evenIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
         assertEquals(0.5,evenIndividual.getFitness(),TOL);
+        // {1,1,1,0,0,0,1,0}
+        evenIndividual.evaluateFitness(GAUtils.sillyLastGeneFitness);
+        assertEquals(0.0,evenIndividual.getFitness(),TOL);
+        evenIndividual.evaluateFitness(GAUtils.sillyFirstGeneFitness);
+        assertEquals(1.0,evenIndividual.getFitness(),TOL);
+
     }
 
     @Test
     void testGetFitnessForCompleteIndividual(){
         completeIndividual.evaluateFitness();
         assertEquals(1.0,completeIndividual.getFitness(),TOL);
-    }
-
-    @Test
-    void testGetFitnessByFunctionalMethodForCompleteIndividual(){
         completeIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
+        assertEquals(1.0,completeIndividual.getFitness(),TOL);
+        completeIndividual.evaluateFitness(GAUtils.sillyLastGeneFitness);
+        assertEquals(1.0,completeIndividual.getFitness(),TOL);
+        completeIndividual.evaluateFitness(GAUtils.sillyFirstGeneFitness);
         assertEquals(1.0,completeIndividual.getFitness(),TOL);
     }
 

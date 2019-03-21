@@ -14,6 +14,10 @@ class Individual implements Comparable{
 
     // Constructors
 
+    /**
+     * Constructs
+     * @param chromosome
+     */
     Individual(int[] chromosome) {
         this.chromosome = new int[chromosome.length];
         IntStream.range(0,this.size()).forEach(i -> this.setGene(i,chromosome[i]));
@@ -27,13 +31,17 @@ class Individual implements Comparable{
     // Methods
 
     /**
-     * Evaluates the fitness of the chromosome
+     * Evaluates the fitness of the chromosome using default method from GAUtils.getMeanGeneFitness
      * fitness = sum of gene of value 1 divided by chromosome length
      */
     void evaluateFitness() {
-        this.fitness = (double)Arrays.stream(chromosome).sum()/(double)this.size();
+        evaluateFitness(GAUtils.getMeanGeneFitness);
     }
 
+    /**
+     * Evaluates the fitness of the chromosome using @param functions
+     * @param fitnessFunction a function that will evaluate the fitness of the individual
+     */
     void evaluateFitness(Function<Individual,Double> fitnessFunction){
         this.fitness = fitnessFunction.apply(this);
     }

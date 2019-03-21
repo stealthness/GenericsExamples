@@ -40,6 +40,7 @@ public class AllOnes {
         System.out.println(population);
         System.out.println("generation:"+generation);
         System.out.println("end");
+        
 
     }
 }
