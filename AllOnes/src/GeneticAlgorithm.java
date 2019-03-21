@@ -66,19 +66,7 @@ public class GeneticAlgorithm {
      * @return selected individual
      */
     Individual selectParent(Population population) {
-
-        // Spin roulette Wheel
-        double populationFitness = population.getFitness();
-        double rouletteWheelPosition = Math.random() * populationFitness;
-        // Find Parent
-        double spinWheel = 0.0;
-        for (Individual individual : population.getIndividuals()) {
-            spinWheel += individual.getFitness();
-            if (spinWheel <= rouletteWheelPosition) {
-                return individual;
-            }
-        }
-        return population.getIndividuals()[this.popSize - 1];
+        return selectParent(GAUtils.selectWeightedWheelParent,population);
     }
 
     Individual selectParent(Function<Population,Individual> selector,Population population) {
