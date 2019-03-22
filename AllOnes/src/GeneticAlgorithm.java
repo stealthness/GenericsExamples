@@ -136,6 +136,7 @@ public class GeneticAlgorithm {
 
     Population mutatePopulation(BiFunction<Population,Double,Population> mutateFunction,Population population){
         var newPopulation = population.clone();
+
         newPopulation = mutateFunction.apply(newPopulation,mutationRate);
         return newPopulation;
     }

@@ -23,13 +23,6 @@ class GAUtils {
     // Crossover Functions
 
     static BiFunction<Individual,Individual,Individual> sillyFirstParentGeneCrossover = (parent1,parent2) -> {
-        if (parent1.size() != parent2.size()){
-            try {
-                throw new Exception();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         var offspring = new Individual(parent1.size());
         // set first gene to parent 1
         offspring.setGene(0,parent1.getGene(0));

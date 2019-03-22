@@ -98,7 +98,7 @@ class PopulationTest {
                             .filter(gene -> i != randomIndividualIndex && gene != randomGeneIndex)
                             .allMatch(gene -> population.getGene(i,gene) == 0)));
             // assert that the random gene is 1
-            assertTrue(population.getGene(randomIndividualIndex,randomGeneIndex)==1);
+            assertEquals(1,population.getGene(randomIndividualIndex,randomGeneIndex));
         }
 
     }

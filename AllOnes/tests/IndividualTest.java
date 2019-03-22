@@ -25,6 +25,17 @@ class IndividualTest {
         assertEqualIndividuals(new Individual(actChromosome),expIndividual);
     }
 
+    static boolean isEqualIndividuals(Individual actIndividual, Individual expIndividual){
+        return IntStream.range(0,expIndividual.size())
+                .allMatch(i-> actIndividual.getGene(i) == expIndividual.getGene(i));
+    }
+
+    static boolean isEqualIndividuals(int[] actChromosome, Individual expIndividual){
+        return isEqualIndividuals(new Individual(actChromosome),expIndividual);
+    }
+
+
+
     @BeforeEach
     void setUp(){
         emptyChromosome = new int[]{0,0,0,0,0,0,0,0};
@@ -34,9 +45,6 @@ class IndividualTest {
         evenIndividual = new Individual(evenChromosome);
         completeIndividual = new Individual(completeChromosome);
     }
-
-
-
 
     @Test
     void testCreate(){
@@ -132,7 +140,6 @@ class IndividualTest {
         assertEquals(0.0,emptyIndividual.getFitness(),TOL);
         emptyIndividual.evaluateFitness(GAUtils.sillyLastGeneFitness);
         assertEquals(0.0,emptyIndividual.getFitness(),TOL);
-
     }
 
     @Test
