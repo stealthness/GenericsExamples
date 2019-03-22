@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
@@ -93,7 +94,7 @@ public class GeneticAlgorithm {
     }
 
     /**
-     * Crossover the individuels
+     * Crossover the individuals
      * @param population
      * @return
      */
@@ -131,6 +132,14 @@ public class GeneticAlgorithm {
         });
         return offspring;
     }
+
+
+    Population mutatePopulation(BiFunction<Population,Double,Population> mutateFunction,Population population){
+        var newPopulation = population.clone();
+        newPopulation = mutateFunction.apply(newPopulation,mutationRate);
+        return newPopulation;
+    }
+
 
     Population mutatePopulation(Population population) {
 

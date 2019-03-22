@@ -75,6 +75,9 @@ class GeneticAlgorithmTest {
 
     }
 
+
+
+
     @Test
     void testEvaluateEmptyPopulation(){
         testEvaluatePopulation(0.0,emptyPopulation);
@@ -165,4 +168,34 @@ class GeneticAlgorithmTest {
                     return resultPopulation.getIndividuals()[ind].equals(new Individual(new int[]{0,0,0,1,1,1,0,1}));
                 }));
     }
+
+    @Test
+    void testMutateFunctionOnlyFirstGeneOnEmptyPopulation(){
+        ga = new GeneticAlgorithm(POP_SIZE,0.0,1.0,0);
+        assertEquals(0,emptyPopulation.getGene(0,0));
+        var newPopulation = ga.mutatePopulation(GAUtils.sillyFirstGeneMutateOnly,emptyPopulation);
+        assertEquals(1,newPopulation.getGene(0,0));
+
+        // 0.0 mutation rate no changes
+        ga = new GeneticAlgorithm(POP_SIZE,0.0,0.0,0);
+        assertEquals(0,emptyPopulation.getGene(0,0));
+        newPopulation = ga.mutatePopulation(GAUtils.sillyFirstGeneMutateOnly,emptyPopulation);
+        assertEquals(0,newPopulation.getGene(0,0));
+    }
+
+    @Test
+    void testMutateFunctionOnlyFirstGeneOnCompletePopulation(){
+        ga = new GeneticAlgorithm(POP_SIZE,0.0,1.0,0);
+        assertEquals(1,completePopulation.getGene(0,0));
+        var newPopulation = ga.mutatePopulation(GAUtils.sillyFirstGeneMutateOnly,completePopulation);
+        assertEquals(0,newPopulation.getGene(0,0));
+
+
+        ga = new GeneticAlgorithm(POP_SIZE,0.0,0.0,0);
+        assertEquals(1,completePopulation.getGene(0,0));
+        newPopulation = ga.mutatePopulation(GAUtils.sillyFirstGeneMutateOnly,completePopulation);
+        assertEquals(1,newPopulation.getGene(0,0));
+    }
+
+
 }

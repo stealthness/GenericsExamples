@@ -91,4 +91,12 @@ class Population {
     public int getChromosomeSize() {
         return this.chromosomeSize;
     }
+
+    @Override
+    public Population clone(){
+        var pop = new Population(this.size());
+        pop.initialize(this.chromosomeSize);
+        IntStream.range(0,this.size()).forEach(i-> pop.setIndividual(i,this.getIndividuals()[i]));
+        return pop;
+    }
 }

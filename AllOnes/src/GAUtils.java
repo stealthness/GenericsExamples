@@ -60,4 +60,18 @@ class GAUtils {
         return population.getIndividuals()[population.size() - 1];
     };
 
+
+    static BiFunction<Population,Double, Population> sillyFirstGeneMutateOnly = ( population, mutationRate )-> {
+        if ( mutationRate >= 1.0) {
+            population.setGene(0,0, population.getGene(0,0)==0?1:0);
+        }else if ( mutationRate <= 0.0){
+            // do nothing
+            return population;
+        }else{
+            if (Math.random() < mutationRate){
+                population.setGene(0,0, population.getGene(0,0)==0?1:0);
+            }
+        }
+        return population;
+    };
 }
