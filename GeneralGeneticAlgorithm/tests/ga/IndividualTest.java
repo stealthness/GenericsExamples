@@ -15,12 +15,14 @@ class IndividualTest {//NOPMD
 
     private static final int CHROMOSOME_SIZE = 10;
     private Individual emptyIndividual;
+    private int[] emptyChromosome;
 
     /**
      * set up
      */
     @BeforeEach
     void setUp(){
+        emptyChromosome = new int[]{0,0,0,0,0,0,0,0,0,0};
         emptyIndividual = new Individual(new int[]{0,0,0,0,0,0,0,0,0,0});
     }
 
@@ -40,7 +42,7 @@ class IndividualTest {//NOPMD
         assertEqualIndividuals(emptyChromosome,emptyIndividual);
     }
 
-    private void assertEqualIndividuals(int...actChromosome,Individual expIndividual){
+    private void assertEqualIndividuals(int[] actChromosome,Individual expIndividual){
         assertTrue(IntStream.range(0,actChromosome.length).allMatch(gene ->
                 actChromosome[gene] == expIndividual.getGene(gene)));
     }
