@@ -23,4 +23,7 @@ public class Individual {
         return this.chromosome.length;
     }
 
+    public int getGene(int gene) {
+        return -1;
+    }
 }
