@@ -24,6 +24,6 @@ public class Individual {
     }
 
     public int getGene(int gene) {
-        return -1;
+        return this.chromosome[gene];
     }
 }

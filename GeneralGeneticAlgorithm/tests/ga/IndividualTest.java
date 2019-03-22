@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by Stephen West on 22/03/2019.
@@ -39,12 +38,18 @@ class IndividualTest {//NOPMD
 
     @Test
     void testGetEmptyChromosome(){
-        assertEqualIndividuals(emptyChromosome,emptyIndividual);
+        assertTrue(IntStream.range(0,emptyChromosome.length).allMatch(gene ->
+                0 == emptyIndividual.getGene(gene)),
+                "act: 0000000000 != exp: "+emptyIndividual.toString());
     }
 
-    private void assertEqualIndividuals(int[] actChromosome,Individual expIndividual){
-        assertTrue(IntStream.range(0,actChromosome.length).allMatch(gene ->
-                actChromosome[gene] == expIndividual.getGene(gene)));
+    @Test
+    void testToStringMethod(){
+        assertTrue("0000000000".equals(emptyIndividual.toString()));
+    }
+
+    private void assertEqualIndividuals(Individual actIndividual,Individual expIndividual){
+
     }
 
 }
