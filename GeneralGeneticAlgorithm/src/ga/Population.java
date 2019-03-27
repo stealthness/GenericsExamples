@@ -16,6 +16,10 @@ public class Population {
 
     ArrayList<Individual> population;
 
+    public Population(){
+        population = new ArrayList<>();
+    }
+
     /**
      * Sort the Population
      */
