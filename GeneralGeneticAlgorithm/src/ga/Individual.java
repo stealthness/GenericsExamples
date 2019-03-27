@@ -29,7 +29,7 @@ public class Individual implements Comparable {
         this.chromosome = (ArrayList<Integer>) chromosome.clone();
     }
 
-    public Individual(int chromosomeSize) {
+    Individual(int chromosomeSize) {
         this.chromosome = new ArrayList<>();
         IntStream.range(0,chromosomeSize).forEach(i ->chromosome.add((Math.random()<0.5)?1:0));
     }
@@ -90,11 +90,11 @@ public class Individual implements Comparable {
 
     @Override
     public boolean equals(Object o){
-        return chromosome.equals(((Individual)o).getChromosome());
+        return o.getClass()==Individual.class && ((Individual) o).getChromosome().equals(chromosome);
     }
 
     @Override
     public int compareTo(Object o) {
-        return ((Double)this.fitness).compareTo(((Individual)o).getFitness());
+        return Double.compare(this.fitness, ((Individual) o).getFitness());
     }
 }

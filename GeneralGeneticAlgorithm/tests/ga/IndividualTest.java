@@ -63,14 +63,12 @@ class IndividualTest {//NOPMD
 
     @Test
     void testToStringMethodOnEmptyIndividual(){
-        assertTrue("0000000000".equals(emptyIndividual.toString()),
-                "act 00000000000 != act: "+emptyIndividual.toString());
+        assertEquals("0000000000", emptyIndividual.toString(), "act 00000000000 != act: " + emptyIndividual.toString());
     }
 
     @Test
     void testToStringMethodOnEvenIndividual(){
-        assertTrue("1011000110".equals(evenIndividual.toString()),
-                "act 1011000110 != act: "+evenIndividual.toString());
+        assertEquals("1011000110", evenIndividual.toString(), "act 1011000110 != act: " + evenIndividual.toString());
     }
 
     @Test
@@ -79,8 +77,7 @@ class IndividualTest {//NOPMD
         evenIndividual.flip(1);
 
         evenIndividual.flip(2);
-        assertTrue("0101000110".equals(evenIndividual.toString()),
-                "act 0101000110 != act: "+evenIndividual.toString());
+        assertEquals("0101000110", evenIndividual.toString(), "act 0101000110 != act: " + evenIndividual.toString());
     }
 
     // test Fitness
@@ -117,7 +114,7 @@ class IndividualTest {//NOPMD
         evenChromosome.set(0,0);
         evenChromosome.set(8,1);
         // should not change values of evenIndividual
-        assertTrue("1011000110".equals(evenIndividual.toString()),
+        assertEquals("1011000110",evenIndividual.toString(),
                 "act 0101000110 != act: "+evenIndividual.toString());
 
     }
@@ -125,13 +122,13 @@ class IndividualTest {//NOPMD
     @Test
     void testCreateRandom(){
         Individual individual = new Individual(50);
-        int zerocount = (int)individual.getChromosome().stream().filter(gene -> gene == 0).count();
-        int onescount = (int)individual.getChromosome().stream().filter(gene -> gene == 1).count();
+        int zeroCount = (int)individual.getChromosome().stream().filter(gene -> gene == 0).count();
+        int onesCount = (int)individual.getChromosome().stream().filter(gene -> gene == 1).count();
         System.out.println(individual);
         // that all gene 1s or 0s should counted to 50
-        assertEquals(50,zerocount+onescount);
+        assertEquals(50,zeroCount+onesCount);
         // that the difference should be less than 10
-        assertTrue( Math.abs(zerocount - onescount) < 10);
+        assertTrue( Math.abs(zeroCount - onesCount) < 10);
     }
 
 
@@ -140,7 +137,7 @@ class IndividualTest {//NOPMD
         // same as evenIndividual
         evenIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
         Individual anotherChromosome = new Individual(new ArrayList<>(Arrays.asList(1,0,1,1,0,0,0,1,1,0)));
-        assertTrue(evenIndividual.equals(anotherChromosome));
+        assertEquals(evenIndividual, anotherChromosome);
     }
 
     @Test
