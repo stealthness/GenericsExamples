@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
  * Created by Stephen West on 22/03/2019.
  */
 @Data
-public class Individual {
+public class Individual implements Comparable {
 
 
     /**
@@ -89,4 +89,8 @@ public class Individual {
     }
 
 
+    @Override
+    public int compareTo(Object o) {
+        return 0;
+    }
 }
