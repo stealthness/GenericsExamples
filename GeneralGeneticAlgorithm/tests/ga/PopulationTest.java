@@ -40,12 +40,71 @@ class PopulationTest {
         IntStream.range(0,POPULATION_SIZE).forEach(i ->{
             emptyPopulation.getPopulation().add(emptyIndividual);
         });
+        completePopulation = createPopulationWith(6,completeIndividual);
+        evenPopulation = createPopulationWith(6,evenIndividual);
     }
 
 
     @Test
     void testCreateEmptyIndividual(){
         assertEquals(POPULATION_SIZE,emptyPopulation.getPopulation().size());
-
+        assertEquals(CHROMOSOME_SIZE,emptyPopulation.getPopulation().get(0).size());
+        assertTrue(emptyPopulation.getPopulation().stream()
+                .allMatch(individual -> individual.equals(emptyIndividual)));
+        // check that changing emptyIndividual has no side effects
+        emptyIndividual.getChromosome().set(0,1);
+        emptyIndividual.flip(2);
+        assertTrue(emptyPopulation.getPopulation().stream()
+                .allMatch(individual -> individual.equals(emptyIndividual)));
     }
+
+    @Test
+    void testCreateCompleteIndividual(){
+        assertEquals(POPULATION_SIZE,completePopulation.getPopulation().size());
+        assertTrue(completePopulation.getPopulation().stream()
+                .allMatch(individual -> individual.equals(completeIndividual)));
+        // check that changing emptyIndividual has no side effects
+        completeIndividual.getChromosome().set(0,0);
+        completeIndividual.flip(2);
+        assertTrue(completePopulation.getPopulation().stream()
+                .allMatch(individual -> individual.equals(completeIndividual)));
+    }
+
+    @Test
+    void testMutateOnEmptyPopulationWithMutationRateOf1(){
+        // mutation rate of 1.0 will flip all gens
+        completePopulation.mutate(GAUtils.mutate,1.0);
+        assertTrue(completePopulation.getPopulation().stream()
+                .allMatch(individual -> individual.equals(emptyIndividual)));
+    }
+
+    @Test
+    void testMutateOnEmptyPopulationWithMutationRateOf0(){
+        // mutation rate of 1.0 will flip all gens
+        completePopulation.mutate(GAUtils.mutate,0.0);
+        assertTrue(completePopulation.getPopulation().stream()
+                .allMatch(individual -> individual.equals(completeIndividual)));
+    }
+
+    @Test
+    void testPrintPopulation(){
+        var expString = "1011000110\n"+
+                        "1011000110\n"+
+                        "1011000110\n"+
+                        "1011000110\n"+
+                        "1011000110\n"+
+                        "1011000110\n";
+        assertEquals(expString,evenPopulation.toString());
+    }
+
+
+
+    // helper method
+    private Population createPopulationWith(int size, Individual individual){
+        Population population = new Population();
+        IntStream.range(0,size).forEach(i -> population.getPopulation().add(individual));
+        return population;
+    }
+
+
 }
