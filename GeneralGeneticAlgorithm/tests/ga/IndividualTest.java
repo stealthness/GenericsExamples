@@ -138,6 +138,7 @@ class IndividualTest {//NOPMD
     @Test
     void testEquality(){
         // same as evenIndividual
+        evenIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
         Individual anotherChromosome = new Individual(new ArrayList<>(Arrays.asList(1,0,1,1,0,0,0,1,1,0)));
         assertTrue(evenIndividual.equals(anotherChromosome));
     }
@@ -148,9 +149,9 @@ class IndividualTest {//NOPMD
         evenIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
         completeIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
 
-        assertEquals(1,emptyIndividual.compareTo(evenIndividual));
-        assertEquals(-1,completeIndividual.compareTo(evenIndividual));
-        assertEquals(1,emptyIndividual.compareTo(completeIndividual));
+        assertEquals(-1,emptyIndividual.compareTo(evenIndividual));
+        assertEquals(1,completeIndividual.compareTo(evenIndividual));
+        assertEquals(-1,emptyIndividual.compareTo(completeIndividual));
     }
 
 }

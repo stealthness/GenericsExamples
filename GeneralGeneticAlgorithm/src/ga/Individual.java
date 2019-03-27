@@ -88,9 +88,13 @@ public class Individual implements Comparable {
         return sb.toString();
     }
 
+    @Override
+    public boolean equals(Object o){
+        return chromosome.equals(((Individual)o).getChromosome());
+    }
 
     @Override
     public int compareTo(Object o) {
-        return 0;
+        return ((Double)this.fitness).compareTo(((Individual)o).getFitness());
     }
 }
