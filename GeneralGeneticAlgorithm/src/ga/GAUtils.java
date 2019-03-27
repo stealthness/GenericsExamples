@@ -1,5 +1,7 @@
 package ga;
 
+import java.util.ArrayList;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -16,6 +18,21 @@ class GAUtils {
     static Function<Individual, Double> getMeanGeneFitness = individual -> {
         final Integer s = individual.getChromosome().stream().reduce(0,(x,y)->x+y);
         return ((double)s)/individual.size();
+    };
+
+    static BiFunction<Individual,Double, ArrayList<Integer>> sillyMutateFirst = (individual, mutationRate) -> {
+        if (Math.random() < mutationRate){
+            individual.flip(0);
+        }
+        return individual.getChromosome();
+    };
+
+
+    static BiFunction<Individual,Double, ArrayList<Integer>> mutate = (individual, mutationRate) -> {
+        if (Math.random() < mutationRate){
+            individual.flip(0);
+        }
+        return individual.getChromosome();
     };
 //
 //

@@ -54,7 +54,7 @@ class IndividualTest {//NOPMD
 
     @Test
     void testEvenChromosome(){
-        assertTrue(IntStream.range(0,emptyChromosome.size()).allMatch(gene ->
+        assertTrue(IntStream.range(0,evenChromosome.size()).allMatch(gene ->
                         evenChromosome.get(gene) == evenIndividual.getGene(gene)),
                 "act: 1011000110 != exp: "+evenIndividual.toString());
     }
@@ -73,6 +73,16 @@ class IndividualTest {//NOPMD
                 "act 1011000110 != act: "+evenIndividual.toString());
     }
 
+    @Test
+    void testFlip(){
+        evenIndividual.flip(0);
+        evenIndividual.flip(1);
+
+        evenIndividual.flip(2);
+        assertTrue("0101000110".equals(evenIndividual.toString()),
+                "act 0101000110 != act: "+evenIndividual.toString());
+    }
+
     // test Fitness
 
     @Test
@@ -81,7 +91,48 @@ class IndividualTest {//NOPMD
         assertEquals(1.0,completeIndividual.getFitness(), TOL);
     }
 
+    @Test
+    void testSillyMutateFirstGeneOnCompleteIndividual(){
+        Double mutationRate = 1.0;
+        completeIndividual.mutate(GAUtils.sillyMutateFirst,mutationRate);
+        completeIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
+        assertEquals(0, completeIndividual.getGene(0));
+    }
 
+    @Test
+    void testMutateAllGenes(){
+        completeIndividual.mutate(GAUtils.mutate, 1.0);
+        assertTrue(IntStream.range(0,completeChromosome.size()).allMatch(gene ->
+                        0 == emptyIndividual.getGene(gene)),
+                "act: 0000000000 != exp: "+emptyIndividual.toString());
+
+        completeIndividual.mutate(GAUtils.mutate, 0.0);
+        assertTrue(IntStream.range(0,completeChromosome.size()).allMatch(gene ->
+                        0 == emptyIndividual.getGene(gene)),
+                "act: 0000000000 != exp: "+emptyIndividual.toString());
+    }
+
+    @Test
+    void testNoVariableReferencePassed(){
+        evenChromosome.set(0,0);
+        evenChromosome.set(8,1);
+        // should not change values of evenIndividual
+        assertTrue("1011000110".equals(evenIndividual.toString()),
+                "act 0101000110 != act: "+evenIndividual.toString());
+
+    }
+
+    @Test
+    void testCreateRandom(){
+        Individual individual = new Individual(50);
+        int zerocount = (int)individual.getChromosome().stream().filter(gene -> gene == 0).count();
+        int onescount = (int)individual.getChromosome().stream().filter(gene -> gene == 1).count();
+        System.out.println(individual);
+        // that all gene 1s or 0s should counted to 50
+        assertEquals(50,zerocount+onescount);
+        // that the difference should be less than 10
+        assertTrue( Math.abs(zerocount - onescount) < 10);
+    }
 
 
 }

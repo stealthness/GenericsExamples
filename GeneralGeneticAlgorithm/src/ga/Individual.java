@@ -3,7 +3,9 @@ package ga;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 /**
  * Created by Stephen West on 22/03/2019.
@@ -27,6 +29,11 @@ public class Individual {
         this.chromosome = (ArrayList<Integer>) chromosome.clone();
     }
 
+    public Individual(int chromosomeSize) {
+        this.chromosome = new ArrayList<>();
+        IntStream.range(0,chromosomeSize).forEach(i ->chromosome.add((Math.random()<0.5)?1:0));
+    }
+
     // Methods
 
     /**
@@ -38,6 +45,22 @@ public class Individual {
         setFitness(fitnessFunction.apply(this));
     }
 
+    /**
+     * Apply a mutates on the individuals chromosome based on mutationRate and using mutation function
+     * @param function applied to individuals chromosome
+     * @param mutationRate rate of random mutation applied
+     */
+    void mutate(final BiFunction<Individual,Double,ArrayList<Integer>> function, Double mutationRate){
+        this.chromosome = function.apply(this,mutationRate);
+    }
+
+    /**
+     * Flips the value of a gene from 1 to 0 or vice versa
+     * @param gene index of the individuals chromosome
+     */
+    void flip(int gene){
+        chromosome.set(gene, (chromosome.get(gene)==0)?1:0);
+    }
 
     /**
      * Returns the size of the chromosome
@@ -54,8 +77,9 @@ public class Individual {
      */
     int getGene(final int gene) {
         return chromosome.get(gene);
-        // Override methods
+
     }
+    // Override methods
 
     @Override
     public String toString(){
