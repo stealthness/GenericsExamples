@@ -57,8 +57,8 @@ class Population {
 
     /**
      * Sets the value of an individual to the index of individuals.
-     * @param index
-     * @param individual
+     * @param index of the Individual
+     * @param individual new value
      */
     void setIndividual(int index, Individual individual) {
         IntStream.range(0,this.chromosomeSize).forEach(gene -> this.setGene(index, gene, individual.getGene(gene)));
@@ -80,15 +80,15 @@ class Population {
         return sb.toString();
     }
 
-    public void setGene(int individualIndex, int geneIndex, int newValue) {
+    void setGene(int individualIndex, int geneIndex, int newValue) {
         this.getIndividuals()[individualIndex].setGene(geneIndex,newValue);
     }
 
-    public int getGene(int individualIndex, int geneIndex) {
+    int getGene(int individualIndex, int geneIndex) {
         return this.getIndividuals()[individualIndex].getGene(geneIndex);
     }
 
-    public int getChromosomeSize() {
+    int getChromosomeSize() {
         return this.chromosomeSize;
     }
 

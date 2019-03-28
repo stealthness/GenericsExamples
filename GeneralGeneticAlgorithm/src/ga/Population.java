@@ -3,8 +3,10 @@ package ga;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -32,7 +34,7 @@ public class Population {
      * Sort the Population
      */
     void sort(){
-
+        population = (ArrayList<Individual>) population.stream().sorted(Comparator.comparing(Individual::getFitness)).collect(Collectors.toList());
     }
 
     /**

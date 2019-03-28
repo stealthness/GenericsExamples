@@ -87,6 +87,7 @@ class PopulationTest {
     void testPrintEmptyPopulation(){
         testToString(emptyIndividual,emptyPopulation);
     }
+
     @Test
     void testPrintEvenPopulation(){
         testToString(evenIndividual,evenPopulation);
@@ -98,6 +99,43 @@ class PopulationTest {
             sb.append(individual.toString()+System.lineSeparator());
         });
         assertEquals(sb.toString(), population.toString());
+    }
+
+    // test changing individuals
+
+    @Test
+    void testChangeEmptyPopulationWithCompleteIndividual(){
+        testChangeIndividualInPopulation(emptyIndividual,completeIndividual,3);
+    }
+
+    @Test
+    void testChangeEvenPopulationWithEmptyIndividual(){
+        testChangeIndividualInPopulation(evenIndividual,emptyIndividual,2);
+    }
+    private void testChangeIndividualInPopulation(Individual initialIndividual, Individual newIndividual, int index){
+        Population population = createPopulationWith(POPULATION_SIZE,initialIndividual);
+        assertTrue(population.getPopulation().stream()
+                .allMatch(individual -> individual.equals(initialIndividual)));
+        population.setIndividual(index,newIndividual);
+        assertTrue( IntStream.range(0,POPULATION_SIZE)
+                .filter(i -> i !=index)
+                .allMatch(i -> population.getIndividual(i).equals(initialIndividual)));
+        assertEquals(population.getIndividual(index),newIndividual);
+    }
+
+    // test Sort
+
+    @Test
+    void testSort(){
+        Population population = emptyPopulation;
+        population.setIndividual(2,evenIndividual);
+        population.setIndividual(4,evenIndividual);
+        population.setIndividual(4,completeIndividual);
+        population.sort();
+        assertEquals(completeIndividual,population.getIndividual(0));
+        assertEquals(evenIndividual,population.getIndividual(1));
+        assertEquals(evenIndividual,population.getIndividual(2));
+        assertEquals(emptyIndividual,population.getIndividual(3));
     }
 
     // test Mutation
