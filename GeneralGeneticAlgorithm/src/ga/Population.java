@@ -32,7 +32,7 @@ public class Population {
      * Sort the Population
      */
     void sort(){
-        population = (ArrayList<Individual>) population.stream().sorted(Comparator.comparing(Individual::getFitness)).collect(Collectors.toList());
+        population = (ArrayList<Individual>) population.stream().sorted(Comparator.comparing(Individual::getFitness).reversed()).collect(Collectors.toList());
     }
 
     /**

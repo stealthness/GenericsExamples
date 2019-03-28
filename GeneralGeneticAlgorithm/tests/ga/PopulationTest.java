@@ -133,6 +133,24 @@ class PopulationTest {
         testFitnessOfPopulation(expectFitness, GAUtils.getMeanGeneFitness,population);
     }
 
+    @Test
+    void testEvenPopulationFitness(){
+        var population = createPopulationWith(POPULATION_SIZE,evenIndividual);
+        var expectFitness = new Double[]{0.5,0.5,0.5,0.5,0.5,0.5};
+        testFitnessOfPopulation(expectFitness, GAUtils.getMeanGeneFitness,population);
+    }
+
+    @Test
+    void testMixedPopulationFitness(){
+        var population = createPopulationWith(4,emptyIndividual);
+        population.setIndividual(1,completeIndividual);
+        population.setIndividual(2,new Individual(new ArrayList<Integer>(Arrays.asList(0,1,0,0,0,0,0,0,0,0))));
+        population.setIndividual(3,evenIndividual);
+        var expectFitness = new Double[]{0.0,1.0,0.1,0.5};
+        testFitnessOfPopulation(expectFitness, GAUtils.getMeanGeneFitness,population);
+    }
+
+
     private void testFitnessOfPopulation(Double[] expFitness, Function<Individual,Double> fitnessFunction, Population population){
         population.evaluate(fitnessFunction);
         assertTrue(IntStream.range(0,expFitness.length)
@@ -146,9 +164,12 @@ class PopulationTest {
         Population population = emptyPopulation;
         population.setIndividual(2,evenIndividual);
         population.setIndividual(4,evenIndividual);
-        population.setIndividual(4,completeIndividual);
+        population.setIndividual(5,completeIndividual);
         population.evaluate(GAUtils.getMeanGeneFitness);
+
+        System.out.println(population);
         population.sort();
+        System.out.println(population);
         assertEquals(completeIndividual,population.getIndividual(0));
         assertEquals(evenIndividual,population.getIndividual(1));
         assertEquals(evenIndividual,population.getIndividual(2));
