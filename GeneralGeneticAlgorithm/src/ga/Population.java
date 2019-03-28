@@ -5,6 +5,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 /**
  * Created by Stephen West on 27/03/2019.
@@ -18,6 +19,13 @@ public class Population {
 
     public Population(){
         population = new ArrayList<>();
+    }
+
+
+    void intialise(Population population){
+        IntStream.range(0,population.size()).forEach(i -> {
+            this.population.add(population.getIndividual(i).clone());
+        });
     }
 
     /**
@@ -41,6 +49,11 @@ public class Population {
      */
     void mutate(BiFunction<Individual,Double,ArrayList<Integer>> mutateFunction,Double mutation){
 
+        this.getPopulation().stream().forEach(individual -> {
+            System.out.println("1\n" + population);
+            individual.mutate(mutateFunction,mutation);
+            System.out.println("2\n" + population);
+        });
     }
 
     /**
@@ -48,5 +61,46 @@ public class Population {
      */
     int getFitness(int index){
         return -0;
+    }
+
+    int size(){
+        return population.size();
+    }
+
+    void addIndividual(Individual individual){
+        this.population.add(individual.clone());
+    }
+
+    // Getter and setters
+
+
+    public void setIndividual(int index,Individual individual){
+        population.set(index,individual.clone());
+    }
+
+    Individual getIndividual(int index){
+        return population.get(index);
+    }
+
+
+    // Override methods
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        this.getPopulation().stream().forEach(individual -> sb.append(individual.toString()+System.lineSeparator()));
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if (o.getClass() == Population.class){
+            if (((Population)o).getPopulation().size() == this.getPopulation().size()){
+                return IntStream.range(0,this.getPopulation().size())
+                        .allMatch(i-> this.getPopulation().get(i).equals(((Population)o).getPopulation().get(i)));
+            }
+        }
+        //otherwise
+        return false;
     }
 }

@@ -3,6 +3,7 @@ package ga;
 import java.util.ArrayList;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 /**
  * Created by Stephen West on 20/03/2019.
@@ -29,10 +30,14 @@ class GAUtils {
 
 
     static BiFunction<Individual,Double, ArrayList<Integer>> mutate = (individual, mutationRate) -> {
-        if (Math.random() < mutationRate){
-            individual.flip(0);
-        }
-        return individual.getChromosome();
+        var newIndividual = individual.clone();
+        IntStream.range(0,individual.size()).forEach(i ->{
+            if (Math.random() < mutationRate){
+                newIndividual.flip(i);
+            }
+        });
+
+        return newIndividual.getChromosome();
     };
 //
 //

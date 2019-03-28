@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
  * Created by Stephen West on 22/03/2019.
  */
 @Data
-public class Individual implements Comparable {
+public class Individual implements Comparable, Cloneable {
 
 
     /**
@@ -96,5 +96,13 @@ public class Individual implements Comparable {
     @Override
     public int compareTo(Object o) {
         return Double.compare(this.fitness, ((Individual) o).getFitness());
+    }
+
+    @Override
+    public Individual clone(){
+        var genes = new ArrayList<Integer>();
+        this.chromosome.stream().forEach(gene -> genes.add(gene));
+        var newIndividual = new Individual(genes);
+        return newIndividual;
     }
 }

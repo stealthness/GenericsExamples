@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,48 +28,64 @@ class PopulationTest {
     private Population evenPopulation;
     private Population completePopulation;
 
+
     @BeforeEach
     void setUp() {
+        // Chromosomes
         emptyChromosome = new ArrayList<>(Arrays.asList(0,0,0,0,0,0,0,0,0,0));
-        emptyIndividual = new Individual(emptyChromosome);
         evenChromosome = new ArrayList<>(Arrays.asList(1,0,1,1,0,0,0,1,1,0));
+        completeChromosome = new ArrayList<>(Arrays.asList(1,1,1,1,1,1,1,1,1,1));
+        // Individuals
+        emptyIndividual = new Individual(emptyChromosome);
         evenIndividual = new Individual(evenChromosome);
-        completeChromosome = new ArrayList<>(Arrays.asList(1,1,1,1,1,1,1,1,1));
         completeIndividual = new Individual(completeChromosome);
-
-        emptyPopulation = new Population();
-        IntStream.range(0,POPULATION_SIZE).forEach(i ->{
-            emptyPopulation.getPopulation().add(emptyIndividual);
-        });
-        completePopulation = createPopulationWith(6,completeIndividual);
-        evenPopulation = createPopulationWith(6,evenIndividual);
+        // Populations
+        emptyPopulation = createPopulationWith(POPULATION_SIZE,emptyIndividual);
+        evenPopulation = createPopulationWith(POPULATION_SIZE,evenIndividual);
+        completePopulation = createPopulationWith(POPULATION_SIZE,completeIndividual);
     }
 
+    // Test Create
 
     @Test
     void testCreateEmptyIndividual(){
-        assertEquals(POPULATION_SIZE,emptyPopulation.getPopulation().size());
-        assertEquals(CHROMOSOME_SIZE,emptyPopulation.getPopulation().get(0).size());
-        assertTrue(emptyPopulation.getPopulation().stream()
-                .allMatch(individual -> individual.equals(emptyIndividual)));
-        // check that changing emptyIndividual has no side effects
-        emptyIndividual.getChromosome().set(0,1);
-        emptyIndividual.flip(2);
-        assertTrue(emptyPopulation.getPopulation().stream()
-                .allMatch(individual -> individual.equals(emptyIndividual)));
+        testCreate(emptyIndividual,emptyChromosome,0);
     }
 
     @Test
     void testCreateCompleteIndividual(){
-        assertEquals(POPULATION_SIZE,completePopulation.getPopulation().size());
-        assertTrue(completePopulation.getPopulation().stream()
-                .allMatch(individual -> individual.equals(completeIndividual)));
-        // check that changing emptyIndividual has no side effects
-        completeIndividual.getChromosome().set(0,0);
-        completeIndividual.flip(2);
-        assertTrue(completePopulation.getPopulation().stream()
-                .allMatch(individual -> individual.equals(completeIndividual)));
+        testCreate(completeIndividual,completeChromosome,0);
     }
+
+    @Test
+    void testCreateWithEvenIndividual(){
+        testCreate(evenIndividual,evenChromosome,0);
+    }
+
+    private void testCreate(Individual expIndividual, ArrayList<Integer> expChromosome, int flipValue){
+        Population population = createPopulationWith(POPULATION_SIZE,expIndividual);
+        assertNotNull(population);
+        assertTrue( population.getPopulation().stream()
+                .allMatch(individual -> individual.equals(expIndividual)));
+        // check for side effects
+        expIndividual.getChromosome().set(0,flipValue);
+        expIndividual.flip(3);
+        assertNotEquals(new Individual(expChromosome),expIndividual);
+        assertTrue( population.getPopulation().stream()
+                .allMatch(individual -> individual.equals(new Individual(expChromosome))));
+
+    }
+
+    @Test
+    void testMutationHasNoSideEffects(){
+        Population population = createPopulationWith(4,evenIndividual);
+        population.getPopulation().get(1).flip(1);
+        Arrays.stream(new int[]{0, 2, 3}).forEach(i -> {
+            assertEquals(evenIndividual,population.getIndividual(i));
+        });
+        assertNotEquals(evenIndividual,population.getIndividual(1));
+    }
+
 
     @Test
     void testMutateOnEmptyPopulationWithMutationRateOf1(){
@@ -88,12 +105,12 @@ class PopulationTest {
 
     @Test
     void testPrintPopulation(){
-        var expString = "1011000110\n"+
-                        "1011000110\n"+
-                        "1011000110\n"+
-                        "1011000110\n"+
-                        "1011000110\n"+
-                        "1011000110\n";
+        var expString = "1011000110"+System.lineSeparator()+
+                        "1011000110"+System.lineSeparator()+
+                        "1011000110"+System.lineSeparator()+
+                        "1011000110"+System.lineSeparator()+
+                        "1011000110"+System.lineSeparator()+
+                        "1011000110"+System.lineSeparator();
         assertEquals(expString,evenPopulation.toString());
     }
 
@@ -102,7 +119,7 @@ class PopulationTest {
     // helper method
     private Population createPopulationWith(int size, Individual individual){
         Population population = new Population();
-        IntStream.range(0,size).forEach(i -> population.getPopulation().add(individual));
+        IntStream.range(0,size).forEach(i -> population.addIndividual(individual));
         return population;
     }
 

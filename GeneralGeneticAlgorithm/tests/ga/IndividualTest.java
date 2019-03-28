@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by Stephen West on 22/03/2019.
@@ -30,7 +29,7 @@ class IndividualTest {//NOPMD
         emptyIndividual = new Individual(emptyChromosome);
         evenChromosome = new ArrayList<>(Arrays.asList(1,0,1,1,0,0,0,1,1,0));
         evenIndividual = new Individual(evenChromosome);
-        completeChromosome = new ArrayList<>(Arrays.asList(1,1,1,1,1,1,1,1,1));
+        completeChromosome = new ArrayList<>(Arrays.asList(1,1,1,1,1,1,1,1,1,1));
         completeIndividual = new Individual(completeChromosome);
 
     }
@@ -72,12 +71,33 @@ class IndividualTest {//NOPMD
     }
 
     @Test
+    void testClone(){
+        Individual individual = completeIndividual.clone();
+        assertEquals("1111111111", individual.toString(), "act 1111111111 != act: " + individual.toString());
+        assertEquals(individual,completeIndividual);
+    }
+
+    @Test
     void testFlip(){
         evenIndividual.flip(0);
         evenIndividual.flip(1);
 
         evenIndividual.flip(2);
         assertEquals("0101000110", evenIndividual.toString(), "act 0101000110 != act: " + evenIndividual.toString());
+    }
+
+    @Test
+    void testFlipHasNoSideEffects(){
+        Individual individual = evenIndividual.clone();
+        System.out.println(individual);
+        evenIndividual.flip(0);
+        System.out.println(individual);
+        evenIndividual.flip(1);
+        System.out.println(individual);
+        evenIndividual.flip(2);
+        assertEquals("0101000110", evenIndividual.toString(), "act 0101000110 != act: " + evenIndividual.toString());
+        assertEquals("1011000110", individual.toString(), "act 1011000110 != act: " + individual.toString());
+        assertNotEquals(individual,evenIndividual);
     }
 
     // test Fitness
@@ -115,7 +135,7 @@ class IndividualTest {//NOPMD
         evenChromosome.set(8,1);
         // should not change values of evenIndividual
         assertEquals("1011000110",evenIndividual.toString(),
-                "act 0101000110 != act: "+evenIndividual.toString());
+                "exp 1011000110 != act: "+evenIndividual.toString());
 
     }
 
