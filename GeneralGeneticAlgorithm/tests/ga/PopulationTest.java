@@ -76,6 +76,32 @@ class PopulationTest {
 
     }
 
+    // test Override Method
+
+    @Test
+    void testPrintCompletePopulation(){
+        testToString(completeIndividual,completePopulation);
+    }
+
+    @Test
+    void testPrintEmptyPopulation(){
+        testToString(emptyIndividual,emptyPopulation);
+    }
+    @Test
+    void testPrintEvenPopulation(){
+        testToString(evenIndividual,evenPopulation);
+    }
+
+    private void testToString(Individual individual,Population population){
+        var sb = new StringBuilder();
+        IntStream.range(0,POPULATION_SIZE).forEach(line ->{
+            sb.append(individual.toString()+System.lineSeparator());
+        });
+        assertEquals(sb.toString(), population.toString());
+    }
+
+    // test Mutation
+
     @Test
     void testMutationHasNoSideEffects(){
         Population population = createPopulationWith(4,evenIndividual);
@@ -103,16 +129,7 @@ class PopulationTest {
                 .allMatch(individual -> individual.equals(completeIndividual)));
     }
 
-    @Test
-    void testPrintPopulation(){
-        var expString = "1011000110"+System.lineSeparator()+
-                        "1011000110"+System.lineSeparator()+
-                        "1011000110"+System.lineSeparator()+
-                        "1011000110"+System.lineSeparator()+
-                        "1011000110"+System.lineSeparator()+
-                        "1011000110"+System.lineSeparator();
-        assertEquals(expString,evenPopulation.toString());
-    }
+
 
 
 
