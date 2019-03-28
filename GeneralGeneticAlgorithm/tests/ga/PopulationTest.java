@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -123,6 +124,21 @@ class PopulationTest {
         assertEquals(population.getIndividual(index),newIndividual);
     }
 
+    // test fitness
+
+    @Test
+    void testCompletePopulationFitness(){
+        var population = createPopulationWith(POPULATION_SIZE,completeIndividual);
+        var expectFitness = new Double[]{1.0,1.0,1.0,1.0,1.0,1.0};
+        testFitnessOfPopulation(expectFitness, GAUtils.getMeanGeneFitness,population);
+    }
+
+    private void testFitnessOfPopulation(Double[] expFitness, Function<Individual,Double> fitnessFunction, Population population){
+        population.evaluate(fitnessFunction);
+        assertTrue(IntStream.range(0,expFitness.length)
+                .allMatch(i -> population.getFitness(i) - expFitness[i] < TOL));
+    }
+
     // test Sort
 
     @Test
@@ -131,6 +147,7 @@ class PopulationTest {
         population.setIndividual(2,evenIndividual);
         population.setIndividual(4,evenIndividual);
         population.setIndividual(4,completeIndividual);
+        population.evaluate(GAUtils.getMeanGeneFitness);
         population.sort();
         assertEquals(completeIndividual,population.getIndividual(0));
         assertEquals(evenIndividual,population.getIndividual(1));

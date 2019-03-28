@@ -25,9 +25,7 @@ public class Population {
 
 
     void intialise(Population population){
-        IntStream.range(0,population.size()).forEach(i -> {
-            this.population.add(population.getIndividual(i).clone());
-        });
+        IntStream.range(0,population.size()).forEach(i -> this.population.add(population.getIndividual(i).clone()));
     }
 
     /**
@@ -41,7 +39,7 @@ public class Population {
      * Evaluate the function
      */
     void evaluate(Function<Individual,Double> fitnessFunction){
-
+        population.stream().forEach(individual -> individual.evaluateFitness(fitnessFunction));
     }
 
     /**
