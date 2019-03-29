@@ -102,7 +102,6 @@ public class Individual implements Comparable, Cloneable {
     public Individual clone(){
         var genes = new ArrayList<Integer>();
         this.chromosome.stream().forEach(gene -> genes.add(gene));
-        var newIndividual = new Individual(genes);
-        return newIndividual;
+        return new Individual(genes);
     }
 }
