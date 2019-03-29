@@ -43,6 +43,17 @@ public class Population {
     }
 
     /**
+     * Crossovers the population using the crossoverFunbtion
+     * @param crossoverFunction
+     * @param crossoverRate
+     */
+    void crossover(BiFunction<Individual,Individual,Individual> crossoverFunction,
+                   Function<Population,Individual> selectionFunction,
+                   Double crossoverRate){
+
+    }
+
+    /**
      * mutates the population at the mutation rate
      * @param mutateFunction
      * @param mutation

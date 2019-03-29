@@ -205,8 +205,21 @@ class PopulationTest {
                 .allMatch(individual -> individual.equals(completeIndividual)));
     }
 
+    // test selection
+    @Test
+    void testSelectionWithSillySelection(){
+        Population population = createPopulationWith(6,evenIndividual);
+        population.setIndividual(0,completeIndividual);
+        population.crossover(GAUtils.sillyFirstParentGeneCrossover,GAUtils.sillySelectFirstIndividual,0.95);
 
+    }
 
+    // test crossover
+
+    @Test
+    void testCrossoverWithSillyCrossoverFunction(){
+        fail();
+    }
 
 
     // helper method

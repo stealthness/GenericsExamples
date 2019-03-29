@@ -39,23 +39,22 @@ class GAUtils {
 
         return newIndividual.getChromosome();
     };
-//
-//
-//    // Crossover Functions
-//
-//    static BiFunction<Individual,Individual,Individual> sillyFirstParentGeneCrossover = (parent1,parent2) -> {
-//        var offspring = new Individual(parent1.size());
-//        // set first gene to parent 1
-//        offspring.setGene(0,parent1.getGene(0));
-//        // rest to parent 2
-//        IntStream.range(1,parent1.size()).forEach(gene -> offspring.setGene(gene,parent2.getGene(gene)));
-//        return offspring;
-//    };
-//
-////    // Select Parent
-//
-//    static Function<Population,Individual> sillySelectFirstIndividual = (population -> population.getIndividuals()[0]);
-//
+
+    // Crossover Functions
+
+    static BiFunction<Individual,Individual,Individual> sillyFirstParentGeneCrossover = (parent1,parent2) -> {
+        var offspring = new Individual(parent1.size());
+        // set first gene to parent 1
+        offspring.getChromosome().set(0,parent1.getGene(0));
+        // rest to parent 2
+        IntStream.range(1,parent1.size()).forEach(gene -> offspring.getChromosome().set(gene,parent2.getGene(gene)));
+        return offspring;
+    };
+
+    // Select Parent
+
+    static Function<Population,Individual> sillySelectFirstIndividual = (population -> population.getIndividual(0));
+
 //    static Function<Population,Individual> sillySelectLastIndividual = (population -> population.getIndividuals()[population.size()-1]);
 //
 //    static Function<Population,Individual> selectWeightedWheelParent = population -> {
