@@ -55,6 +55,12 @@ class GAUtils {
 
     static Function<Population,Individual> sillySelectFirstIndividual = (population -> population.getIndividual(0));
 
+    static Function<Population,Individual> equalWeightedIndividual = (population -> {
+        int s = population.size();
+        int index = (int)(Math.random()*s);
+        return population.getIndividual(index);
+    });
+
 //    static Function<Population,Individual> sillySelectLastIndividual = (population -> population.getIndividuals()[population.size()-1]);
 //
 //    static Function<Population,Individual> selectWeightedWheelParent = population -> {

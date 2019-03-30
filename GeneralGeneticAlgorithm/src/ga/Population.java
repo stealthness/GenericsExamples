@@ -50,7 +50,16 @@ public class Population {
     void crossover(BiFunction<Individual,Individual,Individual> crossoverFunction,
                    Function<Population,Individual> selectionFunction,
                    Double crossoverRate){
-
+        Population newPopulation = new Population();
+        this.population.stream().forEach(individual -> {
+            if (Math.random()<crossoverRate){
+                Individual newIndividual = crossoverFunction.apply(individual,this.getIndividual(0));
+                newPopulation.addIndividual(newIndividual);
+            }else{
+                newPopulation.addIndividual(individual);
+            }
+        });
+        this.setPopulation(newPopulation.getPopulation());
     }
 
     /**

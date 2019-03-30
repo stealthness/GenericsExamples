@@ -207,10 +207,36 @@ class PopulationTest {
 
     // test selection
     @Test
-    void testSelectionWithSillySelection(){
-        Population population = createPopulationWith(6,evenIndividual);
+    void testSelectionWithSillySelection0(){
+        Population population = createPopulationWith(6,emptyIndividual);
         population.setIndividual(0,completeIndividual);
+        assertEquals(completeIndividual,GAUtils.sillySelectFirstIndividual.apply(population));
+    }
+
+    @Test
+    void testSelectionWithFlatRandomChance(){
+        var population = createPopulation(1);
+        population.evaluate(GAUtils.getMeanGeneFitness);
+        population.sort();
+        var score = new double[10];
+        var count = 0;
+        while (count++<1000){
+            var fitness = GAUtils.equalWeightedIndividual.apply(population).getFitness();
+            score[(int)(fitness*10)-1] +=1;
+        }
+        System.out.println(population);
+        Arrays.stream(score).forEach(System.out::println);
+    }
+
+
+
+    @Test
+    void testSelectionWithSillySelection(){
+        Population population = createPopulationWith(6,emptyIndividual);
+        population.setIndividual(0,completeIndividual);
+        System.out.println(population);
         population.crossover(GAUtils.sillyFirstParentGeneCrossover,GAUtils.sillySelectFirstIndividual,0.95);
+        System.out.println(population);
 
     }
 
@@ -229,5 +255,23 @@ class PopulationTest {
         return population;
     }
 
+    private Population createPopulation(int type){
+        Population population = new Population();
+        switch (type){
+            case 1:
+                population.addIndividual(new Individual(new ArrayList<>(Arrays.asList(0,0,1,0,0,0,0,0,0,0)))); //1
+                population.addIndividual(new Individual(new ArrayList<>(Arrays.asList(0,0,1,1,0,1,0,1,0,0)))); //4
+                population.addIndividual(new Individual(new ArrayList<>(Arrays.asList(0,0,0,1,0,0,1,0,0,0)))); //2
+                population.addIndividual(new Individual(new ArrayList<>(Arrays.asList(0,0,1,0,1,1,1,1,1,1)))); //7
+                population.addIndividual(new Individual(new ArrayList<>(Arrays.asList(0,1,0,1,0,0,1,0,0,0)))); //3
+                population.addIndividual(new Individual(new ArrayList<>(Arrays.asList(1,1,1,0,1,1,1,1,1,1)))); //9
+                population.addIndividual(new Individual(new ArrayList<>(Arrays.asList(1,0,1,1,1,1,0,1,1,1)))); //8
+                population.addIndividual(new Individual(new ArrayList<>(Arrays.asList(1,1,1,1,1,1,1,1,1,1)))); //10
+                population.addIndividual(new Individual(new ArrayList<>(Arrays.asList(1,0,0,0,1,1,1,1,1,0)))); //6
+                population.addIndividual(new Individual(new ArrayList<>(Arrays.asList(1,1,0,0,1,1,1,0,0,0)))); //5
+        }
+
+        return population;
+    }
 
 }
