@@ -61,36 +61,36 @@ class GAUtils {
         return population.getIndividual(index);
     });
 
-//    static Function<Population,Individual> sillySelectLastIndividual = (population -> population.getIndividuals()[population.size()-1]);
+//    static Function<Population,Individual> sillySelectLastIndividual = (individuals -> individuals.getIndividuals()[individuals.size()-1]);
 //
-//    static Function<Population,Individual> selectWeightedWheelParent = population -> {
+//    static Function<Population,Individual> selectWeightedWheelParent = individuals -> {
 //
 //        // Spin roulette Wheel
-//        double populationFitness = population.getFitness();
+//        double populationFitness = individuals.getFitness();
 //        double rouletteWheelPosition = Math.random() * populationFitness;
 //        // Find Parent
 //        double spinWheel = 0.0;
-//        for (Individual individual : population.getIndividuals()) {
+//        for (Individual individual : individuals.getIndividuals()) {
 //            spinWheel += individual.getFitness();
 //            if (spinWheel >= rouletteWheelPosition) {
 //                return individual;
 //            }
 //        }
-//        return population.getIndividuals()[population.size() - 1];
+//        return individuals.getIndividuals()[individuals.size() - 1];
 //    };
 //
 //
-//    static BiFunction<Population,Double, Population> sillyFirstGeneMutateOnly = ( population, mutationRate )-> {
+//    static BiFunction<Population,Double, Population> sillyFirstGeneMutateOnly = ( individuals, mutationRate )-> {
 //        if ( mutationRate >= 1.0) {
-//            population.setGene(0,0, population.getGene(0,0)==0?1:0);
+//            individuals.setGene(0,0, individuals.getGene(0,0)==0?1:0);
 //        }else if ( mutationRate <= 0.0){
 //            // do nothing
-//            return population;
+//            return individuals;
 //        }else{
 //            if (Math.random() < mutationRate){
-//                population.setGene(0,0, population.getGene(0,0)==0?1:0);
+//                individuals.setGene(0,0, individuals.getGene(0,0)==0?1:0);
 //            }
 //        }
-//        return population;
+//        return individuals;
 //    };
 }

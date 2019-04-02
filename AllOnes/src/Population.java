@@ -29,7 +29,7 @@ class Population {
 
     /**
      * Evaluates the fitness of the Population
-     * fitness = sum of fitness of individuals in population divided by population size
+     * fitness = sum of fitness of individuals in individuals divided by individuals size
      */
     void evaluateFitness(){
         evaluateFitness(GAUtils.getMeanGeneFitness);
@@ -65,7 +65,7 @@ class Population {
     }
 
     /**
-     * @return the fitness of the population
+     * @return the fitness of the individuals
      */
     double getFitness() {
         return this.fitness;

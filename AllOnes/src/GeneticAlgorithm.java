@@ -22,7 +22,7 @@ public class GeneticAlgorithm {
     }
 
     /**
-     * get the average fitness of the population
+     * get the average fitness of the individuals
      *
      * @param population of individuals
      * @return the average fitness
@@ -33,11 +33,11 @@ public class GeneticAlgorithm {
     }
 
     /**
-     * Returns the an individuals that is the index position of fitness amongst the population
+     * Returns the an individuals that is the index position of fitness amongst the individuals
      *
-     * @param index the index of the fitess Individual in the population
-     * @param population is a population of Individuals
-     * @return individual that is index of fitness in the population
+     * @param index the index of the fitess Individual in the individuals
+     * @param population is a individuals of Individuals
+     * @return individual that is index of fitness in the individuals
      */
     Individual getFitessIndividual(int index, Population population) {
         return Arrays.stream(population.getIndividuals()).sorted().skip(index).findFirst().orElse(null);
@@ -51,7 +51,7 @@ public class GeneticAlgorithm {
      * Create a new Population of initialised individuals and sets their fitness values.
      *
      * @param chromosomeSize, sets the the size of the individuals chromosome.
-     * @return population, with all individuals intialised and fitness value set.
+     * @return individuals, with all individuals intialised and fitness value set.
      */
     Population initPopulation(int chromosomeSize) {
         Population population = new Population(this.popSize);
@@ -64,18 +64,18 @@ public class GeneticAlgorithm {
      * Selects an individual at random weighted by their fitness level.
      *
      * @param population of individuals each containing a chromosome of a possible solution.
-     * @return selected individual from the population (default method GAUtils.selectWeightedWheelParent).
+     * @return selected individual from the individuals (default method GAUtils.selectWeightedWheelParent).
      */
     Individual selectParent(Population population) {
         return selectParent(GAUtils.selectWeightedWheelParent,population);
     }
 
     /**
-     * Selects a parent from population using selector function.
+     * Selects a parent from individuals using selector function.
      *
-     * @param selector a function that selects parent from the population.
+     * @param selector a function that selects parent from the individuals.
      * @param population of individuals each containing a chromosome of a possible solution.
-     * @return selected individual from the population.
+     * @return selected individual from the individuals.
      */
     Individual selectParent(Function<Population,Individual> selector,Population population) {
         return selector.apply(population);
@@ -102,7 +102,7 @@ public class GeneticAlgorithm {
         Population newPopulation = new Population(popSize);
         newPopulation.initialize(population.getChromosomeSize());
 
-        // loop of population by fitness and apply crossover
+        // loop of individuals by fitness and apply crossover
         IntStream.range(0, popSize).forEach(i -> {
 
             // do wee apply to this individual

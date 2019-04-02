@@ -43,7 +43,7 @@ public class Population {
     }
 
     /**
-     * Crossovers the population using the crossoverFunbtion
+     * Crossovers the individuals using the crossoverFunbtion
      * @param crossoverFunction
      * @param crossoverRate
      */
@@ -63,7 +63,7 @@ public class Population {
     }
 
     /**
-     * mutates the population at the mutation rate
+     * mutates the individuals at the mutation rate
      * @param mutateFunction
      * @param mutation
      */

@@ -85,12 +85,12 @@ class PopulationTest {
         int count = 0;
         // repeat test a numebr of times
         while(count++<100){
-            // create an empty population
+            // create an empty individuals
             setAllIndividualsInPopulationTo(emptyIndividual);
-            // select a random gene in population
+            // select a random gene in individuals
             var randomIndividualIndex = (int)(Math.random()*POP_SIZE);
             var randomGeneIndex = (int)(Math.random()*CHROMO_SIZE);
-            // change random gene in population to 1
+            // change random gene in individuals to 1
             population.setGene(randomIndividualIndex,randomGeneIndex,1);
             // assert all but the random gene is 0
             assertTrue(IntStream.range(0,POP_SIZE)
@@ -142,7 +142,7 @@ class PopulationTest {
         setAllIndividualsInPopulationTo(emptyIndividual);
         var newPopulation = population.clone();
         population.setGene(0,0,1);
-        // after changing population, no side affect on newPopulation
+        // after changing individuals, no side affect on newPopulation
         assertTrue(Arrays.stream(newPopulation.getIndividuals()).allMatch(individual -> emptyIndividual.equals(individual)));
     }
 

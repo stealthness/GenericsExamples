@@ -9,74 +9,74 @@ import java.util.Random;
 import java.util.stream.IntStream;
 
 /**
- * A population is an abstraction of a collection of individuals. The population
+ * A individuals is an abstraction of a collection of individuals. The individuals
  * class is generally used to perform group-level operations on its individuals,
- * such as finding the strongest individuals, collecting stats on the population
+ * such as finding the strongest individuals, collecting stats on the individuals
  * as a whole, and selecting individuals to mutate or crossover.
  */
 @Getter
 @Setter
 public class Population {
-	private Individual population[];
+	private Individual individuals[];
 	private double populationFitness = -1;
 
 	/**
-	 * Initializes blank population of individuals
+	 * Initializes blank individuals of individuals
 	 * 
 	 * @param populationSize
-	 *            The number of individuals in the population
+	 *            The number of individuals in the individuals
 	 */
 	public Population(int populationSize) {
-		// Initial population
-		this.population = new Individual[populationSize];
+		// Initial individuals
+		this.individuals = new Individual[populationSize];
 	}
 
 	/**
-	 * Initializes population of individuals
+	 * Initializes individuals of individuals
 	 * 
 	 * @param populationSize
-	 *            The number of individuals in the population
+	 *            The number of individuals in the individuals
 	 * @param chromosomeLength
 	 *            The size of each individual's chromosome
 	 */
 	public Population(int populationSize, int chromosomeLength) {
-		// Initialize the population as an array of individuals
-		this.population = new Individual[populationSize];
+		// Initialize the individuals as an array of individuals
+		this.individuals = new Individual[populationSize];
 
         IntStream.range(0,populationSize).forEach(individual -> {
             var newIndividual = new Individual(chromosomeLength);
-            this.population[individual] = newIndividual;
+            this.individuals[individual] = newIndividual;
         });
 	}
 
 	/**
-	 * Find an individual in the population by its fitness
+	 * Find an individual in the individuals by its fitness
 	 * 
 	 * This method lets you select an individual in order of its fitness. This
 	 * can be used to find the single strongest individual (eg, if you're
 	 * testing for a solution), but it can also be used to find weak individuals
-	 * (if you're looking to cull the population) or some of the strongest
+	 * (if you're looking to cull the individuals) or some of the strongest
 	 * individuals (if you're using "elitism").
 	 * 
 	 * @param index
 	 *            The index of the individual you want, sorted by fitness. 0 is
-	 *            the strongest, population.length - 1 is the weakest.
+	 *            the strongest, individuals.length - 1 is the weakest.
 	 * @return individual ga.Individual at index
 	 */
 	public Individual getFittest(int index) {
-		// Order population by fitness
-        Arrays.sort(this.population);
+		// Order individuals by fitness
+        Arrays.sort(this.individuals);
 
-		return this.population[index];
+		return this.individuals[index];
 	}
 
 	/**
-	 * Get population's size
+	 * Get individuals's size
 	 * 
-	 * @return size The population's size
+	 * @return size The individuals's size
 	 */
 	public int size() {
-		return this.population.length;
+		return this.individuals.length;
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class Population {
 	 * @return individual
 	 */
 	public Individual setIndividual(int index, Individual individual) {
-		return population[index] = individual;
+		return individuals[index] = individual;
 	}
 
 	/**
@@ -97,21 +97,21 @@ public class Population {
 	 * @return individual
 	 */
 	public Individual getIndividual(int index) {
-		return population[index];
+		return individuals[index];
 	}
 	
 	/**
-	 * Shuffles the population in-place
+	 * Shuffles the individuals in-place
 	 *
 	 * @return void
 	 */
 	public void shuffle() {
 		Random rnd = new Random();
-		for (int i = population.length - 1; i > 0; i--) {
+		for (int i = individuals.length - 1; i > 0; i--) {
 			int index = rnd.nextInt(i + 1);
-			Individual a = population[index];
-			population[index] = population[i];
-			population[i] = a;
+			Individual a = individuals[index];
+			individuals[index] = individuals[i];
+			individuals[i] = a;
 		}
 	}
 }

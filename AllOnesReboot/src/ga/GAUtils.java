@@ -60,4 +60,8 @@ public class GAUtils {
         }
         return offspring;
     };
+
+    static Function<Population,Boolean> terminationConditionSolutionFound = population -> {
+        Arrays.stream(population.getIndividuals()).anyMatch(individual -> individual.getFitness()==1);
+    };
 }

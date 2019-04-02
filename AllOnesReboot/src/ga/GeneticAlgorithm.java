@@ -3,6 +3,7 @@ package ga;
 import lombok.Builder;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -38,13 +39,13 @@ public class GeneticAlgorithm {
 	private double crossoverRate;
 
 	/**
-	 * Elitism is the concept that the strongest members of the population should be preserved from generation to
+	 * Elitism is the concept that the strongest members of the individuals should be preserved from generation to
      * generation. If an individual is one of the elite, it will not be mutated or crossover.
 	 */
 	private int elitismCount;
 
     /**
-     * Selection function is function that will select an individual from a give population
+     * Selection function is function that will select an individual from a give individuals
      */
 	private Function<Population, Individual> selectionFunction;
 
@@ -60,11 +61,11 @@ public class GeneticAlgorithm {
 
 
 	/**
-	 * Initialize population with random chromosome
-	 * @return population The initial population generated
+	 * Initialize individuals with random chromosome
+	 * @return individuals The initial individuals generated
 	 */
 	public Population initPopulation() {
-		// Initialize population
+		// Initialize individuals
 		return new Population(populationSize, chromosomeSize);
 	}
 
@@ -84,22 +85,22 @@ public class GeneticAlgorithm {
     }
 
 	/**
-	 * Evaluate the whole population
+	 * Evaluate the whole individuals
 	 * 
-	 * Essentially, loop over the individuals in the population, calculate the
-	 * fitness for each, and then calculate the entire population's fitness. The
-	 * population's fitness may or may not be important, but what is important
+	 * Essentially, loop over the individuals in the individuals, calculate the
+	 * fitness for each, and then calculate the entire individuals's fitness. The
+	 * individuals's fitness may or may not be important, but what is important
 	 * here is making sure that each individual gets evaluated.
 	 * 
 	 * @param population
-	 *            the population to evaluate
+	 *            the individuals to evaluate
 	 */
 	public void evalPopulation(Population population) {
 		double populationFitness = 0;
 
-		// Loop over population evaluating individuals and suming population
+		// Loop over individuals evaluating individuals and suming individuals
 		// fitness
-		for (Individual individual : population.getPopulation()) {
+		for (Individual individual : population.getIndividuals()) {
 			populationFitness += calcFitness(individual);
 		}
 
@@ -107,7 +108,7 @@ public class GeneticAlgorithm {
 	}
 
 	/**
-	 * Check if population has met termination condition
+	 * Check if individuals has met termination condition
 	 * 
 	 * For this simple problem, we know what a perfect solution looks like, so
 	 * we can simply stop evolving once we've reached a fitness of one.
@@ -116,15 +117,22 @@ public class GeneticAlgorithm {
 	 * @return boolean True if termination condition met, otherwise, false
 	 */
 	public boolean isTerminationConditionMet(Population population) {
-        return Arrays.stream(population.getPopulation()).anyMatch(individual -> individual.getFitness()==1);
-
+        return isTerminationConditionMet(population,Optional.empty());
 	}
+
+    public boolean isTerminationConditionMet(Population population, Optional<Function<Population,Boolean>> terminationCondition) {
+        if (terminationCondition.isEmpty()){
+            return GAUtils.terminationConditionSolutionFound.apply(population);
+        }else{
+            return terminationCondition.get().apply(population);
+        }
+    }
 
 
 	/**
-	 * Apply crossover to population
+	 * Apply crossover to individuals
 	 * 
-	 * Crossover, more colloquially considered "mating", takes the population
+	 * Crossover, more colloquially considered "mating", takes the individuals
 	 * and blends individuals to create new offspring. It is hoped that when two
 	 * individuals crossover that their offspring will have the strongest
 	 * qualities of each of the parents. Of course, it's possible that an
@@ -140,25 +148,25 @@ public class GeneticAlgorithm {
 	 * This particular crossover method selects random genes from each parent.
 	 * 
 	 * @param population
-	 *            The population to apply crossover to
-	 * @return The new population
+	 *            The individuals to apply crossover to
+	 * @return The new individuals
 	 */
 	public Population crossoverPopulation(Population population) {
 
-        // Create new population
+        // Create new individuals
         Population newPopulation = new Population(population.size());
 
-        // Loop over current population by fitness
+        // Loop over current individuals by fitness
         IntStream.range(0,populationSize).sorted().forEach(index ->{
 
-            //Individual parent1 = population.getFittest(index);
+            //Individual parent1 = individuals.getFittest(index);
             Individual parent1 = population.getIndividual(index);
 
             // Apply crossover to this individual?
             if (index >= this.elitismCount && this.crossoverRate > Math.random()) {
                 newPopulation.setIndividual(index, this.crossoverFunction.apply(parent1,selectionFunction.apply(population)));
             } else {
-                // Add individual to new population without applying crossover
+                // Add individual to new individuals without applying crossover
                 newPopulation.setIndividual(index, parent1);
             }
         });
@@ -167,10 +175,10 @@ public class GeneticAlgorithm {
 
 
 	/**
-	 * Apply mutation to population
+	 * Apply mutation to individuals
 	 * 
-	 * Mutation affects individuals rather than the population. We look at each
-	 * individual in the population, and if they're lucky enough (or unlucky, as
+	 * Mutation affects individuals rather than the individuals. We look at each
+	 * individual in the individuals, and if they're lucky enough (or unlucky, as
 	 * it were), apply some randomness to their chromosome. Like crossover, the
 	 * type of mutation applied depends on the specific problem we're solving.
 	 * In this case, we simply randomly flip 0s to 1s and vice versa.
@@ -179,14 +187,14 @@ public class GeneticAlgorithm {
 	 * and elitismCount
 	 * 
 	 * @param population
-	 *            The population to apply mutation to
-	 * @return The mutated population
+	 *            The individuals to apply mutation to
+	 * @return The mutated individuals
 	 */
 	public Population mutatePopulation(Population population) {
-		// Initialize new population
+		// Initialize new individuals
 		Population newPopulation = new Population(this.populationSize);
 
-		// Loop over current population by fitness
+		// Loop over current individuals by fitness
 		for (int populationIndex = 0; populationIndex < population.size(); populationIndex++) {
 			Individual individual = population.getFittest(populationIndex);
 
@@ -207,11 +215,11 @@ public class GeneticAlgorithm {
 				}
 			}
 
-			// Add individual to population
+			// Add individual to individuals
 			newPopulation.setIndividual(populationIndex, individual);
 		}
 
-		// Return mutated population
+		// Return mutated individuals
 		return newPopulation;
 	}
 

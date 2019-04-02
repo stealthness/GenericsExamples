@@ -89,7 +89,7 @@ class GAUtilsTest {
         assertEquals(1, GAUtils.getMeanGeneFitness.apply(completeIndividual),TOL);
     }
 
-    // Test using selection functions that return a selected individual from a population
+    // Test using selection functions that return a selected individual from a individuals
 
     @Test
     void testSillyFirstIndividualSelection(){

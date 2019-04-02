@@ -30,10 +30,10 @@ public class AllOnesGA {
                 .elitismCount(2)
                 .build();
 
-		// Initialize population
+		// Initialize individuals
 		Population population = ga.initPopulation();
 
-		// Evaluate population
+		// Evaluate individuals
 		ga.evalPopulation(population);
 
 		// Keep track of current generation
@@ -45,11 +45,11 @@ public class AllOnesGA {
 		 * Every genetic algorithm problem has different criteria for finishing.
 		 * In this case, we know what a perfect solution looks like (we don't
 		 * always!), so our isTerminationConditionMet method is very
-		 * straightforward: if there's a member of the population whose
+		 * straightforward: if there's a member of the individuals whose
 		 * chromosome is all ones, we're done!
 		 */
 		while (ga.isTerminationConditionMet(population) == false) {
-			// Print fittest individual from population
+			// Print fittest individual from individuals
 			System.out.println("Best solution: " + population.getFittest(0).toString());
 
 			// Apply crossover
@@ -58,7 +58,7 @@ public class AllOnesGA {
 			// Apply mutation
 			population = ga.mutatePopulation(population);
 
-			// Evaluate population
+			// Evaluate individuals
 			ga.evalPopulation(population);
 
 			// Increment the current generation
