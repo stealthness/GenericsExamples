@@ -1,8 +1,5 @@
 package ga;
 
-import lombok.Builder;
-
-
 /**
  * This is our main class used to run the genetic algorithm.
  * 

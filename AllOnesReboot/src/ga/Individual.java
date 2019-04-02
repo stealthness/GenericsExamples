@@ -1,5 +1,8 @@
 package ga;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -14,6 +17,8 @@ import java.util.stream.IntStream;
  * fitness score will vary based on the problem at hand.
  *
  */
+@Setter
+@Getter
 public class Individual implements Comparable{
 	private int[] chromosome;
 	private double fitness = -1;
@@ -48,14 +53,6 @@ public class Individual implements Comparable{
         IntStream.range(0,chromosomeLength).forEach(gene -> this.setGene(gene, (Math.random()<0.5)?0:1));
 	}
 
-	/**
-	 * Gets individual's chromosome
-	 * 
-	 * @return The individual's chromosome
-	 */
-	public int[] getChromosome() {
-		return this.chromosome;
-	}
 
 	/**
 	 * Gets individual's chromosome length
@@ -87,25 +84,7 @@ public class Individual implements Comparable{
 		return this.chromosome[index];
 	}
 
-	/**
-	 * Store individual's fitness
-	 * 
-	 * @param fitness
-	 *            The individuals fitness
-	 */
-	public void setFitness(double fitness) {
-		this.fitness = fitness;
-	}
 
-	/**
-	 * Gets individual's fitness
-	 * 
-	 * @return The individual's fitness
-	 */
-	public double getFitness() {
-		return this.fitness;
-	}
-	
 	
 	/**
 	 * Display the chromosome as a string.
