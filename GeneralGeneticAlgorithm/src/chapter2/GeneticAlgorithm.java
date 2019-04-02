@@ -1,4 +1,4 @@
-package ga;
+package chapter2;
 
 import lombok.Data;
 
