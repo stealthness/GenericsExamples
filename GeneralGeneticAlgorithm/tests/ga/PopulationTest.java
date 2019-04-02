@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
@@ -19,6 +20,7 @@ class PopulationTest {
     private static final int CHROMOSOME_SIZE = 10;
     private static final double TOL = 0.00001;
     private static final int POPULATION_SIZE = 6;
+    private static final int NO_OF_RUNS = 1000;
     private Individual emptyIndividual;
     private Individual evenIndividual;
     private Individual completeIndividual;
@@ -244,7 +246,49 @@ class PopulationTest {
 
     @Test
     void testCrossoverWithSillyCrossoverFunction(){
-        fail();
+        Population population = createPopulationWith(6,emptyIndividual);
+        population.setIndividual(0,completeIndividual);
+        System.out.println(population);
+        population.crossover(GAUtils.sillyFirstParentGeneCrossover,GAUtils.sillySelectFirstIndividual,1.0);
+        assertTrue(IntStream.range(1,6).allMatch(i -> population.getIndividual(i).toString().equals("0111111111")));
+    }
+
+    @Test
+    void testCrossoverWithSillyCrossoverFunctionAvg(){
+        var count = 0;
+        var numberCrossed = 0;
+        while (++count < NO_OF_RUNS){
+            Population population = createPopulationWith(6,emptyIndividual);
+            population.setIndividual(0,completeIndividual);
+            population.crossover(GAUtils.sillyFirstParentGeneCrossover,GAUtils.sillySelectFirstIndividual,0.5);
+            numberCrossed += IntStream.range(1,6).filter(i-> population.getIndividual(i).toString().equals("0111111111")).count();
+        }
+        // 100 based 2sd on 10000 coin flips
+        assertTrue(Math.abs(NO_OF_RUNS*5/2 - numberCrossed)< 100);
+    }
+
+    @Test
+    void testCrossoverWithSillyCrossoverAvg(){
+        testCrossoverFunctionAvg(GAUtils.sillySelectFirstIndividual,GAUtils.sillyFirstParentGeneCrossover,0.5,100);
+        testCrossoverFunctionAvg(GAUtils.sillySelectFirstIndividual,GAUtils.sillyFirstParentGeneCrossover,0.9,50);
+        testCrossoverFunctionAvg(GAUtils.sillySelectFirstIndividual,GAUtils.sillyFirstParentGeneCrossover,1.0,10);
+    }
+
+
+    private void testCrossoverFunctionAvg(Function<Population,Individual> selectionFunction,
+                                          BiFunction<Individual,Individual,Individual> crossoverFunction,
+                                          Double crossoverRate, int expStandardDeviation){
+        var count = 0;
+        var numberCrossed = 0;
+        while (++count < NO_OF_RUNS){
+            Population population = createPopulationWith(6,emptyIndividual);
+            population.setIndividual(0,completeIndividual);
+            population.crossover(crossoverFunction,selectionFunction,crossoverRate);
+            numberCrossed += IntStream.range(1,6).filter(i-> population.getIndividual(i).toString().equals("0111111111")).count();
+        }
+        // 100 based 2sd on 10000 coin flips
+
+        assertTrue(Math.abs(NO_OF_RUNS*5*crossoverRate - numberCrossed)< expStandardDeviation);
     }
 
 
