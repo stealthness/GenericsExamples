@@ -29,9 +29,9 @@ public class Individual implements Comparable{
 	 * @param chromosome
 	 *            The chromosome to give individual
 	 */
-	public Individual(int[] chromosome) {
+	public Individual(int...chromosome) {
 		// Create individual chromosome
-		this.chromosome = chromosome;
+		this.chromosome = chromosome.clone();
 	}
 
 	/**
