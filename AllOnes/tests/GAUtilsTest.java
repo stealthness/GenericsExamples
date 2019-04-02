@@ -38,13 +38,9 @@ class GAUtilsTest {
         population.setIndividual(9,emptyIndividual);
 
         ga = new GeneticAlgorithm(8,1.0,0.0,0);
-
-
-
     }
 
     // Test using fitness function returns the last gene
-
 
     @Test
     void testSillyFirstGeneFitnessReturnsFirstGeneOfEmptyIndividual(){

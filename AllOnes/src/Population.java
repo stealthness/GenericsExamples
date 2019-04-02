@@ -33,9 +33,7 @@ class Population {
      */
     void evaluateFitness(){
         evaluateFitness(GAUtils.getMeanGeneFitness);
-
     }
-
 
     void evaluateFitness(Function<Individual,Double> fitnessFunction){
         Arrays.stream(individuals).forEach(individual -> individual.evaluateFitness(fitnessFunction));

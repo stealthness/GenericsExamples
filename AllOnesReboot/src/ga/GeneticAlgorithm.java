@@ -128,7 +128,6 @@ public class GeneticAlgorithm {
         }
     }
 
-
 	/**
 	 * Apply crossover to individuals
 	 * 

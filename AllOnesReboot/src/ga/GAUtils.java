@@ -4,6 +4,7 @@ package ga;
 import java.util.Arrays;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 /**
  * Created by Stephen West on 02/04/2019.
@@ -50,18 +51,11 @@ public class GAUtils {
 
         Individual offspring = new Individual(parent1.getChromosomeLength());
         // Loop over genome
-        for (int geneIndex = 0; geneIndex < parent1.getChromosomeLength(); geneIndex++) {
-            // Use half of parent1's genes and half of parent2's genes
-            if (0.5 > Math.random()) {
-                offspring.setGene(geneIndex, parent1.getGene(geneIndex));
-            } else {
-                offspring.setGene(geneIndex, parent2.getGene(geneIndex));
-            }
-        }
+        IntStream.range(0,parent1.getChromosomeLength()).forEach(geneIndex ->
+                offspring.setGene(geneIndex, (0.5 > Math.random())?parent1.getGene(geneIndex): parent2.getGene(geneIndex)));
         return offspring;
     };
 
-    static Function<Population,Boolean> terminationConditionSolutionFound = population -> {
-        Arrays.stream(population.getIndividuals()).anyMatch(individual -> individual.getFitness()==1);
-    };
+    static Function<Population,Boolean> terminationConditionSolutionFound = population ->
+            Arrays.stream(population.getIndividuals()).anyMatch(individual -> individual.getFitness()==1);
 }
