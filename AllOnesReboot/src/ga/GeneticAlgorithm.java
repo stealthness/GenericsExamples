@@ -99,7 +99,7 @@ public class GeneticAlgorithm {
 
 		// Loop over population evaluating individuals and suming population
 		// fitness
-		for (Individual individual : population.getIndividuals()) {
+		for (Individual individual : population.getPopulation()) {
 			populationFitness += calcFitness(individual);
 		}
 
@@ -116,7 +116,7 @@ public class GeneticAlgorithm {
 	 * @return boolean True if termination condition met, otherwise, false
 	 */
 	public boolean isTerminationConditionMet(Population population) {
-        return Arrays.stream(population.getIndividuals()).anyMatch(individual -> individual.getFitness()==1);
+        return Arrays.stream(population.getPopulation()).anyMatch(individual -> individual.getFitness()==1);
 
 	}
 
