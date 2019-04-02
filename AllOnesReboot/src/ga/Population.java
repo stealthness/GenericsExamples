@@ -1,6 +1,9 @@
 package ga;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Arrays;
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -11,6 +14,8 @@ import java.util.stream.IntStream;
  * such as finding the strongest individuals, collecting stats on the population
  * as a whole, and selecting individuals to mutate or crossover.
  */
+@Getter
+@Setter
 public class Population {
 	private Individual population[];
 	private double populationFitness = -1;
@@ -45,15 +50,6 @@ public class Population {
 	}
 
 	/**
-	 * Get individuals from the population
-	 * 
-	 * @return individuals Individuals in population
-	 */
-	public Individual[] getIndividuals() {
-		return this.population;
-	}
-
-	/**
 	 * Find an individual in the population by its fitness
 	 * 
 	 * This method lets you select an individual in order of its fitness. This
@@ -72,25 +68,6 @@ public class Population {
         Arrays.sort(this.population);
 
 		return this.population[index];
-	}
-
-	/**
-	 * Set population's group fitness
-	 * 
-	 * @param fitness
-	 *            The population's total fitness
-	 */
-	public void setPopulationFitness(double fitness) {
-		this.populationFitness = fitness;
-	}
-
-	/**
-	 * Get population's group fitness
-	 * 
-	 * @return populationFitness The population's total fitness
-	 */
-	public double getPopulationFitness() {
-		return this.populationFitness;
 	}
 
 	/**
