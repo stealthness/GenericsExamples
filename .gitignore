@@ -87,6 +87,8 @@ fabric.properties
 
 /.idea/vcs.xml
 /AllOnesBookExample/
+
+/AllOnesReboot/
 .idea/
 *.xml
 *.iml
