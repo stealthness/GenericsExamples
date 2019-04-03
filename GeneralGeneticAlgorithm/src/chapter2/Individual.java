@@ -83,7 +83,7 @@ public class Individual implements Comparable, Cloneable {
 
     @Override
     public String toString(){
-        final StringBuilder sb = new StringBuilder(); //NOPMD
+        final var sb = new StringBuilder(); //NOPMD
         chromosome.forEach(sb::append);
         return sb.toString();
     }

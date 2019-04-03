@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Arrays;
-import java.util.Random;
 import java.util.stream.IntStream;
 
 /**
@@ -84,10 +83,9 @@ public class Population {
 	 * 
 	 * @param individual
 	 * @param index
-	 * @return individual
 	 */
-	public Individual setIndividual(int index, Individual individual) {
-		return individuals[index] = individual;
+	public void setIndividual(int index, Individual individual) {
+		individuals[index] = individual;
 	}
 
 	/**
