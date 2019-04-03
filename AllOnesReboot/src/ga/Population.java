@@ -44,7 +44,7 @@ public class Population {
 		this.individuals = new Individual[populationSize];
 
         IntStream.range(0,populationSize).forEach(individual -> {
-            var newIndividual = new Individual(chromosomeLength);
+            final var newIndividual = new Individual(chromosomeLength);
             this.individuals[individual] = newIndividual;
         });
 	}
@@ -100,18 +100,5 @@ public class Population {
 		return individuals[index];
 	}
 	
-	/**
-	 * Shuffles the individuals in-place
-	 *
-	 * @return void
-	 */
-	public void shuffle() {
-		Random rnd = new Random();
-		for (int i = individuals.length - 1; i > 0; i--) {
-			int index = rnd.nextInt(i + 1);
-			Individual a = individuals[index];
-			individuals[index] = individuals[i];
-			individuals[i] = a;
-		}
-	}
+
 }

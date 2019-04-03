@@ -95,7 +95,7 @@ public class GeneticAlgorithm {
 	 *            the individuals to evaluate
 	 */
 	public void evalPopulation(Population population) {
-		double populationFitness = 0;
+		var populationFitness = 0.0;
 
 		// Loop over individuals evaluating individuals and suming individuals
 		// fitness
@@ -121,10 +121,10 @@ public class GeneticAlgorithm {
 
     public boolean isTerminationConditionMet(Population population, Optional<Function<Population,Boolean>> terminationCondition) {
         if (terminationCondition.isEmpty()){
-            return GAUtils.terminationConditionSolutionFound.apply(population);
-        }else{
-            return terminationCondition.get().apply(population);
+            terminationCondition = Optional.of(GAUtils.terminationConditionSolutionFound);
         }
+        return terminationCondition.get().apply(population);
+
     }
 
 	/**
@@ -152,7 +152,7 @@ public class GeneticAlgorithm {
 	public Population crossoverPopulation(Population population) {
 
         // Create new individuals
-        Population newPopulation = new Population(population.size());
+        final var newPopulation = new Population(population.size());
 
         // Loop over current individuals by fitness
         IntStream.range(0,populationSize).sorted().forEach(index ->{
@@ -190,11 +190,11 @@ public class GeneticAlgorithm {
 	 */
 	public Population mutatePopulation(Population population) {
 		// Initialize new individuals
-		Population newPopulation = new Population(this.populationSize);
+		final var newPopulation = new Population(this.populationSize);
 
 		// Loop over current individuals by fitness
 		for (int populationIndex = 0; populationIndex < population.size(); populationIndex++) {
-			Individual individual = population.getFittest(populationIndex);
+			final var individual = population.getFittest(populationIndex);
 
 			// Loop over individual's genes
 			for (int geneIndex = 0; geneIndex < individual.size(); geneIndex++) {
