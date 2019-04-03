@@ -2,7 +2,6 @@ package ga;
 
 import lombok.Builder;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -76,11 +75,11 @@ public class GeneticAlgorithm {
 	 *            the individual to evaluate
 	 * @return double The fitness value for individual
 	 */
-	public double calcFitness(Individual individual) {
+	public double calcFitness(final Individual individual) {
         return calcFitness(individual,GAUtils.getAllOnesFitness);
 	}
 
-	public double calcFitness(Individual individual, Function<Individual,Double> calculateFitness){
+	public double calcFitness(final Individual individual, final Function<Individual,Double> calculateFitness){
 	    return calculateFitness.apply(individual);
     }
 
@@ -95,12 +94,12 @@ public class GeneticAlgorithm {
 	 * @param population
 	 *            the individuals to evaluate
 	 */
-	public void evalPopulation(Population population) {
-		double populationFitness = 0;
+	public void evalPopulation(final Population population) {
+		var populationFitness = 0;
 
 		// Loop over individuals evaluating individuals and suming individuals
 		// fitness
-		for (Individual individual : population.getIndividuals()) {
+		for (final Individual individual : population.getIndividuals()) {
 			populationFitness += calcFitness(individual);
 		}
 
@@ -122,10 +121,9 @@ public class GeneticAlgorithm {
 
     public boolean isTerminationConditionMet(Population population, Optional<Function<Population,Boolean>> terminationCondition) {
         if (terminationCondition.isEmpty()){
-            return GAUtils.terminationConditionSolutionFound.apply(population);
-        }else{
-            return terminationCondition.get().apply(population);
+            terminationCondition =  new Optional<>(GAUtils.terminationConditionSolutionFound);
         }
+        return terminationCondition.get().apply(population);
     }
 
 	/**
@@ -150,16 +148,16 @@ public class GeneticAlgorithm {
 	 *            The individuals to apply crossover to
 	 * @return The new individuals
 	 */
-	public Population crossoverPopulation(Population population) {
+	Population crossoverPopulation(Population population) {
 
         // Create new individuals
-        Population newPopulation = new Population(population.size());
+        final var newPopulation = new Population(population.size());
 
         // Loop over current individuals by fitness
         IntStream.range(0,populationSize).sorted().forEach(index ->{
 
             //Individual parent1 = individuals.getFittest(index);
-            Individual parent1 = population.getIndividual(index);
+            final var parent1 = population.getIndividual(index);
 
             // Apply crossover to this individual?
             if (index >= this.elitismCount && this.crossoverRate > Math.random()) {
@@ -174,24 +172,15 @@ public class GeneticAlgorithm {
 
 
 	/**
-	 * Apply mutation to individuals
-	 * 
-	 * Mutation affects individuals rather than the individuals. We look at each
-	 * individual in the individuals, and if they're lucky enough (or unlucky, as
-	 * it were), apply some randomness to their chromosome. Like crossover, the
-	 * type of mutation applied depends on the specific problem we're solving.
-	 * In this case, we simply randomly flip 0s to 1s and vice versa.
-	 * 
-	 * This method will consider the ga.GeneticAlgorithm instance's mutationRate
-	 * and elitismCount
-	 * 
+	 * Will mutate individuals in the population based on mutationFunction that will apply random changes based
+     * according to mutationRate.
 	 * @param population
 	 *            The individuals to apply mutation to
 	 * @return The mutated individuals
 	 */
-	public Population mutatePopulation(Population population) {
+	Population mutatePopulation(Population population) {
         // Initialize new individuals
-        Population newPopulation = new Population(population.size());
+        final var newPopulation = new Population(population.size());
 
         // Loop over current individuals by fitness
         IntStream.range(0,populationSize).forEach(index ->{

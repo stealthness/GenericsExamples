@@ -1,6 +1,5 @@
 package ga;
 
-
 import java.util.Arrays;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -14,10 +13,10 @@ public class GAUtils {
     /**
      * Returns a value between 0.0 (all zeros) and 1.0 (all ones) that is the sum of ones divide by chromosome size
      */
-    static Function<Individual,Double> getAllOnesFitness = (individual ->{
+    static Function<Individual,Double> getAllOnesFitness = individual ->{
 
         // calculate the fitness
-        double fitness = ((double)Arrays.stream(individual.getChromosome())
+        final var fitness = ((double)Arrays.stream(individual.getChromosome())
                 .filter(gene -> gene == 1)
                 .count())/individual.getChromosomeLength();
 
@@ -25,8 +24,7 @@ public class GAUtils {
         individual.setFitness(fitness);
 
         return fitness;
-
-    } );
+    };
 
     /**
      * Selection is based on relative fitness value, and a random individual from the population. fitter individuals
@@ -34,15 +32,15 @@ public class GAUtils {
      */
     static Function<Population,Individual> selectWeightedParent = population -> {
         // Get individuals
-        Individual[]  individuals = population.getIndividuals();
+        final var individuals = population.getIndividuals();
 
         // Spin roulette wheel
-        double populationFitness = population.getPopulationFitness();
-        double rouletteWheelPosition = Math.random() * populationFitness;
+        final var populationFitness = population.getPopulationFitness();
+        final var  rouletteWheelPosition = Math.random() * populationFitness;
 
         // Find parent
-        double spinWheel = 0;
-        for (Individual individual : individuals) {
+        var spinWheel = 0;
+        for (final Individual individual : individuals) {
             spinWheel += individual.getFitness();
             if (spinWheel >= rouletteWheelPosition) {
                 return individual;
@@ -56,16 +54,16 @@ public class GAUtils {
      */
     static BiFunction<Individual,Individual,Individual> crossoverFunction = (parent1, parent2) ->{
 
-        Individual offspring = new Individual(parent1.getChromosomeLength());
+        final var  offspring = new Individual(parent1.getChromosomeLength());
         // Loop over chromosome
         IntStream.range(0,parent1.getChromosomeLength()).forEach(geneIndex ->
-                offspring.setGene(geneIndex, (0.5 > Math.random())?parent1.getGene(geneIndex): parent2.getGene(geneIndex)));
+                offspring.setGene(geneIndex, Math.random() < 0.5 ? parent1.getGene(geneIndex) : parent2.getGene(geneIndex)));
         return offspring;
     };
 
     static BiFunction<Individual,Double, Individual> mutatePopulation = (individual, mutationRate) -> {
 
-        var newIndividual = new Individual(individual.getChromosome());
+        final var newIndividual = new Individual(individual.getChromosome());
 
         Arrays.stream(newIndividual.getChromosome()).forEach(geneIndex ->{
             if ( Math.random() < mutationRate ) {

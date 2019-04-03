@@ -50,7 +50,7 @@ public class Individual implements Comparable{
 	public Individual(int chromosomeLength) {
 
 		this.chromosome = new int[chromosomeLength];
-        IntStream.range(0,chromosomeLength).forEach(gene -> this.setGene(gene, (Math.random()<0.5)?0:1));
+        IntStream.range(0,chromosomeLength).forEach(gene -> this.setGene(gene, Math.random()<0.5?0:1));
 	}
 
 
@@ -92,7 +92,7 @@ public class Individual implements Comparable{
 	 * @return string representation of the chromosome
 	 */
 	public String toString() {
-	    StringBuilder sb = new StringBuilder();
+	    final var sb = new StringBuilder();
         Arrays.stream(chromosome).forEach(sb::append);
         return sb.toString();
 
@@ -100,12 +100,13 @@ public class Individual implements Comparable{
 
     @Override
     public int compareTo(Object o) {
+	    var result = 0;
 	    if (this.getFitness() > ((Individual)o).getFitness()){
-	        return -1;
+	        result = -1;
         }else if (this.getFitness() < ((Individual)o).getFitness()){
-	        return 1;
+            result = 1;
         }
 	    // equal
-        return 0;
+        return result;
     }
 }

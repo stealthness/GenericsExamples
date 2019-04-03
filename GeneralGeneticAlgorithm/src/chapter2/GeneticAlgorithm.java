@@ -25,7 +25,7 @@ public class GeneticAlgorithm {
     }
 
     public Population initialisePopulation(int chromosomeSize) {
-        Population population = new Population();
+        final var  population = new Population();
         return population;
     }
 

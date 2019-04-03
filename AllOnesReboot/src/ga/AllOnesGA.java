@@ -20,7 +20,7 @@ public class AllOnesGA {
 
 	public static void main(String[] args) {
 		// Create GA object
-		GeneticAlgorithm ga = new GeneticAlgorithm.GeneticAlgorithmBuilder()
+		final GeneticAlgorithm ga = new GeneticAlgorithm.GeneticAlgorithmBuilder()
                 .selectionFunction(GAUtils.selectWeightedParent)
                 .crossoverFunction(GAUtils.crossoverFunction)
                 .mutationFunction(GAUtils.mutatePopulation)
@@ -49,7 +49,7 @@ public class AllOnesGA {
 		 * straightforward: if there's a member of the individuals whose
 		 * chromosome is all ones, we're done!
 		 */
-		while (ga.isTerminationConditionMet(population) == false) {
+		while (!ga.isTerminationConditionMet(population)) {
 			// Print fittest individual from individuals
 			System.out.println("Best solution: " + population.getFittest(0).toString());
 
