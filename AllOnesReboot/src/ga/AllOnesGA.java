@@ -16,11 +16,19 @@ package ga;
  * @author bkanber
  *
  */
-public class AllOnesGA {
+public class AllOnesGA implements Runnable{
 
 	public static void main(String[] args) {
-		// Create GA object
-		GeneticAlgorithm ga = new GeneticAlgorithm.GeneticAlgorithmBuilder()
+
+	    final var allones = new AllOnesGA();
+	    allones.run();
+	}
+
+
+    @Override
+    public void run() {
+        // Create GA object
+        GeneticAlgorithm ga = new GeneticAlgorithm.GeneticAlgorithmBuilder()
                 .selectionFunction(GAUtils.selectWeightedParent)
                 .crossoverFunction(GAUtils.crossoverFunction)
                 .chromosomeSize(50)
@@ -30,47 +38,47 @@ public class AllOnesGA {
                 .elitismCount(2)
                 .build();
 
-		// Initialize individuals
-		Population population = ga.initPopulation();
+        // Initialize individuals
+        Population population = ga.initPopulation();
 
-		// Evaluate individuals
-		ga.evalPopulation(population);
+        // Evaluate individuals
+        ga.evalPopulation(population);
 
-		// Keep track of current generation
-		int generation = 1;
+        // Keep track of current generation
+        int generation = 1;
 
-		/**
-		 * Start the evolution loop
-		 * 
-		 * Every genetic algorithm problem has different criteria for finishing.
-		 * In this case, we know what a perfect solution looks like (we don't
-		 * always!), so our isTerminationConditionMet method is very
-		 * straightforward: if there's a member of the individuals whose
-		 * chromosome is all ones, we're done!
-		 */
-		while (ga.isTerminationConditionMet(population) == false) {
-			// Print fittest individual from individuals
-			System.out.println("Best solution: " + population.getFittest(0).toString());
+        /**
+         * Start the evolution loop
+         *
+         * Every genetic algorithm problem has different criteria for finishing.
+         * In this case, we know what a perfect solution looks like (we don't
+         * always!), so our isTerminationConditionMet method is very
+         * straightforward: if there's a member of the individuals whose
+         * chromosome is all ones, we're done!
+         */
+        while (ga.isTerminationConditionMet(population) == false) {
+            // Print fittest individual from individuals
+            System.out.println("Best solution: " + population.getFittest(0).toString());
 
-			// Apply crossover
-			population = ga.crossoverPopulation(population);
+            // Apply crossover
+            population = ga.crossoverPopulation(population);
 
-			// Apply mutation
-			population = ga.mutatePopulation(population);
+            // Apply mutation
+            population = ga.mutatePopulation(population);
 
-			// Evaluate individuals
-			ga.evalPopulation(population);
+            // Evaluate individuals
+            ga.evalPopulation(population);
 
-			// Increment the current generation
-			generation++;
-		}
+            // Increment the current generation
+            generation++;
+        }
 
-		/**
-		 * We're out of the loop now, which means we have a perfect solution on
-		 * our hands. Let's print it out to confirm that it is actually all
-		 * ones, as promised.
-		 */
-		System.out.println("Found solution in " + generation + " generations");
-		System.out.println("Best solution: " + population.getFittest(0).toString());
-	}
+        /**
+         * We're out of the loop now, which means we have a perfect solution on
+         * our hands. Let's print it out to confirm that it is actually all
+         * ones, as promised.
+         */
+        System.out.println("Found solution in " + generation + " generations");
+        System.out.println("Best solution: " + population.getFittest(0).toString());
+    }
 }
