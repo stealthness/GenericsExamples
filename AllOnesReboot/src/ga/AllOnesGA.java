@@ -23,6 +23,7 @@ public class AllOnesGA {
 		GeneticAlgorithm ga = new GeneticAlgorithm.GeneticAlgorithmBuilder()
                 .selectionFunction(GAUtils.selectWeightedParent)
                 .crossoverFunction(GAUtils.crossoverFunction)
+                .mutationFunction(GAUtils.mutatePopulation)
                 .chromosomeSize(50)
                 .populationSize(100)
                 .mutationRate(0.001)

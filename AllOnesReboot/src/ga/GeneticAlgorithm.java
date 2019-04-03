@@ -55,9 +55,9 @@ public class GeneticAlgorithm {
 	private BiFunction<Individual,Individual,Individual> crossoverFunction;
 
     /**
-     * Applies Mutation on Population
+     * Applies Mutation on Individual
      */
-	private Function<Population, Individual> mutationFunction;
+	private BiFunction<Individual,Double, Individual> mutationFunction;
 
 
 	/**
@@ -190,36 +190,17 @@ public class GeneticAlgorithm {
 	 * @return The mutated individuals
 	 */
 	public Population mutatePopulation(Population population) {
-		// Initialize new individuals
-		Population newPopulation = new Population(this.populationSize);
+        // Initialize new individuals
+        Population newPopulation = new Population(population.size());
 
-		// Loop over current individuals by fitness
-		for (int populationIndex = 0; populationIndex < population.size(); populationIndex++) {
-			Individual individual = population.getFittest(populationIndex);
-
-			// Loop over individual's genes
-			for (int geneIndex = 0; geneIndex < individual.getChromosomeLength(); geneIndex++) {
-				// Skip mutation if this is an elite individual
-				if (populationIndex > this.elitismCount) {
-					// Does this gene need mutation?
-					if (this.mutationRate > Math.random()) {
-						// Get new gene
-						int newGene = 1;
-						if (individual.getGene(geneIndex) == 1) {
-							newGene = 0;
-						}
-						// Mutate gene
-						individual.setGene(geneIndex, newGene);
-					}
-				}
-			}
-
-			// Add individual to individuals
-			newPopulation.setIndividual(populationIndex, individual);
-		}
-
-		// Return mutated individuals
-		return newPopulation;
+        // Loop over current individuals by fitness
+        IntStream.range(0,populationSize).forEach(index ->{
+            if (index > this.elitismCount) {
+                // Add mutated individual to newPopulation
+                newPopulation.setIndividual(index, mutationFunction.apply(population.getFittest(index), mutationRate));
+            }
+        });
+        return newPopulation;
 	}
 
 }
