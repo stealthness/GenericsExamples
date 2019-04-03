@@ -59,7 +59,7 @@ public class Individual implements Comparable{
 	 * 
 	 * @return The individual's chromosome length
 	 */
-	public int getChromosomeLength() {
+	public int size() {
 		return this.chromosome.length;
 	}
 
@@ -100,13 +100,12 @@ public class Individual implements Comparable{
 
     @Override
     public int compareTo(Object o) {
-	    var result = 0;
 	    if (this.getFitness() > ((Individual)o).getFitness()){
-	        result = -1;
+	        return -1;
         }else if (this.getFitness() < ((Individual)o).getFitness()){
-            result = 1;
+            return  1;
         }
 	    // equal
-        return result;
+        return 0;
     }
 }

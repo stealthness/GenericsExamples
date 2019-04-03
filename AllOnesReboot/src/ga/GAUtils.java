@@ -10,6 +10,10 @@ import java.util.stream.IntStream;
  */
 public class GAUtils {
 
+    static {
+
+    }
+
     /**
      * Returns a value between 0.0 (all zeros) and 1.0 (all ones) that is the sum of ones divide by chromosome size
      */
@@ -18,7 +22,7 @@ public class GAUtils {
         // calculate the fitness
         final var fitness = ((double)Arrays.stream(individual.getChromosome())
                 .filter(gene -> gene == 1)
-                .count())/individual.getChromosomeLength();
+                .count())/individual.size();
 
         // Store fitness
         individual.setFitness(fitness);
@@ -54,9 +58,9 @@ public class GAUtils {
      */
     static BiFunction<Individual,Individual,Individual> crossoverFunction = (parent1, parent2) ->{
 
-        final var  offspring = new Individual(parent1.getChromosomeLength());
+        final var  offspring = new Individual(parent1.size());
         // Loop over chromosome
-        IntStream.range(0,parent1.getChromosomeLength()).forEach(geneIndex ->
+        IntStream.range(0,parent1.size()).forEach(geneIndex ->
                 offspring.setGene(geneIndex, Math.random() < 0.5 ? parent1.getGene(geneIndex) : parent2.getGene(geneIndex)));
         return offspring;
     };

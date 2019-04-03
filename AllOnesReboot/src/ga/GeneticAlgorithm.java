@@ -121,7 +121,7 @@ public class GeneticAlgorithm {
 
     public boolean isTerminationConditionMet(Population population, Optional<Function<Population,Boolean>> terminationCondition) {
         if (terminationCondition.isEmpty()){
-            terminationCondition =  new Optional<>(GAUtils.terminationConditionSolutionFound);
+            return GAUtils.terminationConditionSolutionFound.apply(population);
         }
         return terminationCondition.get().apply(population);
     }
@@ -161,7 +161,8 @@ public class GeneticAlgorithm {
 
             // Apply crossover to this individual?
             if (index >= this.elitismCount && this.crossoverRate > Math.random()) {
-                newPopulation.setIndividual(index, this.crossoverFunction.apply(parent1,selectionFunction.apply(population)));
+                Individual newIndividual = this.crossoverFunction.apply(parent1,selectionFunction.apply(population));
+                newPopulation.setIndividual(index,newIndividual );
             } else {
                 // Add individual to new individuals without applying crossover
                 newPopulation.setIndividual(index, parent1);
