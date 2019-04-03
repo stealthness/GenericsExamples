@@ -2,7 +2,6 @@ package ga;
 
 import lombok.Builder;
 
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -198,7 +197,7 @@ public class GeneticAlgorithm {
 			Individual individual = population.getFittest(populationIndex);
 
 			// Loop over individual's genes
-			for (int geneIndex = 0; geneIndex < individual.getChromosomeLength(); geneIndex++) {
+			for (int geneIndex = 0; geneIndex < individual.size(); geneIndex++) {
 				// Skip mutation if this is an elite individual
 				if (populationIndex > this.elitismCount) {
 					// Does this gene need mutation?

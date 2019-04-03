@@ -59,7 +59,7 @@ public class Individual implements Comparable{
 	 * 
 	 * @return The individual's chromosome length
 	 */
-	public int getChromosomeLength() {
+	public int size() {
 		return this.chromosome.length;
 	}
 
