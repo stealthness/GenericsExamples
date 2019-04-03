@@ -92,7 +92,7 @@ public class Individual implements Comparable{
 	 * @return string representation of the chromosome
 	 */
 	public String toString() {
-	    StringBuilder sb = new StringBuilder();
+	    final StringBuilder sb = new StringBuilder();
         Arrays.stream(chromosome).forEach(sb::append);
         return sb.toString();
 

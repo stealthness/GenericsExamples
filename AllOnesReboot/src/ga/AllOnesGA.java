@@ -18,19 +18,21 @@ package ga;
  */
 public class AllOnesGA implements Runnable{
 
+
 	public static void main(String[] args) {
 
-	    final var allones = new AllOnesGA();
-	    allones.run();
+	    final var allOnes = new AllOnesGA();
+	    allOnes.run();
 	}
 
 
     @Override
     public void run() {
         // Create GA object
-        GeneticAlgorithm ga = new GeneticAlgorithm.GeneticAlgorithmBuilder()
+        final var ga = new GeneticAlgorithm.GeneticAlgorithmBuilder()
                 .selectionFunction(GAUtils.selectWeightedParent)
                 .crossoverFunction(GAUtils.crossoverFunction)
+                .mutationFunction(GAUtils.mutatePopulation)
                 .chromosomeSize(50)
                 .populationSize(100)
                 .mutationRate(0.001)
@@ -39,7 +41,7 @@ public class AllOnesGA implements Runnable{
                 .build();
 
         // Initialize individuals
-        Population population = ga.initPopulation();
+        var population = ga.initPopulation();
 
         // Evaluate individuals
         ga.evalPopulation(population);
@@ -56,7 +58,7 @@ public class AllOnesGA implements Runnable{
          * straightforward: if there's a member of the individuals whose
          * chromosome is all ones, we're done!
          */
-        while (ga.isTerminationConditionMet(population) == false) {
+        while (!ga.isTerminationConditionMet(population)) {
             // Print fittest individual from individuals
             System.out.println("Best solution: " + population.getFittest(0).toString());
 

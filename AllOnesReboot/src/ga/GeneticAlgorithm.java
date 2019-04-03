@@ -56,7 +56,7 @@ public class GeneticAlgorithm {
     /**
      * Applies Mutation on Population
      */
-	private Function<Population, Individual> mutationFunction;
+	private BiFunction<Individual, Double, Individual> mutationFunction;
 
 
 	/**
@@ -75,11 +75,11 @@ public class GeneticAlgorithm {
 	 *            the individual to evaluate
 	 * @return double The fitness value for individual
 	 */
-	public double calcFitness(Individual individual) {
+	public double calcFitness(final Individual individual) {
         return calcFitness(individual,GAUtils.getAllOnesFitness);
 	}
 
-	public double calcFitness(Individual individual, Function<Individual,Double> calculateFitness){
+	public double calcFitness(final Individual individual, final Function<Individual,Double> calculateFitness){
 	    return calculateFitness.apply(individual);
     }
 
@@ -94,12 +94,12 @@ public class GeneticAlgorithm {
 	 * @param population
 	 *            the individuals to evaluate
 	 */
-	public void evalPopulation(Population population) {
+	public void evalPopulation(final Population population) {
 		var populationFitness = 0.0;
 
 		// Loop over individuals evaluating individuals and suming individuals
 		// fitness
-		for (Individual individual : population.getIndividuals()) {
+		for (final Individual individual : population.getIndividuals()) {
 			populationFitness += calcFitness(individual);
 		}
 
@@ -108,23 +108,19 @@ public class GeneticAlgorithm {
 
 	/**
 	 * Check if individuals has met termination condition
-	 * 
+	 *
 	 * For this simple problem, we know what a perfect solution looks like, so
 	 * we can simply stop evolving once we've reached a fitness of one.
-	 * 
+	 *
 	 * @param population
 	 * @return boolean True if termination condition met, otherwise, false
 	 */
-	public boolean isTerminationConditionMet(Population population) {
+	public boolean isTerminationConditionMet(final Population population) {
         return isTerminationConditionMet(population,Optional.empty());
 	}
 
-    public boolean isTerminationConditionMet(Population population, Optional<Function<Population,Boolean>> terminationCondition) {
-        if (terminationCondition.isEmpty()){
-            terminationCondition = Optional.of(GAUtils.terminationConditionSolutionFound);
-        }
-        return terminationCondition.get().apply(population);
-
+    public boolean isTerminationConditionMet(final Population population, Optional<Function<Population,Boolean>> terminationCondition) {
+	            return terminationCondition.orElse(GAUtils.terminationConditionSolutionFound).apply(population);
     }
 
 	/**
@@ -149,7 +145,7 @@ public class GeneticAlgorithm {
 	 *            The individuals to apply crossover to
 	 * @return The new individuals
 	 */
-	public Population crossoverPopulation(Population population) {
+	public Population crossoverPopulation(final Population population) {
 
         // Create new individuals
         final var newPopulation = new Population(population.size());
@@ -158,7 +154,7 @@ public class GeneticAlgorithm {
         IntStream.range(0,populationSize).sorted().forEach(index ->{
 
             //Individual parent1 = individuals.getFittest(index);
-            Individual parent1 = population.getIndividual(index);
+            final var parent1 = population.getIndividual(index);
 
             // Apply crossover to this individual?
             if (index >= this.elitismCount && this.crossoverRate > Math.random()) {
@@ -188,7 +184,7 @@ public class GeneticAlgorithm {
 	 *            The individuals to apply mutation to
 	 * @return The mutated individuals
 	 */
-	public Population mutatePopulation(Population population) {
+	public Population mutatePopulation(final Population population) {
 		// Initialize new individuals
 		final var newPopulation = new Population(this.populationSize);
 
