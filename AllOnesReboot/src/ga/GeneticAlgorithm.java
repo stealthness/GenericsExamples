@@ -189,29 +189,18 @@ public class GeneticAlgorithm {
 		final var newPopulation = new Population(this.populationSize);
 
 		// Loop over current individuals by fitness
-		for (int populationIndex = 0; populationIndex < population.size(); populationIndex++) {
-			final var individual = population.getFittest(populationIndex);
+        IntStream.range(0,population.size()).sorted().forEach(index->{
+            var individual = population.getIndividual(index);
 
-			// Loop over individual's genes
-			for (int geneIndex = 0; geneIndex < individual.size(); geneIndex++) {
-				// Skip mutation if this is an elite individual
-				if (populationIndex > this.elitismCount) {
-					// Does this gene need mutation?
-					if (this.mutationRate > Math.random()) {
-						// Get new gene
-						int newGene = 1;
-						if (individual.getGene(geneIndex) == 1) {
-							newGene = 0;
-						}
-						// Mutate gene
-						individual.setGene(geneIndex, newGene);
-					}
-				}
-			}
+            // Skip mutation if this is an elite individual
+            if (index > this.elitismCount) {
+                // Loop over individual's genes
+                individual = GAUtils.mutatePopulation.apply(individual,mutationRate);
+            }
 
-			// Add individual to individuals
-			newPopulation.setIndividual(populationIndex, individual);
-		}
+            // Add individual to individuals
+            newPopulation.setIndividual(index, individual);
+        });
 
 		// Return mutated individuals
 		return newPopulation;

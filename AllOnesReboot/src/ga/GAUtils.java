@@ -65,15 +65,27 @@ public class GAUtils {
 
     static BiFunction<Individual,Double, Individual> mutatePopulation = (individual, mutationRate) -> {
 
-        final var newIndividual = new Individual(individual.getChromosome());
+        //final var newIndividual = new Individual(individual.getChromosome());
+			    for (int geneIndex = 0; geneIndex < individual.size(); geneIndex++) {
 
-        Arrays.stream(newIndividual.getChromosome()).forEach(geneIndex ->{
-            if ( Math.random() < mutationRate ) {
-                newIndividual.setGene(geneIndex,(newIndividual.getGene(geneIndex) == 1)?0:1);
-            }
-        });
+					// Does this gene need mutation?
+					if (Math.random() < mutationRate) {
+						// Get new gene
+						int newGene = 1;
+						if (individual.getGene(geneIndex) == 1) {
+							newGene = 0;
+						}
+						// Mutate gene
+						individual.setGene(geneIndex, newGene);
+					}
+				}
+//        Arrays.stream(individual.getChromosome()).forEach(geneIndex ->{
+//            if ( Math.random() < mutationRate ) {
+//                individual.setGene(geneIndex,(individual.getGene(geneIndex) == 1)?0:1);
+//            }
+//        });
 
-        return newIndividual;
+        return individual;
     };
 
     /**
