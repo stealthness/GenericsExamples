@@ -3,6 +3,10 @@ package ga;
 import lombok.Builder;
 
 import java.util.Optional;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -58,6 +62,22 @@ public class GeneticAlgorithm {
      */
 	private BiFunction<Individual, Double, Individual> mutationFunction;
 
+    private ExecutorService executor  = Executors.newSingleThreadExecutor();
+
+    public Future<Population> evolove(Population population){
+        return  executor.submit(() ->{
+            var newPopulation = new Population(population.size());
+            // Apply crossover
+            newPopulation = crossoverPopulation(population);
+
+            // Apply mutation
+            newPopulation = mutatePopulation(newPopulation);
+
+            // Evaluate individuals
+            evalPopulation(newPopulation);
+            return newPopulation;
+        });
+    }
 
 	/**
 	 * Initialize individuals with random chromosome
