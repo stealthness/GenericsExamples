@@ -11,10 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class IndividualTest {
 
-    private static final int CHROMOSOME_LENGTH = 8;
+    private static final int CHROMOSOME_LENGTH_8 = 8;
     private static final double TOL = 0.01;
     private int[] emptyChromosome,evenChromosome,completeChromosome;
     private Individual emptyIndividual,evenIndividual,completeIndividual;
+
+    // Static assertEquals
 
     static void assertEqualIndividuals(Individual actIndividual, Individual expIndividual){
         assertTrue(IntStream.range(0,expIndividual.size())
@@ -30,11 +32,7 @@ class IndividualTest {
                 .allMatch(i-> actIndividual.getGene(i) == expIndividual.getGene(i));
     }
 
-    static boolean isEqualIndividuals(int[] actChromosome, Individual expIndividual){
-        return isEqualIndividuals(new Individual(actChromosome),expIndividual);
-    }
-
-
+    // Set up
 
     @BeforeEach
     void setUp(){
@@ -45,6 +43,8 @@ class IndividualTest {
         evenIndividual = new Individual(evenChromosome);
         completeIndividual = new Individual(completeChromosome);
     }
+
+    // Tests
 
     @Test
     void testCreate(){
@@ -75,42 +75,42 @@ class IndividualTest {
 
     @Test
     void testGetGeneFromEmptyIndividual(){
-        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> assertEquals(0,emptyIndividual.getGene(gene)));
+        IntStream.range(0, CHROMOSOME_LENGTH_8).forEach(gene -> assertEquals(0,emptyIndividual.getGene(gene)));
     }
 
     @Test
     void testGetGeneFromCompleteIndividual(){
-        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> assertEquals(1,completeIndividual.getGene(gene)));
+        IntStream.range(0, CHROMOSOME_LENGTH_8).forEach(gene -> assertEquals(1,completeIndividual.getGene(gene)));
     }
 
     @Test
     void testGetGeneFromEvenIndividual(){
-        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> assertEquals(evenChromosome[gene],evenIndividual.getGene(gene)));
+        IntStream.range(0, CHROMOSOME_LENGTH_8).forEach(gene -> assertEquals(evenChromosome[gene],evenIndividual.getGene(gene)));
     }
 
     @Test
     void testSize(){
-        assertEquals(CHROMOSOME_LENGTH,emptyIndividual.size());
+        assertEquals(CHROMOSOME_LENGTH_8,emptyIndividual.size());
     }
 
     @Test
     void testSetGeneToZero(){
         // switch an complete chromosome to a empty chromosome
-        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> completeIndividual.setGene(gene,0));
+        IntStream.range(0, CHROMOSOME_LENGTH_8).forEach(gene -> completeIndividual.setGene(gene,0));
         assertEqualIndividuals(emptyChromosome,completeIndividual);
     }
 
     @Test
     void testSetGeneToOne(){
         // switch an empty chromosome to a complete chromosome
-        IntStream.range(0,CHROMOSOME_LENGTH).forEach(gene -> emptyIndividual.setGene(gene,1));
+        IntStream.range(0, CHROMOSOME_LENGTH_8).forEach(gene -> emptyIndividual.setGene(gene,1));
         assertEqualIndividuals(completeChromosome,emptyIndividual);
     }
 
     @Test
     void testCreateRandomChromosome(){
-        Individual individual = new Individual(CHROMOSOME_LENGTH);
-        assertTrue(Arrays.stream(individual.getChromosome()).allMatch(gene -> gene == 0 || gene == 1));
+        Individual individual = new Individual(CHROMOSOME_LENGTH_8);
+        assertTrue(individual.getChromosome().stream().allMatch(gene -> gene == 0 || gene == 1));
     }
 
     @Test

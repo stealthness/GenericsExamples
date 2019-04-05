@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -9,7 +10,7 @@ class Individual implements Comparable{
 
     // Fields
 
-    private int[] chromosome;
+    private ArrayList<Integer> chromosome;
     private double fitness;
 
     // Constructors
@@ -19,13 +20,17 @@ class Individual implements Comparable{
      * @param chromosome
      */
     Individual(int[] chromosome) {
-        this.chromosome = new int[chromosome.length];
-        IntStream.range(0,this.size()).forEach(i -> this.setGene(i,chromosome[i]));
+        this.chromosome =  new ArrayList<>();
+
+        IntStream.range(0,chromosome.length).forEach(i -> {
+            this.chromosome.add(chromosome[i]);
+        });
+
     }
 
     Individual(int chromosomeLength) {
-        this.chromosome = new int[chromosomeLength];
-        IntStream.range(0,chromosomeLength).forEach(i -> this.chromosome[i] = (Math.random() > 0.5)?1:0);
+        this.chromosome = new ArrayList<>();
+        IntStream.range(0,chromosomeLength).forEach(i -> this.chromosome.add(i,(Math.random() > 0.5)?1:0));
     }
 
     // Methods
@@ -55,26 +60,24 @@ class Individual implements Comparable{
 
     // getters and setters
 
-    int[] getChromosome() {
+    ArrayList<Integer> getChromosome() {
         return this.chromosome;
     }
 
     void setChromosome(int[] chromosome) {
-        IntStream.range(0,chromosome.length).forEach(gene ->{
-            this.chromosome[gene] = chromosome[gene];
-        });
+        IntStream.range(0,chromosome.length).forEach(gene -> this.chromosome.set(gene, chromosome[gene]));
     }
 
     int getGene(int gene) {
-        return chromosome[gene];
+        return chromosome.get(gene);
     }
 
     void setGene(int gene, int value) {
-        chromosome[gene] = value;
+        chromosome.set(gene, value);
     }
 
     int size() {
-        return chromosome.length;
+        return chromosome.size();
     }
 
     // Override
@@ -82,7 +85,7 @@ class Individual implements Comparable{
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        Arrays.stream(chromosome).forEach(sb::append);
+        chromosome.stream().forEach(sb::append);
         return sb.toString();
     }
 

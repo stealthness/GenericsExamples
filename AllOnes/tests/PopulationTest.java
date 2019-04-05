@@ -43,9 +43,30 @@ class PopulationTest {
         population.initialize(CHROMOSOME_SIZE);
         Arrays.stream(population.getIndividuals()).forEach(individual -> {
             assertEquals(CHROMOSOME_SIZE,individual.size());
-            assertTrue(Arrays.stream(individual.getChromosome())
+            assertTrue(individual.getChromosome().stream()
                     .allMatch(gene -> gene == 0 || gene == 1));
         });
+    }
+
+
+    @Test
+    void testRandomIndividual(){
+        var count = 0;
+        var noOnes = 0;
+        while (count++ < MAX_COUNT){
+            var size = (int)(Math.random()*10)+2;
+            int[] randomArray = createRandomArray(Optional.of(size));
+            StringBuilder sb = new StringBuilder();
+            Arrays.stream(randomArray).forEach(sb::append);
+            count +=size;
+            var individual = new Individual(randomArray);
+            assertEquals(size, individual.size(), "size");
+            assertEquals(sb.toString(),individual.toString(),"string");
+            noOnes += Arrays.stream(randomArray).filter(x -> x==1).count();
+        }
+
+        // check that within 2 SD of mean
+        assertTrue(Math.abs(count - 2*noOnes) < MAX_COUNT/5," error:"+(Math.abs(count - 2*noOnes)) );
     }
 
     @Test
@@ -151,41 +172,8 @@ class PopulationTest {
         assertTrue(Arrays.stream(newPopulation.getIndividuals()).allMatch(individual -> emptyIndividual.equals(individual)));
     }
 
-    @Test
-    void testRandomArray(){
-        var count = 0;
-        var noOnes = 0;
-        while (count++ < MAX_COUNT){
-            var size = (int)(Math.random()*10)+2;
-            int[] randomArray = createRandomArray(Optional.of(size));
-            StringBuilder sb = new StringBuilder();
-            Arrays.stream(randomArray).forEach(sb::append);
-            count += size;
-            noOnes += Arrays.stream(randomArray).filter(x -> x==1).count();
-        }
-        // check that within 2 SD of mean
-        assertTrue(Math.abs(count - 2*noOnes) < MAX_COUNT/5," error:"+(Math.abs(count - 2*noOnes)) );
-    }
 
-    @Test
-    void testRandomIndividual(){
-        var count = 0;
-        var noOnes = 0;
-        while (count++ < MAX_COUNT){
-            var size = (int)(Math.random()*10)+2;
-            int[] randomArray = createRandomArray(Optional.of(size));
-            StringBuilder sb = new StringBuilder();
-            Arrays.stream(randomArray).forEach(sb::append);
-            count +=size;
-            var individual = new Individual(randomArray);
-            assertEquals(size, individual.size(), "size");
-            assertEquals(sb.toString(),individual.toString(),"string");
-            noOnes += Arrays.stream(randomArray).filter(x -> x==1).count();
-        }
 
-        // check that within 2 SD of mean
-        assertTrue(Math.abs(count - 2*noOnes) < MAX_COUNT/5," error:"+(Math.abs(count - 2*noOnes)) );
-    }
 
 
     // helper methods
@@ -217,6 +205,24 @@ class PopulationTest {
             randomArray[i] = (Math.random()<0.5)?1:0;
         });
         return randomArray;
+    }
+
+    // test on private method
+
+    @Test
+    void testRandomArray(){
+        var count = 0;
+        var noOnes = 0;
+        while (count++ < MAX_COUNT){
+            var size = (int)(Math.random()*10)+2;
+            int[] randomArray = createRandomArray(Optional.of(size));
+            StringBuilder sb = new StringBuilder();
+            Arrays.stream(randomArray).forEach(sb::append);
+            count += size;
+            noOnes += Arrays.stream(randomArray).filter(x -> x==1).count();
+        }
+        // check that within 2 SD of mean
+        assertTrue(Math.abs(count - 2*noOnes) < MAX_COUNT/5," error:"+(Math.abs(count - 2*noOnes)) );
     }
 
 

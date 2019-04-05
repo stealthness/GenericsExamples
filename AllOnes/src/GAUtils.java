@@ -15,7 +15,7 @@ class GAUtils {
     static Function<Individual, Double> sillyLastGeneFitness = individual -> (double)individual.getGene(individual.size()-1);
 
     static Function<Individual, Double> getMeanGeneFitness = individual -> {
-        Integer s = Arrays.stream(individual.getChromosome()).sum();
+        long s = individual.getChromosome().stream().filter(gene -> gene == 1).count();
         return ((double)s)/individual.size();
     };
 
