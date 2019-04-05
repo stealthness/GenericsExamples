@@ -1,100 +1,99 @@
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Arrays;
-import java.util.function.Function;
 import java.util.stream.IntStream;
 
-class Population {
+/**
+ * A individuals is an abstraction of a collection of individuals. The individuals
+ * class is generally used to perform group-level operations on its individuals,
+ * such as finding the strongest individuals, collecting stats on the individuals
+ * as a whole, and selecting individuals to mutate or crossover.
+ */
+@Getter
+@Setter
+public class Population {
+	private Individual individuals[];
+	private double populationFitness = -1;
 
-    // Fields
+	/**
+	 * Initializes blank individuals of individuals
+	 * 
+	 * @param populationSize
+	 *            The number of individuals in the individuals
+	 */
+	public Population(int populationSize) {
+		// Initial individuals
+		this.individuals = new Individual[populationSize];
+	}
 
-    private Individual[] individuals;
-    private double fitness = -1.0;
-    private int chromosomeSize = -1;
+	/**
+	 * Initializes individuals of individuals
+	 * 
+	 * @param populationSize
+	 *            The number of individuals in the individuals
+	 * @param chromosomeLength
+	 *            The size of each individual's chromosome
+	 */
+	public Population(int populationSize, int chromosomeLength) {
+		// Initialize the individuals as an array of individuals
+		this.individuals = new Individual[populationSize];
 
-    // Constructors
+        IntStream.range(0,populationSize).forEach(individual -> {
+            final var newIndividual = new Individual(chromosomeLength);
+            this.individuals[individual] = newIndividual;
+        });
+	}
 
-    Population(int populationSize) {
-        individuals = new Individual[populationSize];
-    }
+	/**
+	 * Find an individual in the individuals by its fitness
+	 * 
+	 * This method lets you select an individual in order of its fitness. This
+	 * can be used to find the single strongest individual (eg, if you're
+	 * testing for a solution), but it can also be used to find weak individuals
+	 * (if you're looking to cull the individuals) or some of the strongest
+	 * individuals (if you're using "elitism").
+	 * 
+	 * @param index
+	 *            The index of the individual you want, sorted by fitness. 0 is
+	 *            the strongest, individuals.length - 1 is the weakest.
+	 * @return individual ga.Individual at index
+	 */
+	public Individual getFittest(int index) {
+		// Order individuals by fitness
+        Arrays.sort(this.individuals);
 
-    // Methods
+		return this.individuals[index];
+	}
 
-    /**
-     * Sets all the individuals to random chromosome of size chromosomeSize
-     * @param chromosomeSize
-     */
-    void initialize(int chromosomeSize) {
-        this.chromosomeSize = chromosomeSize;
-        IntStream.range(0,this.size()).forEach(i -> individuals[i] = new Individual(chromosomeSize));
-    }
+	/**
+	 * Get individuals's size
+	 * 
+	 * @return size The individuals's size
+	 */
+	public int size() {
+		return this.individuals.length;
+	}
 
-    /**
-     * Evaluates the fitness of the Population
-     * fitness = sum of fitness of individuals in individuals divided by individuals size
-     */
-    void evaluateFitness(){
-        evaluateFitness(GAUtils.getMeanGeneFitness);
-    }
+	/**
+	 * Set individual at index
+	 * 
+	 * @param individual
+	 * @param index
+	 */
+	public void setIndividual(int index, Individual individual) {
+		individuals[index] = individual;
+	}
 
-    void evaluateFitness(Function<Individual,Double> fitnessFunction){
-        Arrays.stream(individuals).forEach(individual -> individual.evaluateFitness(fitnessFunction));
-        this.fitness = Arrays.stream(individuals).mapToDouble(Individual::getFitness).sum()/(double)individuals.length;
-    }
+	/**
+	 * Get individual at index
+	 * 
+	 * @param index
+	 * @return individual
+	 */
+	public Individual getIndividual(int index) {
+		return individuals[index];
+	}
+	
 
-    // Setter and Getters
-
-    int size() {
-        return  individuals.length;
-    }
-
-    /**
-     * @return individuals
-     */
-    Individual[] getIndividuals() {
-        return this.individuals;
-    }
-
-    /**
-     * Sets the value of an individual to the index of individuals.
-     * @param index of the Individual
-     * @param individual new value
-     */
-    void setIndividual(int index, Individual individual) {
-        IntStream.range(0,this.chromosomeSize).forEach(gene -> this.setGene(index, gene, individual.getGene(gene)));
-    }
-
-    /**
-     * @return the fitness of the individuals
-     */
-    double getFitness() {
-        return this.fitness;
-    }
-
-    // Override
-
-    @Override
-    public String toString(){
-        StringBuilder sb = new StringBuilder();
-        Arrays.stream(this.getIndividuals()).forEach(individual -> sb.append(individual.toString()+System.lineSeparator()));
-        return sb.toString();
-    }
-
-    void setGene(int individualIndex, int geneIndex, int newValue) {
-        this.getIndividuals()[individualIndex].setGene(geneIndex,newValue);
-    }
-
-    int getGene(int individualIndex, int geneIndex) {
-        return this.getIndividuals()[individualIndex].getGene(geneIndex);
-    }
-
-    int getChromosomeSize() {
-        return this.chromosomeSize;
-    }
-
-    @Override
-    public Population clone(){
-        var pop = new Population(this.size());
-        pop.initialize(this.chromosomeSize);
-        IntStream.range(0,this.size()).forEach(i-> pop.setIndividual(i,this.getIndividuals()[i]));
-        return pop;
-    }
 }

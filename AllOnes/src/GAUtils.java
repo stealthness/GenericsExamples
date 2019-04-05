@@ -4,67 +4,91 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 
 /**
- * Created by Stephen West on 20/03/2019.
+ * Created by Stephen West on 02/04/2019.
  */
-class GAUtils {
+public class GAUtils {
 
-    // Fitness Functions
+    /**
+     * Returns a value between 0.0 (all zeros) and 1.0 (all ones) that is the sum of ones divide by chromosome size
+     */
+    static Function<Individual,Double> getAllOnesFitness = (individual ->{
 
-    static Function<Individual, Double> sillyFirstGeneFitness = individual -> (double)individual.getGene(0);
+        // calculate the fitness
+        final var fitness = ((double)individual.getChromosome().stream()
+                .filter(gene -> gene == 1)
+                .count())/individual.size();
 
-    static Function<Individual, Double> sillyLastGeneFitness = individual -> (double)individual.getGene(individual.size()-1);
+        // Store fitness
+        individual.setFitness(fitness);
 
-    static Function<Individual, Double> getMeanGeneFitness = individual -> {
-        long s = individual.getChromosome().stream().filter(gene -> gene == 1).count();
-        return ((double)s)/individual.size();
-    };
+        return fitness;
 
+    } );
 
-    // Crossover Functions
+    /**
+     * Selection is based on relative fitness value, and a random individual from the population. fitter individuals
+     * are more likely to be selected
+     */
+    static Function<Population,Individual> selectWeightedParent = population -> {
+        // Get individuals
+        final var individuals = population.getIndividuals();
 
-    static BiFunction<Individual,Individual,Individual> sillyFirstParentGeneCrossover = (parent1,parent2) -> {
-        var offspring = new Individual(parent1.size());
-        // set first gene to parent 1
-        offspring.setGene(0,parent1.getGene(0));
-        // rest to parent 2
-        IntStream.range(1,parent1.size()).forEach(gene -> offspring.setGene(gene,parent2.getGene(gene)));
-        return offspring;
-    };
+        // Spin roulette wheel
+        final var populationFitness = population.getPopulationFitness();
+        final var rouletteWheelPosition = Math.random() * populationFitness;
 
-    // Select Parent
-
-    static Function<Population,Individual> sillySelectFirstIndividual = (population -> population.getIndividuals()[0]);
-
-    static Function<Population,Individual> sillySelectLastIndividual = (population -> population.getIndividuals()[population.size()-1]);
-
-    static Function<Population,Individual> selectWeightedWheelParent = population -> {
-
-        // Spin roulette Wheel
-        double populationFitness = population.getFitness();
-        double rouletteWheelPosition = Math.random() * populationFitness;
-        // Find Parent
-        double spinWheel = 0.0;
-        for (Individual individual : population.getIndividuals()) {
+        // Find parent
+        var spinWheel = 0.0;
+        for (Individual individual : individuals) {
             spinWheel += individual.getFitness();
             if (spinWheel >= rouletteWheelPosition) {
                 return individual;
             }
         }
-        return population.getIndividuals()[population.size() - 1];
+        return individuals[population.size() - 1];
     };
 
-
-    static BiFunction<Population,Double, Population> sillyFirstGeneMutateOnly = ( population, mutationRate )-> {
-        if ( mutationRate >= 1.0) {
-            population.setGene(0,0, population.getGene(0,0)==0?1:0);
-        }else if ( mutationRate <= 0.0){
-            // do nothing
-            return population;
-        }else{
-            if (Math.random() < mutationRate){
-                population.setGene(0,0, population.getGene(0,0)==0?1:0);
-            }
-        }
-        return population;
+    /**
+     * returns a new offspring from two parent Individuals. Each gene has 50/50 chance of being taken from either parent.
+     */
+    static BiFunction<Individual,Individual,Individual> crossoverFunction = (parent1, parent2) ->{
+        
+        final var offspring = new Individual(parent1.size());
+        // Loop over genome
+        IntStream.range(0,parent1.size()).forEach(geneIndex ->
+                offspring.setGene(geneIndex, (0.5 > Math.random())?parent1.getGene(geneIndex): parent2.getGene(geneIndex)));
+        return offspring;
     };
+
+    static BiFunction<Individual,Double, Individual> mutatePopulation = (individual, mutationRate) -> {
+
+        //final var newIndividual = new Individual(individual.getChromosome());
+			    for (int geneIndex = 0; geneIndex < individual.size(); geneIndex++) {
+
+					// Does this gene need mutation?
+					if (Math.random() < mutationRate) {
+						// Get new gene
+						int newGene = 1;
+						if (individual.getGene(geneIndex) == 1) {
+							newGene = 0;
+						}
+						// Mutate gene
+						individual.setGene(geneIndex, newGene);
+					}
+				}
+//        Arrays.stream(individual.getChromosome()).forEach(geneIndex ->{
+//            if ( Math.random() < mutationRate ) {
+//                individual.setGene(geneIndex,(individual.getGene(geneIndex) == 1)?0:1);
+//            }
+//        });
+
+        return individual;
+    };
+
+    /**
+     * returns true if any individual in population has a fitness value of 1 (all genes are ones and is completed solution)
+     */
+    static Function<Population,Boolean> terminationConditionSolutionFound = population ->
+            Arrays.stream(population.getIndividuals()).anyMatch(individual -> individual.getFitness()==1);
+
 }

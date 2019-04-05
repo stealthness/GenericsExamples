@@ -130,58 +130,58 @@ class IndividualTest {
 
     // Test Fitness
 
-    @Test
-    void testGetFitnessForEmptyIndividual(){
-        emptyIndividual.evaluateFitness();
-        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
-        emptyIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
-        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
-        emptyIndividual.evaluateFitness(GAUtils.sillyFirstGeneFitness);
-        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
-        emptyIndividual.evaluateFitness(GAUtils.sillyLastGeneFitness);
-        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
-    }
-
-    @Test
-    void testGetFitnessForEvenIndividual(){
-        evenIndividual.evaluateFitness();
-        assertEquals(0.5,evenIndividual.getFitness(),TOL);
-        evenIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
-        assertEquals(0.5,evenIndividual.getFitness(),TOL);
-        // {1,1,1,0,0,0,1,0}
-        evenIndividual.evaluateFitness(GAUtils.sillyLastGeneFitness);
-        assertEquals(0.0,evenIndividual.getFitness(),TOL);
-        evenIndividual.evaluateFitness(GAUtils.sillyFirstGeneFitness);
-        assertEquals(1.0,evenIndividual.getFitness(),TOL);
-
-    }
-
-    @Test
-    void testGetFitnessForCompleteIndividual(){
-        completeIndividual.evaluateFitness();
-        assertEquals(1.0,completeIndividual.getFitness(),TOL);
-        completeIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
-        assertEquals(1.0,completeIndividual.getFitness(),TOL);
-        completeIndividual.evaluateFitness(GAUtils.sillyLastGeneFitness);
-        assertEquals(1.0,completeIndividual.getFitness(),TOL);
-        completeIndividual.evaluateFitness(GAUtils.sillyFirstGeneFitness);
-        assertEquals(1.0,completeIndividual.getFitness(),TOL);
-    }
-
-    @Test
-    void testCompleteIndividualIsGreaterThanEmptyIndividual(){
-        completeIndividual.evaluateFitness();
-        emptyIndividual.evaluateFitness();
-        assertEquals(-1,completeIndividual.compareTo(emptyIndividual));
-    }
-
-    @Test
-    void testEvenIndividualIsGreaterThanEmptyIndividual(){
-        evenIndividual.evaluateFitness();
-        emptyIndividual.evaluateFitness();
-        assertEquals(-1,evenIndividual.compareTo(emptyIndividual));
-    }
-
-
+//    @Test
+//    void testGetFitnessForEmptyIndividual(){
+//        emptyIndividual.evaluateFitness();
+//        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
+//        emptyIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
+//        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
+//        emptyIndividual.evaluateFitness(GAUtils.sillyFirstGeneFitness);
+//        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
+//        emptyIndividual.evaluateFitness(GAUtils.sillyLastGeneFitness);
+//        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
+//    }
+//
+//    @Test
+//    void testGetFitnessForEvenIndividual(){
+//        evenIndividual.evaluateFitness();
+//        assertEquals(0.5,evenIndividual.getFitness(),TOL);
+//        evenIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
+//        assertEquals(0.5,evenIndividual.getFitness(),TOL);
+//        // {1,1,1,0,0,0,1,0}
+//        evenIndividual.evaluateFitness(GAUtils.sillyLastGeneFitness);
+//        assertEquals(0.0,evenIndividual.getFitness(),TOL);
+//        evenIndividual.evaluateFitness(GAUtils.sillyFirstGeneFitness);
+//        assertEquals(1.0,evenIndividual.getFitness(),TOL);
+//
+//    }
+//
+//    @Test
+//    void testGetFitnessForCompleteIndividual(){
+//        completeIndividual.evaluateFitness();
+//        assertEquals(1.0,completeIndividual.getFitness(),TOL);
+//        completeIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
+//        assertEquals(1.0,completeIndividual.getFitness(),TOL);
+//        completeIndividual.evaluateFitness(GAUtils.sillyLastGeneFitness);
+//        assertEquals(1.0,completeIndividual.getFitness(),TOL);
+//        completeIndividual.evaluateFitness(GAUtils.sillyFirstGeneFitness);
+//        assertEquals(1.0,completeIndividual.getFitness(),TOL);
+//    }
+//
+//    @Test
+//    void testCompleteIndividualIsGreaterThanEmptyIndividual(){
+//        completeIndividual.evaluateFitness();
+//        emptyIndividual.evaluateFitness();
+//        assertEquals(-1,completeIndividual.compareTo(emptyIndividual));
+//    }
+//
+//    @Test
+//    void testEvenIndividualIsGreaterThanEmptyIndividual(){
+//        evenIndividual.evaluateFitness();
+//        emptyIndividual.evaluateFitness();
+//        assertEquals(-1,evenIndividual.compareTo(emptyIndividual));
+//    }
+//
+//
 
 }

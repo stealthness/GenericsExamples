@@ -1,169 +1,226 @@
-import java.util.Arrays;
+import lombok.Builder;
+
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
 /**
- * Created by Stephen West on 08/03/2019.
+ *  Genetic Algorithm
  */
+@Builder
 public class GeneticAlgorithm {
 
-    private final int popSize;
-    private final double crossoverRate;
-    private final double mutationRate;
-    private final int elitism;
-    private Function<Individual,Double> fitnessFunction = GAUtils.getMeanGeneFitness;
-
-    GeneticAlgorithm(int popSize, double crossoverRate, double mutationRate, int elitism) {
-        this.popSize = popSize;
-        this.crossoverRate = crossoverRate;
-        this.mutationRate = mutationRate;
-        this.elitism = elitism;
-    }
 
     /**
-     * get the average fitness of the individuals
-     *
-     * @param population of individuals
-     * @return the average fitness
+     * Size of the Chromosome
      */
-    double getFitness(Population population) {
-        population.evaluateFitness();
-        return population.getFitness();
-    }
+    private int chromosomeSize;
 
     /**
-     * Returns the an individuals that is the index position of fitness amongst the individuals
-     *
-     * @param index the index of the fitess Individual in the individuals
-     * @param population is a individuals of Individuals
-     * @return individual that is index of fitness in the individuals
+     * Size of the Population
      */
-    Individual getFitessIndividual(int index, Population population) {
-        return Arrays.stream(population.getIndividuals()).sorted().skip(index).findFirst().orElse(null);
-    }
+    private int populationSize;
 
-    void evaluateFitness(Population population) {
-        population.evaluateFitness();
-    }
+	/**
+	 * Mutation rate is the fractional probability than an individual gene will mutate randomly in a given generation.
+     * The range is 0.0-1.0, but is generally small (on the order of 0.1 or less).
+	 */
+	private double mutationRate;
+
+	/**
+	 * Crossover rate is the fractional probability that two individuals will "mate" with each other, sharing genetic
+     * information, and creating offspring with traits of each of the parents. The range is 0.0-1.0 and is generally
+     * around 0.9 value.
+	 */
+	private double crossoverRate;
+
+	/**
+	 * Elitism is the concept that the strongest members of the individuals should be preserved from generation to
+     * generation. If an individual is one of the elite, it will not be mutated or crossover.
+	 */
+	private int elitismCount;
 
     /**
-     * Create a new Population of initialised individuals and sets their fitness values.
-     *
-     * @param chromosomeSize, sets the the size of the individuals chromosome.
-     * @return individuals, with all individuals intialised and fitness value set.
+     * Selection function is function that will select an individual from a give individuals
      */
-    Population initPopulation(int chromosomeSize) {
-        Population population = new Population(this.popSize);
-        population.initialize(chromosomeSize);
-        population.evaluateFitness();
-        return population;
-    }
+	private Function<Population, Individual> selectionFunction;
 
     /**
-     * Selects an individual at random weighted by their fitness level.
-     *
-     * @param population of individuals each containing a chromosome of a possible solution.
-     * @return selected individual from the individuals (default method GAUtils.selectWeightedWheelParent).
+     * crossoverFunction applies crossover of two parent individuals and returns a offspring individual
      */
-    Individual selectParent(Population population) {
-        return selectParent(GAUtils.selectWeightedWheelParent,population);
-    }
+	private BiFunction<Individual,Individual,Individual> crossoverFunction;
 
     /**
-     * Selects a parent from individuals using selector function.
-     *
-     * @param selector a function that selects parent from the individuals.
-     * @param population of individuals each containing a chromosome of a possible solution.
-     * @return selected individual from the individuals.
+     * Applies Mutation on Population
      */
-    Individual selectParent(Function<Population,Individual> selector,Population population) {
-        return selector.apply(population);
+	private BiFunction<Individual, Double, Individual> mutationFunction;
+
+    private ExecutorService executor  = Executors.newSingleThreadExecutor();
+
+    public Future<Population> evolove(Population population){
+        return  executor.submit(() ->{
+            var newPopulation = new Population(population.size());
+            // Apply crossover
+            newPopulation = crossoverPopulation(population);
+
+            // Apply mutation
+            newPopulation = mutatePopulation(newPopulation);
+
+            // Evaluate individuals
+            evalPopulation(newPopulation);
+            return newPopulation;
+        });
     }
 
+	/**
+	 * Initialize individuals with random chromosome
+	 * @return individuals The initial individuals generated
+	 */
+	public Population initPopulation() {
+		// Initialize individuals
+		return new Population(populationSize, chromosomeSize);
+	}
 
 
-    /**
-     * Returns true is any individual's fitness has a value of 1, false otherwise
-     *
-     * @param population of individuals each containing a chromosome of a possible solution
-     * @return true if a solution is found, false otherwise
-     */
-    boolean solutionFound(Population population) {
-        return this.getFitessIndividual(0,population).getFitness() >= 1.0;
+	/**
+	 * Calculates fitness using
+	 * @param individual
+	 *            the individual to evaluate
+	 * @return double The fitness value for individual
+	 */
+	public double calcFitness(final Individual individual) {
+        return calcFitness(individual,GAUtils.getAllOnesFitness);
+	}
+
+	public double calcFitness(final Individual individual, final Function<Individual,Double> calculateFitness){
+	    return calculateFitness.apply(individual);
     }
 
-    /**
-     * Crossover the individuals
-     * @param population
-     * @return
-     */
-    Population crossoverPopulation(Population population) {
-        Population newPopulation = new Population(popSize);
-        newPopulation.initialize(population.getChromosomeSize());
+	/**
+	 * Evaluate the whole individuals
+	 * 
+	 * Essentially, loop over the individuals in the individuals, calculate the
+	 * fitness for each, and then calculate the entire individuals's fitness. The
+	 * individuals's fitness may or may not be important, but what is important
+	 * here is making sure that each individual gets evaluated.
+	 * 
+	 * @param population
+	 *            the individuals to evaluate
+	 */
+	public void evalPopulation(final Population population) {
+		var populationFitness = 0.0;
 
-        // loop of individuals by fitness and apply crossover
-        IntStream.range(0, popSize).forEach(i -> {
+		// Loop over individuals evaluating individuals and suming individuals
+		// fitness
+		for (final Individual individual : population.getIndividuals()) {
+			populationFitness += calcFitness(individual);
+		}
 
-            // do wee apply to this individual
+		population.setPopulationFitness(populationFitness);
+	}
 
-            // select parent 1
-            Individual parent1 = getFitessIndividual(i, population);
-            if (Math.random() < crossoverRate) {
+	/**
+	 * Check if individuals has met termination condition
+	 *
+	 * For this simple problem, we know what a perfect solution looks like, so
+	 * we can simply stop evolving once we've reached a fitness of one.
+	 *
+	 * @param population
+	 * @return boolean True if termination condition met, otherwise, false
+	 */
+	public boolean isTerminationConditionMet(final Population population) {
+        return isTerminationConditionMet(population,Optional.empty());
+	}
 
-                // select parent 2 at random
-                Individual parent2 = selectParent(population);
+    public boolean isTerminationConditionMet(final Population population, Optional<Function<Population,Boolean>> terminationCondition) {
+	            return terminationCondition.orElse(GAUtils.terminationConditionSolutionFound).apply(population);
+    }
 
-                newPopulation.setIndividual(i, crossover(parent1, parent2));
+	/**
+	 * Apply crossover to individuals
+	 * 
+	 * Crossover, more colloquially considered "mating", takes the individuals
+	 * and blends individuals to create new offspring. It is hoped that when two
+	 * individuals crossover that their offspring will have the strongest
+	 * qualities of each of the parents. Of course, it's possible that an
+	 * offspring will end up with the weakest qualities of each parent.
+	 * 
+	 * This method considers both the ga.GeneticAlgorithm instance's crossoverRate
+	 * and the elitismCount.
+	 * 
+	 * The type of crossover we perform depends on the problem domain. We don't
+	 * want to create invalid solutions with crossover, so this method will need
+	 * to be changed for different types of problems.
+	 * 
+	 * This particular crossover method selects random genes from each parent.
+	 * 
+	 * @param population
+	 *            The individuals to apply crossover to
+	 * @return The new individuals
+	 */
+	public Population crossoverPopulation(final Population population) {
+
+        // Create new individuals
+        final var newPopulation = new Population(population.size());
+
+        // Loop over current individuals by fitness
+        IntStream.range(0,populationSize).sorted().forEach(index ->{
+
+            //Individual parent1 = individuals.getFittest(index);
+            final var parent1 = population.getIndividual(index);
+
+            // Apply crossover to this individual?
+            if (index >= this.elitismCount && this.crossoverRate > Math.random()) {
+                newPopulation.setIndividual(index, this.crossoverFunction.apply(parent1,selectionFunction.apply(population)));
             } else {
-                newPopulation.setIndividual(i, parent1);
+                // Add individual to new individuals without applying crossover
+                newPopulation.setIndividual(index, parent1);
+            }
+        });
+		return newPopulation;
+	}
+
+
+	/**
+	 * Apply mutation to individuals
+	 * 
+	 * Mutation affects individuals rather than the individuals. We look at each
+	 * individual in the individuals, and if they're lucky enough (or unlucky, as
+	 * it were), apply some randomness to their chromosome. Like crossover, the
+	 * type of mutation applied depends on the specific problem we're solving.
+	 * In this case, we simply randomly flip 0s to 1s and vice versa.
+	 * 
+	 * This method will consider the ga.GeneticAlgorithm instance's mutationRate
+	 * and elitismCount
+	 * 
+	 * @param population
+	 *            The individuals to apply mutation to
+	 * @return The mutated individuals
+	 */
+	public Population mutatePopulation(final Population population) {
+		// Initialize new individuals
+		final var newPopulation = new Population(this.populationSize);
+
+		// Loop over current individuals by fitness
+        IntStream.range(0,population.size()).sorted().forEach(index->{
+            var individual = population.getIndividual(index);
+
+            // Skip mutation if this is an elite individual
+            if (index > this.elitismCount) {
+                // Loop over individual's genes
+                individual = GAUtils.mutatePopulation.apply(individual,mutationRate);
             }
 
-        });
-        return newPopulation;
-    }
-
-    private Individual crossover(Individual parent1, Individual parent2) {
-        int chromosomeLength = parent1.size();
-        Individual offspring = new Individual(chromosomeLength);
-        IntStream.range(0, chromosomeLength).forEach(i -> {
-            int newGene = (Math.random() > 0.5) ? parent1.getGene(i) : parent2.getGene(i);
-            offspring.setGene(i, newGene);
-        });
-        return offspring;
-    }
-
-
-    Population mutatePopulation(BiFunction<Population,Double,Population> mutateFunction,Population population){
-        var newPopulation = population.clone();
-
-        newPopulation = mutateFunction.apply(newPopulation,mutationRate);
-        return newPopulation;
-    }
-
-
-    Population mutatePopulation(Population population) {
-
-        population.setGene(1,1,1);
-        int chromosomeLength = population.getIndividuals()[0].size();
-        IntStream.range(0,popSize).forEach(ind -> {
-
-            IntStream.range(0,chromosomeLength).forEach(gene -> {
-                int newValue = (population.getGene(ind,gene)==1)?0:1;
-
-                population.setGene(ind,gene, newValue);
-            });
-
+            // Add individual to individuals
+            newPopulation.setIndividual(index, individual);
         });
 
-        return population;
-    }
+		// Return mutated individuals
+		return newPopulation;
+	}
 
-    public Function<Individual, Double> getFitnessFunction() {
-        return fitnessFunction;
-    }
-
-    public void setFitnessFunction(Function<Individual, Double> fitnessFunction) {
-        this.fitnessFunction = fitnessFunction;
-    }
 }

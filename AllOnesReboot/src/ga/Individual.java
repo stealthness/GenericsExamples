@@ -3,6 +3,7 @@ package ga;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -20,8 +21,8 @@ import java.util.stream.IntStream;
 @Setter
 @Getter
 public class Individual implements Comparable{
-	private int[] chromosome;
-	private double fitness = -1;
+	private ArrayList<Integer> chromosome;
+	private double fitness = -1.0;
 
 	/**
 	 * Initializes individual with specific chromosome
@@ -31,7 +32,9 @@ public class Individual implements Comparable{
 	 */
 	public Individual(int...chromosome) {
 		// Create individual chromosome
-		this.chromosome = chromosome.clone();
+        Arrays.stream(chromosome).forEach(gene ->{
+            this.chromosome.add(gene);
+        });
 	}
 
 	/**
@@ -48,9 +51,8 @@ public class Individual implements Comparable{
 	 *            The length of the individuals chromosome
 	 */
 	public Individual(int chromosomeLength) {
-
-		this.chromosome = new int[chromosomeLength];
-        IntStream.range(0,chromosomeLength).forEach(gene -> this.setGene(gene, (Math.random()<0.5)?0:1));
+	    this.chromosome = new ArrayList<>();
+        IntStream.range(0,chromosomeLength).forEach(gene -> this.chromosome.add((Math.random()<0.5)?0:1));
 	}
 
 
@@ -60,28 +62,28 @@ public class Individual implements Comparable{
 	 * @return The individual's chromosome length
 	 */
 	public int size() {
-		return this.chromosome.length;
+		return this.chromosome.size();
 	}
 
 	/**
 	 * Set gene at index
 	 * 
-	 * @param gene
-	 * @param index
+	 * @param geneIndex
+	 * @param geneValue
 	 * @return gene
 	 */
-	public void setGene(int index, int gene) {
-		this.chromosome[index] = gene;
+	public void setGene(int geneIndex, int geneValue) {
+		this.chromosome.set(geneIndex, geneValue);
 	}
 
 	/**
 	 * Get gene at index
 	 * 
-	 * @param index
+	 * @param geneIndex
 	 * @return gene
 	 */
-	public int getGene(int index) {
-		return this.chromosome[index];
+	public int getGene(int geneIndex) {
+		return this.chromosome.get(geneIndex);
 	}
 
 
@@ -93,7 +95,7 @@ public class Individual implements Comparable{
 	 */
 	public String toString() {
 	    final StringBuilder sb = new StringBuilder();
-        Arrays.stream(chromosome).forEach(sb::append);
+        chromosome.forEach(sb::append);
         return sb.toString();
 
 	}

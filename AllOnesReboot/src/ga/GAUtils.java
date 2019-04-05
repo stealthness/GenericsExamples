@@ -17,7 +17,7 @@ public class GAUtils {
     static Function<Individual,Double> getAllOnesFitness = (individual ->{
 
         // calculate the fitness
-        final var fitness = ((double)Arrays.stream(individual.getChromosome())
+        final var fitness = ((double)individual.getChromosome().stream()
                 .filter(gene -> gene == 1)
                 .count())/individual.size();
 
