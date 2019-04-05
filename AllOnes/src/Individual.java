@@ -86,6 +86,7 @@ class Individual implements Comparable{
     public String toString(){
         StringBuilder sb = new StringBuilder();
         chromosome.stream().forEach(sb::append);
+        sb.append(" - "+getFitness());
         return sb.toString();
     }
 
@@ -95,9 +96,9 @@ class Individual implements Comparable{
             this.evaluateFitness();
         }
         if (fitness < ((Individual)o).fitness){
-            return 1;
-        } else if (fitness > ((Individual)o).fitness){
             return -1;
+        } else if (fitness > ((Individual)o).fitness){
+            return 1;
         }
         return 0;
     }
