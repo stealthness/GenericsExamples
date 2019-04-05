@@ -2,18 +2,23 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
+import static javax.swing.plaf.synth.ColorType.MAX_COUNT;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PopulationTest {
 
     private static final int POP_SIZE = 20;
-    private static final int CHROMO_SIZE = 8;
+    private static final int CHROMOSOME_SIZE = 8;
     private static final double TOL = 0.01;
+    private static final int MAX_COUNT = 10000;
     private Population population;
     private Individual emptyIndividual,evenIndividual,completeIndividual;
     private int[] emptyChromosome,evenChromosome,completeChromosome;
+
+
 
     @BeforeEach
     void setUp(){
@@ -35,9 +40,9 @@ class PopulationTest {
 
     @Test
     void testInitializePopulation(){
-        population.initialize(CHROMO_SIZE);
+        population.initialize(CHROMOSOME_SIZE);
         Arrays.stream(population.getIndividuals()).forEach(individual -> {
-            assertEquals(CHROMO_SIZE,individual.size());
+            assertEquals(CHROMOSOME_SIZE,individual.size());
             assertTrue(Arrays.stream(individual.getChromosome())
                     .allMatch(gene -> gene == 0 || gene == 1));
         });
@@ -89,12 +94,12 @@ class PopulationTest {
             setAllIndividualsInPopulationTo(emptyIndividual);
             // select a random gene in individuals
             var randomIndividualIndex = (int)(Math.random()*POP_SIZE);
-            var randomGeneIndex = (int)(Math.random()*CHROMO_SIZE);
+            var randomGeneIndex = (int)(Math.random()* CHROMOSOME_SIZE);
             // change random gene in individuals to 1
             population.setGene(randomIndividualIndex,randomGeneIndex,1);
             // assert all but the random gene is 0
             assertTrue(IntStream.range(0,POP_SIZE)
-                    .allMatch(i -> IntStream.range(0,CHROMO_SIZE)
+                    .allMatch(i -> IntStream.range(0, CHROMOSOME_SIZE)
                             .filter(gene -> i != randomIndividualIndex && gene != randomGeneIndex)
                             .allMatch(gene -> population.getGene(i,gene) == 0)));
             // assert that the random gene is 1
@@ -146,11 +151,47 @@ class PopulationTest {
         assertTrue(Arrays.stream(newPopulation.getIndividuals()).allMatch(individual -> emptyIndividual.equals(individual)));
     }
 
+    @Test
+    void testRandomArray(){
+        var count = 0;
+        var noOnes = 0;
+        while (count++ < MAX_COUNT){
+            var size = (int)(Math.random()*10)+2;
+            int[] randomArray = createRandomArray(Optional.of(size));
+            StringBuilder sb = new StringBuilder();
+            Arrays.stream(randomArray).forEach(sb::append);
+            count += size;
+            noOnes += Arrays.stream(randomArray).filter(x -> x==1).count();
+        }
+        // check that within 2 SD of mean
+        assertTrue(Math.abs(count - 2*noOnes) < MAX_COUNT/5," error:"+(Math.abs(count - 2*noOnes)) );
+    }
+
+    @Test
+    void testRandomIndividual(){
+        var count = 0;
+        var noOnes = 0;
+        while (count++ < MAX_COUNT){
+            var size = (int)(Math.random()*10)+2;
+            int[] randomArray = createRandomArray(Optional.of(size));
+            StringBuilder sb = new StringBuilder();
+            Arrays.stream(randomArray).forEach(sb::append);
+            count +=size;
+            var individual = new Individual(randomArray);
+            assertEquals(size, individual.size(), "size");
+            assertEquals(sb.toString(),individual.toString(),"string");
+            noOnes += Arrays.stream(randomArray).filter(x -> x==1).count();
+        }
+
+        // check that within 2 SD of mean
+        assertTrue(Math.abs(count - 2*noOnes) < MAX_COUNT/5," error:"+(Math.abs(count - 2*noOnes)) );
+    }
+
 
     // helper methods
 
     private void setAllIndividualsInPopulationTo(Individual individual){
-        population.initialize(CHROMO_SIZE);
+        population.initialize(CHROMOSOME_SIZE);
         IntStream.range(0,POP_SIZE).forEach(i -> population.setIndividual(i,individual));
     }
 
@@ -169,5 +210,14 @@ class PopulationTest {
         pop.setIndividual(9,new Individual(new int[]{1,1,0,0,1,1,1,0,0,0})); //5
         return pop;
     }
+
+    public int[] createRandomArray(Optional<Integer> size){
+        int[] randomArray = new int[(size.orElse(CHROMOSOME_SIZE))];
+        IntStream.range(0,size.orElse(CHROMOSOME_SIZE)).forEach(i->{
+            randomArray[i] = (Math.random()<0.5)?1:0;
+        });
+        return randomArray;
+    }
+
 
 }
