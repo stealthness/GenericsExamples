@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -87,101 +88,33 @@ class PopulationTest {
                 .allMatch(individual -> completeIndividual.toString().equals(individual.toString())));
     }
 
+    // Note evaluation of population fitness now been moved to GeneticAlgorithms
+
     @Test
     void testGetFitnessForCompleteIndividuals(){
-        setAllIndividualsInPopulationTo(completeIndividual);
-        Arrays.stream(population.getIndividuals()).forEach(individual -> {
-            GAUtils.getAllOnesFitness.apply(individual);
-            assertEquals(1.0, individual.getFitness(),TOL);
-        });
+        testFitnessFor(1.0,completeIndividual);
     }
 
-//    @Test
-//    void testGetFitnessForEvenIndividuals(){
-//        setAllIndividualsInPopulationTo(evenIndividual);
-//        population.evaluateFitness();
-//        assertEquals(0.5, population.getFitness(),TOL);
-//    }
-//    @Test
-//    void testGetFitnessForEmptyIndividuals(){
-//        setAllIndividualsInPopulationTo(emptyIndividual);
-//        population.evaluateFitness();
-//        assertEquals(0.0, population.getFitness(),TOL);
-//    }
-//
-//
-//    @Test
-//    void testSetGeneToOneForEmptyPopulation(){
-//
-//        int count = 0;
-//        // repeat test a numebr of times
-//        while(count++<100){
-//            // create an empty individuals
-//            setAllIndividualsInPopulationTo(emptyIndividual);
-//            // select a random gene in individuals
-//            var randomIndividualIndex = (int)(Math.random()*POP_SIZE);
-//            var randomGeneIndex = (int)(Math.random()* CHROMOSOME_SIZE);
-//            // change random gene in individuals to 1
-//            population.setGene(randomIndividualIndex,randomGeneIndex,1);
-//            // assert all but the random gene is 0
-//            assertTrue(IntStream.range(0,POP_SIZE)
-//                    .allMatch(i -> IntStream.range(0, CHROMOSOME_SIZE)
-//                            .filter(gene -> i != randomIndividualIndex && gene != randomGeneIndex)
-//                            .allMatch(gene -> population.getGene(i,gene) == 0)));
-//            // assert that the random gene is 1
-//            assertEquals(1,population.getGene(randomIndividualIndex,randomGeneIndex));
-//        }
-//
-//    }
-//
-//
-//    @Test
-//    void testEvenPopulationWithSillyLastFitnessFunctions(){
-//        setAllIndividualsInPopulationTo(evenIndividual);
-//        population.evaluateFitness();
-//        assertEquals(0.5,population.getFitness(),TOL);
-//
-//        population.evaluateFitness(ga.GAUtils.sillyLastGeneFitness);
-//        assertEquals(0.0,population.getFitness(),TOL);
-//    }
-//
-//    @Test
-//    void testEvenPopulationWithSillyFirstFitnessFunctions(){
-//
-//        setAllIndividualsInPopulationTo(evenIndividual);
-//        population.evaluateFitness();
-//        assertEquals(0.5,population.getFitness(),TOL);
-//
-//        population.evaluateFitness(ga.GAUtils.sillyFirstGeneFitness);
-//        assertEquals(1.0,population.getFitness(),TOL);
-//    }
-//
-//    @Test
-//    void testPopulationWithIncreasingIndividualsGetMeanFitnessReturnsCorrectIndividual(){
-//        population = setMixedIndividualPopulation();
-//        population.evaluateFitness(ga.GAUtils.getMeanGeneFitness);
-//        assertEquals(0.0,population.getIndividuals()[1].getFitness());
-//        assertEquals(1.0,population.getIndividuals()[7].getFitness());
-//        assertEquals(0.1,population.getIndividuals()[0].getFitness());
-//        assertEquals(0.5,population.getIndividuals()[9].getFitness());
-//        assertEquals(0.9,population.getIndividuals()[5].getFitness());
-//    }
-//
-//
-//    @Test
-//    void testClone(){
-//        setAllIndividualsInPopulationTo(emptyIndividual);
-//        var newPopulation = population.clone();
-//        population.setGene(0,0,1);
-//        // after changing individuals, no side affect on newPopulation
-//        assertTrue(Arrays.stream(newPopulation.getIndividuals()).allMatch(individual -> emptyIndividual.equals(individual)));
-//    }
-//
-//
-//
-//
-//
-    // helper methods
+    @Test
+    void testGetFitnessForEvenIndividuals(){
+        testFitnessFor(0.5,evenIndividual);
+    }
+
+    @Test
+    void testGetFitnessForEmptyIndividuals(){
+
+        testFitnessFor(0.0,emptyIndividual);
+    }
+
+    private void testFitnessFor(double fitness,Individual individual) {
+        setAllIndividualsInPopulationTo(individual);
+        population.setPopulationFitness(fitness);
+        Arrays.stream(population.getIndividuals()).forEach(i -> {
+            GAUtils.getAllOnesFitness.apply(i);
+            assertEquals(fitness, i.getFitness(), TOL);
+        });
+        assertEquals(fitness, population.getPopulationFitness(), TOL);
+    }
 
     private void setAllIndividualsInPopulationTo(ga.Individual individual){
         population = new Population(POP_SIZE,CHROMOSOME_SIZE);
@@ -204,31 +137,31 @@ class PopulationTest {
 //        return pop;
 //    }
 //
-//    public int[] createRandomArray(Optional<Integer> size){
-//        int[] randomArray = new int[(size.orElse(CHROMOSOME_SIZE))];
-//        IntStream.range(0,size.orElse(CHROMOSOME_SIZE)).forEach(i->{
-//            randomArray[i] = (Math.random()<0.5)?1:0;
-//        });
-//        return randomArray;
-//    }
-//
-//    // test on private method
-//
-//    @Test
-//    void testRandomArray(){
-//        var count = 0;
-//        var noOnes = 0;
-//        while (count++ < MAX_COUNT){
-//            var size = (int)(Math.random()*10)+2;
-//            int[] randomArray = createRandomArray(Optional.of(size));
-//            StringBuilder sb = new StringBuilder();
-//            Arrays.stream(randomArray).forEach(sb::append);
-//            count += size;
-//            noOnes += Arrays.stream(randomArray).filter(x -> x==1).count();
-//        }
-//        // check that within 2 SD of mean
-//        assertTrue(Math.abs(count - 2*noOnes) < MAX_COUNT/5," error:"+(Math.abs(count - 2*noOnes)) );
-//    }
+    public int[] createRandomArray(Optional<Integer> size){
+        int[] randomArray = new int[(size.orElse(CHROMOSOME_SIZE))];
+        IntStream.range(0,size.orElse(CHROMOSOME_SIZE)).forEach(i->{
+            randomArray[i] = (Math.random()<0.5)?1:0;
+        });
+        return randomArray;
+    }
+
+    // test on private method
+
+    @Test
+    void testRandomArray(){
+        var count = 0;
+        var noOnes = 0;
+        while (count++ < MAX_COUNT){
+            var size = (int)(Math.random()*10)+2;
+            int[] randomArray = createRandomArray(Optional.of(size));
+            StringBuilder sb = new StringBuilder();
+            Arrays.stream(randomArray).forEach(sb::append);
+            count += size;
+            noOnes += Arrays.stream(randomArray).filter(x -> x==1).count();
+        }
+        // check that within 2 SD of mean
+        assertTrue(Math.abs(count - 2*noOnes) < MAX_COUNT/5," error:"+(Math.abs(count - 2*noOnes)) );
+    }
 
 
 }
