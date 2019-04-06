@@ -32,6 +32,7 @@ public class Individual implements Comparable{
 	 */
 	public Individual(int...chromosome) {
 		// Create individual chromosome
+        this.chromosome = new ArrayList<>();
         Arrays.stream(chromosome).forEach(gene ->{
             this.chromosome.add(gene);
         });
