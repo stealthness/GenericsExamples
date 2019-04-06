@@ -2,6 +2,14 @@ package ga;
 
 import ga.Individual;
 import ga.Population;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PopulationTest {
 
@@ -13,25 +21,26 @@ class PopulationTest {
     private Individual emptyIndividual,evenIndividual,completeIndividual;
     private int[] emptyChromosome,evenChromosome,completeChromosome;
 
+
+
+    @BeforeEach
+    void setUp(){
+        emptyChromosome = new int[]{0,0,0,0,0,0,0,0};
+        evenChromosome = new int[]{1,1,1,0,0,0,1,0};
+        completeChromosome = new int[]{1,1,1,1,1,1,1,1};
+
+        emptyIndividual = new ga.Individual(emptyChromosome);
+        evenIndividual = new ga.Individual(evenChromosome);
+        completeIndividual = new ga.Individual(completeChromosome);
+
+        population = new ga.Population(POP_SIZE);
+    }
+
+    @Test
+    void testSize(){
+        assertEquals(POP_SIZE,population.size());
+    }
 //
-//
-//    @BeforeEach
-//    void setUp(){
-//        emptyChromosome = new int[]{0,0,0,0,0,0,0,0};
-//        evenChromosome = new int[]{1,1,1,0,0,0,1,0};
-//        completeChromosome = new int[]{1,1,1,1,1,1,1,1};
-//
-//        emptyIndividual = new ga.Individual(emptyChromosome);
-//        evenIndividual = new ga.Individual(evenChromosome);
-//        completeIndividual = new ga.Individual(completeChromosome);
-//
-//        population = new ga.Population(POP_SIZE);
-//    }
-//
-//    @Test
-//    void testSize(){
-//        assertEquals(POP_SIZE,population.size());
-//    }
 //
 //    @Test
 //    void testInitializePopulation(){
@@ -42,8 +51,7 @@ class PopulationTest {
 //                    .allMatch(gene -> gene == 0 || gene == 1));
 //        });
 //    }
-//
-//
+
 //    @Test
 //    void testRandomIndividual(){
 //        var count = 0;
@@ -64,28 +72,30 @@ class PopulationTest {
 //        assertTrue(Math.abs(count - 2*noOnes) < MAX_COUNT/5," error:"+(Math.abs(count - 2*noOnes)) );
 //    }
 //
-//    @Test
-//    void testSetPopulationAllToEmpty(){
-//        setAllIndividualsInPopulationTo(emptyIndividual);
-//        assertTrue(Arrays.stream(population.getIndividuals())
-//                .allMatch(individual -> emptyIndividual.toString().equals(individual.toString())));
-//
-//    }
-//
-//    @Test
-//    void testSetPopulationAllToComplete(){
-//        setAllIndividualsInPopulationTo(completeIndividual);
-//        assertTrue(Arrays.stream(population.getIndividuals())
-//                .allMatch(individual -> completeIndividual.toString().equals(individual.toString())));
-//    }
-//
-//    @Test
-//    void testGetFitnessForCompleteIndividuals(){
-//        setAllIndividualsInPopulationTo(completeIndividual);
-//        population.evaluateFitness();
-//        assertEquals(1.0, population.getFitness(),TOL);
-//    }
-//
+    @Test
+    void testSetPopulationAllToEmpty(){
+        setAllIndividualsInPopulationTo(emptyIndividual);
+        assertTrue(Arrays.stream(population.getIndividuals())
+                .allMatch(individual -> emptyIndividual.toString().equals(individual.toString())));
+
+    }
+
+    @Test
+    void testSetPopulationAllToComplete(){
+        setAllIndividualsInPopulationTo(completeIndividual);
+        assertTrue(Arrays.stream(population.getIndividuals())
+                .allMatch(individual -> completeIndividual.toString().equals(individual.toString())));
+    }
+
+    @Test
+    void testGetFitnessForCompleteIndividuals(){
+        setAllIndividualsInPopulationTo(completeIndividual);
+        Arrays.stream(population.getIndividuals()).forEach(individual -> {
+            GAUtils.getAllOnesFitness.apply(individual);
+            assertEquals(1.0, individual.getFitness(),TOL);
+        });
+    }
+
 //    @Test
 //    void testGetFitnessForEvenIndividuals(){
 //        setAllIndividualsInPopulationTo(evenIndividual);
@@ -171,12 +181,12 @@ class PopulationTest {
 //
 //
 //
-//    // helper methods
-//
-//    private void setAllIndividualsInPopulationTo(ga.Individual individual){
-//        population.initialize(CHROMOSOME_SIZE);
-//        IntStream.range(0,POP_SIZE).forEach(i -> population.setIndividual(i,individual));
-//    }
+    // helper methods
+
+    private void setAllIndividualsInPopulationTo(ga.Individual individual){
+        population = new Population(POP_SIZE,CHROMOSOME_SIZE);
+        IntStream.range(0,POP_SIZE).forEach(i -> population.setIndividual(i,individual));
+    }
 //
 //    static public ga.Population setMixedIndividualPopulation(){
 //        ga.Population pop = new ga.Population(10);
