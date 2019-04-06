@@ -1,13 +1,15 @@
+package ga;
+
 /**
  * This is our main class used to run the genetic algorithm.
  * 
  * This case is one of the simplest problems we can solve: the objective is to
  * end up with an individual whose chromosome is all ones.
  * 
- * The simplicity of this problem makes the ga.GeneticAlgorithm class'
+ * The simplicity of this problem makes the ga.ga.GeneticAlgorithm class'
  * "calcFitness" method very simple. We'll just count the number of ones in the
  * chromosome and use that as the fitness score. Similarly, the
- * "isTerminationConditionMet" method in the ga.GeneticAlgorithm class for this
+ * "isTerminationConditionMet" method in the ga.ga.GeneticAlgorithm class for this
  * example is very simple: if the fitness score (ie, number of ones) is the same
  * as the length of the chromosome (ie, we're all ones), we're done!
  * 
@@ -60,7 +62,7 @@ public class AllOnesGA implements Runnable{
             // Print fittest individual from individuals
             System.out.println("Best solution: " + population.getFittest(0).toString());
 
-//            Future<Population> future = ga.evolove(population);
+//            Future<ga.Population> future = ga.evolove(population);
 //
 //            while (!future.isDone()){
 //                System.out.println("Calculating...");

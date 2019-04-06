@@ -1,3 +1,5 @@
+package ga;
+
 import java.util.Arrays;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -62,7 +64,7 @@ public class GAUtils {
 
     static BiFunction<Individual,Double, Individual> mutatePopulation = (individual, mutationRate) -> {
 
-        //final var newIndividual = new Individual(individual.getChromosome());
+        //final var newIndividual = new ga.Individual(individual.getChromosome());
 			    for (int geneIndex = 0; geneIndex < individual.size(); geneIndex++) {
 
 					// Does this gene need mutation?

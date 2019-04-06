@@ -1,7 +1,8 @@
+package ga;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -134,11 +135,11 @@ class IndividualTest {
 //    void testGetFitnessForEmptyIndividual(){
 //        emptyIndividual.evaluateFitness();
 //        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
-//        emptyIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
+//        emptyIndividual.evaluateFitness(ga.GAUtils.getMeanGeneFitness);
 //        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
-//        emptyIndividual.evaluateFitness(GAUtils.sillyFirstGeneFitness);
+//        emptyIndividual.evaluateFitness(ga.GAUtils.sillyFirstGeneFitness);
 //        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
-//        emptyIndividual.evaluateFitness(GAUtils.sillyLastGeneFitness);
+//        emptyIndividual.evaluateFitness(ga.GAUtils.sillyLastGeneFitness);
 //        assertEquals(0.0,emptyIndividual.getFitness(),TOL);
 //    }
 //
@@ -146,12 +147,12 @@ class IndividualTest {
 //    void testGetFitnessForEvenIndividual(){
 //        evenIndividual.evaluateFitness();
 //        assertEquals(0.5,evenIndividual.getFitness(),TOL);
-//        evenIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
+//        evenIndividual.evaluateFitness(ga.GAUtils.getMeanGeneFitness);
 //        assertEquals(0.5,evenIndividual.getFitness(),TOL);
 //        // {1,1,1,0,0,0,1,0}
-//        evenIndividual.evaluateFitness(GAUtils.sillyLastGeneFitness);
+//        evenIndividual.evaluateFitness(ga.GAUtils.sillyLastGeneFitness);
 //        assertEquals(0.0,evenIndividual.getFitness(),TOL);
-//        evenIndividual.evaluateFitness(GAUtils.sillyFirstGeneFitness);
+//        evenIndividual.evaluateFitness(ga.GAUtils.sillyFirstGeneFitness);
 //        assertEquals(1.0,evenIndividual.getFitness(),TOL);
 //
 //    }
@@ -160,11 +161,11 @@ class IndividualTest {
 //    void testGetFitnessForCompleteIndividual(){
 //        completeIndividual.evaluateFitness();
 //        assertEquals(1.0,completeIndividual.getFitness(),TOL);
-//        completeIndividual.evaluateFitness(GAUtils.getMeanGeneFitness);
+//        completeIndividual.evaluateFitness(ga.GAUtils.getMeanGeneFitness);
 //        assertEquals(1.0,completeIndividual.getFitness(),TOL);
-//        completeIndividual.evaluateFitness(GAUtils.sillyLastGeneFitness);
+//        completeIndividual.evaluateFitness(ga.GAUtils.sillyLastGeneFitness);
 //        assertEquals(1.0,completeIndividual.getFitness(),TOL);
-//        completeIndividual.evaluateFitness(GAUtils.sillyFirstGeneFitness);
+//        completeIndividual.evaluateFitness(ga.GAUtils.sillyFirstGeneFitness);
 //        assertEquals(1.0,completeIndividual.getFitness(),TOL);
 //    }
 //

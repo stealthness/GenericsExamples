@@ -1,3 +1,5 @@
+package ga;
+
 import lombok.Getter;
 import lombok.Setter;
 

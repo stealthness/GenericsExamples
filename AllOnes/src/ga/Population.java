@@ -1,3 +1,5 @@
+package ga;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -57,7 +59,7 @@ public class Population {
 	 * @param index
 	 *            The index of the individual you want, sorted by fitness. 0 is
 	 *            the strongest, individuals.length - 1 is the weakest.
-	 * @return individual ga.Individual at index
+	 * @return individual ga.ga.Individual at index
 	 */
 	public Individual getFittest(int index) {
 		// Order individuals by fitness

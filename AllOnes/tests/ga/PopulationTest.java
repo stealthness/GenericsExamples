@@ -1,12 +1,7 @@
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+package ga;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.stream.IntStream;
-
-import static javax.swing.plaf.synth.ColorType.MAX_COUNT;
-import static org.junit.jupiter.api.Assertions.*;
+import ga.Individual;
+import ga.Population;
 
 class PopulationTest {
 
@@ -26,11 +21,11 @@ class PopulationTest {
 //        evenChromosome = new int[]{1,1,1,0,0,0,1,0};
 //        completeChromosome = new int[]{1,1,1,1,1,1,1,1};
 //
-//        emptyIndividual = new Individual(emptyChromosome);
-//        evenIndividual = new Individual(evenChromosome);
-//        completeIndividual = new Individual(completeChromosome);
+//        emptyIndividual = new ga.Individual(emptyChromosome);
+//        evenIndividual = new ga.Individual(evenChromosome);
+//        completeIndividual = new ga.Individual(completeChromosome);
 //
-//        population = new Population(POP_SIZE);
+//        population = new ga.Population(POP_SIZE);
 //    }
 //
 //    @Test
@@ -59,7 +54,7 @@ class PopulationTest {
 //            StringBuilder sb = new StringBuilder();
 //            Arrays.stream(randomArray).forEach(sb::append);
 //            count +=size;
-//            var individual = new Individual(randomArray);
+//            var individual = new ga.Individual(randomArray);
 //            assertEquals(size, individual.size(), "size");
 //            assertEquals(sb.toString(),individual.toString(),"string");
 //            noOnes += Arrays.stream(randomArray).filter(x -> x==1).count();
@@ -136,7 +131,7 @@ class PopulationTest {
 //        population.evaluateFitness();
 //        assertEquals(0.5,population.getFitness(),TOL);
 //
-//        population.evaluateFitness(GAUtils.sillyLastGeneFitness);
+//        population.evaluateFitness(ga.GAUtils.sillyLastGeneFitness);
 //        assertEquals(0.0,population.getFitness(),TOL);
 //    }
 //
@@ -147,14 +142,14 @@ class PopulationTest {
 //        population.evaluateFitness();
 //        assertEquals(0.5,population.getFitness(),TOL);
 //
-//        population.evaluateFitness(GAUtils.sillyFirstGeneFitness);
+//        population.evaluateFitness(ga.GAUtils.sillyFirstGeneFitness);
 //        assertEquals(1.0,population.getFitness(),TOL);
 //    }
 //
 //    @Test
 //    void testPopulationWithIncreasingIndividualsGetMeanFitnessReturnsCorrectIndividual(){
 //        population = setMixedIndividualPopulation();
-//        population.evaluateFitness(GAUtils.getMeanGeneFitness);
+//        population.evaluateFitness(ga.GAUtils.getMeanGeneFitness);
 //        assertEquals(0.0,population.getIndividuals()[1].getFitness());
 //        assertEquals(1.0,population.getIndividuals()[7].getFitness());
 //        assertEquals(0.1,population.getIndividuals()[0].getFitness());
@@ -178,24 +173,24 @@ class PopulationTest {
 //
 //    // helper methods
 //
-//    private void setAllIndividualsInPopulationTo(Individual individual){
+//    private void setAllIndividualsInPopulationTo(ga.Individual individual){
 //        population.initialize(CHROMOSOME_SIZE);
 //        IntStream.range(0,POP_SIZE).forEach(i -> population.setIndividual(i,individual));
 //    }
 //
-//    static public Population setMixedIndividualPopulation(){
-//        Population pop = new Population(10);
+//    static public ga.Population setMixedIndividualPopulation(){
+//        ga.Population pop = new ga.Population(10);
 //        pop.initialize(10);
-//        pop.setIndividual(0,new Individual(new int[]{0,0,1,0,0,0,0,0,0,0})); //1
-//        pop.setIndividual(1,new Individual(new int[]{0,0,0,0,0,0,0,0,0,0})); //0
-//        pop.setIndividual(2,new Individual(new int[]{0,0,0,1,0,0,1,0,0,0})); //2
-//        pop.setIndividual(3,new Individual(new int[]{0,0,1,0,1,1,1,1,1,1})); //7
-//        pop.setIndividual(4,new Individual(new int[]{0,1,0,1,0,0,1,0,0,0})); //3
-//        pop.setIndividual(5,new Individual(new int[]{1,1,1,0,1,1,1,1,1,1})); //9
-//        pop.setIndividual(6,new Individual(new int[]{1,0,1,1,1,1,0,1,1,1})); //8
-//        pop.setIndividual(7,new Individual(new int[]{1,1,1,1,1,1,1,1,1,1})); //10
-//        pop.setIndividual(8,new Individual(new int[]{1,0,0,0,1,1,1,0,0,0})); //4
-//        pop.setIndividual(9,new Individual(new int[]{1,1,0,0,1,1,1,0,0,0})); //5
+//        pop.setIndividual(0,new ga.Individual(new int[]{0,0,1,0,0,0,0,0,0,0})); //1
+//        pop.setIndividual(1,new ga.Individual(new int[]{0,0,0,0,0,0,0,0,0,0})); //0
+//        pop.setIndividual(2,new ga.Individual(new int[]{0,0,0,1,0,0,1,0,0,0})); //2
+//        pop.setIndividual(3,new ga.Individual(new int[]{0,0,1,0,1,1,1,1,1,1})); //7
+//        pop.setIndividual(4,new ga.Individual(new int[]{0,1,0,1,0,0,1,0,0,0})); //3
+//        pop.setIndividual(5,new ga.Individual(new int[]{1,1,1,0,1,1,1,1,1,1})); //9
+//        pop.setIndividual(6,new ga.Individual(new int[]{1,0,1,1,1,1,0,1,1,1})); //8
+//        pop.setIndividual(7,new ga.Individual(new int[]{1,1,1,1,1,1,1,1,1,1})); //10
+//        pop.setIndividual(8,new ga.Individual(new int[]{1,0,0,0,1,1,1,0,0,0})); //4
+//        pop.setIndividual(9,new ga.Individual(new int[]{1,1,0,0,1,1,1,0,0,0})); //5
 //        return pop;
 //    }
 //

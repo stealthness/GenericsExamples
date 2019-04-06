@@ -1,3 +1,5 @@
+package ga;
+
 import lombok.Builder;
 
 import java.util.Optional;
@@ -21,7 +23,7 @@ public class GeneticAlgorithm {
     private int chromosomeSize;
 
     /**
-     * Size of the Population
+     * Size of the ga.Population
      */
     private int populationSize;
 
@@ -55,7 +57,7 @@ public class GeneticAlgorithm {
 	private BiFunction<Individual,Individual,Individual> crossoverFunction;
 
     /**
-     * Applies Mutation on Population
+     * Applies Mutation on ga.Population
      */
 	private BiFunction<Individual, Double, Individual> mutationFunction;
 
@@ -149,7 +151,7 @@ public class GeneticAlgorithm {
 	 * qualities of each of the parents. Of course, it's possible that an
 	 * offspring will end up with the weakest qualities of each parent.
 	 * 
-	 * This method considers both the ga.GeneticAlgorithm instance's crossoverRate
+	 * This method considers both the ga.ga.GeneticAlgorithm instance's crossoverRate
 	 * and the elitismCount.
 	 * 
 	 * The type of crossover we perform depends on the problem domain. We don't
@@ -170,7 +172,7 @@ public class GeneticAlgorithm {
         // Loop over current individuals by fitness
         IntStream.range(0,populationSize).sorted().forEach(index ->{
 
-            //Individual parent1 = individuals.getFittest(index);
+            //ga.Individual parent1 = individuals.getFittest(index);
             final var parent1 = population.getIndividual(index);
 
             // Apply crossover to this individual?
@@ -194,7 +196,7 @@ public class GeneticAlgorithm {
 	 * type of mutation applied depends on the specific problem we're solving.
 	 * In this case, we simply randomly flip 0s to 1s and vice versa.
 	 * 
-	 * This method will consider the ga.GeneticAlgorithm instance's mutationRate
+	 * This method will consider the ga.ga.GeneticAlgorithm instance's mutationRate
 	 * and elitismCount
 	 * 
 	 * @param population
