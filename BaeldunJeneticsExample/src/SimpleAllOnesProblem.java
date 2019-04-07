@@ -5,9 +5,6 @@ import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 import io.jenetics.util.Factory;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-
 import java.util.function.Function;
 import java.util.stream.Collector;
 
@@ -32,7 +29,7 @@ public class SimpleAllOnesProblem implements Runnable{
         Factory<Genotype<BitGene>> gtf = Genotype.of((BitChromosome.of(50,0.5)));
         System.out.println("before the evolution: \n" +gtf);
 
-        Engine<BitGene,Integer> engine = Engine.builder(SimpleGeneticAlgorithms::eval,gtf).build();
+        Engine<BitGene,Integer> engine = Engine.builder(SimpleAllOnesProblem::eval,gtf).build();
 
         printEngineDetails(engine);
 
@@ -48,6 +45,12 @@ public class SimpleAllOnesProblem implements Runnable{
         System.out.println(engine.getIndividualCreationRetries()+ " : engine.getIndividualCreationRetries()");
     }
 
+
+    private static Integer eval(Genotype<BitGene> gt) {
+        return gt.getChromosome()
+                .as(BitChromosome.class)
+                .bitCount();
+    }
 }
 
 

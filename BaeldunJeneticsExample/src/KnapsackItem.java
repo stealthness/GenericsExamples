@@ -7,6 +7,8 @@ import java.util.stream.Collector;
 
 /**
  * Created by Stephen West on 07/04/2019.
+ *
+ * based on code from https://www.baeldung.com/jenetics
  */
 @Data
 @AllArgsConstructor
