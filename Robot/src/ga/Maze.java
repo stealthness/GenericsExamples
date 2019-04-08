@@ -4,6 +4,7 @@ package ga;
  * Created by Stephen West on 08/04/2019.
  */
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 public class Maze {
     private final int maze[][];
@@ -38,7 +39,7 @@ public class Maze {
     }
 
     public int getPositionValue(int x, int y) {
-        if (x < 0 || y < 0 || x >= this.maze.length || y >= this.maze[0].length) {
+        if (x < 0 || y < 0 || x >= this.sizeX() || y >= this.sizeY()) {
             return 1;
         }
         return this.maze[y][x];
@@ -48,17 +49,17 @@ public class Maze {
         return (this.getPositionValue(x, y) == 1);
     }
 
-    public int getMaxX() {
-        return this.maze[0].length - 1;
+    public int sizeX() {
+        return this.maze[0].length;
     }
 
-    public int getMaxY() {
-        return this.maze.length - 1;
+    public int sizeY() {
+        return this.maze.length;
     }
 
     public int scoreRoute(ArrayList<int[]> route) {
         int score = 0;
-        boolean visited[][] = new boolean[this.getMaxY() + 1][this.getMaxX() + 1];
+        boolean visited[][] = new boolean[this.sizeY()][this.sizeX()];
 
         // Loop over route and score each move
         for (Object routeStep : route) {
@@ -72,5 +73,34 @@ public class Maze {
         }
 
         return score;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb =new StringBuilder();
+        IntStream.range(0,sizeY()).forEach(y -> {
+            IntStream.range(0,sizeX()).forEach( x-> {
+                switch(this.getPositionValue(x,y)){
+                    case 0:
+                        sb.append("_");
+                        break;
+                    case 2:
+                        sb.append("O");
+                        break;
+                    case 3:
+                        sb.append(".");
+                        break;
+                    case 4:
+                        sb.append("+");
+                        break;
+                    case 1:
+                    default:
+                        sb.append("X") ;
+                }
+
+            });
+            sb.append(System.lineSeparator());
+        });
+        return sb.toString();
     }
 }

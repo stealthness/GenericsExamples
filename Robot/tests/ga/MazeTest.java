@@ -3,7 +3,6 @@ package ga;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,13 +19,13 @@ class MazeTest {
     @BeforeEach
     void setUp() {
 
-        maze = new Maze(new int[MAX_X][MAX_Y] );
+        maze = new Maze(new int[MAX_Y][MAX_X] );
     }
 
     @Test
     void getStartPosition() {
-        assertEquals(-1, maze.getStartPosition()[0]);
-        assertEquals(-1, maze.getStartPosition()[1]);
+        assertEquals(0, maze.getStartPosition()[0]);
+        assertEquals(0, maze.getStartPosition()[1]);
     }
 
     @Test
@@ -44,18 +43,34 @@ class MazeTest {
     }
 
     @Test
-    void getMaxX() {
-        assertEquals(MAX_X,maze.getMaxX());
+    void sizeX() {
+        assertEquals(MAX_X,maze.sizeX());
     }
 
     @Test
-    void getMaxY() {
-        assertEquals(MAX_Y,maze.getMaxY());
+    void sizeY() {
+        assertEquals(MAX_Y,maze.sizeY());
     }
 
     @Test
     void scoreRoute() {
+        maze = createTestMaze();
+        System.out.println(maze.toString());
+
         fail();
         // to do
     }
+
+    private Maze createTestMaze(){
+    return new Maze(new int[][]{{0,0,0,0,1,0,1,3,2},
+                                {1,0,1,1,1,0,1,3,1},
+                                {1,0,0,1,3,3,3,3,1},
+                                {3,3,3,1,3,1,1,0,1},
+                                {3,1,3,3,3,1,1,0,0},
+                                {3,3,1,1,1,1,0,1,1},
+                                {1,3,0,1,3,3,3,3,3},
+                                {0,3,1,1,3,1,0,1,3},
+                                {1,3,3,3,3,1,1,1,4}});
+ }
+
 }
