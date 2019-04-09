@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Created by Stephen West on 08/04/2019.
  */
-class MazeTest {
+public class MazeTest {
 
     private final int MAX_X = 8;
     private final int MAX_Y = 11;
@@ -61,7 +61,7 @@ class MazeTest {
         // to do
     }
 
-    private Maze createTestMaze(){
+    public static Maze createTestMaze(){
     return new Maze(new int[][]{{0,0,0,0,1,0,1,3,2},
                                 {1,0,1,1,1,0,1,3,1},
                                 {1,0,0,1,3,3,3,3,1},

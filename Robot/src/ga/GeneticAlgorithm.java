@@ -16,6 +16,8 @@ import java.util.stream.IntStream;
 @Builder
 public class GeneticAlgorithm {
 
+    private int tournamentSize;
+
 
     /**
      * Size of the Chromosome
