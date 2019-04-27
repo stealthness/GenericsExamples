@@ -65,24 +65,6 @@ public class AllOnesGA implements Runnable{
             // Print fittest individual from individuals
             System.out.println("Best solution: " + population.getFittest(0).toString());
 
-//            Future<Population> future = ga.evolove(population);
-//
-//            while (!future.isDone()){
-//                System.out.println("Calculating...");
-//                try {
-//                    Thread.sleep(10);
-//                } catch (InterruptedException e) {
-//                    // do nothing
-//                }
-//            }
-//
-//            try {
-//                population = future.get();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            } catch (ExecutionException e) {
-//                e.printStackTrace();
-//            }
             // Apply crossover
             population = ga.crossoverPopulation(population);
 

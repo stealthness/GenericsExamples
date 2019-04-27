@@ -37,7 +37,7 @@ public class Robot implements Runnable {
                 1,1,0,0,1,0,1,0,1,1,1,0,0,0,0,1,
                 1,1,0,0,1,0,1,0,1,1,1,0,0,0,0,1,
                 1,1,0,0,1,0,1,0,1,1,1,0,0,0,0,1,
-                1,1,0,0,1,0,1,0,1,1,1,0,0,0,0,1,};
+                1,1,0,0,1,0,1,0,1,1,1,0,0,0,0,1};
         this.maze = maze;
         int startPos[] = this.maze.getStartPosition();
         this.xPosition = startPos[0];
