@@ -3,6 +3,8 @@ package ga;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.ExecutionException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -33,5 +35,18 @@ public class TestGeneticAlgorithm {
         assertFalse(ga.isTerminationConditionMet(pop));
         assertEquals(100,pop.size());
         assertEquals(-1, pop.getPopulationFitness());
+    }
+
+    @Test
+    void testFutureReturnsPopulation() throws InterruptedException, ExecutionException {
+        var pop1 = ga.initPopulation();
+        var evolove = ga.evolove(pop1);
+        while(!evolove.isDone()){
+            System.out.println("waiting");
+            Thread.sleep(100);
+        }
+        var pop2 = evolove.get();
+        assertNotNull(pop2);
+        assertEquals(100,pop2.size());
     }
 }
