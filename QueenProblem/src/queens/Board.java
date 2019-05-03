@@ -61,6 +61,40 @@ public class Board {
         IntStream.range(0,MAX_BOARD_ROWS).forEach(row ->{
             IntStream.range(0,MAX_BOARD_COLS).forEach(col ->{
                 boardValue[row][col] = 0;
+
+                // position (row, col) = 0 if not a queen, 1 if a queen
+                int count = board[row][col];
+
+                // rows
+                for (int i = 0; i<MAX_BOARD_ROWS;i++) {
+                    if (board[i][col]==1 && row != i){
+                        count++;
+                    }
+                }
+                // cols
+                for (int i = 0; i<MAX_BOARD_COLS;i++) {
+                    if (board[row][i]==1 && col != i){
+                        count++;
+                    }
+                }
+                // diagonal
+                int d1 = row+col;
+                int d2 = MAX_BOARD_ROWS-row-1+col;
+                for (int i = 0; i<MAX_BOARD_COLS;i++) {
+                    for (int j = 0; j < MAX_BOARD_ROWS; j++){
+                        //  this is for down diagonal (\)
+                        if (board[i][j]==1 && i+j == d1 && ( i != row || j != col)){
+                            count++;
+                        }
+                        // this is for up diagonal (/)
+                        if (board[i][j]==1 && MAX_BOARD_ROWS-i-1+j == d2 && ( i != row || j != col)){
+                            count++;
+                        }
+                    }
+
+                }
+
+                boardValue[row][col]=count;
             });
         });
         return boardValue;
@@ -71,7 +105,7 @@ public class Board {
         var sb = new StringBuilder();
         IntStream.range(0,MAX_BOARD_ROWS).forEach(row ->{
             IntStream.range(0,MAX_BOARD_COLS).forEach(col ->{
-                sb.append(boardValue[row][col]);
+                sb.append(boardValue[MAX_BOARD_ROWS-row-1][col]);
             });
             sb.append("\n");
         });
