@@ -31,6 +31,16 @@ public class AllOnesGA implements Runnable{
 
     @Override
     public void run() {
+	    // Suggested setting
+        //                 .selectionFunction(GAUtils.selectWeightedParent)
+        //                .crossoverFunction(GAUtils.crossoverFunction)
+        //                .mutationFunction(GAUtils.mutatePopulation)
+        //                .chromosomeSize(50)
+        //                .populationSize(100)
+        //                .mutationRate(0.001)
+        //                .crossoverRate(0.95)
+        //                .elitismCount(2)
+
         // Create GA object
         final var ga = new GeneticAlgorithm.GeneticAlgorithmBuilder()
                 .selectionFunction(GAUtils.selectWeightedParent)
@@ -44,7 +54,7 @@ public class AllOnesGA implements Runnable{
                 .build();
 
 
-        int MAX_RUNS = 10;
+        int MAX_RUNS = 1000;
         int[] generations = new int[MAX_RUNS];
         IntStream.range(0,MAX_RUNS).forEach(i -> {
             System.out.println(i);
