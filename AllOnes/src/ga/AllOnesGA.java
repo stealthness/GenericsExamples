@@ -40,6 +40,13 @@ public class AllOnesGA implements Runnable{
                 .elitismCount(2)
                 .build();
 
+        System.out.println("solved in "+runGA(ga)+" generations");
+
+        System.out.println("solved in "+runGA(ga)+" generations");
+    }
+
+    public int runGA(GeneticAlgorithm ga){
+
         // Initialize individuals
         var population = ga.initPopulation();
 
@@ -60,26 +67,7 @@ public class AllOnesGA implements Runnable{
          */
         while (!ga.isTerminationConditionMet(population)) {
             // Print fittest individual from individuals
-            System.out.println("Best solution: " + population.getFittest(0).toString());
-
-//            Future<ga.Population> future = ga.evolove(population);
-//
-//            while (!future.isDone()){
-//                System.out.println("Calculating...");
-//                try {
-//                    Thread.sleep(10);
-//                } catch (InterruptedException e) {
-//                    // do nothing
-//                }
-//            }
-//
-//            try {
-//                population = future.get();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            } catch (ExecutionException e) {
-//                e.printStackTrace();
-//            }
+            // System.out.println("Best solution: " + population.getFittest(0).toString());
             // Apply crossover
             population = ga.crossoverPopulation(population);
 
@@ -92,13 +80,9 @@ public class AllOnesGA implements Runnable{
             // Increment the current generation
             generation++;
         }
-
-        /**
-         * We're out of the loop now, which means we have a perfect solution on
-         * our hands. Let's print it out to confirm that it is actually all
-         * ones, as promised.
-         */
-        System.out.println("Found solution in " + generation + " generations");
-        System.out.println("Best solution: " + population.getFittest(0).toString());
+        // return the result of the number of generation needed to solve
+        return generation;
     }
+
+
 }
