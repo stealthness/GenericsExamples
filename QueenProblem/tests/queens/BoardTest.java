@@ -54,4 +54,18 @@ class BoardTest {
         assertEquals(expBoard,board.toString());
         assertEquals(expBoardValue,board.printBoardValue());
     }
+
+    @Test
+    void testBoardWithOneQueenATCorners(){
+        String expBoardValue = "42222224\n22000022\n20200202\n20022002\n20022002\n20200202\n22000022\n42222224\n";
+        String expBoard = "Q......Q\n........\n........\n........\n........\n........\n........\nQ......Q\n";
+        Board board = new Board();
+        board.setQueenAt(0,0);
+        board.setQueenAt(0,7);
+        board.setQueenAt(7,0);
+        board.setQueenAt(7,7);
+        assertNotNull(board);
+        assertEquals(expBoard,board.toString());
+        assertEquals(expBoardValue,board.printBoardValue());
+    }
 }

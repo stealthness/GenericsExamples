@@ -21,4 +21,14 @@ class QueenProblemTest {
         assertEquals(DEFAULT_SIZE, qb1.toString().length());
 
     }
+
+    @Test
+    void getFitnessOnEmptyQueensProblem() {
+        QueenProblem qb1 = new QueenProblem("000000000");
+        QueenProblem qb2 = new QueenProblem(new int[DEFAULT_SIZE]);
+
+        // fitness for no queens set will be 64
+        assertEquals(64, qb1.getFitness());
+        assertEquals(64, qb2.getFitness());
+    }
 }

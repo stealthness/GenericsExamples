@@ -124,4 +124,16 @@ public class Board {
         });
         return sb.toString();
     }
+
+    public int getTotalBoardValue() {
+        int[][] boardValue = getBoardValue();
+        int sum = 0;
+        for (int i = 0; i<MAX_BOARD_ROWS;i++){
+            for (int j = 0; j<MAX_BOARD_COLS;j++){
+                sum = +boardValue[i][j];
+            }
+        }
+
+        return Math.abs(64 - sum);
+    }
 }
