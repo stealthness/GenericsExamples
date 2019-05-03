@@ -1,5 +1,8 @@
 package ga;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 /**
  * This is our main class used to run the genetic algorithm.
  * 
@@ -40,9 +43,16 @@ public class AllOnesGA implements Runnable{
                 .elitismCount(2)
                 .build();
 
-        System.out.println("solved in "+runGA(ga)+" generations");
 
-        System.out.println("solved in "+runGA(ga)+" generations");
+        int MAX_RUNS = 10;
+        int[] generations = new int[MAX_RUNS];
+        IntStream.range(0,MAX_RUNS).forEach(i -> {
+            System.out.println(i);
+            generations[i] = runGA(ga);
+            System.out.println("solved in "+generations[i]+" generations");
+        });
+        var average = (double)Arrays.stream(generations).sum() / (double)MAX_RUNS;
+        System.out.println("Avergae generation : " + average);
     }
 
     public int runGA(GeneticAlgorithm ga){
@@ -67,7 +77,8 @@ public class AllOnesGA implements Runnable{
          */
         while (!ga.isTerminationConditionMet(population)) {
             // Print fittest individual from individuals
-            // System.out.println("Best solution: " + population.getFittest(0).toString());
+            population.getFittest(0);
+            //System.out.println("Best solution: " + population.getFittest(0).toString());
             // Apply crossover
             population = ga.crossoverPopulation(population);
 
@@ -80,6 +91,7 @@ public class AllOnesGA implements Runnable{
             // Increment the current generation
             generation++;
         }
+
         // return the result of the number of generation needed to solve
         return generation;
     }
