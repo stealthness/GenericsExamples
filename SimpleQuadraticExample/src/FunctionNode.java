@@ -31,6 +31,6 @@ public class FunctionNode implements Node {
 
     @Override
     public String print() {
-        return "( " + ((node1 == null)?"null":node1.print())+" "+ functionString + " " + ((node1 == null)?"null":node2.print()) + " )";
+        return "(" + functionString + " " + ((node1 == null)?"null":node1.print()) + " " + ((node1 == null)?"null":node2.print()) + ")";
     }
 }

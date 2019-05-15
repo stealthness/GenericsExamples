@@ -3,6 +3,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.BiFunction;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -81,9 +82,9 @@ class NodeTest {
     @Test
     void testPrintNodeWithLambdaAndTwoTerminalNode(){
         var f0 = new FunctionNode(add,"+",t0,t1);
-        var expStr = "( " + String.valueOf(v0) + " "+ f0.getFunctionString() + " " +String.valueOf(v1) + " )";
+        var expStr = "(" + f0.getFunctionString() + " " + String.valueOf(v0) + " " +String.valueOf(v1) + ")";
         assertEquals(expStr,f0.print());
-        assertTrue(expStr.equals(f0.print()));
+        assertEquals(expStr, f0.print());
     }
 
     @Test
@@ -102,7 +103,29 @@ class NodeTest {
     @Test
     void testPrintAddFunctionNode(){
         var f0 = new FunctionNode(add,"+");
-        assertEquals("( null + null )",f0.print());
+        assertEquals("(+ null null)",f0.print());
+    }
+
+    @Test
+    void testExpressionCreation1(){
+        // create tree "2.0 + 0.0"
+
+        Node root = new FunctionNode(add, "+",new TerminalNode(2.0), new TerminalNode(0.0));
+        IntStream.range(-5,5).forEach(i -> {
+            assertEquals(2.0, root.get(new double[]{(double)i}));
+        });
+        assertEquals("(+ 2.0 0.0)",root.print());
+    }
+
+    @Test
+    void testExpressionCreation2(){
+        // create tree (- (+ x0 1.0) 0.0)
+
+        Node root = new FunctionNode(add, "+",new TerminalNode(2.0), new TerminalNode(0.0));
+        IntStream.range(-5,5).forEach(i -> {
+            assertEquals(2.0, root.get(new double[]{(double)i}));
+        });
+        assertEquals("(+ 2.0 0.0)",root.print());
     }
 
 }
