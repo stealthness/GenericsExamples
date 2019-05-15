@@ -55,7 +55,16 @@ class NodeTest {
         Node t0 = new Node(0);
         Node t1 = new Node(1);
 
-        var inputs = new double[]{2.3,-1.9};
+        var v0 = 2.3;
+        var v1 = -1.8;
+
+        var inputs = new double[]{v0,v1};
+
+        assertEquals(v0,inputs[0]);
+        assertEquals(0,t0.getIndexOfInput());
+
+        assertEquals(v0,t0.get(inputs),TOL);
+        assertEquals(v1,t1.get(inputs),TOL);
     }
 
 }

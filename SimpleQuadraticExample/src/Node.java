@@ -10,14 +10,24 @@ public class Node {
     private double value;
     private Node Node1;
     private Node Node2;
-    private int indexOfInput;
+    private int indexOfInput = -1;
 
     public Node(double value) {
         setValue(value);
     }
 
+    public Node(int indexOfInput){
+        setIndexOfInput(indexOfInput);
+    }
+
     public Double get(double[] inputs){
-        return getValue();
+
+        if (indexOfInput >=0){
+            return inputs[indexOfInput];
+        }else{
+            return getValue();
+        }
+
     }
 
     public Double get(){
