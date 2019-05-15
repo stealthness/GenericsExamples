@@ -11,10 +11,10 @@ class NodeTest {
     @Test
     void getValueIfTerminal() {
 
-        Node n0 = new Node(1.0);
-        assertEquals(1.0, n0.get());
-        Node n1 = new Node(-2.0);
-        assertEquals(-2.0, n1.get());
+        Node n0 = new ExNode(1.0);
+        assertEquals(1.0, ((ExNode)n0).get());
+        Node n1 = new ExNode(-2.0);
+        assertEquals(-2.0, ((ExNode)n1).get());
 
     }
 
@@ -46,14 +46,24 @@ class NodeTest {
 
 
     @Test
-    void testNodeWithLambdAndTwoTerminalNode(){
+    void testNodeWithLambdaAndTwoTerminalNode(){
+
+        BiFunction<Double,Double,Double> add = (a,b)-> a+b;
+
+        var v0 = 2.3;
+        var v1 = -1.8;
+        Node t0 = new ExNode(v0);
+        Node t1 = new ExNode(v1);
+        var f0 = new ExNode(add, t0,t1);
+
+        assertEquals(v0+v1,f0.get(),TOL);
 
     }
 
     @Test
     void testNodeThatIsInputNode(){
-        Node t0 = new Node(0);
-        Node t1 = new Node(1);
+        Node t0 = new ExNode(0);
+        Node t1 = new ExNode(1);
 
         var v0 = 2.3;
         var v1 = -1.8;
@@ -61,7 +71,7 @@ class NodeTest {
         var inputs = new double[]{v0,v1};
 
         assertEquals(v0,inputs[0]);
-        assertEquals(0,t0.getIndexOfInput());
+        assertEquals(0,((ExNode)t0).getIndexOfInput());
 
         assertEquals(v0,t0.get(inputs),TOL);
         assertEquals(v1,t1.get(inputs),TOL);
