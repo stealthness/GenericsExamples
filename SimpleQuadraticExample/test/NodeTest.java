@@ -19,6 +19,9 @@ class NodeTest {
     Node t0;
     Node t1;
 
+    VariableNode x0;
+    VariableNode x1;
+
 
     @BeforeEach
     void SetUp(){
@@ -27,6 +30,10 @@ class NodeTest {
 
         t0 = new TerminalNode(v0);
         t1 = new TerminalNode(v1);
+
+        x0 = new VariableNode(0);
+        x1 = new VariableNode(1);
+
     }
 
     @Test
@@ -37,8 +44,8 @@ class NodeTest {
 
     @Test
     void printTerminal() {
-        assertTrue(String.valueOf(v0).equals(t0.print()));
-        assertTrue(String.valueOf(v1).equals(t1.print()));
+        assertEquals(String.valueOf(v0), t0.print());
+        assertEquals(String.valueOf(v1), t1.print());
     }
 
 
@@ -79,20 +86,16 @@ class NodeTest {
     }
 
     @Test
-    void testNodeThatIsInputNode(){
-        Node t0 = new ExNode(0);
-        Node t1 = new ExNode(1);
+    void testNodeThatIsVariableNode(){
+        var variables = new double[]{v0,v1};
+        assertEquals(v0,x0.get(variables),TOL);
+        assertEquals(v1,x1.get(variables),TOL);
+    }
 
-        var v0 = 2.3;
-        var v1 = -1.8;
-
-        var inputs = new double[]{v0,v1};
-
-        assertEquals(v0,inputs[0]);
-        assertEquals(0,((ExNode)t0).getIndexOfInput());
-
-        assertEquals(v0,t0.get(inputs),TOL);
-        assertEquals(v1,t1.get(inputs),TOL);
+    @Test
+    void testPrintVariableNode(){
+        assertEquals("x0",x0.print());
+        assertEquals("x1",x1.print());
     }
 
     @Test
