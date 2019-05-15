@@ -11,10 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class NodeTest {
 
     private static final double TOL = 0.000001;
-    private BiFunction<Double,Double,Double> add = Double::sum;
-    private BiFunction<Double,Double,Double> subtract = (a, b)-> a-b;
-    private BiFunction<Double,Double,Double> multiply = (a, b)-> a*b;
-    private BiFunction<Double,Double,Double> protectedDivision = (a, b)-> (b==0)?1.0:a/b;
     private double v0;
     private double v1;
 
@@ -57,36 +53,36 @@ class NodeTest {
 
     @Test
     void simpleAddLambdaTest(){
-        assertEquals(v0+v1, add.apply(v0,v1),TOL);
+        assertEquals(v0+v1, GPUtils.add.apply(v0,v1),TOL);
     }
 
     @Test
     void simpleSubtractLambdaTest(){
-        assertEquals(v0-v1, subtract.apply(v0,v1),TOL);
+        assertEquals(v0-v1, GPUtils.subtract.apply(v0,v1),TOL);
     }
 
     @Test
     void simpleMultiplayLambdaTest(){
-        assertEquals(v0*v1, multiply.apply(v0,v1),TOL);
+        assertEquals(v0*v1, GPUtils.multiply.apply(v0,v1),TOL);
     }
 
     @Test
     void simpleProtectedDivisionLambdaTest(){
-        assertEquals(1.0, protectedDivision.apply(3.3,0.0),TOL);
+        assertEquals(1.0, GPUtils.protectedDivision.apply(3.3,0.0),TOL);
         v1 = 0.0;
-        assertEquals(1.2, protectedDivision.apply(3.6,3.0),TOL);
+        assertEquals(1.2, GPUtils.protectedDivision.apply(3.6,3.0),TOL);
     }
 
 
     @Test
     void testNodeWithLambdaAndTwoTerminalNode(){
-        var f0 = new FunctionNode(add,"+",t0,t1);
+        var f0 = new FunctionNode(GPUtils.add,"+",t0,t1);
         assertEquals(v0+v1,f0.get(null),TOL);
     }
 
     @Test
     void testPrintNodeWithLambdaAndTwoTerminalNode(){
-        var f0 = new FunctionNode(add,"+",t0,t1);
+        var f0 = new FunctionNode(GPUtils.add,"+",t0,t1);
         var expStr = "(" + f0.getFunctionString() + " " + String.valueOf(v0) + " " +String.valueOf(v1) + ")";
         assertEquals(expStr,f0.print());
         assertEquals(expStr, f0.print());
@@ -107,7 +103,7 @@ class NodeTest {
 
     @Test
     void testPrintAddFunctionNode(){
-        var f0 = new FunctionNode(add,"+");
+        var f0 = new FunctionNode(GPUtils.add,"+");
         assertEquals("(+ null null)",f0.print());
     }
 
@@ -115,7 +111,7 @@ class NodeTest {
     void testExpressionCreation1(){
         // create tree "2.0 + 0.0"
 
-        Node root = new FunctionNode(add, "+",new TerminalNode(2.0), new TerminalNode(0.0));
+        Node root = new FunctionNode(GPUtils.add, "+",new TerminalNode(2.0), new TerminalNode(0.0));
         IntStream.range(-5,5).forEach(i -> {
             assertEquals(2.0, root.get(new double[]{(double)i}));
         });
@@ -130,9 +126,9 @@ class NodeTest {
         // function x+1
         // create tree (- (+ x0 1.0) 0.0)
 
-        Node subtree = new FunctionNode(add,"+", new VariableNode(0), new TerminalNode(1.0));
+        Node subtree = new FunctionNode(GPUtils.add,"+", new VariableNode(0), new TerminalNode(1.0));
 
-        Node root = new FunctionNode(subtract, "-",subtree, new TerminalNode(0.0));
+        Node root = new FunctionNode(GPUtils.subtract, "-",subtree, new TerminalNode(0.0));
         IntStream.range(-5,5).forEach(i -> {
             assertEquals(i+1.0, root.get(new double[]{(double)i}),TOL);
         });
