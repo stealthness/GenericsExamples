@@ -3,6 +3,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.function.BiFunction;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,6 +23,7 @@ class NodeTest {
 
     private VariableNode x0;
     private VariableNode x1;
+    private DoubleStream d;
 
 
     @BeforeEach
@@ -34,6 +36,9 @@ class NodeTest {
 
         x0 = new VariableNode(0);
         x1 = new VariableNode(1);
+
+        d = DoubleStream.of(-1.0,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1
+                            ,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0);
 
     }
 
@@ -115,17 +120,27 @@ class NodeTest {
             assertEquals(2.0, root.get(new double[]{(double)i}));
         });
         assertEquals("(+ 2.0 0.0)",root.print());
+        
+        var fit = d.reduce(0,(a,b) -> a + Math.abs((b*b + b + 1) - root.get(new double[]{b})));
+        System.out.println("fitness: "+fit);
     }
 
     @Test
     void testExpressionCreation2(){
+        // function x+1
         // create tree (- (+ x0 1.0) 0.0)
 
-        Node root = new FunctionNode(add, "+",new TerminalNode(2.0), new TerminalNode(0.0));
+        Node subtree = new FunctionNode(add,"+", new VariableNode(0), new TerminalNode(1.0));
+
+        Node root = new FunctionNode(subtract, "-",subtree, new TerminalNode(0.0));
         IntStream.range(-5,5).forEach(i -> {
-            assertEquals(2.0, root.get(new double[]{(double)i}));
+            assertEquals(i+1.0, root.get(new double[]{(double)i}),TOL);
         });
-        assertEquals("(+ 2.0 0.0)",root.print());
+        assertEquals("(- (+ x0 1.0) 0.0)",root.print());
+
+
+        var fit = d.reduce(0,(a,b) -> a + Math.abs((b*b + b + 1) - root.get(new double[]{b})));
+        System.out.println("fitness: "+fit);
     }
 
 }
