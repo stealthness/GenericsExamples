@@ -1,5 +1,8 @@
 package ga;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 /**
  * This is our main class used to run the genetic algorithm.
  * 
@@ -28,6 +31,16 @@ public class AllOnesGA implements Runnable{
 
     @Override
     public void run() {
+	    // Suggested setting
+        //                 .selectionFunction(GAUtils.selectWeightedParent)
+        //                .crossoverFunction(GAUtils.crossoverFunction)
+        //                .mutationFunction(GAUtils.mutatePopulation)
+        //                .chromosomeSize(50)
+        //                .populationSize(100)
+        //                .mutationRate(0.001)
+        //                .crossoverRate(0.95)
+        //                .elitismCount(2)
+
         // Create GA object
         final var ga = new GeneticAlgorithm.GeneticAlgorithmBuilder()
                 .selectionFunction(GAUtils.selectWeightedParent)
@@ -39,6 +52,20 @@ public class AllOnesGA implements Runnable{
                 .crossoverRate(0.95)
                 .elitismCount(2)
                 .build();
+
+
+        int MAX_RUNS = 1000;
+        int[] generations = new int[MAX_RUNS];
+        IntStream.range(0,MAX_RUNS).forEach(i -> {
+            System.out.println(i);
+            generations[i] = runGA(ga);
+            System.out.println("solved in "+generations[i]+" generations");
+        });
+        var average = (double)Arrays.stream(generations).sum() / (double)MAX_RUNS;
+        System.out.println("Avergae generation : " + average);
+    }
+
+    public int runGA(GeneticAlgorithm ga){
 
         // Initialize individuals
         var population = ga.initPopulation();
@@ -60,26 +87,8 @@ public class AllOnesGA implements Runnable{
          */
         while (!ga.isTerminationConditionMet(population)) {
             // Print fittest individual from individuals
-            System.out.println("Best solution: " + population.getFittest(0).toString());
-
-//            Future<ga.Population> future = ga.evolove(population);
-//
-//            while (!future.isDone()){
-//                System.out.println("Calculating...");
-//                try {
-//                    Thread.sleep(10);
-//                } catch (InterruptedException e) {
-//                    // do nothing
-//                }
-//            }
-//
-//            try {
-//                population = future.get();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            } catch (ExecutionException e) {
-//                e.printStackTrace();
-//            }
+            population.getFittest(0);
+            //System.out.println("Best solution: " + population.getFittest(0).toString());
             // Apply crossover
             population = ga.crossoverPopulation(population);
 
@@ -93,12 +102,9 @@ public class AllOnesGA implements Runnable{
             generation++;
         }
 
-        /**
-         * We're out of the loop now, which means we have a perfect solution on
-         * our hands. Let's print it out to confirm that it is actually all
-         * ones, as promised.
-         */
-        System.out.println("Found solution in " + generation + " generations");
-        System.out.println("Best solution: " + population.getFittest(0).toString());
+        // return the result of the number of generation needed to solve
+        return generation;
     }
+
+
 }

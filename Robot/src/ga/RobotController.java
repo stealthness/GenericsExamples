@@ -1,13 +1,9 @@
 package ga;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
 /**
  * This is our main class used to run the genetic algorithm.
  * 
- * This case is one of the simplest problems we can solve: the objective is to
- * end up with an individual whose chromosome is all ones.
+ *
  * 
  * The simplicity of this problem makes the ga.GeneticAlgorithm class'
  * "calcFitness" method very simple. We'll just count the number of ones in the
@@ -19,13 +15,12 @@ import java.util.concurrent.Future;
  * @author bkanber
  *
  */
-public class AllOnesGA implements Runnable{
-
+public class RobotController implements Runnable{
 
 	public static void main(String[] args) {
-
-	    final var allOnes = new AllOnesGA();
-	    allOnes.run();
+        Population population = new Population(2,128);
+	    final var robot= new Robot(population.getIndividual(0),createTestMaze(),64);
+	    robot.run();
 	}
 
 
@@ -36,10 +31,11 @@ public class AllOnesGA implements Runnable{
                 .selectionFunction(GAUtils.selectWeightedParent)
                 .crossoverFunction(GAUtils.crossoverFunction)
                 .mutationFunction(GAUtils.mutatePopulation)
-                .chromosomeSize(50)
-                .populationSize(100)
-                .mutationRate(0.001)
-                .crossoverRate(0.95)
+                .tournamentSize(5)
+                .chromosomeSize(128)
+                .populationSize(200)
+                .mutationRate(0.05)
+                .crossoverRate(0.9)
                 .elitismCount(2)
                 .build();
 
@@ -86,4 +82,33 @@ public class AllOnesGA implements Runnable{
         System.out.println("Found solution in " + generation + " generations");
         System.out.println("Best solution: " + population.getFittest(0).toString());
     }
+
+    public static Maze createTestMaze() {
+	    if (false){
+            return new Maze(new int[][]{{0, 0, 0, 0, 1, 0, 1, 3, 2},
+                    {1, 0, 1, 1, 1, 0, 1, 3, 1},
+                    {1, 0, 0, 1, 3, 3, 3, 3, 1},
+                    {3, 3, 3, 1, 3, 1, 1, 0, 1},
+                    {3, 1, 3, 3, 3, 1, 1, 0, 0},
+                    {3, 3, 1, 1, 1, 1, 0, 1, 1},
+                    {1, 3, 0, 1, 3, 3, 3, 3, 3},
+                    {0, 3, 1, 1, 3, 1, 0, 1, 3},
+                    {1, 3, 3, 3, 3, 1, 1, 1, 4}});	        
+        }else{
+            return new Maze(new int[][]{
+                    {0, 0, 0, 0, 1, 0, 1, 0, 2},
+                    {0, 0, 0, 1, 1, 0, 0, 0, 0},
+                    {1, 0, 0, 1, 0, 0, 0, 0, 1},
+                    {0, 0, 0, 1, 0, 1, 1, 0, 0},
+                    {0, 1, 0, 0, 0, 1, 1, 0, 0},
+                    {0, 0, 1, 0, 1, 1, 0, 1, 1},
+                    {0, 0, 0, 1, 0, 0, 0, 0, 0},
+                    {0, 0, 1, 0, 0, 1, 0, 1, 0},
+                    {1, 0, 0, 0, 0, 1, 1, 1, 4}});
+
+        }
+
+    }
+    
+    
 }

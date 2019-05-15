@@ -1,103 +1,318 @@
 package ga;
 
+import java.util.ArrayList;
+
 /**
- * This is our main class used to run the genetic algorithm.
- * 
+ * Created by Stephen West on 09/04/2019.
  *
- * 
- * The simplicity of this problem makes the ga.GeneticAlgorithm class'
- * "calcFitness" method very simple. We'll just count the number of ones in the
- * chromosome and use that as the fitness score. Similarly, the
- * "isTerminationConditionMet" method in the ga.GeneticAlgorithm class for this
- * example is very simple: if the fitness score (ie, number of ones) is the same
- * as the length of the chromosome (ie, we're all ones), we're done!
- * 
- * @author bkanber
+ * A robot abstraction. Give it a maze and an instruction set, and it will
+ * attempt to navigate to the finish.
  *
+ * based on work by bkanber
  */
-public class Robot implements Runnable{
+public class Robot implements Runnable {
 
+    private enum Direction {NORTH, EAST, SOUTH, WEST}
 
-	public static void main(String[] args) {
+    private int xPosition;
+    private int yPosition;
+    private Direction heading;
+    int maxMoves;
+    int moves;
+    private int sensorVal;
+    private final int sensorActions[];
+    private Maze maze;
+    private ArrayList<int[]> route;
 
-	    final var allOnes = new Robot();
-	    allOnes.run();
-	}
+    /**
+     * Initalize a robot with controller
+     *
+     * @param individual The string to map the sensor value to actions
+     * @param maze The maze the robot will use
+     * @param maxMoves The maximum number of moves the robot can make
+     */
+    public Robot(Individual individual, Maze maze, int maxMoves){
+        //this.sensorActions = this.calcSensorActions((Integer[]) individual.getChromosome().toArray());
+        this.sensorActions = new int[]{
+                1,1,0,0,1,0,1,0,1,1,1,0,0,0,0,1,
+                1,1,0,0,1,0,1,0,1,1,1,0,0,0,0,1,
+                1,1,0,0,1,0,1,0,1,1,1,0,0,0,0,1,
+                1,1,0,0,1,0,1,0,1,1,1,0,0,0,0,1};
+        this.maze = maze;
+        int startPos[] = this.maze.getStartPosition();
+        this.xPosition = startPos[0];
+        this.yPosition = startPos[1];
+        this.sensorVal = -1;
+        this.heading = Direction.EAST;
+        this.maxMoves = maxMoves;
+        this.moves = 0;
+        this.route = new ArrayList<int[]>();
+        this.route.add(startPos);
+    }
 
+    /**
+     * Runs the robot’s actions based on sensor inputs
+     */
+    public void run(){
+        while(true){
+            this.moves++;
 
-    @Override
-    public void run() {
-        // Create GA object
-        final var ga = new GeneticAlgorithm.GeneticAlgorithmBuilder()
-                .selectionFunction(GAUtils.selectWeightedParent)
-                .crossoverFunction(GAUtils.crossoverFunction)
-                .mutationFunction(GAUtils.mutatePopulation)
-                .chromosomeSize(50)
-                .populationSize(100)
-                .mutationRate(0.001)
-                .crossoverRate(0.95)
-                .elitismCount(2)
-                .build();
+            // Break if the robot stops moving
+            if (this.getNextAction() == 0) {
+                break;
+            }
 
-        // Initialize individuals
-        var population = ga.initPopulation();
+            // Break if we reach the goal
+            if (this.maze.getPositionValue(this.xPosition, this.yPosition) == 4) {
+                break;
+            }
 
-        // Evaluate individuals
-        ga.evalPopulation(population);
+            // Break if we reach a maximum number of moves
+            if (this.moves > this.maxMoves) {
+                break;
+            }
 
-        // Keep track of current generation
-        int generation = 1;
+            // Run action
+            this.makeNextAction();
+        }
+        System.out.println(this.printRoute());
+        System.out.println(maze.toString());
+    }
 
-        /**
-         * Start the evolution loop
-         *
-         * Every genetic algorithm problem has different criteria for finishing.
-         * In this case, we know what a perfect solution looks like (we don't
-         * always!), so our isTerminationConditionMet method is very
-         * straightforward: if there's a member of the individuals whose
-         * chromosome is all ones, we're done!
-         */
-        while (!ga.isTerminationConditionMet(population)) {
-            // Print fittest individual from individuals
-            System.out.println("Best solution: " + population.getFittest(0).toString());
+    /**
+     * Map robot’s sensor data to actions from binary string
+     *
+     * @param sensorActionsStr Binary GA chromosome
+     * @return int[] An array to map sensor value to an action
+     */
+    private int[] calcSensorActions(Integer[] sensorActionsStr){
+        // How many actions are there?
+        int numActions = (int) sensorActionsStr.length / 2;
+        int sensorActions[] = new int[numActions];
 
-//            Future<Population> future = ga.evolove(population);
-//
-//            while (!future.isDone()){
-//                System.out.println("Calculating...");
-//                try {
-//                    Thread.sleep(10);
-//                } catch (InterruptedException e) {
-//                    // do nothing
-//                }
-//            }
-//
-//            try {
-//                population = future.get();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            } catch (ExecutionException e) {
-//                e.printStackTrace();
-//            }
-            // Apply crossover
-            population = ga.crossoverPopulation(population);
+        // Loop through actions
+        for (int sensorValue = 0; sensorValue < numActions; sensorValue++){
+            // Get sensor action
+            int sensorAction = 0;
+            if (sensorActionsStr[sensorValue*2] == 1){
+                sensorAction += 2;
+            }
+            if (sensorActionsStr[(sensorValue*2)+1] == 1){
+                sensorAction += 1;
+            }
 
-            // Apply mutation
-            population = ga.mutatePopulation(population);
-
-            // Evaluate individuals
-            ga.evalPopulation(population);
-
-            // Increment the current generation
-            generation++;
+            // Add to sensor-action map
+            sensorActions[sensorValue] = sensorAction;
         }
 
-        /**
-         * We're out of the loop now, which means we have a perfect solution on
-         * our hands. Let's print it out to confirm that it is actually all
-         * ones, as promised.
-         */
-        System.out.println("Found solution in " + generation + " generations");
-        System.out.println("Best solution: " + population.getFittest(0).toString());
+        return sensorActions;
     }
+
+    /**
+     * Runs the next action
+     */
+    public void makeNextAction(){
+        // If move forward
+        if (this.getNextAction() == 1) {
+            int currentX = this.xPosition;
+            int currentY = this.yPosition;
+
+            // Move depending on current direction
+            if (Direction.NORTH == this.heading) {
+                this.yPosition += -1;
+                if (this.yPosition < 0) {
+                    this.yPosition = 0;
+                }
+            }
+            else if (Direction.EAST == this.heading) {
+                this.xPosition += 1;
+                if (this.xPosition > this.maze.sizeX()) {
+                    this.xPosition = this.maze.sizeX();
+                }
+            }
+            else if (Direction.SOUTH == this.heading) {
+                this.yPosition += 1;
+                if (this.yPosition > this.maze.sizeY()) {
+                    this.yPosition = this.maze.sizeY();
+                }
+            }
+            else if (Direction.WEST == this.heading) {
+                this.xPosition += -1;
+                if (this.xPosition < 0) {
+                    this.xPosition = 0;
+                }
+            }
+
+            // We can’t move here
+            if (this.maze.isWall(this.xPosition, this.yPosition) == true) {
+                this.xPosition = currentX;
+                this.yPosition = currentY;
+            }
+            else {
+                if(currentX != this.xPosition || currentY != this.yPosition) {
+                    this.route.add(this.getPosition());
+                }
+            }
+        }
+        // Move clockwise
+        else if(this.getNextAction() == 2) {
+            if (Direction.NORTH == this.heading) {
+                this.heading = Direction.EAST;
+            }
+            else if (Direction.EAST == this.heading) {
+                this.heading = Direction.SOUTH;
+            }
+            else if (Direction.SOUTH == this.heading) {
+                this.heading = Direction.WEST;
+            }
+            else if (Direction.WEST == this.heading) {
+                this.heading = Direction.NORTH;
+            }
+        }
+        // Move anti-clockwise
+        else if(this.getNextAction() == 3) {
+            if (Direction.NORTH == this.heading) {
+                this.heading = Direction.WEST;
+            }
+            else if (Direction.EAST == this.heading) {
+                this.heading = Direction.NORTH;
+            }
+            else if (Direction.SOUTH == this.heading) {
+                this.heading = Direction.EAST;
+            }
+            else if (Direction.WEST == this.heading) {
+                this.heading = Direction.SOUTH;
+            }
+        }
+
+        // Reset sensor value
+        this.sensorVal = -1;
+    }
+
+    /**
+     * Get next action depending on sensor mapping
+     *
+     * @return int Next action
+     */
+    public int getNextAction() {
+        return this.sensorActions[this.getSensorValue()];
+    }
+
+    /**
+     * Get sensor value
+     *
+     * @return int Next sensor value
+     */
+    public int getSensorValue(){
+        // If sensor value has already been calculated
+        if (this.sensorVal > -1) {
+            return this.sensorVal;
+        }
+
+        boolean frontSensor, frontLeftSensor, frontRightSensor, leftSensor, rightSensor, backSensor;
+        //frontSensor = frontLeftSensor = frontRightSensor = leftSensor = rightSensor = backSensor = false;
+
+        // Find which sensors have been activated
+        if (this.getHeading() == Direction.NORTH) {
+            frontSensor = this.maze.isWall(this.xPosition, this.yPosition-1);
+            frontLeftSensor = this.maze.isWall(this.xPosition-1, this.yPosition-1);
+            frontRightSensor = this.maze.isWall(this.xPosition+1, this.yPosition-1);
+            leftSensor = this.maze.isWall(this.xPosition-1, this.yPosition);
+            rightSensor = this.maze.isWall(this.xPosition+1, this.yPosition);
+            backSensor = this.maze.isWall(this.xPosition, this.yPosition+1);
+        }
+        else if (this.getHeading() == Direction.EAST) {
+            frontSensor = this.maze.isWall(this.xPosition+1, this.yPosition);
+            frontLeftSensor = this.maze.isWall(this.xPosition+1, this.yPosition-1);
+            frontRightSensor = this.maze.isWall(this.xPosition+1, this.yPosition+1);
+            leftSensor = this.maze.isWall(this.xPosition, this.yPosition-1);
+            rightSensor = this.maze.isWall(this.xPosition, this.yPosition+1);
+            backSensor = this.maze.isWall(this.xPosition-1, this.yPosition);
+        }
+        else if (this.getHeading() == Direction.SOUTH) {
+            frontSensor = this.maze.isWall(this.xPosition, this.yPosition+1);
+            frontLeftSensor = this.maze.isWall(this.xPosition+1, this.yPosition+1);
+            frontRightSensor = this.maze.isWall(this.xPosition-1, this.yPosition+1);
+            leftSensor = this.maze.isWall(this.xPosition+1, this.yPosition);
+            rightSensor = this.maze.isWall(this.xPosition-1, this.yPosition);
+            backSensor = this.maze.isWall(this.xPosition, this.yPosition-1);
+        }
+        else {
+            frontSensor = this.maze.isWall(this.xPosition-1, this.yPosition);
+            frontLeftSensor = this.maze.isWall(this.xPosition-1, this.yPosition+1);
+            frontRightSensor = this.maze.isWall(this.xPosition-1, this.yPosition-1);
+            leftSensor = this.maze.isWall(this.xPosition, this.yPosition+1);
+            rightSensor = this.maze.isWall(this.xPosition, this.yPosition-1);
+            backSensor = this.maze.isWall(this.xPosition+1, this.yPosition);
+        }
+
+        // Calculate sensor value
+        int sensorVal = 0;
+
+        if (frontSensor) {
+            sensorVal += 1;
+        }
+        if (frontLeftSensor) {
+            sensorVal += 2;
+        }
+        if (frontRightSensor) {
+            sensorVal += 4;
+        }
+        if (leftSensor) {
+            sensorVal += 8;
+        }
+        if (rightSensor) {
+            sensorVal += 16;
+        }
+        if (backSensor) {
+            sensorVal += 32;
+        }
+
+        this.sensorVal = sensorVal;
+
+        return sensorVal;
+    }
+
+    /**
+     * Get robot’s position
+     *
+     * @return int[] Array with robot’s position
+     */
+    public int[] getPosition(){
+        return new int[]{this.xPosition, this.yPosition};
+    }
+
+    /**
+     * Get robot’s heading
+     *
+     * @return Direction Robot’s heading
+     */
+    private Direction getHeading(){
+        return this.heading;
+    }
+
+    /**
+     * Returns robot’s complete route around the maze
+     *
+     * @return ArrayList<int> Robot’s route
+     */
+    public ArrayList<int[]> getRoute(){
+        return this.route;
+    }
+
+    /**
+     * Returns route in printable format
+     *
+     * @return String Robot’s route
+     */
+    public String printRoute(){
+        String route = "";
+
+        for (Object routeStep : this.route) {
+            int step[] = (int[]) routeStep;
+            route += "{" + step[0] + "," + step[1] + "}";
+        }
+        return route;
+    }
+
 }

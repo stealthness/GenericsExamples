@@ -2,6 +2,7 @@ package ga;
 
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -10,6 +11,13 @@ import java.util.stream.IntStream;
  * Created by Stephen West on 02/04/2019.
  */
 public class GAUtils {
+
+    public static Function<Population, Individual> tournamentFunction = (population) -> {
+        // calculate the fitness
+
+        Random r = new Random();
+        return population.getFittest(r.nextInt());
+    };
 
     /**
      * Returns a value between 0.0 (all zeros) and 1.0 (all ones) that is the sum of ones divide by chromosome size

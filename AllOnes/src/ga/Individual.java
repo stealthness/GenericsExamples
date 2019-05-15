@@ -111,4 +111,12 @@ public class Individual implements Comparable{
 	    // equal
         return 0;
     }
+
+    public double getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(double fitness) {
+        this.fitness = fitness;
+    }
 }
