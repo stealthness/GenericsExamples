@@ -1,5 +1,3 @@
-import java.util.Optional;
-
 public interface Node {
 
     /**
@@ -14,4 +12,21 @@ public interface Node {
      * @return
      */
     String print();
+
+    /**
+     * the size of the tree, which is count of the number of the nodes.
+     *
+     * @return
+     */
+    default int size() {
+        return 1;
+    }
+
+    /**
+     * Returns the depth of the tree
+     * @return
+     */
+    default int getDepth(){
+        return 1;
+    };
 }

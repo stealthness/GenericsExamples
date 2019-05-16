@@ -2,6 +2,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.stream.DoubleStream;
 
@@ -61,13 +62,36 @@ public class Individual implements Node{
         individual.setTerminals(setOfTerminal);
 
         individual.setRange(new double[]{-1.0,1.0});
-
         individual.setFitnessFunction(GPUtils.FitnessFunctionSumOfErrors);
         // non random set
-
         individual.setRoot(new FunctionNode(GPUtils.add,"+", new VariableNode(0),new TerminalNode(1.0)));
+
+        if (Math.random() < 0.5){
+            if (Math.random() < 0.5){
+                individual.setRoot(new VariableNode(0));
+                return individual;
+            } else{
+                individual.setRoot(new TerminalNode(getRandomElement(setOfTerminal)));
+                return individual;
+            }
+        } else {
+
+
+        }
 
         return individual;
 
     }
+
+    // Function select an element base on index
+    // and return an element
+    public static Double getRandomElement(List<Double> list)
+    {
+        Random rand = new Random();
+        return list.get(rand.nextInt(list.size()));
+    }
+
+
+
+
 }

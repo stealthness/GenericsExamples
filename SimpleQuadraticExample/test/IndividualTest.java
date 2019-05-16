@@ -2,17 +2,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class IndividualTest {
 
     private static final double TOL = 0.000001;
+    private static final int MAX_RUNS = 100;
     private Individual individual;
 
     @BeforeEach
     void setUP(){
         individual = Individual.generate();
+        individual.setRoot(new FunctionNode(GPUtils.add,"+", new VariableNode(0),new TerminalNode(1.0)));
     }
 
     @Test
@@ -21,9 +24,17 @@ class IndividualTest {
     }
 
     @Test
-    void generate() {
-        // to do
-        fail();
+    void testGenerate() {
+        int maxDepth = 2;
+        int maxTreeSize = 6;
+        IntStream.range(0, MAX_RUNS).forEach(i -> {
+            individual = Individual.generate();
+            String errMsg = individual.print();
+            System.out.println(errMsg);
+            assertTrue(maxDepth >= individual.getMaxDepth(),errMsg);
+            assertTrue(maxTreeSize >= individual.size(),errMsg);
+
+        });
     }
 
     @Test

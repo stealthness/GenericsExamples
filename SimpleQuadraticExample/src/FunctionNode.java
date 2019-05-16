@@ -1,6 +1,5 @@
 import lombok.Data;
 
-import java.util.Optional;
 import java.util.function.BiFunction;
 
 @Data
@@ -30,6 +29,15 @@ public class FunctionNode implements Node {
         return (index == 0)? node1:node2;
     }
 
+    @Override
+    public int size() {
+        return node1.size()+node2.size();
+    }
+
+    @Override
+    public int getDepth() {
+        return Math.max(node1.getDepth(), node2.getDepth());
+    }
 
     @Override
     public Double get(double[] inputs) {
