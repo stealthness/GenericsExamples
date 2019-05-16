@@ -1,11 +1,14 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GPUtilsTest {
 
     private static final double TOL = 0.000001;
+    private static final int MAX_RUNS = 100;
     private double v0;
     private double v1;
 
@@ -14,7 +17,6 @@ class GPUtilsTest {
         v0 = 0.6;
         v1 = -2.3;
     }
-
 
     @Test
     void simpleAddLambdaTest(){
@@ -33,9 +35,21 @@ class GPUtilsTest {
 
     @Test
     void simpleProtectedDivisionLambdaTest(){
-        assertEquals(1.0, GPUtils.protectedDivision.apply(3.3,0.0),TOL);
+        assertEquals(v0/v1, GPUtils.protectedDivision.apply(v0,v1),TOL);
         v1 = 0.0;
-        assertEquals(1.2, GPUtils.protectedDivision.apply(3.6,3.0),TOL);
+        assertEquals(1.0, GPUtils.protectedDivision.apply(v0,v1),TOL);
     }
 
+    @Test
+    void runTestMultipleTimes(){
+        IntStream.range(0,MAX_RUNS).forEach(i -> {
+            v0 = Math.random()*10 - 5.0;
+            v1 = Math.random()*10 - 5.0;
+            simpleAddLambdaTest();
+            simpleMultiplayLambdaTest();
+            simpleAddLambdaTest();
+            simpleProtectedDivisionLambdaTest();
+        });
+    }
+    
 }
