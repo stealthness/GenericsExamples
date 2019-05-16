@@ -23,6 +23,10 @@ public class FunctionNode implements Node {
         this.functionString = functionString;
     }
 
+    public Node getSubtree(int index){
+        return (index == 0)? node1:node2;
+    }
+
 
     @Override
     public Double get(double[] inputs) {

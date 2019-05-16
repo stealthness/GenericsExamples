@@ -14,10 +14,19 @@ public class Individual implements Node{
     private Node root;
     private Double fitness;
     private int maxNumberOfVariables;
-    private Function<Double,Double[]> fitnessFunction;
+    private int maxDepth;
+    private double[] range;
+    private BiFunction<DoubleStream, Node,Double> fitnessFunction;
 
-    private Individual(){
+    private Individual(){}
 
+
+    public void evaluate(){
+        var d = DoubleStream.of(-1.0,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1
+                ,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0);
+
+        var fit = fitnessFunction.apply(d, getRoot());
+        setFitness(fit);
     }
 
 
@@ -38,15 +47,24 @@ public class Individual implements Node{
      * @return
      */
     static Individual generate(){
+        // default values
         Individual individual = new Individual();
         individual.setMaxNumberOfVariables(1);
+        individual.setMaxDepth(2);
+
+        // problem specific
         individual.setSetOfFunctions(GPUtils.FuctionList("Basic"));
-        var setOfTrminal = new ArrayList<Double>();
-        setOfTrminal.add(0.0);
-        setOfTrminal.add(1.0);
-        setOfTrminal.add(2.0);
-        setOfTrminal.add(3.0);
-        individual.setTerminals(setOfTrminal);
+        var setOfTerminal = new ArrayList<Double>();
+        setOfTerminal.add(0.0);
+        setOfTerminal.add(1.0);
+        setOfTerminal.add(2.0);
+        setOfTerminal.add(3.0);
+        individual.setTerminals(setOfTerminal);
+
+        individual.setRange(new double[]{-1.0,1.0});
+
+        individual.setFitnessFunction(GPUtils.FitnessFunctionSumOfErrors);
+        // non random set
 
         individual.setRoot(new FunctionNode(GPUtils.add,"+", new VariableNode(0),new TerminalNode(1.0)));
 
