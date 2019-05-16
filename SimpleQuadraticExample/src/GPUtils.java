@@ -16,7 +16,7 @@ public class GPUtils {
         return d.reduce(0,(sum, x) -> sum + Math.abs((x*x + x + 1) - node.get(new double[]{x})));
     };
 
-    public static List<BiFunction<Double,Double,Double>> FuctionList(String basic) {
+    public static List<BiFunction<Double,Double,Double>> FunctionList(String basic) {
         List<BiFunction<Double,Double,Double>> list = new ArrayList<>();
         list.add(add);
         list.add(subtract);

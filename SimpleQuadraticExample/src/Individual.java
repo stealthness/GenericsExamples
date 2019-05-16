@@ -3,7 +3,6 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.stream.DoubleStream;
 
 @Data
@@ -53,7 +52,7 @@ public class Individual implements Node{
         individual.setMaxDepth(2);
 
         // problem specific
-        individual.setSetOfFunctions(GPUtils.FuctionList("Basic"));
+        individual.setSetOfFunctions(GPUtils.FunctionList("Basic"));
         var setOfTerminal = new ArrayList<Double>();
         setOfTerminal.add(0.0);
         setOfTerminal.add(1.0);

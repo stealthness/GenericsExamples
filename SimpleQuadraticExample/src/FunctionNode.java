@@ -6,6 +6,9 @@ import java.util.function.BiFunction;
 @Data
 public class FunctionNode implements Node {
 
+    /**
+     * Function that the node will apply to the results from its two child nodes
+     */
     private final BiFunction<Double,Double,Double> lambda;
     private final String functionString;
     Node node1;
