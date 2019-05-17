@@ -54,7 +54,7 @@ class GPUtilsTest {
     }
 
     @Test
-    void testGetFuctionStringMap(){
+    void testGetFunctionStringMap(){
         Map<String, String> functionStringMap = GPUtils.getFunctionStringMap("Basic");
         assertEquals(4, functionStringMap.size());
         assertEquals("+", functionStringMap.get("add"));

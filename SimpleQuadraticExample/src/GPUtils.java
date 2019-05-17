@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -27,6 +28,11 @@ public class GPUtils {
     }
 
     public static Map<String, String> getFunctionStringMap(String basic) {
-        return null;
+        Map<String, String> functionStringMap = new HashMap();
+        functionStringMap.put("add","+");
+        functionStringMap.put("subtract","-");
+        functionStringMap.put("multiply","*");
+        functionStringMap.put("protectedDivision","/");
+        return functionStringMap;
     }
 }
