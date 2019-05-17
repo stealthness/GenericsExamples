@@ -31,7 +31,7 @@ public class FunctionNode implements Node {
 
     @Override
     public int size() {
-        return node1.size()+node2.size();
+        return 1 + node1.size()+node2.size();
     }
 
     @Override

@@ -29,6 +29,10 @@ public class Individual implements Node{
         setFitness(fit);
     }
 
+    @Override
+    public int size(){
+        return root.size();
+    }
 
     @Override
     public int getDepth(){

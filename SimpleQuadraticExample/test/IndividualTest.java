@@ -156,4 +156,53 @@ class IndividualTest {
         individual.setRoot(xSqrdPlus1Twice);
         assertEquals(3, individual.getDepth());
     }
+
+    // Testing getSize, need for checking that generate tree are of correct size
+
+    @Test
+    void testIndividualsOfSize1(){
+        // Only Terminal trees can be of size 1
+        individual.setRoot(one);
+        assertEquals(1, individual.size());
+        individual.setRoot(x);
+        assertEquals(1, individual.size());
+    }
+
+    @Test
+    void testIndividualsOfSize3(){
+        // Only Terminal trees can be of size 1
+        individual.setRoot(xPlus1tree);
+        assertEquals(3, individual.size());
+        individual.setRoot(xSqrdtree);
+        assertEquals(3, individual.size());
+    }
+
+    @Test
+    void testIndividualsOfSize5(){
+        // Only Terminal trees can be of size 1
+        individual.setRoot(xSqrdPlus1);
+        System.out.println(individual.print());
+        assertEquals(5, individual.size());
+    }
+
+    @Test
+    void testIndividualsOfSize7(){
+        // Only Terminal trees can be of size 1
+        Node root = new FunctionNode(GPUtils.subtract,"-",xPlus1tree,xPlus1tree);
+        individual.setRoot(root);
+
+        System.out.println(individual.print());
+        assertEquals(7, individual.size());
+    }
+
+    @Test
+    void testIndividualsOfSize9(){
+        // Only Terminal trees can be of size 1
+        Node root = new FunctionNode(GPUtils.subtract,"-",xSqrdPlus1,xPlus1tree);
+        individual.setRoot(root);
+
+        System.out.println(individual.print());
+        assertEquals(9, individual.size());
+    }
+
 }
