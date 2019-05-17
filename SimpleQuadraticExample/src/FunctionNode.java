@@ -8,21 +8,18 @@ public class FunctionNode implements Node {
     /**
      * Function that the node will apply to the results from its two child nodes
      */
-    private final BiFunction<Double,Double,Double> lambda;
-    private final String functionString;
+    private final GPFunction function;
     Node node1;
     Node node2;
 
-    public FunctionNode(BiFunction<Double, Double, Double>lambda, String functionString, Node node1, Node node2) {
-        this.lambda = lambda;
-        this.functionString = functionString;
+    public FunctionNode(GPFunction function, Node node1, Node node2) {
+        this.function = function;
         setNode1(node1);
         setNode2(node2);
     }
 
-    public FunctionNode(BiFunction<Double, Double, Double> lambda, String functionString) {
-        this.lambda = lambda;
-        this.functionString = functionString;
+    public FunctionNode(GPFunction function) {
+        this.function = function;
     }
 
     public Node getSubtree(int index){
@@ -41,11 +38,11 @@ public class FunctionNode implements Node {
 
     @Override
     public Double get(double[] inputs) {
-        return lambda.apply(node1.get(inputs),node2.get(inputs));
+        return function.apply(node1.get(inputs),node2.get(inputs));
     }
 
     @Override
     public String print() {
-        return "(" + functionString + " " + ((node1 == null)?"null":node1.print()) + " " + ((node1 == null)?"null":node2.print()) + ")";
+        return "(" + function.getClojureString() + " " + ((node1 == null)?"null":node1.print()) + " " + ((node1 == null)?"null":node2.print()) + ")";
     }
 }

@@ -1,16 +1,35 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.stream.IntStream;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GPFunctionTest {
 
+    private static final int MAX_RUNS = 100;
     double d0,d1;
 
     @BeforeEach
     void setUp(){
         d0 = 1.2;
         d1 = -3.7;
+    }
+
+    @Test
+    void testRandomValues(){
+
+
+        d0 = Math.random()*10 - 5.0;
+        d1 = Math.random()*10 - 5.0;
+        IntStream.range(0, MAX_RUNS).forEach(i-> {
+            testCreateAddGPFunction();
+            testCreateSubtractFunction();
+            testCreateMutiplyFunction();
+            testCreateProtectedDivisionFunction();
+        });
+
+
     }
 
     @Test

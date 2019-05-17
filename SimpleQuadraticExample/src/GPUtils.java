@@ -9,10 +9,10 @@ import java.util.stream.DoubleStream;
 public class GPUtils {
 
 
-    static BiFunction<Double,Double,Double> add = Double::sum;
-    static BiFunction<Double,Double,Double> subtract = (a, b)-> a-b;
-    static BiFunction<Double,Double,Double> multiply = (a, b)-> a*b;
-    static BiFunction<Double,Double,Double> protectedDivision = (a, b)-> (b==0)?1.0:a/b;
+    static GPFunction add = new GPFunction(Double::sum,"add","+");
+    static GPFunction subtract = new GPFunction((a, b)-> a-b,"subtract","-");
+    static GPFunction multiply = new GPFunction((a, b)-> a*b, "multiply","*");
+    static GPFunction protectedDivision = new GPFunction((a, b)-> (b==0)?1.0:a/b,"protectedDivision","/");
 
     static BiFunction<DoubleStream, Node, Double> FitnessFunctionSumOfErrors = (d, node) ->{
         return d.reduce(0,(sum, x) -> sum + Math.abs((x*x + x + 1) - node.get(new double[]{x})));

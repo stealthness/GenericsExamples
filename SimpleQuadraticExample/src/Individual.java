@@ -75,7 +75,7 @@ public class Individual implements Node{
         individual.setRange(new double[]{-1.0,1.0});
         individual.setFitnessFunction(GPUtils.FitnessFunctionSumOfErrors);
         // non random set
-        individual.setRoot(new FunctionNode(GPUtils.add,"+", new VariableNode(0),new TerminalNode(1.0)));
+        individual.setRoot(new FunctionNode(GPUtils.add, new VariableNode(0),new TerminalNode(1.0)));
 
         if (Math.random() < 0.5){
             if (Math.random() < 0.5){
@@ -118,9 +118,9 @@ public class Individual implements Node{
         System.out.println(function.getClass().getSimpleName());
 
         if (maxDepth > 1){
-            return new FunctionNode(function,"+", selectRandomTerminalOrFunction(),selectRandomTerminalOrFunction());
+            return new FunctionNode(GPUtils.add, selectRandomTerminalOrFunction(),selectRandomTerminalOrFunction());
         }else{
-            return new FunctionNode(GPUtils.add, "+", generatingTerminal(),generatingTerminal());
+            return new FunctionNode(GPUtils.add,  generatingTerminal(),generatingTerminal());
         }
     }
 

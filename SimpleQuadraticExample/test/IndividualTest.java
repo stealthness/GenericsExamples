@@ -24,16 +24,16 @@ class IndividualTest {
     @BeforeEach
     void setUP(){
         individual = Individual.generate();
-        individual.setRoot(new FunctionNode(GPUtils.add,"+", new VariableNode(0),new TerminalNode(1.0)));
+        individual.setRoot(new FunctionNode(GPUtils.add, new VariableNode(0),new TerminalNode(1.0)));
         // Terminal Nodes
         oneTree = new TerminalNode(1.0);
         twoTree = new TerminalNode(2.0);
         xTree = new VariableNode(0);
         // Function Nodes
-        xPlus1Tree = new FunctionNode(GPUtils.add, "+", xTree, oneTree);
-        xSqrdTree = new FunctionNode(GPUtils.multiply, "*", xTree, xTree);
-        xSqrdPlus1Tree = new FunctionNode(GPUtils.add, "+", xSqrdTree, oneTree);
-        xSqrdPlus1TwiceTree = new FunctionNode(GPUtils.multiply, "*", twoTree, xSqrdPlus1Tree);
+        xPlus1Tree = new FunctionNode(GPUtils.add, xTree, oneTree);
+        xSqrdTree = new FunctionNode(GPUtils.multiply, xTree, xTree);
+        xSqrdPlus1Tree = new FunctionNode(GPUtils.add, xSqrdTree, oneTree);
+        xSqrdPlus1TwiceTree = new FunctionNode(GPUtils.multiply, twoTree, xSqrdPlus1Tree);
     }
 
     @Test
@@ -57,12 +57,6 @@ class IndividualTest {
     }
 
     @Test
-    void testEvaluation(){
-    }
-
-
-
-    @Test
     void getFitnessOnExpressXEqual2() {
         individual.setRoot(new TerminalNode(2.0));
         individual.evaluate();
@@ -75,8 +69,8 @@ class IndividualTest {
     @Test
     void getFitnessOnExpressXEqualXSquaredPlus1() {
 
-        Node subtree = new FunctionNode(GPUtils.multiply, "*", new VariableNode(0),new VariableNode(0)) ;
-        individual.setRoot(new FunctionNode(GPUtils.add,"+", new TerminalNode(1.0),subtree));
+        Node subtree = new FunctionNode(GPUtils.multiply, new VariableNode(0),new VariableNode(0)) ;
+        individual.setRoot(new FunctionNode(GPUtils.add,new TerminalNode(1.0),subtree));
         individual.evaluate();
         assertEquals(1.0,individual.get(new double[]{0.0}),TOL);
         assertEquals(2.0,individual.get(new double[]{1.0}),TOL);
@@ -87,7 +81,7 @@ class IndividualTest {
     @Test
     void testChangeRootNodeOnIndividual(){
 
-        individual.setRoot(new FunctionNode(GPUtils.add,"+", new VariableNode(0),new TerminalNode(1.0)));
+        individual.setRoot(new FunctionNode(GPUtils.add, new VariableNode(0),new TerminalNode(1.0)));
         individual.evaluate();
 
         assertEquals(1.0,individual.get(new double[]{0.0}),TOL);
@@ -196,12 +190,12 @@ class IndividualTest {
 
     @Test
     void testIndividualsOfSize7(){
-        assertIndividualSize(7,new FunctionNode(GPUtils.subtract,"-", xPlus1Tree, xPlus1Tree));
+        assertIndividualSize(7,new FunctionNode(GPUtils.subtract, xPlus1Tree, xPlus1Tree));
     }
 
     @Test
     void testIndividualsOfSize9(){
-        assertIndividualSize(9, new FunctionNode(GPUtils.subtract,"-", xSqrdPlus1Tree, xPlus1Tree));
+        assertIndividualSize(9, new FunctionNode(GPUtils.subtract, xSqrdPlus1Tree, xPlus1Tree));
     }
 
     void assertIndividualSize(int expResult, Node node){

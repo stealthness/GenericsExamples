@@ -76,14 +76,14 @@ class NodeTest {
 
     @Test
     void testNodeWithLambdaAndTwoTerminalNode(){
-        var f0 = new FunctionNode(GPUtils.add,"+",t0,t1);
+        var f0 = new FunctionNode(GPUtils.add,t0,t1);
         assertEquals(v0+v1,f0.get(null),TOL);
     }
 
     @Test
     void testPrintNodeWithLambdaAndTwoTerminalNode(){
-        var f0 = new FunctionNode(GPUtils.add,"+",t0,t1);
-        var expStr = "(" + f0.getFunctionString() + " " + String.valueOf(v0) + " " +String.valueOf(v1) + ")";
+        var f0 = new FunctionNode(GPUtils.add,t0,t1);
+        var expStr = "(" + f0.getFunction().getClojureString() + " " + String.valueOf(v0) + " " +String.valueOf(v1) + ")";
         assertEquals(expStr,f0.print());
         assertEquals(expStr, f0.print());
     }
@@ -103,7 +103,7 @@ class NodeTest {
 
     @Test
     void testPrintAddFunctionNode(){
-        var f0 = new FunctionNode(GPUtils.add,"+");
+        var f0 = new FunctionNode(GPUtils.add);
         assertEquals("(+ null null)",f0.print());
     }
 
@@ -111,7 +111,7 @@ class NodeTest {
     void testExpressionCreation1(){
         // create tree "2.0 + 0.0"
 
-        Node root = new FunctionNode(GPUtils.add, "+",new TerminalNode(2.0), new TerminalNode(0.0));
+        Node root = new FunctionNode(GPUtils.add, new TerminalNode(2.0), new TerminalNode(0.0));
         IntStream.range(-5,5).forEach(i -> {
             assertEquals(2.0, root.get(new double[]{(double)i}));
         });
@@ -126,9 +126,9 @@ class NodeTest {
         // function xTree+1
         // create tree (- (+ x0 1.0) 0.0)
 
-        Node subtree = new FunctionNode(GPUtils.add,"+", new VariableNode(0), new TerminalNode(1.0));
+        Node subtree = new FunctionNode(GPUtils.add, new VariableNode(0), new TerminalNode(1.0));
 
-        Node root = new FunctionNode(GPUtils.subtract, "-",subtree, new TerminalNode(0.0));
+        Node root = new FunctionNode(GPUtils.subtract,subtree, new TerminalNode(0.0));
         IntStream.range(-5,5).forEach(i -> {
             assertEquals(i+1.0, root.get(new double[]{(double)i}),TOL);
         });
