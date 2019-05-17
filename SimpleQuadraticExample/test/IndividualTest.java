@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
@@ -90,5 +92,21 @@ class IndividualTest {
         assertEquals(0.0,individual.get(new double[]{-1.0}),TOL);
 
         assertEquals(7.7, individual.getFitness(),TOL);
+    }
+
+    // test generating nodes
+
+    @Test
+    void testGeneratingTerminal(){
+
+        // stand deviation
+        double sd = Math.sqrt(MAX_RUNS/4);
+
+        List<Node> nodes = new ArrayList<>();
+        IntStream.range(0,MAX_RUNS).forEach(i ->{
+            nodes.add(individual.generatingTerminal());
+        });
+        int count = (int)nodes.stream().filter(n -> n.getClass()==TerminalNode.class).count();
+        assertTrue(Math.abs(MAX_RUNS/2 - count) < sd, MAX_RUNS + " " +count + " " + sd);
     }
 }
