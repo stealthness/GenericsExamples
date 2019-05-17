@@ -18,12 +18,12 @@ public class GPUtils {
         return d.reduce(0,(sum, x) -> sum + Math.abs((x*x + x + 1) - node.get(new double[]{x})));
     };
 
-    public static List<BiFunction<Double,Double,Double>> FunctionList(String basic) {
-        List<BiFunction<Double,Double,Double>> list = new ArrayList<>();
-        list.add(add);
-        list.add(subtract);
-        list.add(multiply);
-        list.add(protectedDivision);
+    public static List<String> FunctionList(String basic) {
+        List<String> list = new ArrayList<>();
+        list.add("add");
+        list.add("subtract");
+        list.add("multiply");
+        list.add("protectedDivision");
         return list;
     }
 
@@ -34,5 +34,14 @@ public class GPUtils {
         functionStringMap.put("multiply","*");
         functionStringMap.put("protectedDivision","/");
         return functionStringMap;
+    }
+
+    public static Map<String, BiFunction<Double,Double,Double>> getFunctionMap(String basic) {
+        Map<String,BiFunction<Double,Double,Double>> functionMap = new HashMap();
+        functionMap.put("add",add);
+        functionMap.put("subtract",subtract);
+        functionMap.put("multiply",multiply);
+        functionMap.put("protectedDivision",protectedDivision);
+        return functionMap;
     }
 }

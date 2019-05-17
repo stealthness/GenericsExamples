@@ -64,7 +64,7 @@ public class Individual implements Node{
         individual.setMaxDepth(2);
 
         // problem specific
-        individual.setSetOfFunctions(GPUtils.FunctionList("Basic"));
+        //individual.setSetOfFunctions(GPUtils.FunctionList("Basic"));
         var setOfTerminal = new ArrayList<Double>();
         setOfTerminal.add(0.0);
         setOfTerminal.add(1.0);
