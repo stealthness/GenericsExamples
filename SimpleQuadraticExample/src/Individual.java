@@ -112,14 +112,9 @@ public class Individual implements Node{
     }
 
     public Node generatingFunction(int maxDepth) {
-        Node node1;
-        Node node2;
+
         if (maxDepth > 1){
-
-
-
             return new FunctionNode(GPUtils.add,"+", selectRandomTerminalOrFunction(),selectRandomTerminalOrFunction());
-
         }else{
             return new FunctionNode(GPUtils.add, "+", generatingTerminal(),generatingTerminal());
         }
@@ -128,4 +123,6 @@ public class Individual implements Node{
     Node selectRandomTerminalOrFunction(){
         return (Math.random() < FUNCTION_CHANCE)?generatingFunction(maxDepth -1):generatingTerminal();
     }
+
+
 }

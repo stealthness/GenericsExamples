@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,5 +52,17 @@ class GPUtilsTest {
             simpleProtectedDivisionLambdaTest();
         });
     }
-    
+
+    @Test
+    void testGetFuctionStringMap(){
+        Map<String, String> functionStringMap = GPUtils.getFunctionStringMap("Basic");
+        assertEquals(4, functionStringMap.size());
+        assertEquals("+", functionStringMap.get("add"));
+        assertEquals("*", functionStringMap.get("multiply"));
+        assertEquals("-", functionStringMap.get("subtract"));
+        assertEquals("/", functionStringMap.get("protectedDivision"));
+
+
+    }
+
 }

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.DoubleStream;
@@ -23,5 +24,9 @@ public class GPUtils {
         list.add(multiply);
         list.add(protectedDivision);
         return list;
+    }
+
+    public static Map<String, String> getFunctionStringMap(String basic) {
+        return null;
     }
 }
