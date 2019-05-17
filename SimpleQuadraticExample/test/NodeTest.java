@@ -123,7 +123,7 @@ class NodeTest {
 
     @Test
     void testExpressionCreation2(){
-        // function x+1
+        // function xTree+1
         // create tree (- (+ x0 1.0) 0.0)
 
         Node subtree = new FunctionNode(GPUtils.add,"+", new VariableNode(0), new TerminalNode(1.0));
