@@ -36,7 +36,7 @@ public class FunctionNode implements Node {
 
     @Override
     public int getDepth() {
-        return Math.max(node1.getDepth(), node2.getDepth());
+        return 1 + Math.max(node1.getDepth(), node2.getDepth());
     }
 
     @Override

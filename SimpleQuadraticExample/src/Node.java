@@ -27,6 +27,6 @@ public interface Node {
      * @return
      */
     default int getDepth(){
-        return 1;
-    };
+        return 0;
+    }
 }

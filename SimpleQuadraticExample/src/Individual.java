@@ -31,6 +31,11 @@ public class Individual implements Node{
 
 
     @Override
+    public int getDepth(){
+        return root.getDepth();
+    }
+
+    @Override
     public Double get(double[] inputs) {
         return root.get(inputs);
     }
@@ -92,6 +97,12 @@ public class Individual implements Node{
     }
 
 
+    public Node generatingTerminal() {
 
-
+        if (Math.random() < 0.5){
+            return new VariableNode(0);
+        } else{
+            return new TerminalNode(getRandomElement(getTerminals()));
+        }
+    }
 }

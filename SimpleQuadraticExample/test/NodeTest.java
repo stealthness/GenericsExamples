@@ -62,7 +62,7 @@ class NodeTest {
     }
 
     @Test
-    void simpleMultiplayLambdaTest(){
+    void simpleMultiplyLambdaTest(){
         assertEquals(v0*v1, GPUtils.multiply.apply(v0,v1),TOL);
     }
 
