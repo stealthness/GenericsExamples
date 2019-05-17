@@ -103,10 +103,48 @@ class IndividualTest {
         double sd = Math.sqrt(MAX_RUNS/4);
 
         List<Node> nodes = new ArrayList<>();
-        IntStream.range(0,MAX_RUNS).forEach(i ->{
-            nodes.add(individual.generatingTerminal());
-        });
+        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(individual.generatingTerminal()));
         int count = (int)nodes.stream().filter(n -> n.getClass()==TerminalNode.class).count();
-        assertTrue(Math.abs(MAX_RUNS/2 - count) < sd, MAX_RUNS + " " +count + " " + sd);
+        // test that number Terminal Nodes is within 3 standard deviation
+        assertTrue(Math.abs(MAX_RUNS/2 - count) < 3*sd, MAX_RUNS + " " +count + " " + 3*sd);
+    }
+
+
+    @Test
+    void testDepthOf0(){
+        individual.setRoot(new VariableNode(0));
+        assertEquals(0,individual.getDepth());
+        individual.setRoot(new TerminalNode(0.0));
+        assertEquals(0,individual.getDepth());
+    }
+
+    @Test
+    void testDepthOf1(){
+        Node subtree = new FunctionNode(GPUtils.add, "+",new TerminalNode(1.0),new TerminalNode(1.0));
+        individual.setRoot(subtree);
+        assertEquals(1, individual.getDepth());
+    }
+
+    @Test
+    void testDepthOf2(){
+        Node subtree0 = new FunctionNode(GPUtils.add, "+",new TerminalNode(1.0),new TerminalNode(1.0));
+        Node subtree1 = new FunctionNode(GPUtils.add, "+",subtree0,new TerminalNode(1.0));
+        individual.setRoot(subtree1);
+        assertEquals(2, individual.getDepth());
+        subtree1 = new FunctionNode(GPUtils.add, "+",new TerminalNode(1.0),subtree0);
+        individual.setRoot(subtree1);
+        assertEquals(2, individual.getDepth());
+    }
+
+    @Test
+    void testDepthOf3(){
+        Node subtree0 = new FunctionNode(GPUtils.add, "+",new TerminalNode(1.0),new TerminalNode(1.0));
+        Node subtree1 = new FunctionNode(GPUtils.add, "+",subtree0,new TerminalNode(1.0));
+        Node subtree2 = new FunctionNode(GPUtils.add, "+",subtree1,new TerminalNode(1.0));
+        individual.setRoot(subtree2);
+        assertEquals(3, individual.getDepth());
+        subtree2 = new FunctionNode(GPUtils.add, "+",new TerminalNode(1.0),subtree2);
+        individual.setRoot(subtree2);
+        assertEquals(4, individual.getDepth());
     }
 }
