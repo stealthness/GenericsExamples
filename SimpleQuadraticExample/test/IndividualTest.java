@@ -14,10 +14,24 @@ class IndividualTest {
     private static final int MAX_RUNS = 100;
     private Individual individual;
 
+    Node x;
+    Node one;
+    Node xPlus1tree;
+    Node xSqrdtree;
+    Node xSqrdPlus1;
+    Node xSqrdPlus1Twice;
+
     @BeforeEach
     void setUP(){
         individual = Individual.generate();
         individual.setRoot(new FunctionNode(GPUtils.add,"+", new VariableNode(0),new TerminalNode(1.0)));
+
+        one = new TerminalNode(1.0);
+        x = new VariableNode(0);
+        xPlus1tree = new FunctionNode(GPUtils.add, "+",x,one);
+        xSqrdtree = new FunctionNode(GPUtils.multiply, "*", x, x);
+        xSqrdPlus1 = new FunctionNode(GPUtils.add, "+",xSqrdtree,one);
+        xSqrdPlus1Twice = new FunctionNode(GPUtils.multiply, "*",new TerminalNode(2.0),xSqrdPlus1);
     }
 
     @Test
@@ -112,39 +126,27 @@ class IndividualTest {
 
     @Test
     void testDepthOf0(){
-        individual.setRoot(new VariableNode(0));
+        individual.setRoot(x);
         assertEquals(0,individual.getDepth());
-        individual.setRoot(new TerminalNode(0.0));
+        individual.setRoot(one);
         assertEquals(0,individual.getDepth());
     }
 
     @Test
     void testDepthOf1(){
-        Node subtree = new FunctionNode(GPUtils.add, "+",new TerminalNode(1.0),new TerminalNode(1.0));
-        individual.setRoot(subtree);
+        individual.setRoot(xPlus1tree);
         assertEquals(1, individual.getDepth());
     }
 
     @Test
     void testDepthOf2(){
-        Node subtree0 = new FunctionNode(GPUtils.add, "+",new TerminalNode(1.0),new TerminalNode(1.0));
-        Node subtree1 = new FunctionNode(GPUtils.add, "+",subtree0,new TerminalNode(1.0));
-        individual.setRoot(subtree1);
-        assertEquals(2, individual.getDepth());
-        subtree1 = new FunctionNode(GPUtils.add, "+",new TerminalNode(1.0),subtree0);
-        individual.setRoot(subtree1);
+        individual.setRoot(xSqrdPlus1);
         assertEquals(2, individual.getDepth());
     }
 
     @Test
     void testDepthOf3(){
-        Node subtree0 = new FunctionNode(GPUtils.add, "+",new TerminalNode(1.0),new TerminalNode(1.0));
-        Node subtree1 = new FunctionNode(GPUtils.add, "+",subtree0,new TerminalNode(1.0));
-        Node subtree2 = new FunctionNode(GPUtils.add, "+",subtree1,new TerminalNode(1.0));
-        individual.setRoot(subtree2);
+        individual.setRoot(xSqrdPlus1Twice);
         assertEquals(3, individual.getDepth());
-        subtree2 = new FunctionNode(GPUtils.add, "+",new TerminalNode(1.0),subtree2);
-        individual.setRoot(subtree2);
-        assertEquals(4, individual.getDepth());
     }
 }
