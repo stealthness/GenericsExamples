@@ -16,6 +16,7 @@ class IndividualTest {
 
     Node x;
     Node one;
+    Node two;
     Node xPlus1tree;
     Node xSqrdtree;
     Node xSqrdPlus1;
@@ -25,13 +26,15 @@ class IndividualTest {
     void setUP(){
         individual = Individual.generate();
         individual.setRoot(new FunctionNode(GPUtils.add,"+", new VariableNode(0),new TerminalNode(1.0)));
-
+        // Terminal Nodes
         one = new TerminalNode(1.0);
+        two = new TerminalNode(2.0);
         x = new VariableNode(0);
+        // Function Nodes
         xPlus1tree = new FunctionNode(GPUtils.add, "+",x,one);
         xSqrdtree = new FunctionNode(GPUtils.multiply, "*", x, x);
         xSqrdPlus1 = new FunctionNode(GPUtils.add, "+",xSqrdtree,one);
-        xSqrdPlus1Twice = new FunctionNode(GPUtils.multiply, "*",new TerminalNode(2.0),xSqrdPlus1);
+        xSqrdPlus1Twice = new FunctionNode(GPUtils.multiply, "*",two,xSqrdPlus1);
     }
 
     @Test
@@ -39,22 +42,9 @@ class IndividualTest {
         assertEquals("(+ x0 1.0)", individual.print()) ;
     }
 
-    @Test
-    void testGenerate() {
-        int maxDepth = 2;
-        int maxTreeSize = 6;
-        IntStream.range(0, MAX_RUNS).forEach(i -> {
-            individual = Individual.generate();
-            String errMsg = individual.print();
-            System.out.println(errMsg);
-            assertTrue(maxDepth >= individual.getMaxDepth(),errMsg);
-            assertTrue(maxTreeSize >= individual.size(),errMsg);
-
-        });
-    }
 
     @Test
-    void getRoot() {
+    void getRootOnIndividualWithXPlus1() {
         Node root = individual.getRoot();
         assertEquals("(+ x0 1.0)",root.print());
         if (root.getClass() == FunctionNode.class){
@@ -123,6 +113,23 @@ class IndividualTest {
         assertTrue(Math.abs(MAX_RUNS/2 - count) < 3*sd, MAX_RUNS + " " +count + " " + 3*sd);
     }
 
+
+    @Test
+    void testGenerate() {
+        int maxDepth = 2;
+        int maxTreeSize = 6;
+        IntStream.range(0, MAX_RUNS).forEach(i -> {
+            individual = Individual.generate();
+            String errMsg = individual.print();
+            // to remove later
+            System.out.println(errMsg);
+            assertTrue(maxDepth >= individual.getMaxDepth(),errMsg);
+            assertTrue(maxTreeSize >= individual.size(),errMsg);
+        });
+    }
+
+
+    // Test getDepth need for generating tree up N depth
 
     @Test
     void testDepthOf0(){
