@@ -15,10 +15,14 @@ class GPFunctionTest {
 
     @Test
     void testCreatAddGPFunction(){
-        GPFunction add = new GPFunction(GPUtils.add,"add","+");
-        assertEquals(d0+d1,add.apply(d0,d1));
-        assertEquals("add", add.getFunctionName());
-        assertEquals("+",add.getClojureString());
+        assertCreateGPFunction(d0+d1,"add","+",
+                new GPFunction(GPUtils.add,"add","+"));
+    }
+
+    void assertCreateGPFunction(Double expValue, String expFunctionName, String expClojureName, GPFunction function){
+        assertEquals(expValue,function.apply(d0,d1));
+        assertEquals("add", function.getFunctionName());
+        assertEquals("+",function.getClojureString());
     }
 
 }
