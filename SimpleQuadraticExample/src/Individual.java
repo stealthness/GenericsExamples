@@ -9,6 +9,7 @@ import java.util.stream.DoubleStream;
 @Data
 public class Individual implements Node{
 
+    private static final double FUNCTION_CHANCE = 0.5;
     List<BiFunction<Double,Double,Double>> setOfFunctions;
     List<Double> terminals;
     private Node root;
@@ -108,5 +109,23 @@ public class Individual implements Node{
         } else{
             return new TerminalNode(getRandomElement(getTerminals()));
         }
+    }
+
+    public Node generatingFunction(int maxDepth) {
+        Node node1;
+        Node node2;
+        if (maxDepth > 1){
+
+
+
+            return new FunctionNode(GPUtils.add,"+", selectRandomTerminalOrFunction(),selectRandomTerminalOrFunction());
+
+        }else{
+            return new FunctionNode(GPUtils.add, "+", generatingTerminal(),generatingTerminal());
+        }
+    }
+
+    Node selectRandomTerminalOrFunction(){
+        return (Math.random() < FUNCTION_CHANCE)?generatingFunction(maxDepth -1):generatingTerminal();
     }
 }

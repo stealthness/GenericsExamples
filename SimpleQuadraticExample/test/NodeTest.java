@@ -139,4 +139,6 @@ class NodeTest {
         System.out.println("fitness: "+fit);
     }
 
+
+
 }

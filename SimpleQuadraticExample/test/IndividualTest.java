@@ -112,6 +112,24 @@ class IndividualTest {
         assertTrue(Math.abs(MAX_RUNS/2 - count) < 3*sd, MAX_RUNS + " " +count + " " + 3*sd);
     }
 
+    @Test
+    void testGenerateFunctionOfDepth1(){
+        List<Node> nodes = new ArrayList<>();
+        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(individual.generatingFunction(1)));
+        assertTrue(nodes.stream().allMatch(node ->{
+            return 1 == node.getDepth();
+        }));
+        assertTrue(nodes.stream().allMatch(node ->{
+            return 3 == node.size();
+        }));
+    }
+
+    @Test
+    void testGenerateFunctionOfDepth2(){
+        List<Node> nodes = new ArrayList<>();
+        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(individual.generatingFunction(1)));
+    }
+
 
     @Test
     void testGenerate() {
