@@ -122,4 +122,8 @@ class FunctionNodeTest {
         assertEquals(7.7, fit, TOL);
     }
 
+    // Test Compare
+
+
+
 }

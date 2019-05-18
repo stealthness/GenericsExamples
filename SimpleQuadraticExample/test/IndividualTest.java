@@ -13,28 +13,12 @@ class IndividualTest {
     private static final int MAX_RUNS = 100;
     private Individual individual;
 
-    private Node xTree;
-    private Node oneTree;
-    private Node twoTree;
-    private Node xPlus1Tree;
-    private Node xSqrdTree;
-    private Node xSqrdPlus1Tree;
-    private Node xSqrdPlus1TwiceTree;
 
     @BeforeEach
     void setUP(){
         individual = Individual.generate();
         individual.setRoot(new FunctionNode(GPUtils.add, new VariableNode(0),new TerminalNode(1.0)));
-        // Terminal Nodes
-        oneTree = new TerminalNode(1.0);
-        twoTree = new TerminalNode(2.0);
-        xTree = new VariableNode(0);
-        // Function Nodes
-        xPlus1Tree = new FunctionNode(GPUtils.add, xTree, oneTree);
-        xSqrdTree = new FunctionNode(GPUtils.multiply, xTree, xTree);
-        xSqrdPlus1Tree = new FunctionNode(GPUtils.add, xSqrdTree, oneTree);
-        xSqrdPlus1TwiceTree = new FunctionNode(GPUtils.multiply, twoTree, xSqrdPlus1Tree);
-    }
+   }
 
     @Test
     void print() {
@@ -144,27 +128,27 @@ class IndividualTest {
 
     @Test
     void testDepthOf0(){
-        individual.setRoot(xTree);
+        individual.setRoot(TestUtils.xTree);
         assertEquals(0,individual.getDepth());
-        individual.setRoot(oneTree);
+        individual.setRoot(TestUtils.oneTree);
         assertEquals(0,individual.getDepth());
     }
 
     @Test
     void testDepthOf1(){
-        individual.setRoot(xPlus1Tree);
+        individual.setRoot(TestUtils.xPlus1Tree);
         assertEquals(1, individual.getDepth());
     }
 
     @Test
     void testDepthOf2(){
-        individual.setRoot(xSqrdPlus1Tree);
+        individual.setRoot(TestUtils.xSqrdPlus1Tree);
         assertEquals(2, individual.getDepth());
     }
 
     @Test
     void testDepthOf3(){
-        individual.setRoot(xSqrdPlus1TwiceTree);
+        individual.setRoot(TestUtils.xSqrdPlus1TwiceTree);
         assertEquals(3, individual.getDepth());
     }
 
@@ -173,29 +157,29 @@ class IndividualTest {
     @Test
     void testIndividualsOfSize1(){
         // Only Terminal trees can be of size 1
-        assertIndividualSize(1, oneTree);
-        assertIndividualSize(1, xTree);
+        assertIndividualSize(1, TestUtils.oneTree);
+        assertIndividualSize(1, TestUtils.xTree);
     }
 
     @Test
     void testIndividualsOfSize3(){
-        assertIndividualSize(3, xPlus1Tree);
-        assertIndividualSize(3, xSqrdTree);
+        assertIndividualSize(3, TestUtils.xPlus1Tree);
+        assertIndividualSize(3, TestUtils.xSqrdTree);
     }
 
     @Test
     void testIndividualsOfSize5(){
-        assertIndividualSize(5, xSqrdPlus1Tree);
+        assertIndividualSize(5, TestUtils.xSqrdPlus1Tree);
     }
 
     @Test
     void testIndividualsOfSize7(){
-        assertIndividualSize(7,new FunctionNode(GPUtils.subtract, xPlus1Tree, xPlus1Tree));
+        assertIndividualSize(7,new FunctionNode(GPUtils.subtract, TestUtils.xPlus1Tree, TestUtils.xPlus1Tree));
     }
 
     @Test
     void testIndividualsOfSize9(){
-        assertIndividualSize(9, new FunctionNode(GPUtils.subtract, xSqrdPlus1Tree, xPlus1Tree));
+        assertIndividualSize(9, new FunctionNode(GPUtils.subtract, TestUtils.xSqrdPlus1Tree, TestUtils.xPlus1Tree));
     }
 
     void assertIndividualSize(int expResult, Node node){

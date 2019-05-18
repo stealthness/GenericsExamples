@@ -1,7 +1,7 @@
 import lombok.Data;
 
 @Data
-public class FunctionNode implements Node {
+public class FunctionNode implements Node,Comparable<FunctionNode> {
 
     /**
      * Function that the node will apply to the results from its two child nodes
@@ -42,5 +42,22 @@ public class FunctionNode implements Node {
     @Override
     public String print() {
         return "(" + function.getClojureString() + " " + ((node1 == null)?"null":node1.print()) + " " + ((node1 == null)?"null":node2.print()) + ")";
+    }
+
+    @Override
+    public int compareTo(FunctionNode that) {
+        if (this.size() > that.size()){
+            return 1;
+        } else if (this.size() < that.size()){
+            return -1;
+        } else{
+            if (this.getDepth() > that.getDepth()){
+                return 1;
+            }else if (this.getDepth() < that.getDepth()){
+                return -1;
+            }else{
+                return 0;
+            }
+        }
     }
 }

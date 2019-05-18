@@ -19,17 +19,15 @@ class GPFunctionTest {
     @Test
     void testRandomValues(){
 
-
         d0 = Math.random()*10 - 5.0;
         d1 = Math.random()*10 - 5.0;
+
         IntStream.range(0, MAX_RUNS).forEach(i-> {
             testCreateAddGPFunction();
             testCreateSubtractFunction();
-            testCreateMutiplyFunction();
+            testCreateMultiplyFunction();
             testCreateProtectedDivisionFunction();
         });
-
-
     }
 
     @Test
@@ -45,7 +43,7 @@ class GPFunctionTest {
     }
 
     @Test
-    void testCreateMutiplyFunction(){
+    void testCreateMultiplyFunction(){
         assertCreateGPFunction(d0*d1,"multiply","*",
                 new GPFunction(GPUtils.multiply,"multiply","*"));
     }
@@ -60,6 +58,15 @@ class GPFunctionTest {
         assertEquals(expValue,function.apply(d0,d1));
         assertEquals(expFunctionName, function.getFunctionName());
         assertEquals(expClojureName,function.getClojureString());
+    }
+
+
+
+    // test select random node
+
+    @Test
+    void testSelectNode0(){
+
     }
 
 }
