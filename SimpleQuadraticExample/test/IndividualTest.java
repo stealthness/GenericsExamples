@@ -13,13 +13,13 @@ class IndividualTest {
     private static final int MAX_RUNS = 100;
     private Individual individual;
 
-    Node xTree;
-    Node oneTree;
-    Node twoTree;
-    Node xPlus1Tree;
-    Node xSqrdTree;
-    Node xSqrdPlus1Tree;
-    Node xSqrdPlus1TwiceTree;
+    private Node xTree;
+    private Node oneTree;
+    private Node twoTree;
+    private Node xPlus1Tree;
+    private Node xSqrdTree;
+    private Node xSqrdPlus1Tree;
+    private Node xSqrdPlus1TwiceTree;
 
     @BeforeEach
     void setUP(){
