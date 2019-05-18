@@ -1,7 +1,5 @@
 import lombok.Data;
 
-import java.util.function.BiFunction;
-
 @Data
 public class FunctionNode implements Node {
 

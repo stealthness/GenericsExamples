@@ -30,7 +30,7 @@ class GPUtilsTest {
     }
 
     @Test
-    void simpleMultiplayLambdaTest(){
+    void simpleMultiplyLambdaTest(){
         assertEquals(v0*v1, GPUtils.multiply.apply(v0,v1),TOL);
     }
 
@@ -47,7 +47,7 @@ class GPUtilsTest {
             v0 = Math.random()*10 - 5.0;
             v1 = Math.random()*10 - 5.0;
             simpleAddLambdaTest();
-            simpleMultiplayLambdaTest();
+            simpleMultiplyLambdaTest();
             simpleAddLambdaTest();
             simpleProtectedDivisionLambdaTest();
         });
