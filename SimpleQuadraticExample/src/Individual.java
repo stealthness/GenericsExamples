@@ -113,14 +113,15 @@ public class Individual implements Node{
     }
 
     public Node generatingFunction(int maxDepth) {
-        BiFunction<Double, Double, Double> function = GPUtils.add;
-        Map<String, String> functionStrings = GPUtils.getFunctionStringMap("basic");
-        System.out.println(function.getClass().getSimpleName());
+        //BiFunction<Double, Double, Double> function = GPUtils.add;
+        List<GPFunction> list = GPUtils.FunctionList("basic");
+
+        GPFunction function = list.get(0);
 
         if (maxDepth > 1){
-            return new FunctionNode(GPUtils.add, selectRandomTerminalOrFunction(),selectRandomTerminalOrFunction());
+            return new FunctionNode(function, selectRandomTerminalOrFunction(),selectRandomTerminalOrFunction());
         }else{
-            return new FunctionNode(GPUtils.add,  generatingTerminal(),generatingTerminal());
+            return new FunctionNode(function,  generatingTerminal(),generatingTerminal());
         }
     }
 

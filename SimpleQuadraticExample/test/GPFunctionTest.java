@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GPFunctionTest {
 
     private static final int MAX_RUNS = 100;
-    double d0,d1;
+    private double d0,d1;
 
     @BeforeEach
     void setUp(){

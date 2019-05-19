@@ -122,8 +122,59 @@ class FunctionNodeTest {
         assertEquals(7.7, fit, TOL);
     }
 
+    // Test Depth
+
+    @Test
+    void testDepthTerminalAreZero(){
+        assertEquals(0,TestUtils.oneTree.getDepth());
+        assertEquals(0,TestUtils.twoTree.getDepth());
+        assertEquals(0,TestUtils.xTree.getDepth());
+    }
+
+    @Test
+    void testFunctionsOfDepth1(){
+        assertEquals(1,TestUtils.xSqrdTree.getDepth());
+        assertEquals(1,TestUtils.xPlus2Tree.getDepth());
+        assertEquals(1,TestUtils.oneDivideXTree.getDepth());
+    }
+
+    @Test
+    void testFunctionsOfDepth2(){
+        assertEquals(2,TestUtils.xSqrdPlus1Tree.getDepth());
+        System.out.println(TestUtils.xSqrdPlusXPlus1TreeD2.print());
+        assertEquals(2,TestUtils.xSqrdPlusXPlus1TreeD2.getDepth());
+        assertEquals(2,TestUtils.twoXSqrdTree.getDepth());
+
+    }
+
+    @Test
+    void testFunctionsOfDepth3(){
+        assertEquals(3,TestUtils.xSqrdPlus1TwiceTree.getDepth());
+        assertEquals(3,TestUtils.xSqrdPlusXPlus1TreeD3.getDepth());
+    }
+
+
     // Test Compare
 
+    @Test
+    void testCompareFunctionNodeOfDepth1(){
+        assertEquals(0, TestUtils.xPlus1Tree.compareTo(TestUtils.xSqrdTree));
+        assertEquals(0,TestUtils.xPlus2Tree.compareTo(TestUtils.xPlus1Tree));
+    }
 
+    @Test
+    void testCompareFunctionOfDepth2(){
+        assertEquals(1, TestUtils.xSqrdPlus1Tree.compareTo(TestUtils.xSqrdTree));
+        assertEquals(-1,TestUtils.xPlus1Tree.compareTo(TestUtils.xSqrdPlus1Tree));
+        assertEquals(1, TestUtils.xSqrdPlusXPlus1TreeD2.compareTo(TestUtils.xSqrdPlus1Tree));
+        assertEquals(-1, TestUtils.xSqrdPlus1Tree.compareTo(TestUtils.xSqrdPlusXPlus1TreeD2));
+
+        assertEquals(2, TestUtils.xSqrdPlusXPlus1TreeD2.getDepth());
+        assertEquals(2, TestUtils.xSqrdPlusOneDivideXTree.getDepth());
+        assertEquals(7, TestUtils.xSqrdPlusXPlus1TreeD2.size());
+        assertEquals(7, TestUtils.xSqrdPlusOneDivideXTree.size());
+        assertEquals(0, TestUtils.xSqrdPlusXPlus1TreeD2.compareTo(TestUtils.xSqrdPlusOneDivideXTree));
+
+    }
 
 }
