@@ -28,13 +28,20 @@ class PopulationTest {
     @Test
     void testGenerateAndSize(){
         assertEquals(0,population.size());
+        assertEquals(4, population.getMaxSize());
         population.generate("full");
         assertEquals(4,population.size());
+
+        printPopulation();
     }
 
 
     // size
 
+    // helper method
 
+    void printPopulation(){
+        population.getIndividuals().forEach(individual -> System.out.println(individual.print()));
+    }
 
 }

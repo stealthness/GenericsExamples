@@ -1,8 +1,6 @@
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.stream.DoubleStream;
@@ -10,9 +8,11 @@ import java.util.stream.DoubleStream;
 @Data
 public class Individual implements Node{
 
+    static List<GPFunction> setOfFunctions;
+    static List<Node> setOfTerminals;
+
     private static final double FUNCTION_CHANCE = 0.5;
-    List<BiFunction<Double,Double,Double>> setOfFunctions;
-    List<Double> terminals;
+
     private Node root;
     private Double fitness;
     private int maxNumberOfVariables;
@@ -53,7 +53,7 @@ public class Individual implements Node{
 
 
     /**
-     * Generate an intial tree
+     * Generate an initial tree
      *  NOTE 1 function, 2 terminal node 50% chance of being variable
      * @return
      */
@@ -64,68 +64,43 @@ public class Individual implements Node{
         individual.setMaxDepth(2);
 
         // problem specific
-        //individual.setSetOfFunctions(GPUtils.FunctionList("Basic"));
-        var setOfTerminal = new ArrayList<Double>();
-        setOfTerminal.add(0.0);
-        setOfTerminal.add(1.0);
-        setOfTerminal.add(2.0);
-        setOfTerminal.add(3.0);
-        individual.setTerminals(setOfTerminal);
+        setOfFunctions = GPUtils.getFunctionList("Basic");
+        setOfTerminals = GPUtils.getTerminalsList("basic");
 
         individual.setRange(new double[]{-1.0,1.0});
         individual.setFitnessFunction(GPUtils.FitnessFunctionSumOfErrors);
+
         // non random set
-        individual.setRoot(new FunctionNode(GPUtils.add, new VariableNode(0),new TerminalNode(1.0)));
-
-        if (Math.random() < 0.5){
-            if (Math.random() < 0.5){
-                individual.setRoot(new VariableNode(0));
-                return individual;
-            } else{
-                individual.setRoot(new TerminalNode(getRandomElement(setOfTerminal)));
-                return individual;
-            }
-        } else {
-
-
-        }
+        individual.setRoot(generatingFunction(1));
 
         return individual;
 
     }
 
-    // Function select an element base on index
-    // and return an element
-    public static Double getRandomElement(List<Double> list)
-    {
-        Random rand = new Random();
-        return list.get(rand.nextInt(list.size()));
-    }
-
-
-    public Node generatingTerminal() {
+    static Node generatingTerminal() {
 
         if (Math.random() < 0.5){
             return new VariableNode(0);
         } else{
-            return new TerminalNode(getRandomElement(getTerminals()));
+            List<Node> list = GPUtils.getTerminalsList("basic");
+            Random r = new Random();
+            return list.get(r.nextInt(list.size()));
         }
     }
 
-    public Node generatingFunction(int maxDepth) {
-        //BiFunction<Double, Double, Double> function = GPUtils.add;
-        List<GPFunction> list = GPUtils.FunctionList("basic");
-
-        GPFunction function = list.get(0);
+    static Node generatingFunction(int maxDepth) {
+        List<GPFunction> list = GPUtils.getFunctionList("basic");
+        Random r = new Random();
+        GPFunction function = list.get(r.nextInt(list.size()));
 
         if (maxDepth > 1){
-            return new FunctionNode(function, selectRandomTerminalOrFunction(),selectRandomTerminalOrFunction());
+            return new FunctionNode(function, selectRandomTerminalOrFunction(maxDepth),selectRandomTerminalOrFunction(maxDepth));
         }else{
             return new FunctionNode(function,  generatingTerminal(),generatingTerminal());
         }
     }
 
-    Node selectRandomTerminalOrFunction(){
+    static Node selectRandomTerminalOrFunction(int maxDepth){
         return (Math.random() < FUNCTION_CHANCE)?generatingFunction(maxDepth -1):generatingTerminal();
     }
 

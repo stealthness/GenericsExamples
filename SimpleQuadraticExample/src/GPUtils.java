@@ -13,7 +13,7 @@ public class GPUtils {
 
     static BiFunction<DoubleStream, Node, Double> FitnessFunctionSumOfErrors = (d, node) -> d.reduce(0,(sum, x) -> sum + Math.abs((x*x + x + 1) - node.get(new double[]{x})));
 
-    public static List<GPFunction> FunctionList(String basic) {
+    public static List<GPFunction> getFunctionList(String basic) {
         List<GPFunction> list = new ArrayList<>();
         list.add(GPUtils.add);
         list.add(GPUtils.subtract);
@@ -23,5 +23,10 @@ public class GPUtils {
     }
 
 
-
+    public static List<Node> getTerminalsList(String basic) {
+        List<Node> list = new ArrayList<>();
+        list.add(new TerminalNode(1.0));
+        list.add(new TerminalNode(2.0));
+        return list;
+    }
 }

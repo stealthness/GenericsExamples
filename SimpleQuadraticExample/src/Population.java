@@ -1,7 +1,9 @@
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Data
 @Builder
@@ -15,7 +17,7 @@ public class Population {
     /**
      * Contains a List of the individuals. Each individual contains a Node, fitness
      */
-    final private List<Individual> individuals;
+    private List<Individual> individuals;
 
     /**
      * Maximum size of the population
@@ -24,12 +26,20 @@ public class Population {
 
     /**
      * Generate the initial population according method selected
-     * @param Type
      */
-    public void generate(String Type) {
+    public void generate(String type) {
+        individuals = new ArrayList<>();
+        Individual.setOfTerminals = GPUtils.getTerminalsList("basic");
+        Individual.setOfFunctions = GPUtils.getFunctionList("basic");
+        IntStream.range(0,maxSize).forEach(i -> {
+            individuals.add(Individual.generate());
+        });
     }
 
     public int size() {
+        if (individuals == null){
+            return 0;
+        }
         return individuals.size();
     }
 
