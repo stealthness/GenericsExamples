@@ -18,7 +18,7 @@ public class GP {
         population = Population.builder()
                 .generationMethod("grow")
                 .initialMaxDepth(1)
-                .maxSize(4)
+                .maxSize(10)
                 .build();
         population.generate("full");
 
@@ -32,7 +32,7 @@ public class GP {
             population.evaluate();
             population.getIndividuals().forEach(individual -> {
                 System.out.println("Expression : "+individual.print());
-                System.out.println("Fitness is : "+ individual.getFitness());
+                //System.out.println("Fitness is : "+ individual.getFitness());
             });
 
 
@@ -40,11 +40,16 @@ public class GP {
 
             population.doSelection();
 
-            population.doMutations();
+            double mutationRate = 0.10;
+            population.setIndividuals(population.doMutations(mutationRate));
+            population.evaluate();
 
-            population.doCrossing();
+            double crossingRate = 0.5;
+            population.setIndividuals(population.doCrossing(crossingRate));
 
             terminationCondition = population.isTerminationConditionMet() || ++count > 2;
+
+            System.out.println("\n\n");
             System.out.println("generation : " + count);
         }
 

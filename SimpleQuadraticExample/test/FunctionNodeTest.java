@@ -189,20 +189,25 @@ class FunctionNodeTest {
     // test select random node
 
     @Test
-    void testSelectRootNode0(){
+    void testSelectRootNode0xSqrdTree(){
         Node root = TestUtils.xSqrdTree;
         Node selectedRoot = ((FunctionNode)root).select(0);
         assertEquals(root, selectedRoot);
 
-        FunctionNode root1 = TestUtils.xSqrdTree;
-        Node selectedRoot1 = root1.select(0);
-        assertEquals(root1, selectedRoot1);
+    }
+
+    @Test
+    void testSelectNode0WithXPlus1Tree(){
+        FunctionNode root = TestUtils.xPlus1Tree;
+        Node selectedRoot = root.select(0);
+        assertEquals(root, selectedRoot);
 
         assertNotEquals(root,((FunctionNode)root).select(1));
         assertEquals(TestUtils.xNode,((FunctionNode)root).select(1));
-        assertNotEquals(root,((FunctionNode)root).select(2));
-        assertEquals(TestUtils.oneNode,((FunctionNode)root).select(1));
 
+
+        assertNotEquals(root,((FunctionNode)root).select(2));
+        assertEquals(TestUtils.oneNode,((FunctionNode)root).select(2));
     }
 
     @Test

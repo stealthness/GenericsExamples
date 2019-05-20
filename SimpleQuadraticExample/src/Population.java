@@ -78,15 +78,25 @@ public class Population {
 
     // crossover function
 
+    List<Individual>  doCrossing(double crossingRate) {
+        return individuals;
+    }
+
     // mutate function
 
-    void doMutations() {
+    List<Individual> doMutations(double mutationRate) {
+        List<Individual> newIndividuals = new ArrayList<>();
         individuals.forEach(individual -> {
-            if (Math.random() <0.25){
+            if (Math.random() < mutationRate){
+                System.out.println("MUTATED");
                 int selectedNode = new Random().nextInt(individual.size());
-                individual.setNode(selectedNode, new FunctionNode(GPUtils.multiply,new VariableNode(0),new VariableNode(0)));
+                Node root = individual.getRoot();
+                newIndividuals.add(Individual.generate(root));
+            }else{
+                newIndividuals.add(individual);
             }
         });
+        return newIndividuals;
     }
 
     // breed function
@@ -95,8 +105,6 @@ public class Population {
     }
 
 
-    void doCrossing() {
-    }
 
     // evaluate function
 

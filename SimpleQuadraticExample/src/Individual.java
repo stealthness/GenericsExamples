@@ -66,7 +66,7 @@ public class Individual implements Node{
         return generate(DEFAULT_TYPE,DEFAULT_MAX_DEPTH,DEFAULT_SINGLE_VARIABLE);
     }
 
-    public static Individual generate(FunctionNode node) {
+    public static Individual generate(Node node) {
 
         Individual individual = new Individual();
         individual.setRange(new double[]{-1.0,1.0});
