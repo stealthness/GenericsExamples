@@ -84,7 +84,7 @@ class IndividualTest {
         double sd = Math.sqrt(MAX_RUNS/4);
 
         List<Node> nodes = new ArrayList<>();
-        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(individual.generatingTerminal()));
+        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(Individual.generatingTerminal()));
         int count = (int)nodes.stream().filter(n -> n.getClass()==TerminalNode.class).count();
         // test that number Terminal Nodes is within 3 standard deviation
         assertTrue(Math.abs(MAX_RUNS/2 - count) < 3*sd, MAX_RUNS + " " +count + " " + 3*sd);
@@ -93,7 +93,7 @@ class IndividualTest {
     @Test
     void testGenerateFunctionOfDepth1(){
         List<Node> nodes = new ArrayList<>();
-        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(individual.generatingFunction(1)));
+        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(Individual.generatingFunction(1)));
         assertTrue(nodes.stream().allMatch(node ->{
             return 1 == node.getDepth();
         }));
@@ -105,7 +105,7 @@ class IndividualTest {
     @Test
     void testGenerateFunctionOfDepth2(){
         List<Node> nodes = new ArrayList<>();
-        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(individual.generatingFunction(1)));
+        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(Individual.generatingFunction(1)));
     }
 
 
@@ -185,6 +185,34 @@ class IndividualTest {
     void assertIndividualSize(int expResult, Node node){
         individual.setRoot(node);
         assertEquals(expResult, individual.size());
+    }
+
+    // Test Fitness Function
+
+    @Test
+    void testXPlus1(){
+        assertEvaluation(7.7, TestUtils.xPlus1Tree);
+    }
+
+    @Test
+    void testXSqrdPlus1(){
+        assertEvaluation(11.0,TestUtils.xSqrdPlus1Tree);
+    }
+
+    @Test
+    void testTwoTree(){
+        assertEvaluation(17.98, TestUtils.twoTree);
+    }
+
+    @Test
+    void testXTree(){
+        assertEvaluation(28.7, TestUtils.xTree);
+    }
+
+    private void assertEvaluation(double expFitness, Node function){
+        individual.setRoot(function);
+        individual.evaluate();
+        assertEquals(expFitness,individual.getFitness(),TOL);
     }
 
 }
