@@ -15,7 +15,11 @@ import java.util.stream.IntStream;
  */
 public class Population {
 
+    /**
+     * ERROR_TOLERANCE is the value of the fitness value that has reach an acceptable solution
+     */
     private static final Double ERROR_TOLERANCE = 0.01;
+
     /**
      * Contains a List of the individuals. Each individual contains a Node, fitness
      */
@@ -31,19 +35,23 @@ public class Population {
      */
     private String generationMethod = "grow";
 
-
+    /**
+     * The initial depth of the generated individuals in the population
+     */
     private int initialMaxDepth = 2;
 
+    /**
+     * Returns the size of the population, which is the number of individuals in the population
+     * @return
+     */
     int size() {
-        if (individuals == null){
-            return 0;
-        }
-        return individuals.size();
+        return (individuals == null)?0:individuals.size();
     }
 
 
 
     // generate population
+
     /**
      * Generate the initial population according method selected
      */
@@ -53,10 +61,12 @@ public class Population {
         Individual.setOfFunctions = GPUtils.getFunctionList("basic");
         if (type.equals("full" )){
             IntStream.range(0,maxSize).forEach(i -> {
-                individuals.add(Individual.generate());
+                Individual individual = Individual.generate(type,initialMaxDepth,1);
+                individuals.add(individual);
             });
         } else if (type.equals("grow")){
-            // to do
+            Individual individual = Individual.generate(type,initialMaxDepth,1);
+            individuals.add(individual);
         } else {
             // to doo
         }
@@ -113,6 +123,9 @@ public class Population {
     }
 
     public void addIndividual(Individual individual) {
+        if (individuals==null){
+            individuals = new ArrayList<>();
+        }
         if (individuals.size() < maxSize){
             individuals.add(individual);
         }

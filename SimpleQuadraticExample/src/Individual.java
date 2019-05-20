@@ -8,11 +8,14 @@ import java.util.stream.DoubleStream;
 @Data
 public class Individual implements Node{
 
+    private static final String DEFAULT_TYPE = "grow";
+    private static final int DEFAULT_MAX_DEPTH = 2;
+    private static final int DEFAULT_SINGLE_VARIABLE = 1;
     static List<GPFunction> setOfFunctions;
     static List<Node> setOfTerminals;
 
     private static final double FUNCTION_CHANCE = 0.5;
-
+    private String type;
     private Node root;
     private Double fitness;
     private int maxNumberOfVariables;
@@ -20,7 +23,9 @@ public class Individual implements Node{
     private double[] range;
     private BiFunction<DoubleStream, Node,Double> fitnessFunction;
 
+
     private Individual(){}
+
 
 
     public void evaluate(){
@@ -58,23 +63,45 @@ public class Individual implements Node{
      * @return
      */
     static Individual generate(){
-        // default values
-        Individual individual = new Individual();
-        individual.setMaxNumberOfVariables(1);
-        individual.setMaxDepth(2);
+        return generate(DEFAULT_TYPE,DEFAULT_MAX_DEPTH,DEFAULT_SINGLE_VARIABLE);
+    }
 
-        // problem specific
-        setOfFunctions = GPUtils.getFunctionList("Basic");
-        setOfTerminals = GPUtils.getTerminalsList("basic");
+    public static Individual generate(FunctionNode node) {
+
+        Individual individual = new Individual();
+        individual.setRange(new double[]{-1.0,1.0});
+        individual.setFitnessFunction(GPUtils.FitnessFunctionSumOfErrors);
+        individual.setRoot(node);
+        return individual;
+    }
+
+    static Individual generate(String type, int maxDepth, int maxNumberOfVariables){
+        Individual individual = new Individual();
+        individual.setMaxNumberOfVariables(maxNumberOfVariables);
+        individual.setMaxDepth(maxDepth);
 
         individual.setRange(new double[]{-1.0,1.0});
         individual.setFitnessFunction(GPUtils.FitnessFunctionSumOfErrors);
 
-        // non random set
-        individual.setRoot(generatingFunction(1));
+        setOfFunctions = GPUtils.getFunctionList("Basic");
+        setOfTerminals = GPUtils.getTerminalsList("basic");
 
-        return individual;
+        if (type.endsWith("Grow")){
+            // to do
+        }else{
+            // default is full
+            if (maxDepth == 0){
+                    individual.setRoot(generatingTerminal());
+                    return individual;
+            } else if (maxDepth >= 1){
+                    individual.setRoot(generatingFunction(maxDepth,type));
+                    return individual;
+            }else{
+                throw new IllegalArgumentException("maxdepth value not allowed" + maxDepth);
+            }
 
+        };
+        return null;
     }
 
     static Node generatingTerminal() {
@@ -88,20 +115,25 @@ public class Individual implements Node{
         }
     }
 
-    static Node generatingFunction(int maxDepth) {
+    static Node generatingFunction(int maxDepth, String type) {
         List<GPFunction> list = GPUtils.getFunctionList("basic");
         Random r = new Random();
         GPFunction function = list.get(r.nextInt(list.size()));
 
         if (maxDepth > 1){
-            return new FunctionNode(function, selectRandomTerminalOrFunction(maxDepth),selectRandomTerminalOrFunction(maxDepth));
+            if (type.equals("grow")){
+                return new FunctionNode(function, selectRandomTerminalOrFunction(maxDepth, type),selectRandomTerminalOrFunction(maxDepth, type));
+            }else{
+                return new FunctionNode(function, generatingFunction(maxDepth -1, type), generatingFunction(maxDepth -1, type));
+            }
+
         }else{
             return new FunctionNode(function,  generatingTerminal(),generatingTerminal());
         }
     }
 
-    static Node selectRandomTerminalOrFunction(int maxDepth){
-        return (Math.random() < FUNCTION_CHANCE)?generatingFunction(maxDepth -1):generatingTerminal();
+    static Node selectRandomTerminalOrFunction(int maxDepth, String type){
+        return (Math.random() < FUNCTION_CHANCE)?generatingFunction(maxDepth -1,type):generatingTerminal();
     }
 
 

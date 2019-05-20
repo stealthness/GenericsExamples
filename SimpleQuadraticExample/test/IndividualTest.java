@@ -11,6 +11,7 @@ class IndividualTest {
 
     private static final double TOL = 0.000001;
     private static final int MAX_RUNS = 100;
+    private static final String FULL = "full";
     private Individual individual;
 
 
@@ -39,6 +40,77 @@ class IndividualTest {
         }
 
     }
+
+
+    // test generating nodes
+
+    @Test
+    void testGeneratingTerminal(){
+
+        // stand deviation
+        double sd = Math.sqrt(MAX_RUNS/4);
+
+        List<Node> nodes = new ArrayList<>();
+        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(Individual.generatingTerminal()));
+        int count = (int)nodes.stream().filter(n -> n.getClass()==TerminalNode.class).count();
+        // test that number Terminal Nodes is within 3 standard deviation
+        assertTrue(Math.abs(MAX_RUNS/2 - count) < 3*sd, MAX_RUNS + " " +count + " " + 3*sd);
+    }
+
+    @Test
+    void testGenerateFunctionOfDepth1(){
+        List<Node> nodes = new ArrayList<>();
+        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(Individual.generatingFunction(1,FULL)));
+        assertTrue(nodes.stream().allMatch(node ->{
+            return 1 == node.getDepth();
+        }));
+        assertTrue(nodes.stream().allMatch(node ->{
+            return 3 == node.size();
+        }));
+    }
+
+    @Test
+    void testGenerateFunctionOfDepth2(){
+        List<Node> nodes = new ArrayList<>();
+        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(Individual.generatingFunction(1,FULL)));
+    }
+
+
+    @Test
+    void testGenerate() {
+        int maxDepth = 2;
+        int maxTreeSize = 7;
+        IntStream.range(0, MAX_RUNS).forEach(i -> {
+            individual = Individual.generate();
+            String errMsg = individual.print();
+            // to remove later
+            System.out.println(errMsg);
+            assertTrue(maxDepth >= individual.getMaxDepth(),errMsg);
+            assertTrue(maxTreeSize >= individual.size(),errMsg);
+        });
+    }
+
+    @Test
+    void testGenerateWithGivenXPlus1Tree() {
+        int expDepth = 1;
+        int expSize = 3;
+        Individual individual = Individual.generate(TestUtils.xPlus1Tree);
+        assertEquals(expDepth, individual.getDepth());
+        assertEquals(expSize, individual.size());
+        assertEquals(TestUtils.xPlus1Tree,individual.getRoot());
+    }
+
+    @Test
+    void testGenerateWithGivenXSqrdPlusOneDivideXTree(){
+        int expDepth = 2;
+        int expSize = 7;
+        Individual individual = Individual.generate(TestUtils.xSqrdPlusOneDivideXTree);
+        assertEquals(expDepth,individual.getDepth());
+        assertEquals(expSize,individual.size());
+        assertEquals(TestUtils.xSqrdPlusOneDivideXTree,individual.getRoot());
+    }
+
+    // Fitness
 
     @Test
     void getFitnessOnExpressXEqual2() {
@@ -73,54 +145,6 @@ class IndividualTest {
         assertEquals(0.0,individual.get(new double[]{-1.0}),TOL);
 
         assertEquals(7.7, individual.getFitness(),TOL);
-    }
-
-    // test generating nodes
-
-    @Test
-    void testGeneratingTerminal(){
-
-        // stand deviation
-        double sd = Math.sqrt(MAX_RUNS/4);
-
-        List<Node> nodes = new ArrayList<>();
-        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(Individual.generatingTerminal()));
-        int count = (int)nodes.stream().filter(n -> n.getClass()==TerminalNode.class).count();
-        // test that number Terminal Nodes is within 3 standard deviation
-        assertTrue(Math.abs(MAX_RUNS/2 - count) < 3*sd, MAX_RUNS + " " +count + " " + 3*sd);
-    }
-
-    @Test
-    void testGenerateFunctionOfDepth1(){
-        List<Node> nodes = new ArrayList<>();
-        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(Individual.generatingFunction(1)));
-        assertTrue(nodes.stream().allMatch(node ->{
-            return 1 == node.getDepth();
-        }));
-        assertTrue(nodes.stream().allMatch(node ->{
-            return 3 == node.size();
-        }));
-    }
-
-    @Test
-    void testGenerateFunctionOfDepth2(){
-        List<Node> nodes = new ArrayList<>();
-        IntStream.range(0,MAX_RUNS).forEach(i -> nodes.add(Individual.generatingFunction(1)));
-    }
-
-
-    @Test
-    void testGenerate() {
-        int maxDepth = 2;
-        int maxTreeSize = 6;
-        IntStream.range(0, MAX_RUNS).forEach(i -> {
-            individual = Individual.generate();
-            String errMsg = individual.print();
-            // to remove later
-            System.out.println(errMsg);
-            assertTrue(maxDepth >= individual.getMaxDepth(),errMsg);
-            assertTrue(maxTreeSize >= individual.size(),errMsg);
-        });
     }
 
 
