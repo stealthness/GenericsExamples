@@ -24,19 +24,9 @@ public class Population {
      */
     private int maxSize;
 
-    /**
-     * Generate the initial population according method selected
-     */
-    public void generate(String type) {
-        individuals = new ArrayList<>();
-        Individual.setOfTerminals = GPUtils.getTerminalsList("basic");
-        Individual.setOfFunctions = GPUtils.getFunctionList("basic");
-        IntStream.range(0,maxSize).forEach(i -> {
-            individuals.add(Individual.generate());
-        });
-    }
 
-    public int size() {
+
+    int size() {
         if (individuals == null){
             return 0;
         }
@@ -44,18 +34,60 @@ public class Population {
     }
 
 
-    // generate population
 
+    // generate population
+    /**
+     * Generate the initial population according method selected
+     */
+    void generate(String type) {
+        individuals = new ArrayList<>();
+        Individual.setOfTerminals = GPUtils.getTerminalsList("basic");
+        Individual.setOfFunctions = GPUtils.getFunctionList("basic");
+        if (type.equals("full" )){
+            IntStream.range(0,maxSize).forEach(i -> {
+                individuals.add(Individual.generate());
+            });
+        } else if (type.equals("grow")){
+            // to do
+        } else {
+            // to doo
+        }
+
+    }
 
     // crossover function
 
     // mutate function
 
+    void doMutations() {
+    }
+
     // breed function
+
+    void doSelection() {
+    }
+
+
+    void doCrossing() {
+    }
 
     // evaluate function
 
+
+
+    public void evaluate() {
+        individuals.stream().forEach(Individual::evaluate);
+    }
+
     // sort function
+
+    void sort(){
+        individuals.stream().sorted();
+    }
+
+    public boolean isTerminationConditionMet() {
+        return true;
+    }
 
     // builder methods
 

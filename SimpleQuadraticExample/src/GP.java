@@ -20,7 +20,28 @@ public class GP {
                 .build();
         population.generate("full");
 
-        population.getIndividuals().stream().forEach(individual -> System.out.println(individual.print()));
+
+        boolean terminationCondition = false;
+        while (!terminationCondition){
+
+
+
+            population.getIndividuals().forEach(individual -> System.out.println(individual.print()));
+            population.evaluate();
+            population.getIndividuals().forEach(individual -> System.out.println(individual.getFitness()));
+
+
+            population.sort();
+
+            population.doSelection();
+
+            population.doMutations();
+
+            population.doCrossing();
+
+            terminationCondition = population.isTerminationConditionMet();
+
+        }
 
     }
 }
