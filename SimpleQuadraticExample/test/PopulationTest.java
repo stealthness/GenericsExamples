@@ -35,6 +35,34 @@ class PopulationTest {
         printPopulation();
     }
 
+    @Test
+    void testGenerateFullTreePopulationOfDepth2(){
+        population = Population.builder()
+                .generationMethod("full")
+                .maxSize(10)
+                .build();
+    }
+
+
+
+
+    @Test
+    void testGetFittest(){
+        population = Population.builder()
+                .maxSize(4)
+                .build();
+        Individual newIndividual = Individual.generate();
+        newIndividual.setRoot(TestUtils.xPlus1Tree);
+        population.addIndividual(newIndividual);
+
+        newIndividual.setRoot(TestUtils.twoTree);
+        population.addIndividual(newIndividual);
+        population.addIndividual(newIndividual);
+        population.addIndividual(newIndividual);
+
+
+        population.getIndividuals().forEach(individual -> System.out.println(individual.print()));
+    }
 
     // size
 

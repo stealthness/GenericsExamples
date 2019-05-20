@@ -16,12 +16,15 @@ public class GP {
 
     void run(){
         population = Population.builder()
+                .generationMethod("grow")
                 .maxSize(4)
                 .build();
         population.generate("full");
 
 
+        int count = 0;
         boolean terminationCondition = false;
+
         while (!terminationCondition){
 
 
@@ -39,9 +42,13 @@ public class GP {
 
             population.doCrossing();
 
-            terminationCondition = population.isTerminationConditionMet();
+            terminationCondition = population.isTerminationConditionMet() || count++ > 2;
 
         }
+
+        // print result
+
+        System.out.println("Result " + population.getFittest(0));
 
     }
 }

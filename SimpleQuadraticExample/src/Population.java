@@ -15,6 +15,7 @@ import java.util.stream.IntStream;
  */
 public class Population {
 
+    private static final Double ERROR_TOLERANCE = 0.01;
     /**
      * Contains a List of the individuals. Each individual contains a Node, fitness
      */
@@ -25,7 +26,13 @@ public class Population {
      */
     private int maxSize;
 
+    /**
+     * Method used to generate the initial population
+     */
+    private String generationMethod = "grow";
 
+
+    private int initialMaxDepth = 2;
 
     int size() {
         if (individuals == null){
@@ -53,7 +60,10 @@ public class Population {
         } else {
             // to doo
         }
+    }
 
+    void generate(){
+        generate(generationMethod);
     }
 
     // crossover function
@@ -93,7 +103,19 @@ public class Population {
     }
 
     public boolean isTerminationConditionMet() {
-        return true;
+
+        return individuals.stream().anyMatch(individual -> (individual.getFitness() < ERROR_TOLERANCE));
+
+    }
+
+    public Individual getFittest(int index) {
+        return null;
+    }
+
+    public void addIndividual(Individual individual) {
+        if (individuals.size() < maxSize){
+            individuals.add(individual);
+        }
     }
 
     // builder methods
