@@ -105,4 +105,17 @@ public class Individual implements Node{
     }
 
 
+    public void setNode(int selectedNodeIndex, Node node) {
+        if (selectedNodeIndex == 0){
+            this.root = node;
+        } else if ( selectedNodeIndex == 1 && root.size() > 1) {
+            ((FunctionNode) root).setNode1(node);
+        } else if (selectedNodeIndex < ((FunctionNode)root).getNode1().size()){
+            // to do
+        } else if (selectedNodeIndex == root.size() - ((FunctionNode)root).getNode1().size() ){
+            ((FunctionNode)root).setNode1(node);
+        } else {
+            // to do
+        }
+    }
 }

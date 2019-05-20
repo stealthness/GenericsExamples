@@ -3,6 +3,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 @Data
@@ -60,6 +61,12 @@ public class Population {
     // mutate function
 
     void doMutations() {
+        individuals.forEach(individual -> {
+            if (Math.random() <0.25){
+                int selectedNode = new Random().nextInt(individual.size());
+                individual.setNode(selectedNode, new FunctionNode(GPUtils.multiply,new VariableNode(0),new VariableNode(0)));
+            }
+        });
     }
 
     // breed function

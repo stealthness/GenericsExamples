@@ -62,11 +62,6 @@ class GPFunctionTest {
 
 
 
-    // test select random node
 
-    @Test
-    void testSelectNode0(){
-
-    }
 
 }

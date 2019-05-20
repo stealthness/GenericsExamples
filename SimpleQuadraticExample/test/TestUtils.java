@@ -1,7 +1,6 @@
 public class TestUtils {
 
 
-
     // Terminal Nodes
     static TerminalNode oneTree = new TerminalNode(1.0);
     static TerminalNode twoTree = new TerminalNode(2.0);
@@ -20,4 +19,10 @@ public class TestUtils {
     // depth 3
     static FunctionNode xSqrdPlus1TwiceTree = new FunctionNode(GPUtils.multiply, twoTree, xSqrdPlus1Tree);
     static FunctionNode xSqrdPlusXPlus1TreeD3 = new FunctionNode(GPUtils.add, xSqrdPlus1Tree, xTree);
+
+
+    public static Node oneNode = new TerminalNode(1.0);
+    public static Node twoNode = new TerminalNode(2.0);
+
+    public static Node xNode = new VariableNode(0);
 }

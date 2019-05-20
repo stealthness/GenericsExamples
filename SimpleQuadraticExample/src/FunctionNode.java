@@ -24,6 +24,23 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
         return (index == 0)? node1:node2;
     }
 
+    Node select(int nodeSelection){
+        switch(nodeSelection){
+            case 0 : return this;
+            case 1 :return node1;
+            default :
+                if (nodeSelection < node2.size()) {
+                    // already established that must be Function Node otherwise would be selection 1
+                    return ((FunctionNode)node1).select(nodeSelection-1);
+                }else if (nodeSelection == node2.size()){
+                        return node2;
+                } else if (nodeSelection <= this.size()){
+                    return ((FunctionNode)node1).select(nodeSelection - node1.size() -1);
+                }
+                throw new IllegalArgumentException("invalid selection");
+        }
+    }
+
     @Override
     public int size() {
         return 1 + node1.size()+node2.size();
@@ -46,18 +63,10 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
 
     @Override
     public int compareTo(FunctionNode that) {
-        if (this.size() > that.size()){
-            return 1;
-        } else if (this.size() < that.size()){
-            return -1;
+        if (this.size() != that.size()){
+            return Integer.compare(this.size(),that.size());
         } else{
-            if (this.getDepth() > that.getDepth()){
-                return 1;
-            }else if (this.getDepth() < that.getDepth()){
-                return -1;
-            }else{
-                return 0;
-            }
+            return Integer.compare(this.getDepth(), that.getDepth());
         }
     }
 }

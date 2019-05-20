@@ -177,4 +177,51 @@ class FunctionNodeTest {
 
     }
 
+    @Test
+    void testEquality(){
+        assertEquals(TestUtils.xPlus1Tree,new FunctionNode(GPUtils.add,TestUtils.xNode,TestUtils.oneNode));
+        assertEquals(TestUtils.xPlus1Tree,TestUtils.xPlus1Tree);
+        assertNotEquals(TestUtils.xPlus1Tree,TestUtils.xSqrdTree);
+        assertNotEquals(TestUtils.xPlus1Tree,TestUtils.xSqrdPlusOneDivideXTree);
+    }
+
+
+    // test select random node
+
+    @Test
+    void testSelectRootNode0(){
+        Node root = TestUtils.xSqrdTree;
+        Node selectedRoot = ((FunctionNode)root).select(0);
+        assertEquals(root, selectedRoot);
+
+        FunctionNode root1 = TestUtils.xSqrdTree;
+        Node selectedRoot1 = root1.select(0);
+        assertEquals(root1, selectedRoot1);
+
+        assertNotEquals(root,((FunctionNode)root).select(1));
+        assertEquals(TestUtils.xNode,((FunctionNode)root).select(1));
+        assertNotEquals(root,((FunctionNode)root).select(2));
+        assertEquals(TestUtils.oneNode,((FunctionNode)root).select(1));
+
+    }
+
+    @Test
+    void testSelectNode1(){
+        // should always return the node1
+        Node root = TestUtils.xSqrdTree;
+        Node selectedRoot = ((FunctionNode)root).select(1);
+        assertEquals(TestUtils.xNode, selectedRoot);
+
+        root = TestUtils.xSqrdPlus1Tree;
+        selectedRoot = ((FunctionNode)root).select(1);
+        assertEquals(TestUtils.xSqrdTree, selectedRoot);
+
+        root = TestUtils.oneDivideXTree;
+        selectedRoot = ((FunctionNode)root).select(1);
+        assertEquals(TestUtils.oneNode, selectedRoot);
+
+
+
+    }
+
 }

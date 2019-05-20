@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TerminalNodeTest {
 
@@ -33,6 +33,15 @@ class TerminalNodeTest {
         assertEquals(String.valueOf(v1), t1.print());
     }
 
+
+    // test Equality
+
+    @Test
+    void testEquality(){
+        assertEquals(TestUtils.oneNode, new TerminalNode(1.0));
+        assertNotEquals(TestUtils.twoNode, TestUtils.oneNode);
+        assertNotEquals(TestUtils.oneNode, TestUtils.xNode);
+    }
 
 
 
