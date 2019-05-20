@@ -156,24 +156,24 @@ public class Individual implements Node,Comparable{
         return Double.compare(this.getFitness(),((Individual)that).getFitness());
     }
 
-    public void crossWith(Individual randomIndividual) {
+    void crossWith(Individual randomIndividual) {
 
         int randomIndexSelection = new Random().nextInt(randomIndividual.size());
         Node subTree = randomIndividual.selectSubtree(randomIndexSelection);
 
 
         randomIndexSelection = new Random().nextInt(size());
-        this.changeSubtree(randomIndexSelection, subTree);
+        this.changeSubtreeAt(randomIndexSelection, subTree);
 
 
     }
 
-    private void changeSubtree(int index, Node subTree) {
+    void changeSubtreeAt(int index, Node subTree) {
         if (index == 0){
             setRoot(subTree);
         } else {
             // change at FunctionNode level
-            ((FunctionNode)getRoot()).changeSubtree(index, subTree);
+            ((FunctionNode)getRoot()).changeSubtreeAt(index, subTree);
         }
     }
 

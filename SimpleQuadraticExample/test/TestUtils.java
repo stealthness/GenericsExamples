@@ -15,7 +15,8 @@ public class TestUtils {
     static FunctionNode xSqrdPlus1Tree = new FunctionNode(GPUtils.add, xSqrdTree, oneTree);
     static FunctionNode xSqrdPlusXPlus1TreeD2 = new FunctionNode(GPUtils.add, xSqrdTree, xPlus1Tree);
     static FunctionNode xSqrdPlusOneDivideXTree = new FunctionNode(GPUtils.add, xSqrdTree, oneDivideXTree);
-    public static FunctionNode twoXSqrdTree = new FunctionNode(GPUtils.multiply, twoTree ,xSqrdTree);
+    static FunctionNode twoXSqrdTree = new FunctionNode(GPUtils.multiply, twoTree ,xSqrdTree);
+    static FunctionNode xPlus1MultiplyXTree = new FunctionNode(GPUtils.multiply, xPlus1Tree, xTree);
     // depth 3
     static FunctionNode xSqrdPlus1TwiceTree = new FunctionNode(GPUtils.multiply, twoTree, xSqrdPlus1Tree);
     static FunctionNode xSqrdPlusXPlus1TreeD3 = new FunctionNode(GPUtils.add, xSqrdPlus1Tree, xTree);

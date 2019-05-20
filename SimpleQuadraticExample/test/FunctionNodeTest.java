@@ -229,4 +229,34 @@ class FunctionNodeTest {
 
     }
 
+    @Test
+    void changeSubtreeAtIndex0() {
+        Node node = TestUtils.xPlus1Tree;
+        ((FunctionNode)node).changeSubtreeAt(0,TestUtils.xNode);
+        assertEquals(node, TestUtils.xNode);
+
+        node = TestUtils.xSqrdPlusOneDivideXTree;
+        ((FunctionNode)node).changeSubtreeAt(0,TestUtils.xSqrdPlus1Tree);
+        assertEquals(node,TestUtils.xSqrdPlus1Tree);
+    }
+
+    @Test
+    void changeSubtreeAtIndex1() {
+        Node node = TestUtils.xPlus1Tree;
+        ((FunctionNode)node).changeSubtreeAt(1,TestUtils.xSqrdTree);
+        assertEquals(node,TestUtils.xSqrdPlus1Tree);
+
+
+        node = TestUtils.xSqrdTree;
+        ((FunctionNode)node).changeSubtreeAt(1,TestUtils.xPlus1Tree);
+        assertEquals(node,TestUtils.xPlus1MultiplyXTree);
+
+    }
+
+    @Test
+    void changeSubtreeAtIndex2() {
+        Node node = TestUtils.xPlus1Tree;
+        ((FunctionNode)node).changeSubtreeAt(0,TestUtils.twoTree);
+        assertEquals(node,TestUtils.xPlus2Tree);
+    }
 }

@@ -20,6 +20,11 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
         this.function = function;
     }
 
+    /**
+     * Returns the subtree at node1 or node2
+     * @param index
+     * @return
+     */
     Node getNode(int index){
         return (index == 0)? node1:node2;
     }
@@ -33,13 +38,13 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
     Node getSubtree(int nodeIndex){
         switch(nodeIndex){
             case 0 : return this;
-            case 1 : return node1;
+            case 1 : return getNode(0);
             default :
                 if (nodeIndex < node2.size()) {
                     // already established that must be Function Node otherwise would be selection 1
                     return ((FunctionNode)node1).getSubtree(nodeIndex-1);
                 }else if (nodeIndex == node2.size()){
-                        return node2;
+                        return getNode(1);
                 } else if (nodeIndex <= this.size()){
                     return ((FunctionNode)node1).getSubtree(nodeIndex - node1.size() -1);
                 }
@@ -47,19 +52,29 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
         }
     }
 
+    /**
+     * Changes the subtree at index with new subTree
+     * @param index
+     * @param subTree
+     */
+    void changeSubtreeAt(int index, Node subTree) {
+    }
+
+    // Override methods
+
     @Override
     public int size() {
-        return 1 + node1.size()+node2.size();
+        return 1 + getNode(0).size() + getNode(1).size();
     }
 
     @Override
     public int getDepth() {
-        return 1 + Math.max(node1.getDepth(), node2.getDepth());
+        return 1 + Math.max(getNode(0).getDepth(), getNode(1).getDepth());
     }
 
     @Override
     public Double get(double[] inputs) {
-        return function.apply(node1.get(inputs),node2.get(inputs));
+        return function.apply(getNode(0).get(inputs),getNode(1).get(inputs));
     }
 
     @Override
@@ -74,8 +89,5 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
         } else{
             return Integer.compare(this.getDepth(), that.getDepth());
         }
-    }
-
-    void changeSubtree(int index, Node subTree) {
     }
 }
