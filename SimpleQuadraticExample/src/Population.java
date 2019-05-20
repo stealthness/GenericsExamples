@@ -4,6 +4,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Data
@@ -48,6 +49,11 @@ public class Population {
         return (individuals == null)?0:individuals.size();
     }
 
+    /**
+     * Sets the elitism level, that is the amount of the top individuals that remain unaltered
+     */
+    int elitismLevel;
+
 
 
     // generate population
@@ -79,14 +85,26 @@ public class Population {
     // crossover function
 
     List<Individual>  doCrossing(double crossingRate) {
-        return individuals;
+        List<Individual> newIndividuals = new ArrayList<>();
+        individuals.stream().skip(elitismLevel).forEach(individual -> {
+            if (Math.random() < crossingRate){
+                System.out.println("Crossed");
+
+                Individual randomIndividual = this.getIndividuals().get(new Random().nextInt(this.size()-elitismLevel)+elitismLevel);
+                individual.crossWith(randomIndividual);
+                newIndividuals.add(individual);
+            }else{
+                newIndividuals.add(individual);
+            }
+        });
+        return newIndividuals;
     }
 
     // mutate function
 
     List<Individual> doMutations(double mutationRate) {
         List<Individual> newIndividuals = new ArrayList<>();
-        individuals.forEach(individual -> {
+        individuals.stream().skip(elitismLevel).forEach(individual -> {
             if (Math.random() < mutationRate){
                 System.out.println("MUTATED");
                 int selectedNode = new Random().nextInt(individual.size());
@@ -101,8 +119,7 @@ public class Population {
 
     // breed function
 
-    void doSelection() {
-    }
+
 
 
 
@@ -117,7 +134,7 @@ public class Population {
     // sort function
 
     void sort(){
-        individuals.stream().sorted();
+        individuals = individuals.stream().sorted().collect(Collectors.toList());
     }
 
     public boolean isTerminationConditionMet() {
@@ -137,6 +154,9 @@ public class Population {
         if (individuals.size() < maxSize){
             individuals.add(individual);
         }
+    }
+
+    public void doSelection(int i) {
     }
 
     // builder methods

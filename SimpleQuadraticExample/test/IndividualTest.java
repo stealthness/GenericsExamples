@@ -32,8 +32,8 @@ class IndividualTest {
         Node root = individual.getRoot();
         assertEquals("(+ x0 1.0)",root.print());
         if (root.getClass() == FunctionNode.class){
-            Node node1 = ((FunctionNode)root).getSubtree(0);
-            Node node2 = ((FunctionNode)root).getSubtree(1);
+            Node node1 = ((FunctionNode)root).getNode(0);
+            Node node2 = ((FunctionNode)root).getNode(1);
 
             assertEquals("x0",node1.print());
             assertEquals("1.0",node2.print());

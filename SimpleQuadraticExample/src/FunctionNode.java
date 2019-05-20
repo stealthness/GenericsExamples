@@ -10,32 +10,38 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
     Node node1;
     Node node2;
 
-    public FunctionNode(GPFunction function, Node node1, Node node2) {
+    FunctionNode(GPFunction function, Node node1, Node node2) {
         this.function = function;
         setNode1(node1);
         setNode2(node2);
     }
 
-    public FunctionNode(GPFunction function) {
+    FunctionNode(GPFunction function) {
         this.function = function;
     }
 
-    public Node getSubtree(int index){
+    Node getNode(int index){
         return (index == 0)? node1:node2;
     }
 
-    Node select(int nodeSelection){
-        switch(nodeSelection){
+    /**
+     * Returns the selected node. The index of the selected node is counted via depth first search, with the root node
+     * being index 0, node1 being index 1 and node2 being index node1.size()+1.
+     * @param nodeIndex the index of the subtree to be returned.
+     * @return subtree at nodeIndex.
+     */
+    Node getSubtree(int nodeIndex){
+        switch(nodeIndex){
             case 0 : return this;
-            case 1 :return node1;
+            case 1 : return node1;
             default :
-                if (nodeSelection < node2.size()) {
+                if (nodeIndex < node2.size()) {
                     // already established that must be Function Node otherwise would be selection 1
-                    return ((FunctionNode)node1).select(nodeSelection-1);
-                }else if (nodeSelection == node2.size()){
+                    return ((FunctionNode)node1).getSubtree(nodeIndex-1);
+                }else if (nodeIndex == node2.size()){
                         return node2;
-                } else if (nodeSelection <= this.size()){
-                    return ((FunctionNode)node1).select(nodeSelection - node1.size() -1);
+                } else if (nodeIndex <= this.size()){
+                    return ((FunctionNode)node1).getSubtree(nodeIndex - node1.size() -1);
                 }
                 throw new IllegalArgumentException("invalid selection");
         }
@@ -68,5 +74,8 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
         } else{
             return Integer.compare(this.getDepth(), that.getDepth());
         }
+    }
+
+    void changeSubtree(int index, Node subTree) {
     }
 }

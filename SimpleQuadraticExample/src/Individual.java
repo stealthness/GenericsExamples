@@ -6,7 +6,7 @@ import java.util.function.BiFunction;
 import java.util.stream.DoubleStream;
 
 @Data
-public class Individual implements Node{
+public class Individual implements Node,Comparable{
 
     private static final String DEFAULT_TYPE = "grow";
     private static final int DEFAULT_MAX_DEPTH = 2;
@@ -149,5 +149,40 @@ public class Individual implements Node{
         } else {
             // to do
         }
+    }
+
+    @Override
+    public int compareTo(Object that) {
+        return Double.compare(this.getFitness(),((Individual)that).getFitness());
+    }
+
+    public void crossWith(Individual randomIndividual) {
+
+        int randomIndexSelection = new Random().nextInt(randomIndividual.size());
+        Node subTree = randomIndividual.selectSubtree(randomIndexSelection);
+
+
+        randomIndexSelection = new Random().nextInt(size());
+        this.changeSubtree(randomIndexSelection, subTree);
+
+
+    }
+
+    private void changeSubtree(int index, Node subTree) {
+        if (index == 0){
+            setRoot(subTree);
+        } else {
+            // change at FunctionNode level
+            ((FunctionNode)getRoot()).changeSubtree(index, subTree);
+        }
+    }
+
+    /**
+     * Returns the subtree located at the index
+     * @param index
+     * @return
+     */
+    Node selectSubtree(int index) {
+        return null;
     }
 }

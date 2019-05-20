@@ -19,6 +19,7 @@ public class GP {
                 .generationMethod("grow")
                 .initialMaxDepth(1)
                 .maxSize(10)
+                .elitismLevel(2)
                 .build();
         population.generate("full");
 
@@ -30,15 +31,13 @@ public class GP {
 
 
             population.evaluate();
+            population.sort();
+
             population.getIndividuals().forEach(individual -> {
                 System.out.println("Expression : "+individual.print());
                 //System.out.println("Fitness is : "+ individual.getFitness());
             });
 
-
-            population.sort();
-
-            population.doSelection();
 
             double mutationRate = 0.10;
             population.setIndividuals(population.doMutations(mutationRate));
