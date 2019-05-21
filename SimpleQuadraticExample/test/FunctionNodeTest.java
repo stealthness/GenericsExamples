@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.DoubleStream;
@@ -45,7 +44,7 @@ class FunctionNodeTest {
     @Test
     void testNodeWithLambdaAndTwoTerminalNode(){
         var f0 = new FunctionNode(GPUtils.add,t0,t1);
-        assertEquals(v0+v1,f0.get(null),TOL);
+        assertEquals(v0+v1,f0.apply(null),TOL);
     }
 
     @Test
@@ -59,8 +58,8 @@ class FunctionNodeTest {
     @Test
     void testNodeThatIsVariableNode(){
         var variables = new double[]{v0,v1};
-        assertEquals(v0,x0.get(variables),TOL);
-        assertEquals(v1,x1.get(variables),TOL);
+        assertEquals(v0,x0.apply(variables),TOL);
+        assertEquals(v1,x1.apply(variables),TOL);
     }
 
     @Test
@@ -75,11 +74,11 @@ class FunctionNodeTest {
 
         Node root = new FunctionNode(GPUtils.add, new TerminalNode(2.0), new TerminalNode(0.0));
         IntStream.range(-5,5).forEach(i -> {
-            assertEquals(2.0, root.get(new double[]{(double)i}));
+            assertEquals(2.0, root.apply(new double[]{(double)i}));
         });
         assertEquals("(+ 2.0 0.0)",root.print());
 
-        var fit = d.reduce(0,(a,b) -> a + Math.abs((b*b + b + 1) - root.get(new double[]{b})));
+        var fit = d.reduce(0,(a,b) -> a + Math.abs((b*b + b + 1) - root.apply(new double[]{b})));
         // The know expected fitness from the Field Handbook of GP
         assertEquals(17.98,fit, TOL);
     }
@@ -93,12 +92,12 @@ class FunctionNodeTest {
 
         Node root = new FunctionNode(GPUtils.subtract,subtree, new TerminalNode(0.0));
         IntStream.range(-5,5).forEach(i -> {
-            assertEquals(i+1.0, root.get(new double[]{(double)i}),TOL);
+            assertEquals(i+1.0, root.apply(new double[]{(double)i}),TOL);
         });
         assertEquals("(- (+ x0 1.0) 0.0)",root.print());
 
 
-        var fit = d.reduce(0,(a,b) -> a + Math.abs((b*b + b + 1) - root.get(new double[]{b})));
+        var fit = d.reduce(0,(a,b) -> a + Math.abs((b*b + b + 1) - root.apply(new double[]{b})));
         // the known expected fitness as given Field Handbook of GP
         assertEquals(7.7, fit, TOL);
     }

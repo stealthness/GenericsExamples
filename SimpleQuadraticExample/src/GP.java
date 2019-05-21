@@ -29,23 +29,35 @@ public class GP {
 
         while (!terminationCondition){
 
+            System.out.println("start loop, generation = " + count);
 
             population.evaluate();
             population.sort();
+
+            System.out.println("Evaluated and sorted");
 
             population.getIndividuals().forEach(individual -> {
                 System.out.println("Expression : "+individual.print());
                 //System.out.println("Fitness is : "+ individual.getFitness());
             });
 
-
             double mutationRate = 0.10;
             population.setIndividuals(population.doMutations(mutationRate));
             population.evaluate();
 
+            System.out.println("Mutations completed");
+
             double crossingRate = 0.5;
             population.setIndividuals(population.doCrossing(crossingRate));
 
+            System.out.println("Crossing completed");
+
+            population.getIndividuals().forEach(individual -> {
+                System.out.println("Expression : "+individual.print());
+                //System.out.println("Fitness is : "+ individual.getFitness());
+            });
+
+            System.out.println("Check termination");
             terminationCondition = population.isTerminationConditionMet() || ++count > 2;
 
             System.out.println("\n\n");

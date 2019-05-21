@@ -116,9 +116,9 @@ class IndividualTest {
     void getFitnessOnExpressXEqual2() {
         individual.setRoot(new TerminalNode(2.0));
         individual.evaluate();
-        assertEquals(2.0,individual.get(new double[]{0.0}),TOL);
-        assertEquals(2.0,individual.get(new double[]{1.0}),TOL);
-        assertEquals(2.0,individual.get(new double[]{-1.0}),TOL);
+        assertEquals(2.0,individual.apply(new double[]{0.0}),TOL);
+        assertEquals(2.0,individual.apply(new double[]{1.0}),TOL);
+        assertEquals(2.0,individual.apply(new double[]{-1.0}),TOL);
         assertEquals(17.98, individual.getFitness(),TOL);
     }
 
@@ -128,9 +128,9 @@ class IndividualTest {
         Node subtree = new FunctionNode(GPUtils.multiply, new VariableNode(0),new VariableNode(0)) ;
         individual.setRoot(new FunctionNode(GPUtils.add,new TerminalNode(1.0),subtree));
         individual.evaluate();
-        assertEquals(1.0,individual.get(new double[]{0.0}),TOL);
-        assertEquals(2.0,individual.get(new double[]{1.0}),TOL);
-        assertEquals(2.0,individual.get(new double[]{-1.0}),TOL);
+        assertEquals(1.0,individual.apply(new double[]{0.0}),TOL);
+        assertEquals(2.0,individual.apply(new double[]{1.0}),TOL);
+        assertEquals(2.0,individual.apply(new double[]{-1.0}),TOL);
         assertEquals(11.0, individual.getFitness(),TOL);
     }
 
@@ -140,9 +140,9 @@ class IndividualTest {
         individual.setRoot(new FunctionNode(GPUtils.add, new VariableNode(0),new TerminalNode(1.0)));
         individual.evaluate();
 
-        assertEquals(1.0,individual.get(new double[]{0.0}),TOL);
-        assertEquals(2.0,individual.get(new double[]{1.0}),TOL);
-        assertEquals(0.0,individual.get(new double[]{-1.0}),TOL);
+        assertEquals(1.0,individual.apply(new double[]{0.0}),TOL);
+        assertEquals(2.0,individual.apply(new double[]{1.0}),TOL);
+        assertEquals(0.0,individual.apply(new double[]{-1.0}),TOL);
 
         assertEquals(7.7, individual.getFitness(),TOL);
     }

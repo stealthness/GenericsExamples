@@ -53,8 +53,8 @@ public class Individual implements Node,Comparable{
     }
 
     @Override
-    public Double get(double[] inputs) {
-        return root.get(inputs);
+    public Double apply(double[] inputs) {
+        return root.apply(inputs);
     }
 
     @Override
@@ -72,12 +72,12 @@ public class Individual implements Node,Comparable{
         return generate(DEFAULT_TYPE,DEFAULT_MAX_DEPTH,DEFAULT_SINGLE_VARIABLE);
     }
 
-    public static Individual generate(Node node) {
+    static Individual generate(Node node) {
 
         Individual individual = new Individual();
         individual.setRange(new double[]{-1.0,1.0});
         individual.setFitnessFunction(GPUtils.FitnessFunctionSumOfErrors);
-        individual.setRoot(node);
+        individual.setRoot(node.clone());
         return individual;
     }
 
@@ -138,40 +138,34 @@ public class Individual implements Node,Comparable{
         }
     }
 
-    static Node selectRandomTerminalOrFunction(int maxDepth, String type){
+    private static Node selectRandomTerminalOrFunction(int maxDepth, String type){
         return (Math.random() < FUNCTION_CHANCE)?generatingFunction(maxDepth -1,type):generatingTerminal();
     }
 
 
-    public void setNode(int selectedNodeIndex, Node node) {
-        if (selectedNodeIndex == 0){
-            this.root = node;
-        } else if ( selectedNodeIndex == 1 && root.size() > 1) {
-            ((FunctionNode) root).setNode(0,node);
-        } else if (selectedNodeIndex < ((FunctionNode)root).getNode(0).size()){
-            // to do
-        } else if (selectedNodeIndex == root.size() - ((FunctionNode)root).getNode(0).size() ){
-            ((FunctionNode)root).setNode(0,node);
-        } else {
-            // to do
-        }
-    }
+//    public void setNode(int selectedNodeIndex, Node node) {
+//        if (selectedNodeIndex == 0){
+//            this.root = node;
+//        } else if ( selectedNodeIndex == 1 && root.size() > 1) {
+//            ((FunctionNode) root).setNode(0,node);
+//        } else if (selectedNodeIndex < ((FunctionNode)root).getNode(0).size()){
+//            // to do
+//        } else if (selectedNodeIndex == root.size() - ((FunctionNode)root).getNode(0).size() ){
+//            ((FunctionNode)root).setNode(0,node);
+//        } else {
+//            // to do
+//        }
+//    }
 
     @Override
     public int compareTo(Object that) {
         return Double.compare(this.getFitness(),((Individual)that).getFitness());
     }
 
+
     void crossWith(Individual randomIndividual) {
-
-        int randomIndexSelection = new Random().nextInt(randomIndividual.size());
-        Node subTree = randomIndividual.selectSubtree(randomIndexSelection);
-
-
-        randomIndexSelection = new Random().nextInt(size());
-        this.changeSubtreeAt(randomIndexSelection, subTree);
-
-
+        Node subTree = randomIndividual.selectSubtree(new Random().nextInt(randomIndividual.size()));
+        this.changeSubtreeAt(new Random().nextInt(size()), subTree);
     }
 
     void changeSubtreeAt(int index, Node subTree) {

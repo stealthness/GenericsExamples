@@ -23,8 +23,8 @@ class TerminalNodeTest {
 
     @Test
     void getValueIfTerminal() {
-        assertEquals(v0, t0.get(null),TOL);
-        assertEquals(v1, t1.get(null),TOL);
+        assertEquals(v0, t0.apply(null),TOL);
+        assertEquals(v1, t1.apply(null),TOL);
     }
 
     @Test

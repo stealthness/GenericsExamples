@@ -102,6 +102,11 @@ public class Population {
 
     // mutate function
 
+    /**
+     * Take a list of individuals and returns a list where some of the individuals have been mutated
+     * @param mutationRate
+     * @return
+     */
     List<Individual> doMutations(double mutationRate) {
         List<Individual> newIndividuals = new ArrayList<>();
         individuals.stream().skip(elitismLevel).forEach(individual -> {

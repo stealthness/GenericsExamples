@@ -7,7 +7,7 @@ public class TerminalNode implements Node {
     final Double value;
 
     @Override
-    public Double get(double[] inputs) {
+    public Double apply(double[] inputs) {
         return value;
     }
 

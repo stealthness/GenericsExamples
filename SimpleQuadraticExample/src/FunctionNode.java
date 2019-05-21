@@ -68,37 +68,38 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
     }
 
     /**
-     * Changes the subtree at index with new subTree
-     * @param index
+     * Changes the subtree at index with new subTree. (root cannot be change only subtrees)
+     * @param index the index at which to place the new subTree
      * @param subTree
      */
     void changeSubtreeAt(int index, Node subTree) {
         if (index == 1){
-            System.out.println("before");
-            System.out.println(this.print());
-            System.out.println(getNode(0).print());
             setNode(0,subTree);
-            System.out.println("after");
-            System.out.println(this.print());
-            System.out.println(getNode(0).print());
         }else if (index == getNode(0).size()+1){
-
             setNode(1,subTree);
         }
-
     }
 
     // Override methods
+
     @Override
     public String print() {
         return "(" + function.getClojureString() + " " + ((node1 == null)?"null":node1.print()) + " " + ((node1 == null)?"null":node2.print()) + ")";
     }
 
+    /**
+     * Returns the size of the Individual which is count of the number of nodes
+     * @return the number of Nodes contained in the root
+     */
     @Override
     public int size() {
         return 1 + getNode(0).size() + getNode(1).size();
     }
 
+    /**
+     * Returns the greatest depth of the root, where root is 0.
+     * @return the greatest depth of the root tree
+     */
     @Override
     public int getDepth() {
         return 1 + Math.max(getNode(0).getDepth(), getNode(1).getDepth());
@@ -106,11 +107,9 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
 
 
     @Override
-    public Double get(double[] inputs) {
-        return function.apply(getNode(0).get(inputs),getNode(1).get(inputs));
+    public Double apply(double[] inputs) {
+        return function.apply(getNode(0).apply(inputs),getNode(1).apply(inputs));
     }
-
-
 
     @Override
     public int compareTo(FunctionNode that) {
@@ -120,13 +119,6 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
             return Integer.compare(this.getDepth(), that.getDepth());
         }
     }
-
-//    @Override
-//    public boolean equals(Object that){
-//        return that.getClass() == FunctionNode.class && this.getDepth() == ((FunctionNode)that).getDepth()
-//                && this.size() == ((FunctionNode)that).size() && this.getNode(0).equals(((FunctionNode)that).getNode(0))
-//                && this.getNode(1).equals(((FunctionNode)that).getNode(1));
-//    }
 
     @Override
     public Node clone() {
