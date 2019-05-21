@@ -228,18 +228,37 @@ class FunctionNodeTest {
 //
 //    }
 
-//    @Test
-//    void changeSubtreeAtIndex2() {
-//        Node node = TestUtils.xPlus1Tree;
-//        ((FunctionNode)node).changeSubtreeAt(2,TestUtils.twoTree);
-//        assertEquals(node,TestUtils.xPlus2Tree);
-//    }
+    @Test
+    void changeSubtreeAtIndex2() {
+        Node node = TestUtils.xPlus1Tree;
+        ((FunctionNode)node).changeSubtreeAt(2,TestUtils.twoTree);
+        assertEquals(node,TestUtils.xPlus2Tree);
+
+        System.out.println(TestUtils.xPlus1Tree);
+        System.out.println(node.print());
+        System.out.println(((FunctionNode) node).getNode(0).print());
+    }
 
 
     @Test
     void checkChangeOfRef(){
-        FunctionNode node1 = new FunctionNode(GPUtils.add,TestUtils.xNode, TestUtils.oneNode);
+        Node subNode0 = TestUtils.xNode;
+        Node subNode1 = TestUtils.oneNode;
+        FunctionNode node1 = new FunctionNode(GPUtils.add,subNode0, subNode1);
         assertEquals(node1, TestUtils.xPlus1Tree);
+        var expString = "(+ x0 1.0)";
+
+        subNode0 = TestUtils.xPlus1MultiplyXTree;
+
+        assertEquals(expString,node1.print());
+
+
+        Node node2 = TestUtils.xSqrdTree;
+        node1.setNode(0, node2);
+        expString = "(+ (* x0 x0) 1.0)";
+        assertEquals(expString,node1.print());
+        node2 = TestUtils.zeroTree;
+        assertEquals(expString,node1.print());
 
     }
 }

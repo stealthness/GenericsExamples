@@ -81,6 +81,9 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
             System.out.println("after");
             System.out.println(this.print());
             System.out.println(getNode(0).print());
+        }else if (index == getNode(0).size()+1){
+
+            setNode(1,subTree);
         }
 
     }
