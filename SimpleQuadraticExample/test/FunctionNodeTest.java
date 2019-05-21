@@ -230,7 +230,7 @@ class FunctionNodeTest {
 
     @Test
     void changeSubtreeAtIndex2() {
-        Node node = TestUtils.xPlus1Tree;
+        Node node = TestUtils.xPlus1Tree.clone();
         ((FunctionNode)node).changeSubtreeAt(2,TestUtils.twoTree);
         assertEquals(node,TestUtils.xPlus2Tree);
 
@@ -242,10 +242,11 @@ class FunctionNodeTest {
 
     @Test
     void checkChangeOfRef(){
-        Node subNode0 = TestUtils.xNode;
-        Node subNode1 = TestUtils.oneNode;
-        FunctionNode node1 = new FunctionNode(GPUtils.add,subNode0, subNode1);
-        assertEquals(node1, TestUtils.xPlus1Tree);
+        Node subNode0 = TestUtils.xNode.clone();
+        Node subNode1 = TestUtils.oneNode.clone();
+        Node node1 = new FunctionNode(GPUtils.add,subNode0, subNode1);
+        Node node2 = new FunctionNode(GPUtils.add,subNode0, subNode1);
+        assertEquals(node1, node2);
         var expString = "(+ x0 1.0)";
 
         subNode0 = TestUtils.xPlus1MultiplyXTree;
@@ -253,12 +254,52 @@ class FunctionNodeTest {
         assertEquals(expString,node1.print());
 
 
-        Node node2 = TestUtils.xSqrdTree;
-        node1.setNode(0, node2);
+        node2 = TestUtils.xSqrdTree.clone();
+        ((FunctionNode)node1).setNode(0, node2);
         expString = "(+ (* x0 x0) 1.0)";
         assertEquals(expString,node1.print());
         node2 = TestUtils.zeroTree;
         assertEquals(expString,node1.print());
 
+
+
+
+    }
+
+    @Test
+    void testChangeOfRef2(){
+        Node subNode0 = TestUtils.xPlus1MultiplyXTree;
+        Node subNode1 = TestUtils.xSqrdPlusXPlus1TreeD3;
+        Node subNode2 = TestUtils.xSqrdPlus1Tree;
+
+        final String subNodeString0 = subNode0.print();
+        final String subNodeString1 = subNode1.print();
+        final String subNodeString2 = subNode2.print();
+
+        assertEquals(subNodeString0,subNode0.print());
+        assertEquals(subNodeString1,subNode1.print());
+        assertEquals(subNodeString2,subNode2.print());
+
+        FunctionNode testNode = new FunctionNode(GPUtils.add, new FunctionNode(GPUtils.protectedDivision,subNode0,subNode1),subNode2);
+        final String expString = testNode.print();
+        assertEquals(expString, testNode.print());
+
+        System.out.println(testNode.print());
+
+        testNode.changeSubtreeAt(1,subNode0);
+
+        System.out.println(testNode.print());
+
+        testNode.changeSubtreeAt(2,subNode0);
+
+        System.out.println(testNode.print());
+
+        assertEquals(subNodeString0,subNode0.print());
+        assertEquals(subNodeString1,subNode1.print());
+        assertEquals(subNodeString2,subNode2.print());
+
+        assertEquals(subNodeString0,TestUtils.xPlus1MultiplyXTree.print());
+        assertEquals(subNodeString1,TestUtils.xSqrdPlusXPlus1TreeD3.print());
+        assertEquals(subNodeString2,TestUtils.xSqrdPlus1Tree.print());
     }
 }
