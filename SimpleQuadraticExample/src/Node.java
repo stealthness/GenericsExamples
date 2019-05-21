@@ -1,4 +1,4 @@
-public interface Node {
+public interface Node{
 
     /**
      * values of the inputs to evaluate any express
@@ -29,4 +29,8 @@ public interface Node {
     default int getDepth(){
         return 0;
     }
+
+    Node clone();
+
+
 }

@@ -206,22 +206,22 @@ class FunctionNodeTest {
         assertEquals(TestUtils.xNode,((FunctionNode)root).getSubtree(1));
 
 
-        assertNotEquals(root,((FunctionNode)root).getSubtree(2));
-        assertEquals(TestUtils.oneNode,((FunctionNode)root).getSubtree(2));
+//        assertNotEquals(root,((FunctionNode)root).getSubtree(2));
+//        assertEquals(TestUtils.oneNode,((FunctionNode)root).getSubtree(2));
     }
 
     @Test
     void testSelectNode1(){
         // should always return the node1
-        Node root = TestUtils.xSqrdTree;
+        Node root = TestUtils.xSqrdTree.clone();
         Node selectedRoot = ((FunctionNode)root).getSubtree(1);
         assertEquals(TestUtils.xNode, selectedRoot);
 
-        root = TestUtils.xSqrdPlus1Tree;
+        root = TestUtils.xSqrdPlus1Tree.clone();
         selectedRoot = ((FunctionNode)root).getSubtree(1);
         assertEquals(TestUtils.xSqrdTree, selectedRoot);
 
-        root = TestUtils.oneDivideXTree;
+        root = TestUtils.oneDivideXTree.clone();
         selectedRoot = ((FunctionNode)root).getSubtree(1);
         assertEquals(TestUtils.oneNode, selectedRoot);
 
@@ -229,16 +229,7 @@ class FunctionNodeTest {
 
     }
 
-    @Test
-    void changeSubtreeAtIndex0() {
-        Node node = TestUtils.xPlus1Tree;
-        ((FunctionNode)node).changeSubtreeAt(0,TestUtils.xNode);
-        assertEquals(node, TestUtils.xNode);
 
-        node = TestUtils.xSqrdPlusOneDivideXTree;
-        ((FunctionNode)node).changeSubtreeAt(0,TestUtils.xSqrdPlus1Tree);
-        assertEquals(node,TestUtils.xSqrdPlus1Tree);
-    }
 
     @Test
     void changeSubtreeAtIndex1() {
@@ -253,10 +244,18 @@ class FunctionNodeTest {
 
     }
 
+//    @Test
+//    void changeSubtreeAtIndex2() {
+//        Node node = TestUtils.xPlus1Tree;
+//        ((FunctionNode)node).changeSubtreeAt(2,TestUtils.twoTree);
+//        assertEquals(node,TestUtils.xPlus2Tree);
+//    }
+
+
     @Test
-    void changeSubtreeAtIndex2() {
-        Node node = TestUtils.xPlus1Tree;
-        ((FunctionNode)node).changeSubtreeAt(0,TestUtils.twoTree);
-        assertEquals(node,TestUtils.xPlus2Tree);
+    void checkChangeOfRef(){
+        FunctionNode node1 = new FunctionNode(GPUtils.add,TestUtils.xNode, TestUtils.oneNode);
+        assertEquals(node1, TestUtils.xPlus1Tree);
+
     }
 }

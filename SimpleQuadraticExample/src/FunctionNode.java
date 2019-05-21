@@ -12,8 +12,8 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
 
     FunctionNode(GPFunction function, Node node1, Node node2) {
         this.function = function;
-        setNode1(node1);
-        setNode2(node2);
+        setNode1(node1.clone());
+        setNode2(node2.clone());
     }
 
     FunctionNode(GPFunction function) {
@@ -28,6 +28,26 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
     Node getNode(int index){
         return (index == 0)? node1:node2;
     }
+
+    /**
+     * Sets the node at index to the subtree. node1 is index 0, node2 is index 1.
+     * @param index
+     * @param subtree
+     */
+    void setNode(int index,Node subtree){
+        if (index == 0){
+            this.node1 = subtree.clone();
+        }else{
+            this.node2 = subtree.clone();
+        }
+    }
+
+
+    @Override
+    public Node clone() {
+        return new FunctionNode(getFunction(),getNode(0).clone(), getNode(1).clone());
+    }
+
 
     /**
      * Returns the selected node. The index of the selected node is counted via depth first search, with the root node
@@ -58,6 +78,16 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
      * @param subTree
      */
     void changeSubtreeAt(int index, Node subTree) {
+        if (index == 1){
+            System.out.println("before");
+            System.out.println(this.print());
+            System.out.println(getNode(0).print());
+            setNode(0,subTree);
+            System.out.println("after");
+            System.out.println(this.print());
+            System.out.println(getNode(0).print());
+        }
+
     }
 
     // Override methods
@@ -71,6 +101,8 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
     public int getDepth() {
         return 1 + Math.max(getNode(0).getDepth(), getNode(1).getDepth());
     }
+
+
 
     @Override
     public Double get(double[] inputs) {
@@ -89,5 +121,12 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
         } else{
             return Integer.compare(this.getDepth(), that.getDepth());
         }
+    }
+
+    @Override
+    public boolean equals(Object that){
+        return that.getClass() == FunctionNode.class && this.getDepth() == ((FunctionNode)that).getDepth()
+                && this.size() == ((FunctionNode)that).size() && this.getNode(0).equals(((FunctionNode)that).getNode(0))
+                && this.getNode(1).equals(((FunctionNode)that).getNode(1));
     }
 }

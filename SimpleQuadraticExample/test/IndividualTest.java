@@ -203,6 +203,8 @@ class IndividualTest {
 
     @Test
     void testIndividualsOfSize9(){
+        System.out.println(TestUtils.xPlus1Tree.print());
+        System.out.println(new FunctionNode(GPUtils.subtract, TestUtils.xSqrdPlus1Tree, TestUtils.xPlus1Tree).print());
         assertIndividualSize(9, new FunctionNode(GPUtils.subtract, TestUtils.xSqrdPlus1Tree, TestUtils.xPlus1Tree));
     }
 

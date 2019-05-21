@@ -47,6 +47,12 @@ public class Individual implements Node,Comparable{
     }
 
     @Override
+    public Node clone() {
+        // to do
+        return null;
+    }
+
+    @Override
     public Double get(double[] inputs) {
         return root.get(inputs);
     }
@@ -141,11 +147,11 @@ public class Individual implements Node,Comparable{
         if (selectedNodeIndex == 0){
             this.root = node;
         } else if ( selectedNodeIndex == 1 && root.size() > 1) {
-            ((FunctionNode) root).setNode1(node);
-        } else if (selectedNodeIndex < ((FunctionNode)root).getNode1().size()){
+            ((FunctionNode) root).setNode(0,node);
+        } else if (selectedNodeIndex < ((FunctionNode)root).getNode(0).size()){
             // to do
-        } else if (selectedNodeIndex == root.size() - ((FunctionNode)root).getNode1().size() ){
-            ((FunctionNode)root).setNode1(node);
+        } else if (selectedNodeIndex == root.size() - ((FunctionNode)root).getNode(0).size() ){
+            ((FunctionNode)root).setNode(0,node);
         } else {
             // to do
         }
