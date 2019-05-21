@@ -55,10 +55,10 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
             case 0 : return this;
             case 1 : return getNode(0);
             default :
-                if (nodeIndex < node2.size()) {
+                if (nodeIndex < getNode(1).size()) {
                     // already established that must be Function Node otherwise would be selection 1
-                    return ((FunctionNode)node1).getSubtree(nodeIndex-1);
-                }else if (nodeIndex == node2.size()){
+                    return ((FunctionNode)getNode(0)).getSubtree(nodeIndex-1);
+                }else if (nodeIndex == getNode(0).size()+1){
                         return getNode(1);
                 } else if (nodeIndex <= this.size()){
                     return ((FunctionNode)node1).getSubtree(nodeIndex - node1.size() -1);

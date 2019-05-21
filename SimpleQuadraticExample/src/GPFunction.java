@@ -17,4 +17,5 @@ public class GPFunction implements BiFunction<Double, Double, Double> {
         return function.apply(a,b);
     }
 
+
 }

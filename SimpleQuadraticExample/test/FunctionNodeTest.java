@@ -113,27 +113,26 @@ class FunctionNodeTest {
 
     @Test
     void testFunctionsOfDepth1(){
-        assertEquals(1,TestUtils.xSqrdTree.getDepth());
-        assertEquals(1,TestUtils.xPlus2Tree.getDepth());
-        assertEquals(1,TestUtils.oneDivideXTree.getDepth());
+        List<Node> testList = Arrays.asList(TestUtils.xPlus1Tree,TestUtils.xPlus2Tree,
+                TestUtils.oneDivideXTree,TestUtils.twoDivideXTree,TestUtils.twiceXTree,TestUtils.zeroXTree);
+        testList.stream().forEach(node -> assertDepth(1,node));
     }
 
     @Test
-    void testFunctionsOfDepth2(){
-        assertEquals(2,TestUtils.xSqrdPlus1Tree.getDepth());
-        System.out.println(TestUtils.xSqrdPlusXPlus1TreeD2.print());
-        assertEquals(2,TestUtils.xSqrdPlusXPlus1TreeD2.getDepth());
-        assertEquals(2,TestUtils.twoXSqrdTree.getDepth());
-    }
-
-    void assertDepth(int expeDepth, Node actNode){
-        assertEquals(expeDepth,actNode.getDepth(),actNode.print());
+    void testFunctionsOfDepth2() {
+        List<Node> testList = Arrays.asList(TestUtils.xSqrdPlus1Tree, TestUtils.xSqrdPlusXPlus1TreeD2, TestUtils.twoXSqrdTree,
+                TestUtils.xSqrdPlusOneDivideXTree, TestUtils.xPlus1MultiplyXTree);
+        testList.stream().forEach(node -> assertDepth(2, node));
     }
 
     @Test
     void testFunctionsOfDepth3(){
-        assertEquals(3,TestUtils.xSqrdPlus1TwiceTree.getDepth());
-        assertEquals(3,TestUtils.xSqrdPlusXPlus1TreeD3.getDepth());
+        List<Node> testList = Arrays.asList(TestUtils.xSqrdPlus1TwiceTree,TestUtils.xSqrdPlusXPlus1TreeD3);
+        testList.stream().forEach(node -> assertDepth(3,node));
+    }
+
+    void assertDepth(int expeDepth, Node actNode){
+        assertEquals(expeDepth,actNode.getDepth(),actNode.print());
     }
 
 
@@ -176,21 +175,23 @@ class FunctionNodeTest {
         Node root = TestUtils.xSqrdTree;
         Node selectedRoot = ((FunctionNode)root).getSubtree(0);
         assertEquals(root, selectedRoot);
-
     }
 
     @Test
     void testSelectNode0WithXPlus1Tree(){
-        FunctionNode root = TestUtils.xPlus1Tree;
-        Node selectedRoot = root.getSubtree(0);
+        Node root = TestUtils.xPlus1Tree;
+        Node selectedRoot = ((FunctionNode)root).getSubtree(0);
         assertEquals(root, selectedRoot);
 
         assertNotEquals(root,((FunctionNode)root).getSubtree(1));
         assertEquals(TestUtils.xNode,((FunctionNode)root).getSubtree(1));
 
 
-//        assertNotEquals(root,((FunctionNode)root).getSubtree(2));
-//        assertEquals(TestUtils.oneNode,((FunctionNode)root).getSubtree(2));
+        System.out.println(root.print());
+        System.out.println(root.getClass().getSimpleName());
+        System.out.println(((FunctionNode)root).getSubtree(2).print());
+        assertNotEquals(root,((FunctionNode)root).getSubtree(2));
+        assertEquals(TestUtils.oneNode,((FunctionNode)root).getSubtree(2));
     }
 
     @Test
