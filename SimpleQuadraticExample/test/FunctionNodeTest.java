@@ -62,11 +62,6 @@ class FunctionNodeTest {
         assertEquals(v1,x1.apply(variables),TOL);
     }
 
-    @Test
-    void testPrintAddFunctionNode(){
-        var f0 = new FunctionNode(GPUtils.add);
-        assertEquals("(+ null null)",f0.print());
-    }
 
     @Test
     void testExpressionCreation1(){
@@ -186,9 +181,6 @@ class FunctionNodeTest {
         assertEquals(TestUtils.xNode,((FunctionNode)root).getSubtree(1));
 
 
-        System.out.println(root.print());
-        System.out.println(root.getClass().getSimpleName());
-        System.out.println(((FunctionNode)root).getSubtree(2).print());
         assertNotEquals(root,((FunctionNode)root).getSubtree(2));
         assertEquals(TestUtils.oneNode,((FunctionNode)root).getSubtree(2));
     }
@@ -214,29 +206,45 @@ class FunctionNodeTest {
 
 
 
-//    @Test
-//    void changeSubtreeAtIndex1() {
-//        Node node = TestUtils.xPlus1Tree;
-//        ((FunctionNode)node).changeSubtreeAt(1,TestUtils.xSqrdTree);
-//        assertEquals(node,TestUtils.xSqrdPlus1Tree);
-//
-//
-//        node = TestUtils.xSqrdTree;
-//        ((FunctionNode)node).changeSubtreeAt(1,TestUtils.xPlus1Tree);
-//        assertEquals(node,TestUtils.xPlus1MultiplyXTree);
-//
-//    }
+    @Test
+    void changeSubtreeAtIndex1() {
+        Node node = TestUtils.xPlus1Tree.clone();
+        ((FunctionNode)node).changeSubtreeAt(1,TestUtils.xSqrdTree.clone());
+        assertEquals(node,TestUtils.xSqrdPlus1Tree);
+
+
+        node = TestUtils.xSqrdTree.clone();
+        ((FunctionNode)node).changeSubtreeAt(1,TestUtils.xPlus1Tree.clone());
+        assertEquals(node,TestUtils.xPlus1MultiplyXTree);
+
+    }
 
     @Test
     void changeSubtreeAtIndex2() {
         Node node = TestUtils.xPlus1Tree.clone();
-        ((FunctionNode)node).changeSubtreeAt(2,TestUtils.twoTree);
+        ((FunctionNode)node).changeSubtreeAt(2,TestUtils.twoTree.clone());
         assertEquals(node,TestUtils.xPlus2Tree);
-
-        System.out.println(TestUtils.xPlus1Tree);
-        System.out.println(node.print());
-        System.out.println(((FunctionNode) node).getNode(0).print());
     }
+
+    @Test
+    void changeSubtreeAtIndex3() {
+        Node node = TestUtils.xSqrdPlusOneDivideXTree.clone();
+        ((FunctionNode)node).changeSubtreeAt(2,TestUtils.oneTree.clone());
+        assertEquals(node,TestUtils.oneXPlusDivideXTree);
+    }
+
+    @Test
+    void changeSubtreeAtIndex6() {
+        Node node = TestUtils.xSqrdPlusOneDivideXTree.clone();
+        System.out.println(node.print());
+        ((FunctionNode)node).changeSubtreeAt(1,TestUtils.xPlus1Tree.clone());
+        ((FunctionNode)node).changeSubtreeAt(6,TestUtils.twiceXTree.clone());
+        System.out.println(node.print());
+        System.out.println(TestUtils.oneXPlusDivideTwiceXTree.print());
+        assertEquals(node,TestUtils.oneXPlusDivideTwiceXTree);
+    }
+
+
 
 
     @Test

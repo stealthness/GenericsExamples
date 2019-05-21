@@ -16,16 +16,20 @@ public class TestUtils {
     static final FunctionNode xSqrdTree = new FunctionNode(GPUtils.multiply, xTree, xTree);
     static final FunctionNode twiceXTree = new FunctionNode(GPUtils.add, xTree, xTree);
     static final FunctionNode zeroXTree = new FunctionNode(GPUtils.subtract, xTree, xTree);
+    static final FunctionNode oneXTree = new FunctionNode(GPUtils.multiply,oneTree,xTree);
     // depth 2
     static final FunctionNode xSqrdPlus1Tree = new FunctionNode(GPUtils.add, xSqrdTree, oneTree);
     static final FunctionNode xSqrdPlusXPlus1TreeD2 = new FunctionNode(GPUtils.add, xSqrdTree, xPlus1Tree);
     static final FunctionNode xSqrdPlusOneDivideXTree = new FunctionNode(GPUtils.add, xSqrdTree, oneDivideXTree);
+    static final FunctionNode oneXPlusDivideXTree = new FunctionNode(GPUtils.add, oneXTree, oneDivideXTree);
     static final FunctionNode twoXSqrdTree = new FunctionNode(GPUtils.multiply, twoTree ,xSqrdTree);
     static final FunctionNode xPlus1MultiplyXTree = new FunctionNode(GPUtils.multiply, xPlus1Tree, xTree);
     // depth 3
     static final FunctionNode xSqrdPlus1TwiceTree = new FunctionNode(GPUtils.multiply, twoTree, xSqrdPlus1Tree);
     static final FunctionNode xSqrdPlusXPlus1TreeD3 = new FunctionNode(GPUtils.add, xSqrdPlus1Tree, xTree);
 
+
+    static final FunctionNode oneXPlusDivideTwiceXTree = new FunctionNode(GPUtils.add, xPlus1Tree, new FunctionNode(GPUtils.protectedDivision,oneTree,twiceXTree));
 
     static final Node oneNode = new TerminalNode(1.0);
     static final Node twoNode = new TerminalNode(2.0);

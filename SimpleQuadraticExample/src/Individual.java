@@ -183,6 +183,11 @@ public class Individual implements Node,Comparable{
      * @return
      */
     Node selectSubtree(int index) {
-        return null;
+        if (index == 0){
+            return root;
+        }else{
+            // assume that FunctionNode if > 1
+            return ((FunctionNode)root).getSubtree(index);
+        }
     }
 }

@@ -88,11 +88,11 @@ public class Population {
         List<Individual> newIndividuals = new ArrayList<>();
         individuals.stream().skip(elitismLevel).forEach(individual -> {
             if (Math.random() < crossingRate){
-                System.out.println("Crossed");
-
                 Individual randomIndividual = this.getIndividuals().get(new Random().nextInt(this.size()-elitismLevel)+elitismLevel);
-                individual.crossWith(randomIndividual);
-                newIndividuals.add(individual);
+                Individual newIndividual = Individual.generate(individual.getRoot());
+                newIndividual.changeSubtreeAt(new Random().nextInt(individual.size()),randomIndividual.selectSubtree(new Random().nextInt(individual.size())));
+                newIndividual.evaluate();
+                newIndividuals.add(newIndividual);
             }else{
                 newIndividuals.add(individual);
             }
@@ -109,6 +109,9 @@ public class Population {
      */
     List<Individual> doMutations(double mutationRate) {
         List<Individual> newIndividuals = new ArrayList<>();
+        individuals.stream().limit(elitismLevel).forEach(individual -> {
+            newIndividuals.add(individual);
+        });
         individuals.stream().skip(elitismLevel).forEach(individual -> {
             if (Math.random() < mutationRate){
                 System.out.println("MUTATED");
@@ -164,7 +167,14 @@ public class Population {
     public void doSelection(int i) {
     }
 
-    // builder methods
+    public String printPopulation(){
+        var sb = new StringBuilder();
+        sb.append("population size :"+ this.size());
+        individuals.forEach(individual -> {
+            sb.append(individual.print() + "   fitnes : " + individual.getFitness() +"\n");
+        });
+        return sb.toString();
+    }
 
 
 

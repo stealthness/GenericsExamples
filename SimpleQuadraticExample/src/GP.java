@@ -33,40 +33,36 @@ public class GP {
 
             population.evaluate();
             population.sort();
+            System.out.println(population.printPopulation());
 
-            System.out.println("Evaluated and sorted");
 
-            population.getIndividuals().forEach(individual -> {
-                System.out.println("Expression : "+individual.print());
-                //System.out.println("Fitness is : "+ individual.getFitness());
-            });
 
             double mutationRate = 0.10;
             population.setIndividuals(population.doMutations(mutationRate));
             population.evaluate();
 
+            System.out.println("size:"+population.size());
             System.out.println("Mutations completed");
 
             double crossingRate = 0.5;
             population.setIndividuals(population.doCrossing(crossingRate));
 
+            System.out.println("size:"+population.size());
             System.out.println("Crossing completed");
 
-            population.getIndividuals().forEach(individual -> {
-                System.out.println("Expression : "+individual.print());
-                //System.out.println("Fitness is : "+ individual.getFitness());
-            });
+
 
             System.out.println("Check termination");
-            terminationCondition = population.isTerminationConditionMet() || ++count > 2;
 
+            population.evaluate();
+            terminationCondition = population.isTerminationConditionMet() || ++count > 2;
+            System.out.println(population.printPopulation());
             System.out.println("\n\n");
-            System.out.println("generation : " + count);
         }
 
         // print result
 
-        System.out.println("Result " + population.getFittest(0));
+        System.out.println("\n\nFINAL Result : " + population.getFittest(0).print());
 
     }
 }

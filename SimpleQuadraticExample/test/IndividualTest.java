@@ -189,6 +189,7 @@ class IndividualTest {
     void testIndividualsOfSize3(){
         System.out.println(TestUtils.xPlus1Tree.print());
         assertIndividualSize(3, TestUtils.xPlus1Tree.clone());
+        System.out.println(TestUtils.xSqrdTree.print());
         assertIndividualSize(3, TestUtils.xSqrdTree.clone());
     }
 
