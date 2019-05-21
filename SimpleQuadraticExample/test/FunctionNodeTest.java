@@ -1,6 +1,9 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
@@ -37,29 +40,7 @@ class FunctionNodeTest {
 
     }
 
-
-    @Test
-    void simpleAddLambdaTest(){
-        assertEquals(v0+v1, GPUtils.add.apply(v0,v1),TOL);
-    }
-
-    @Test
-    void simpleSubtractLambdaTest(){
-        assertEquals(v0-v1, GPUtils.subtract.apply(v0,v1),TOL);
-    }
-
-    @Test
-    void simpleMultiplyLambdaTest(){
-        assertEquals(v0*v1, GPUtils.multiply.apply(v0,v1),TOL);
-    }
-
-    @Test
-    void simpleProtectedDivisionLambdaTest(){
-        assertEquals(1.0, GPUtils.protectedDivision.apply(3.3,0.0),TOL);
-        v1 = 0.0;
-        assertEquals(1.2, GPUtils.protectedDivision.apply(3.6,3.0),TOL);
-    }
-
+    // Test Create
 
     @Test
     void testNodeWithLambdaAndTwoTerminalNode(){
@@ -126,9 +107,8 @@ class FunctionNodeTest {
 
     @Test
     void testDepthTerminalAreZero(){
-        assertEquals(0,TestUtils.oneTree.getDepth());
-        assertEquals(0,TestUtils.twoTree.getDepth());
-        assertEquals(0,TestUtils.xTree.getDepth());
+        List<Node> testList = Arrays.asList(TestUtils.oneTree,TestUtils.twoNode,TestUtils.zeroTree,TestUtils.minusOneTree);
+        testList.stream().forEach(node -> assertDepth(0,node));
     }
 
     @Test
@@ -144,7 +124,10 @@ class FunctionNodeTest {
         System.out.println(TestUtils.xSqrdPlusXPlus1TreeD2.print());
         assertEquals(2,TestUtils.xSqrdPlusXPlus1TreeD2.getDepth());
         assertEquals(2,TestUtils.twoXSqrdTree.getDepth());
+    }
 
+    void assertDepth(int expeDepth, Node actNode){
+        assertEquals(expeDepth,actNode.getDepth(),actNode.print());
     }
 
     @Test
@@ -231,18 +214,18 @@ class FunctionNodeTest {
 
 
 
-    @Test
-    void changeSubtreeAtIndex1() {
-        Node node = TestUtils.xPlus1Tree;
-        ((FunctionNode)node).changeSubtreeAt(1,TestUtils.xSqrdTree);
-        assertEquals(node,TestUtils.xSqrdPlus1Tree);
-
-
-        node = TestUtils.xSqrdTree;
-        ((FunctionNode)node).changeSubtreeAt(1,TestUtils.xPlus1Tree);
-        assertEquals(node,TestUtils.xPlus1MultiplyXTree);
-
-    }
+//    @Test
+//    void changeSubtreeAtIndex1() {
+//        Node node = TestUtils.xPlus1Tree;
+//        ((FunctionNode)node).changeSubtreeAt(1,TestUtils.xSqrdTree);
+//        assertEquals(node,TestUtils.xSqrdPlus1Tree);
+//
+//
+//        node = TestUtils.xSqrdTree;
+//        ((FunctionNode)node).changeSubtreeAt(1,TestUtils.xPlus1Tree);
+//        assertEquals(node,TestUtils.xPlus1MultiplyXTree);
+//
+//    }
 
 //    @Test
 //    void changeSubtreeAtIndex2() {

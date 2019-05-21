@@ -181,14 +181,15 @@ class IndividualTest {
     @Test
     void testIndividualsOfSize1(){
         // Only Terminal trees can be of size 1
-        assertIndividualSize(1, TestUtils.oneTree);
-        assertIndividualSize(1, TestUtils.xTree);
+        assertIndividualSize(1, TestUtils.oneTree.clone());
+        assertIndividualSize(1, TestUtils.xTree.clone());
     }
 
     @Test
     void testIndividualsOfSize3(){
-        assertIndividualSize(3, TestUtils.xPlus1Tree);
-        assertIndividualSize(3, TestUtils.xSqrdTree);
+        System.out.println(TestUtils.xPlus1Tree.print());
+        assertIndividualSize(3, TestUtils.xPlus1Tree.clone());
+        assertIndividualSize(3, TestUtils.xSqrdTree.clone());
     }
 
     @Test

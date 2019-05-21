@@ -2,6 +2,8 @@ public class TestUtils {
 
 
     // Terminal Nodes
+    static final TerminalNode minusOneTree = new TerminalNode(-1.0);
+    static final TerminalNode zeroTree = new TerminalNode(0.0);
     static final TerminalNode oneTree = new TerminalNode(1.0);
     static final TerminalNode twoTree = new TerminalNode(2.0);
     static final VariableNode xTree = new VariableNode(0);
@@ -10,7 +12,10 @@ public class TestUtils {
     static final FunctionNode xPlus2Tree = new FunctionNode(GPUtils.add, xTree, twoTree);
     static final FunctionNode xPlus1Tree = new FunctionNode(GPUtils.add, xTree, oneTree);
     static final FunctionNode oneDivideXTree = new FunctionNode(GPUtils.protectedDivision, oneTree, xTree);
+    static final FunctionNode twoDivideXTree = new FunctionNode(GPUtils.protectedDivision, twoTree, xTree);
     static final FunctionNode xSqrdTree = new FunctionNode(GPUtils.multiply, xTree, xTree);
+    static final FunctionNode twiceXTree = new FunctionNode(GPUtils.add, xTree, xTree);
+    static final FunctionNode zeroXTree = new FunctionNode(GPUtils.subtract, xTree, xTree);
     // depth 2
     static final FunctionNode xSqrdPlus1Tree = new FunctionNode(GPUtils.add, xSqrdTree, oneTree);
     static final FunctionNode xSqrdPlusXPlus1TreeD2 = new FunctionNode(GPUtils.add, xSqrdTree, xPlus1Tree);

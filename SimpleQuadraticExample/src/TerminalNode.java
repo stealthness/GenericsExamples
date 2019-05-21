@@ -21,10 +21,10 @@ public class TerminalNode implements Node {
         return new TerminalNode(value);
     }
 
-    @Override
-    public boolean equals(Object that){
-        return that.getClass().equals(TerminalNode.class) && Math.abs(this.getValue()  - ((TerminalNode)that).getValue()) < TOL;
-    }
+//    @Override
+//    public boolean equals(Object that){
+//        return that.getClass().equals(TerminalNode.class) && Math.abs(this.getValue()  - ((TerminalNode)that).getValue()) < TOL;
+//    }
 
 
 }

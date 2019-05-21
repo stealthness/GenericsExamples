@@ -43,11 +43,6 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
     }
 
 
-    @Override
-    public Node clone() {
-        return new FunctionNode(getFunction(),getNode(0).clone(), getNode(1).clone());
-    }
-
 
     /**
      * Returns the selected node. The index of the selected node is counted via depth first search, with the root node
@@ -91,6 +86,10 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
     }
 
     // Override methods
+    @Override
+    public String print() {
+        return "(" + function.getClojureString() + " " + ((node1 == null)?"null":node1.print()) + " " + ((node1 == null)?"null":node2.print()) + ")";
+    }
 
     @Override
     public int size() {
@@ -103,16 +102,12 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
     }
 
 
-
     @Override
     public Double get(double[] inputs) {
         return function.apply(getNode(0).get(inputs),getNode(1).get(inputs));
     }
 
-    @Override
-    public String print() {
-        return "(" + function.getClojureString() + " " + ((node1 == null)?"null":node1.print()) + " " + ((node1 == null)?"null":node2.print()) + ")";
-    }
+
 
     @Override
     public int compareTo(FunctionNode that) {
@@ -123,10 +118,15 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
         }
     }
 
+//    @Override
+//    public boolean equals(Object that){
+//        return that.getClass() == FunctionNode.class && this.getDepth() == ((FunctionNode)that).getDepth()
+//                && this.size() == ((FunctionNode)that).size() && this.getNode(0).equals(((FunctionNode)that).getNode(0))
+//                && this.getNode(1).equals(((FunctionNode)that).getNode(1));
+//    }
+
     @Override
-    public boolean equals(Object that){
-        return that.getClass() == FunctionNode.class && this.getDepth() == ((FunctionNode)that).getDepth()
-                && this.size() == ((FunctionNode)that).size() && this.getNode(0).equals(((FunctionNode)that).getNode(0))
-                && this.getNode(1).equals(((FunctionNode)that).getNode(1));
+    public Node clone() {
+        return new FunctionNode(getFunction(),getNode(0).clone(), getNode(1).clone());
     }
 }
