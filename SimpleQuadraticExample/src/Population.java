@@ -88,7 +88,7 @@ public class Population {
         individuals.stream().limit(elitismLevel).forEach(individual -> {
             newIndividuals.add(individual);
         });
-        individuals.stream().skip(elitismLevel).forEach(individual -> {
+        individuals.stream().forEach(individual -> {
             if (Math.random() < crossingRate){
                 Individual randomIndividual = GPUtils.selectWeightedParent.apply(this);
                 Individual newIndividual = Individual.generate(individual.getRoot());
@@ -101,12 +101,19 @@ public class Population {
                 newIndividual.evaluate();
                 newIndividuals.add(randomIndividual);
                 newIndividuals.add(newIndividual);
-            }else{
-                newIndividuals.add(individual);
             }
         });
+        var currentSize = newIndividuals.size();
+        if (currentSize < size()){
+            individuals.stream().skip(elitismLevel)
+                    .limit(size() - currentSize)
+                    .forEach(individual -> newIndividuals.add(individual));
+        }
+        evaluate();
         sort();
-        return newIndividuals.stream().limit(this.maxSize).collect(Collectors.toList());
+        return newIndividuals.stream()
+                .limit(this.maxSize)
+                .collect(Collectors.toList());
     }
 
     // mutate function
@@ -131,11 +138,25 @@ public class Population {
                 newIndividuals.add(individual);
             }
         });
+        evaluate();
+        sort();
         return newIndividuals;
     }
 
-    // breed function
-
+    // reduce function
+    List<Individual> doReduction(double reductionRate){
+        List<Individual> newIndividuals = new ArrayList<>();
+        individuals.stream().limit(elitismLevel).forEach(individual -> {
+            newIndividuals.add(individual);
+        });
+        individuals.stream().skip(elitismLevel).forEach(individual -> {
+            individual.reduce(reductionRate);
+            newIndividuals.add(individual);
+        });
+        evaluate();
+        sort();
+        return newIndividuals;
+    }
 
 
 
@@ -178,9 +199,13 @@ public class Population {
     }
 
     public String printPopulation(){
+        return printPopulation(size());
+    }
+
+    public String printPopulation(int limit){
         var sb = new StringBuilder();
         sb.append("population size :"+ this.size());
-        individuals.forEach(individual -> {
+        individuals.stream().limit(limit).forEach(individual -> {
             sb.append(individual.print() + "   fitness : " + individual.getFitness() +"\n");
         });
         return sb.toString();

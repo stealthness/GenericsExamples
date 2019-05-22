@@ -32,6 +32,12 @@ public class GPUtils {
         return individuals.get(individuals.size()-1);
     };
 
+    //
+    
+
+    //
+
+
 
     public static List<GPFunction> getFunctionList(String basic) {
         List<GPFunction> list = new ArrayList<>();

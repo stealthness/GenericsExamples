@@ -176,4 +176,24 @@ public class Individual implements Node,Comparable{
             return ((FunctionNode)root).getSubtree(index);
         }
     }
+
+    public void reduce(double reductionRate) {
+        for (int index = 0;index <2;index++){
+            if(size()>3){
+                Node node = ((FunctionNode)root).getNode(index);
+                if (node.size() == 3){
+                    if (node.print().equals("(/ x0 x0)")){
+                        System.out.println("found!");
+                        node = new TerminalNode(1.0);
+                    }
+                }else if ( node.size()>3){
+                    // to do
+                }
+                ((FunctionNode)root).setNode(index, node);
+            }
+        }
+
+
+
+    }
 }

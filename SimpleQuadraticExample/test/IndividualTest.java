@@ -243,4 +243,24 @@ class IndividualTest {
         assertEquals(expFitness,individual.getFitness(),TOL);
     }
 
+    // test reduce
+
+    @Test
+    void testReduce1(){
+        Node subNode1 = new FunctionNode(GPUtils.protectedDivision,TestUtils.xTree,TestUtils.xTree).clone();
+        Node subNode2 = TestUtils.xSqrdPlusXPlus1TreeD2.clone();
+        Node node = new FunctionNode(GPUtils.add,subNode1,subNode2 );
+        Individual individual = Individual.generate(node);
+        assertEquals(subNode1,individual.selectSubtree(1));
+        individual.reduce(1.0);
+        assertEquals(TestUtils.oneNode,individual.selectSubtree(1));
+
+
+        node = new FunctionNode(GPUtils.add,subNode2 ,subNode1);
+
+        individual = Individual.generate(node);
+        individual.reduce(1.0);
+        assertEquals(TestUtils.oneNode.print(),individual.selectSubtree(7).print());
+    }
+
 }

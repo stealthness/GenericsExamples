@@ -5,7 +5,7 @@ import lombok.Data;
 @Builder
 public class GP {
 
-    private static final int MAX_RUN = 2;
+    private static final int MAX_RUN = 20;
     Population population;
 
     public static void main(String[] args) {
@@ -18,9 +18,9 @@ public class GP {
     void run(){
         population = Population.builder()
                 .generationMethod("grow")
-                .initialMaxDepth(1)
+                .initialMaxDepth(2)
                 .maxSize(50)
-                .elitismLevel(25)
+                .elitismLevel(5)
                 .build();
         int count = 0;
         population.generate("full");
@@ -35,22 +35,32 @@ public class GP {
 
             System.out.println("\n PART 1 - Mutations ");
 
-            double mutationRate = 0.40;
+            double mutationRate = 0.20;
             population.setIndividuals(population.doMutations(mutationRate));
             population.evaluate();
+            population.sort();
             System.out.println("size:"+population.size());
 
             System.out.println("\nPART 2 - Crossing");
-            double crossingRate = 0.5;
+            double crossingRate = 0.3;
             population.setIndividuals(population.doCrossing(crossingRate));
+            population.evaluate();
+            population.sort();
             System.out.println("size:"+population.size());
 
-            System.out.println("PART 3 - Check termination : generation : "+count);
+            System.out.println("\nPART 3 - Reduce");
+            double reduceRate = 0.5;
+            population.setIndividuals(population.doReduction(crossingRate));
+            population.evaluate();
+            population.sort();
+            System.out.println("size:"+population.size());
+
+            System.out.println("PART 4 - Check termination : generation : "+count);
 
             population.evaluate();
             terminationCondition = population.isTerminationConditionMet() || ++count > MAX_RUN;
             System.out.println("continue ...");
-            System.out.println(population.printPopulation());
+            System.out.println(population.printPopulation(10));
             System.out.println("\n\n");
         }
 
