@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,6 +50,22 @@ class GPUtilsTest {
             simpleAddLambdaTest();
             simpleProtectedDivisionLambdaTest();
         });
+    }
+
+    @Test
+    void testGPDefault1(){
+
+
+    }
+
+    @Test
+    void testGPUtils(){
+        FunctionNode testNode = new FunctionNode(GPUtils.add,new TerminalNode(1.0),new VariableNode(0));
+        System.out.println(testNode.print());
+
+        FunctionNode testNode2 = new FunctionNode(GPUtils.protectedDivision,testNode,new VariableNode(1));
+        System.out.println(testNode2.print());
+        
     }
 
 

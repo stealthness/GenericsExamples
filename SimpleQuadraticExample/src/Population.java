@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 @Data
@@ -62,10 +61,12 @@ public class Population {
      * Fitness function is measure of of e
      */
     @Builder.Default
-    private BiFunction<Individual, Node, Double> fitnessFunction = GPUtils.FitnessFunctionSumOfErrors;
+    private final BiFunction<Individual, Node, Double> fitnessFunction = GPUtils.FitnessFunctionSumOfErrors;
 
     @Builder.Default
-    private Node testNode = GPUtils.defaultTestNode2;
+    private final Node testNode = new FunctionNode(GPUtils.add,
+            new FunctionNode(GPUtils.multiply,new VariableNode(0),new VariableNode(0)),
+            new FunctionNode(GPUtils.add, new VariableNode(0), new TerminalNode(1.0)));
 
     // generate population
 
@@ -115,8 +116,8 @@ public class Population {
                 Node node = individual.selectSubtree(selectedNode1).clone();
                 newIndividual.changeSubtreeAt(selectedNode1,randomIndividual.selectSubtree(selectedNode2));
                 randomIndividual.changeSubtreeAt(selectedNode2,node);
-                randomIndividual.evaluate();
-                newIndividual.evaluate();
+                randomIndividual.evaluate(this.getTestNode());
+                newIndividual.evaluate(this.getTestNode());
                 newIndividuals.add(randomIndividual);
                 newIndividuals.add(newIndividual);
             }
@@ -138,7 +139,7 @@ public class Population {
             if (Math.random() < mutationRate){
                 int selectedNode = new Random().nextInt(individual.size());
                 individual.changeSubtreeAt(selectedNode,Individual.generate("grow",new Random().nextInt(2)+1,1).getRoot());
-                individual.evaluate();
+                individual.evaluate(this.getTestNode());
                 newIndividuals.add(individual);
             }else {
                 newIndividuals.add(individual);
@@ -165,8 +166,8 @@ public class Population {
 
 
 
-    public void evaluate() {
-        individuals.stream().forEach(Individual::evaluate);
+    public void evaluate(Node node) {
+        individuals.stream().forEach(individual -> individual.evaluate(node));
     }
 
     // sort function

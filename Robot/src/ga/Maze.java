@@ -27,7 +27,7 @@ public class Maze {
         for (int rowIndex = 0; rowIndex < this.maze.length; rowIndex++) {
             // Loop over columns
             for (int colIndex = 0; colIndex < this.maze[rowIndex].length; colIndex++) {
-                // 2 is the type for start position
+                // 2 is the growthMethod for start position
                 if (this.maze[rowIndex][colIndex] == 2) {
                     this.startPosition = new int[] { colIndex, rowIndex };
                     return new int[] { colIndex, rowIndex };

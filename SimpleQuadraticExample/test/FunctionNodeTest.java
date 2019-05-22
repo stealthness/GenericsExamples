@@ -102,27 +102,27 @@ class FunctionNodeTest {
     @Test
     void testDepthTerminalAreZero(){
         List<Node> testList = Arrays.asList(TestUtils.oneTree,TestUtils.twoNode,TestUtils.zeroTree,TestUtils.minusOneTree);
-        testList.stream().forEach(node -> assertDepth(0,node));
+        testList.forEach(node -> assertDepth(0,node));
     }
 
     @Test
     void testFunctionsOfDepth1(){
         List<Node> testList = Arrays.asList(TestUtils.xPlus1Tree,TestUtils.xPlus2Tree,
                 TestUtils.oneDivideXTree,TestUtils.twoDivideXTree,TestUtils.twiceXTree,TestUtils.zeroXTree);
-        testList.stream().forEach(node -> assertDepth(1,node));
+        testList.forEach(node -> assertDepth(1,node));
     }
 
     @Test
     void testFunctionsOfDepth2() {
         List<Node> testList = Arrays.asList(TestUtils.xSqrdPlus1Tree, TestUtils.xSqrdPlusXPlus1TreeD2, TestUtils.twoXSqrdTree,
                 TestUtils.xSqrdPlusOneDivideXTree, TestUtils.xPlus1MultiplyXTree);
-        testList.stream().forEach(node -> assertDepth(2, node));
+        testList.forEach(node -> assertDepth(2, node));
     }
 
     @Test
     void testFunctionsOfDepth3(){
         List<Node> testList = Arrays.asList(TestUtils.xSqrdPlus1TwiceTree,TestUtils.xSqrdPlusXPlus1TreeD3);
-        testList.stream().forEach(node -> assertDepth(3,node));
+        testList.forEach(node -> assertDepth(3,node));
     }
 
     void assertDepth(int expeDepth, Node actNode){
@@ -135,7 +135,7 @@ class FunctionNodeTest {
     @Test
     void testCompareFunctionNodeOfDepth1(){
         assertEquals(0, TestUtils.xPlus1Tree.compareTo(TestUtils.xSqrdTree));
-        assertEquals(0,TestUtils.xPlus2Tree.compareTo(TestUtils.xPlus1Tree));
+        assertEquals(0, TestUtils.xPlus2Tree.compareTo(TestUtils.xPlus1Tree));
     }
 
     @Test

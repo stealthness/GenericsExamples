@@ -97,7 +97,7 @@ class PopulationTest {
         population.addIndividual(newIndividual);
         population.addIndividual(newIndividual);
         System.out.println("---");
-        population.evaluate();
+        population.evaluate(population.getTestNode());
 
         population.getIndividuals().forEach(individual -> System.out.println(individual.print()));
     }

@@ -4,6 +4,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Data
 @Builder
@@ -20,20 +21,29 @@ public class GP {
 
 
     void run(){
+
+        Node testNode = GPUtils.testNode;
+        System.out.println(testNode.print());
+
         population = Population.builder()
                 .fitnessFunction(GPUtils.FitnessFunctionSumOfErrors)
                 .generationMethod("grow")
-                .initialMaxDepth(1)
+                .initialMaxDepth(2)
+                .testNode(testNode)
                 .maxSize(50)
                 .elitismLevel(5)
-                .testNode(GPUtils.defaultTestNode1)
                 .build();
         int count = 0;
         population.generate("full");
         System.out.println("\n\nSTART LOOP, generation = " + count);
-        population.evaluate();
+        population.evaluate(population.getTestNode());
         population.sort();
         System.out.println(population.printPopulation());
+
+        List<Double> avgSizes = new ArrayList<>();
+        List<Integer> maxSizes = new ArrayList<>();
+        List<Double> avgDepths = new ArrayList<>();
+        List<Integer> maxDepths = new ArrayList<>();
 
         boolean terminationCondition = false;
 
@@ -57,7 +67,7 @@ public class GP {
             population.setIndividuals(newIndividuals);
             System.out.println("(after limit) size : "+newIndividuals.size());
 
-            newIndividuals.stream().forEach(Individual::evaluate);
+            newIndividuals.stream().forEach(individual -> individual.evaluate(population.getTestNode()));
             newIndividuals.sort(Individual::compareTo);
 
             System.out.println("\n PART 3 - Mutations ");
@@ -70,22 +80,34 @@ public class GP {
             System.out.println("\n PART 4 - Reduce");
             double reduceRate = 0.7;
             population.setIndividuals(population.doReduction(crossingRate));
-            population.evaluate();
+            population.evaluate(population.getTestNode());
             population.sort();
             System.out.println("size:" + population.size());
-
             System.out.println("PART 5 - Check termination : generation : "+count);
 
-            population.evaluate();
+            population.evaluate(population.getTestNode());
             terminationCondition = population.isTerminationConditionMet() || ++count > MAX_RUN;
             System.out.println("continue ...");
-            System.out.println(population.printPopulation(10));
+            System.out.println(population.printPopulation(5));
+
+            // Stats
+            maxDepths.add(population.getIndividuals().stream().map(individual -> individual.getDepth()).max(Integer::compareTo).get());
+            avgDepths.add(population.getIndividuals().stream().mapToInt(individual -> individual.getDepth()).sum()/50.0);
+            maxSizes.add(population.getIndividuals().stream().map(individual -> individual.size()).max(Integer::compareTo).get());
+            avgSizes.add(population.getIndividuals().stream().mapToInt(individual -> individual.size()).sum()/50.0);
+
             System.out.println("\n\n");
         }
 
         // print result
 
         System.out.println("\n\nFINAL Result : " + population.getFittest(0).print());
-
+        System.out.println(String.format("Fitness : %.2f", population.getFittest(0).getFitness()));
+        IntStream.range(0,count).skip(Math.min(45,count - 5)).forEach(i ->{
+            System.out.println("gen | MaxS | MaxD | AvgS  | AvgD  |");
+            System.out.println(String.format(" %-2d | %-4d | %-4d | %-5.2f | %-5.2f |",
+                    i,maxSizes.get(i),maxDepths.get(i),
+                    avgSizes.get(i),avgDepths.get(i)));
+        });
     }
 }

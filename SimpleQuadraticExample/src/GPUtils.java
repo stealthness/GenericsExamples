@@ -2,19 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.stream.DoubleStream;
 
 public class GPUtils {
-
-    static final TerminalNode oneTree = new TerminalNode(1.0);
-    static final VariableNode xTree = new VariableNode(0);
-    static final FunctionNode xSqrdTree = new FunctionNode(GPUtils.multiply, xTree, xTree);
-    static final FunctionNode xPlus1Tree = new FunctionNode(GPUtils.add, xTree, oneTree);
-    static final FunctionNode xSqrdPlusXPlus1TreeD2 = new FunctionNode(GPUtils.add, xSqrdTree, xPlus1Tree);
-    static final FunctionNode oneDivideXTree = new FunctionNode(GPUtils.protectedDivision, oneTree, xTree);
-    static final FunctionNode xSqrdPlusOneDivideXTree = new FunctionNode(GPUtils.add, xSqrdTree, oneDivideXTree);
-    public static Node defaultTestNode1 = xSqrdPlusXPlus1TreeD2   ;
-    public static Node defaultTestNode2 = xSqrdPlusOneDivideXTree  ;
 
 
     static GPFunction add = new GPFunction(Double::sum,"add","+");
@@ -80,4 +69,8 @@ public class GPUtils {
     }
 
 
+    public static final Node subNode1 = new FunctionNode(GPUtils.add, new VariableNode(0),new TerminalNode(1.0));
+    public static final Node subNode2 = new FunctionNode(GPUtils.multiply, new VariableNode(0),new VariableNode(0));
+
+    public static final Node testNode = new FunctionNode(GPUtils.add, subNode1,subNode2);
 }

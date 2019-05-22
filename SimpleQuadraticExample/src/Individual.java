@@ -5,6 +5,9 @@ import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.stream.DoubleStream;
 
+/**
+ * The Individual class contains the
+ */
 @Data
 public class Individual implements Node,Comparable{
 
@@ -13,39 +16,21 @@ public class Individual implements Node,Comparable{
     private static final int DEFAULT_SINGLE_VARIABLE = 1;
     static List<GPFunction> setOfFunctions;
     static List<Node> setOfTerminals;
-
     private static final double FUNCTION_CHANCE = 0.5;
-    private String type;
+    private static final BiFunction<Individual,Node,Double> fitnessFunction = GPUtils.FitnessFunctionSumOfErrors;
+
+    private String growthMethod;
     private Node root;
     private Double fitness;
     private int maxNumberOfVariables;
     private int maxDepth;
     private double[] range;
-    private BiFunction<DoubleStream, Node,Double> fitnessFunction;
-    private BiFunction<Individual,Node,Double> fitnessFunction2;
 
 
     private Individual(){}
 
-
-    public void evaluate(){
-        final TerminalNode oneTree = new TerminalNode(1.0);
-        final VariableNode xTree = new VariableNode(0);
-        final FunctionNode xSqrdTree = new FunctionNode(GPUtils.multiply, xTree, xTree);
-        final FunctionNode xPlus1Tree = new FunctionNode(GPUtils.add, xTree, oneTree);
-        evaluate(new FunctionNode(GPUtils.add, xSqrdTree, xPlus1Tree));
-
-    }
-
-
-    public void evaluate(Node node){
-        final TerminalNode oneTree = new TerminalNode(1.0);
-        final VariableNode xTree = new VariableNode(0);
-        final FunctionNode xSqrdTree = new FunctionNode(GPUtils.multiply, xTree, xTree);
-        final FunctionNode xPlus1Tree = new FunctionNode(GPUtils.add, xTree, oneTree);
-        final FunctionNode xSqrdPlusXPlus1TreeD2 = new FunctionNode(GPUtils.add, xSqrdTree, xPlus1Tree);
-        var fit = fitnessFunction2.apply(this, node);
-        setFitness(fit);
+    void evaluate(Node node){
+        setFitness(fitnessFunction.apply(this, node));
     }
 
     @Override
@@ -85,10 +70,8 @@ public class Individual implements Node,Comparable{
     }
 
     static Individual generate(Node node) {
-
         Individual individual = new Individual();
         individual.setRange(new double[]{-1.0,1.0});
-        individual.setFitnessFunction2(GPUtils.FitnessFunctionSumOfErrors);
         individual.setRoot(node.clone());
         return individual;
     }
@@ -97,15 +80,15 @@ public class Individual implements Node,Comparable{
         Individual individual = new Individual();
         individual.setMaxNumberOfVariables(maxNumberOfVariables);
         individual.setMaxDepth(maxDepth);
-
         individual.setRange(new double[]{-1.0,1.0});
-        individual.setFitnessFunction2(GPUtils.FitnessFunctionSumOfErrors);
 
         setOfFunctions = GPUtils.getFunctionList("Basic");
         setOfTerminals = GPUtils.getTerminalsList("basic");
 
         if (type.endsWith("Grow")){
-            // to do
+            // default is Grow
+            individual.setRoot(generatingFunction(maxDepth,type));
+            return individual;
         }else{
             // default is full
             if (maxDepth == 0){
@@ -117,13 +100,10 @@ public class Individual implements Node,Comparable{
             }else{
                 throw new IllegalArgumentException("maxdepth value not allowed" + maxDepth);
             }
-
-        };
-        return null;
+        }
     }
 
     static Node generatingTerminal() {
-
         if (Math.random() < 0.5){
             return new VariableNode(0);
         } else{
@@ -195,7 +175,7 @@ public class Individual implements Node,Comparable{
                 Node node = ((FunctionNode)root).getNode(index);
                 if (node.size() == 3){
 
-                    System.out.println("test -> before: "+node.print() + " \n         after: "+GPUtils.reduceRules.apply(node).print());
+                    //System.out.println("test -> before: "+node.print() + " \n         after: "+GPUtils.reduceRules.apply(node).print());
 
                     node = GPUtils.reduceRules.apply(node);
                 }else if ( node.size()>3){

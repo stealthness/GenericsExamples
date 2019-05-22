@@ -154,7 +154,7 @@ public class GeneticAlgorithm {
 	 * This method considers both the ga.ga.GeneticAlgorithm instance's crossoverRate
 	 * and the elitismCount.
 	 * 
-	 * The type of crossover we perform depends on the problem domain. We don't
+	 * The growthMethod of crossover we perform depends on the problem domain. We don't
 	 * want to create invalid solutions with crossover, so this method will need
 	 * to be changed for different types of problems.
 	 * 
@@ -193,7 +193,7 @@ public class GeneticAlgorithm {
 	 * Mutation affects individuals rather than the individuals. We look at each
 	 * individual in the individuals, and if they're lucky enough (or unlucky, as
 	 * it were), apply some randomness to their chromosome. Like crossover, the
-	 * type of mutation applied depends on the specific problem we're solving.
+	 * growthMethod of mutation applied depends on the specific problem we're solving.
 	 * In this case, we simply randomly flip 0s to 1s and vice versa.
 	 * 
 	 * This method will consider the ga.ga.GeneticAlgorithm instance's mutationRate

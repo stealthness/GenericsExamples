@@ -115,7 +115,7 @@ class IndividualTest {
     @Test
     void getFitnessOnExpressXEqual2() {
         individual.setRoot(new TerminalNode(2.0));
-        individual.evaluate();
+        individual.evaluate(TestUtils.xSqrdPlusXPlus1TreeD2);
         assertEquals(2.0,individual.apply(new double[]{0.0}),TOL);
         assertEquals(2.0,individual.apply(new double[]{1.0}),TOL);
         assertEquals(2.0,individual.apply(new double[]{-1.0}),TOL);
@@ -127,7 +127,7 @@ class IndividualTest {
 
         Node subtree = new FunctionNode(GPUtils.multiply, new VariableNode(0),new VariableNode(0)) ;
         individual.setRoot(new FunctionNode(GPUtils.add,new TerminalNode(1.0),subtree));
-        individual.evaluate();
+        individual.evaluate(TestUtils.xSqrdPlusXPlus1TreeD2);
         assertEquals(1.0,individual.apply(new double[]{0.0}),TOL);
         assertEquals(2.0,individual.apply(new double[]{1.0}),TOL);
         assertEquals(2.0,individual.apply(new double[]{-1.0}),TOL);
@@ -138,7 +138,7 @@ class IndividualTest {
     void testChangeRootNodeOnIndividual(){
 
         individual.setRoot(new FunctionNode(GPUtils.add, new VariableNode(0),new TerminalNode(1.0)));
-        individual.evaluate();
+        individual.evaluate(TestUtils.xSqrdPlusXPlus1TreeD2);
 
         assertEquals(1.0,individual.apply(new double[]{0.0}),TOL);
         assertEquals(2.0,individual.apply(new double[]{1.0}),TOL);
@@ -239,7 +239,7 @@ class IndividualTest {
 
     private void assertEvaluation(double expFitness, Node function){
         individual.setRoot(function);
-        individual.evaluate();
+        individual.evaluate(TestUtils.xSqrdPlusXPlus1TreeD2);
         assertEquals(expFitness,individual.getFitness(),TOL);
     }
 
