@@ -51,13 +51,20 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
             case 0 : return this;
             case 1 : return getNode(0);
             default :
-                if (nodeIndex < getNode(1).size()) {
-                    // already established that must be Function Node otherwise would be selection 1
-                    return ((FunctionNode)getNode(0)).getSubtree(nodeIndex-1);
-                }else if (nodeIndex == getNode(0).size()+1){
+                if (nodeIndex == getNode(0).size()+1){
+                    return getNode(1);
+                } else if (nodeIndex <= getNode(0).size()) {
+                    if (getNode(0).size()==1){
+                        return getNode(0);
+                    }else{
+                        return ((FunctionNode)getNode(0)).getSubtree(nodeIndex - 1);
+                    }
+                } else if (nodeIndex < this.size()){
+                    if (getNode(1).size()==1){
                         return getNode(1);
-                } else if (nodeIndex <= this.size()){
-                    return ((FunctionNode)getNode(0)).getSubtree(nodeIndex - getNode(1).size() -1);
+                    }else{
+                        return ((FunctionNode)getNode(1)).getSubtree(nodeIndex - getNode(0).size()-1);
+                    }
                 }
                 throw new IllegalArgumentException("invalid selection");
         }

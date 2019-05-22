@@ -143,20 +143,6 @@ public class Individual implements Node,Comparable{
     }
 
 
-//    public void setNode(int selectedNodeIndex, Node node) {
-//        if (selectedNodeIndex == 0){
-//            this.root = node;
-//        } else if ( selectedNodeIndex == 1 && root.size() > 1) {
-//            ((FunctionNode) root).setNode(0,node);
-//        } else if (selectedNodeIndex < ((FunctionNode)root).getNode(0).size()){
-//            // to do
-//        } else if (selectedNodeIndex == root.size() - ((FunctionNode)root).getNode(0).size() ){
-//            ((FunctionNode)root).setNode(0,node);
-//        } else {
-//            // to do
-//        }
-//    }
-
     @Override
     public int compareTo(Object that) {
         return Double.compare(this.getFitness(),((Individual)that).getFitness());
@@ -185,8 +171,8 @@ public class Individual implements Node,Comparable{
     Node selectSubtree(int index) {
         if (index == 0){
             return root;
-        }else{
-            // assume that FunctionNode if > 1
+        }else {
+
             return ((FunctionNode)root).getSubtree(index);
         }
     }

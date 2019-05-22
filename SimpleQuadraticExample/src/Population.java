@@ -86,18 +86,28 @@ public class Population {
 
     List<Individual>  doCrossing(double crossingRate) {
         List<Individual> newIndividuals = new ArrayList<>();
+        individuals.stream().limit(elitismLevel).forEach(individual -> {
+            newIndividuals.add(individual);
+        });
         individuals.stream().skip(elitismLevel).forEach(individual -> {
             if (Math.random() < crossingRate){
-                Individual randomIndividual = this.getIndividuals().get(new Random().nextInt(this.size()-elitismLevel)+elitismLevel);
+                int randomSelectionIndex = new Random().nextInt(individuals.size()-elitismLevel)+elitismLevel;
+                Individual randomIndividual = this.getIndividuals().get(randomSelectionIndex);
                 Individual newIndividual = Individual.generate(individual.getRoot());
-                newIndividual.changeSubtreeAt(new Random().nextInt(individual.size()),randomIndividual.selectSubtree(new Random().nextInt(individual.size())));
+                int selectedNode1 = new Random().nextInt(individual.size());
+                int selectedNode2 = new Random().nextInt(randomIndividual.size());
+                Node node = individual.selectSubtree(selectedNode1).clone();
+                newIndividual.changeSubtreeAt(selectedNode1,randomIndividual.selectSubtree(selectedNode2));
+                randomIndividual.changeSubtreeAt(selectedNode2,node);
+                randomIndividual.evaluate();
                 newIndividual.evaluate();
+                newIndividuals.add(randomIndividual);
                 newIndividuals.add(newIndividual);
             }else{
                 newIndividuals.add(individual);
             }
         });
-        return newIndividuals;
+        return newIndividuals.stream().limit(this.maxSize).collect(Collectors.toList());
     }
 
     // mutate function
@@ -116,8 +126,9 @@ public class Population {
             if (Math.random() < mutationRate){
                 System.out.println("MUTATED");
                 int selectedNode = new Random().nextInt(individual.size());
-                Node root = individual.getRoot();
-                newIndividuals.add(Individual.generate(root));
+                individual.changeSubtreeAt(selectedNode,Individual.generate("full",1,1).getRoot());
+                individual.evaluate();
+                newIndividuals.add(individual);
             }else{
                 newIndividuals.add(individual);
             }
@@ -152,7 +163,8 @@ public class Population {
     }
 
     public Individual getFittest(int index) {
-        return null;
+        sort();
+        return individuals.get(index);
     }
 
     public void addIndividual(Individual individual) {
@@ -171,7 +183,7 @@ public class Population {
         var sb = new StringBuilder();
         sb.append("population size :"+ this.size());
         individuals.forEach(individual -> {
-            sb.append(individual.print() + "   fitnes : " + individual.getFitness() +"\n");
+            sb.append(individual.print() + "   fitness : " + individual.getFitness() +"\n");
         });
         return sb.toString();
     }

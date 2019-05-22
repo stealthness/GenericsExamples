@@ -25,8 +25,13 @@ public class GPUtils {
 
     public static List<Node> getTerminalsList(String basic) {
         List<Node> list = new ArrayList<>();
+        list.add(new TerminalNode(0.0));
         list.add(new TerminalNode(1.0));
         list.add(new TerminalNode(2.0));
+        list.add(new TerminalNode(2.0));
+        list.add(new TerminalNode(3.0));
+        list.add(new TerminalNode(4.0));
+        list.add(new VariableNode(0));
         return list;
     }
 }

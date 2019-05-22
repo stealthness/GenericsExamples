@@ -5,6 +5,7 @@ import lombok.Data;
 @Builder
 public class GP {
 
+    private static final int MAX_RUN = 1000;
     Population population;
 
     public static void main(String[] args) {
@@ -17,45 +18,38 @@ public class GP {
     void run(){
         population = Population.builder()
                 .generationMethod("grow")
-                .initialMaxDepth(1)
-                .maxSize(10)
-                .elitismLevel(2)
+                .initialMaxDepth(2)
+                .maxSize(100)
+                .elitismLevel(25)
                 .build();
-        population.generate("full");
-
-
         int count = 0;
+        population.generate("full");
+        System.out.println("\n\nSTART LOOP, generation = " + count);
+        population.evaluate();
+        population.sort();
+        System.out.println(population.printPopulation());
+
         boolean terminationCondition = false;
 
         while (!terminationCondition){
 
-            System.out.println("start loop, generation = " + count);
+            System.out.println("\n PART 1 - Mutations ");
 
-            population.evaluate();
-            population.sort();
-            System.out.println(population.printPopulation());
-
-
-
-            double mutationRate = 0.10;
+            double mutationRate = 0.40;
             population.setIndividuals(population.doMutations(mutationRate));
             population.evaluate();
-
             System.out.println("size:"+population.size());
-            System.out.println("Mutations completed");
 
+            System.out.println("\nPART 2 - Crossing");
             double crossingRate = 0.5;
             population.setIndividuals(population.doCrossing(crossingRate));
-
             System.out.println("size:"+population.size());
-            System.out.println("Crossing completed");
 
-
-
-            System.out.println("Check termination");
+            System.out.println("PART 3 - Check termination : generation : "+count);
 
             population.evaluate();
-            terminationCondition = population.isTerminationConditionMet() || ++count > 2;
+            terminationCondition = population.isTerminationConditionMet() || ++count > MAX_RUN;
+            System.out.println("continue ...");
             System.out.println(population.printPopulation());
             System.out.println("\n\n");
         }
