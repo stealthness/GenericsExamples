@@ -182,12 +182,12 @@ public class Individual implements Node,Comparable{
             if(size()>3){
                 Node node = ((FunctionNode)root).getNode(index);
                 if (node.size() == 3){
-                    if (node.print().equals("(/ x0 x0)")){
-                        System.out.println("found!");
-                        node = new TerminalNode(1.0);
-                    }
+
+                    System.out.println("test -> before: "+node.print() + " \n         after: "+GPUtils.reduceRules.apply(node).print());
+
+                    node = GPUtils.reduceRules.apply(node);
                 }else if ( node.size()>3){
-                    // to do
+                    //
                 }
                 ((FunctionNode)root).setNode(index, node);
             }

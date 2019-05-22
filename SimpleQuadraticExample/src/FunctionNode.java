@@ -138,4 +138,19 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
     public Node clone() {
         return new FunctionNode(getFunction(),getNode(0).clone(), getNode(1).clone());
     }
+
+
+    public void reduce(double reductionRate) {
+        for (int index = 0;index <2;index++){
+            Node node = getNode(index);
+            if (node.size() == 3){
+                Node newNode = GPUtils.reduceRules.apply(node);
+                if (newNode != node && Math.random()<reductionRate){
+                    setNode(index,newNode);
+                }
+            } else if (getNode(index).size()>3){
+                ((FunctionNode)node).reduce(reductionRate);
+            }
+        }
+    }
 }

@@ -33,7 +33,15 @@ public class GPUtils {
     };
 
     //
-    
+
+    static Function<Node,Node> reduceRules = (node -> {
+        if (node.print().equals("(/ x0 x0)")){
+            return new TerminalNode(1.0);
+        } else if(node.print().startsWith("(* 0.0")){
+            return new TerminalNode(0.0);
+        }
+        return node;
+    });
 
     //
 
