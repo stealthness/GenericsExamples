@@ -1,6 +1,7 @@
 import lombok.Data;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.stream.DoubleStream;
@@ -14,7 +15,7 @@ public class Individual implements Node,Comparable{
     private static final String DEFAULT_TYPE = "grow";
     private static final int DEFAULT_MAX_DEPTH = 2;
     private static final int DEFAULT_SINGLE_VARIABLE = 1;
-    static List<GPFunction> setOfFunctions;
+    static List<GPBiFunction> setOfFunctions;
     static List<Node> setOfTerminals;
     private static final double FUNCTION_CHANCE = 0.5;
     private static final BiFunction<Individual,Node,Double> fitnessFunction = GPUtils.FitnessFunctionSumOfErrors;
@@ -85,7 +86,7 @@ public class Individual implements Node,Comparable{
         setOfFunctions = GPUtils.getFunctionList("Basic");
         setOfTerminals = GPUtils.getTerminalsList("basic");
 
-        if (type.endsWith("Grow")){
+        if (type.equals("grow")){
             // default is Grow
             individual.setRoot(generatingFunction(maxDepth,type));
             return individual;
@@ -114,9 +115,9 @@ public class Individual implements Node,Comparable{
     }
 
     static Node generatingFunction(int maxDepth, String type) {
-        List<GPFunction> list = GPUtils.getFunctionList("basic");
+        List<GPBiFunction> list = GPUtils.getFunctionList("basic");
         Random r = new Random();
-        GPFunction function = list.get(r.nextInt(list.size()));
+        GPBiFunction function = list.get(r.nextInt(list.size()));
 
         if (maxDepth > 1){
             if (type.equals("grow")){
@@ -173,15 +174,15 @@ public class Individual implements Node,Comparable{
         for (int index = 0;index <2;index++){
             if(size()>3){
                 Node node = ((FunctionNode)root).getNode(index);
-                if (node.size() == 3){
-
-                    //System.out.println("test -> before: "+node.print() + " \n         after: "+GPUtils.reduceRules.apply(node).print());
-
-                    node = GPUtils.reduceRules.apply(node);
+                if (node.size() == 3 ){
+                    Optional<Node> newNode = GPUtils.reduceRules.apply(node);
+                    if (newNode.isPresent()){
+                        ((FunctionNode)root).setNode(index, newNode.get());
+                    }
                 }else if ( node.size()>3){
                     //
                 }
-                ((FunctionNode)root).setNode(index, node);
+
             }
         }
 

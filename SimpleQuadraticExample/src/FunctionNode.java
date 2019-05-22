@@ -3,7 +3,6 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Data
 public class FunctionNode implements Node,Comparable<FunctionNode> {
@@ -11,17 +10,17 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
     /**
      * Function that the node will apply to the results from its two child nodes
      */
-    private final GPFunction function;
+    private final GPBiFunction function;
     /**
      * List of Nodes to be used as inputs for the function
      */
     List<Node> nodes;
 
-    FunctionNode(GPFunction function, Node node0, Node node1) {
+    FunctionNode(GPBiFunction function, Node node0, Node node1) {
         this(function,Arrays.asList(node0, node1));
     }
 
-    FunctionNode(GPFunction function, List<Node> nodes) {
+    FunctionNode(GPBiFunction function, List<Node> nodes) {
         this.function = function;
         this.nodes = new ArrayList<>();
         this.nodes.addAll(nodes);
@@ -152,7 +151,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
         for (int index = 0;index <2;index++){
             Node node = getNode(index);
             if (node.size() == 3){
-                Node newNode = GPUtils.reduceRules.apply(node);
+                Node newNode = GPUtils.reduceRules.apply(node).get();
                 if (newNode != node && Math.random()<reductionRate){
                     setNode(index,newNode);
                 }

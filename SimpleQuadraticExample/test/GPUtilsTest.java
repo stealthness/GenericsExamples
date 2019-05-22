@@ -65,7 +65,7 @@ class GPUtilsTest {
 
         FunctionNode testNode2 = new FunctionNode(GPUtils.protectedDivision,testNode,new VariableNode(1));
         System.out.println(testNode2.print());
-        
+
     }
 
 

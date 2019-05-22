@@ -1,15 +1,17 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class GPUtils {
 
 
-    static GPFunction add = new GPFunction(Double::sum,"add","+");
-    static GPFunction subtract = new GPFunction((a, b)-> a-b,"subtract","-");
-    static GPFunction multiply = new GPFunction((a, b)-> a*b, "multiply","*");
-    static GPFunction protectedDivision = new GPFunction((a, b)-> (b==0)?1.0:a/b,"protectedDivision","/");
+    static GPBiFunction add = new GPBiFunction(Double::sum,"add","+");
+    static GPBiFunction subtract = new GPBiFunction((a, b)-> a-b,"subtract","-");
+    static GPBiFunction multiply = new GPBiFunction((a, b)-> a*b, "multiply","*");
+    static GPBiFunction protectedDivision = new GPBiFunction((a, b)-> (b==0)?1.0:a/b,"protectedDivision","/");
+    static GPSingleFunction sin = new GPSingleFunction((a) -> Math.sin(a),"sin","sin");
 
     static BiFunction<Individual, Node, Double> FitnessFunctionSumOfErrors = (individual, node) -> individual.getDoubleStream().reduce(0,(sum, x) -> sum + Math.abs(node.apply(new double[]{x}) - individual.apply(new double[]{x})));
 
@@ -33,21 +35,34 @@ public class GPUtils {
 
     //
 
-    static Function<Node,Node> reduceRules = (node -> {
-        if (node.print().equals("(/ x0 x0)")){
-            return new TerminalNode(1.0);
-        } else if(node.print().startsWith("(* 0.0")){
-            return new TerminalNode(0.0);
+    static Function<Node,Optional<Node>> reduceRules = (node -> {
+        if (node.size()==3){
+            if (node.print().equals("(/ x0 x0)")){
+                System.out.println("<1>");
+                return Optional.of(new TerminalNode(1.0));
+            } else if(node.print().startsWith("(*") && node.print().contains("0.0")){
+                return Optional.of(new TerminalNode(0.0));
+            } else if (node.print().startsWith("(/") && node.print().endsWith("0.0)")){
+                return Optional.of(new TerminalNode(1.0));
+            } else if (node.print().startsWith("(+ 0.0") && node.print().endsWith("x0)")){
+                return Optional.of(new VariableNode(0));
+            } else if (node.print().endsWith("x0 x0)") && (node.print().startsWith("+") || (node.print().startsWith("*")))){
+                return Optional.of(new TerminalNode(1.0));
+            } else if (node.print().equals("(- x0 x0)")){
+
+                System.out.println("<2>");
+                return Optional.of(new TerminalNode(0.0));
+            }
         }
-        return node;
+        return Optional.empty();
     });
 
     //
 
 
 
-    public static List<GPFunction> getFunctionList(String basic) {
-        List<GPFunction> list = new ArrayList<>();
+    public static List<GPBiFunction> getFunctionList(String basic) {
+        List<GPBiFunction> list = new ArrayList<>();
         list.add(GPUtils.add);
         list.add(GPUtils.subtract);
         list.add(GPUtils.multiply);
@@ -73,4 +88,9 @@ public class GPUtils {
     public static final Node subNode2 = new FunctionNode(GPUtils.multiply, new VariableNode(0),new VariableNode(0));
 
     public static final Node testNode = new FunctionNode(GPUtils.add, subNode1,subNode2);
+
+    public static final Node subNode3 = new FunctionNode(GPUtils.protectedDivision,new TerminalNode(1.0), new VariableNode(0));
+    public static final Node subNode4 = new FunctionNode(GPUtils.multiply, new VariableNode(0),new VariableNode(0));
+
+    public static final Node testNode2 = new FunctionNode(GPUtils.add, subNode2,subNode3);
 }

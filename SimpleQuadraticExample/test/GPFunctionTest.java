@@ -33,28 +33,28 @@ class GPFunctionTest {
     @Test
     void testCreateAddGPFunction(){
         assertCreateGPFunction(d0+d1,"add","+",
-                new GPFunction(GPUtils.add,"add","+"));
+                new GPBiFunction(GPUtils.add,"add","+"));
     }
 
     @Test
     void testCreateSubtractFunction(){
         assertCreateGPFunction(d0-d1,"subtract","-",
-                new GPFunction(GPUtils.subtract,"subtract","-"));
+                new GPBiFunction(GPUtils.subtract,"subtract","-"));
     }
 
     @Test
     void testCreateMultiplyFunction(){
         assertCreateGPFunction(d0*d1,"multiply","*",
-                new GPFunction(GPUtils.multiply,"multiply","*"));
+                new GPBiFunction(GPUtils.multiply,"multiply","*"));
     }
 
     @Test
     void testCreateProtectedDivisionFunction(){
         assertCreateGPFunction((d1==0)?1.0:d0/d1,"division","/",
-                new GPFunction(GPUtils.protectedDivision,"division","/"));
+                new GPBiFunction(GPUtils.protectedDivision,"division","/"));
     }
 
-    void assertCreateGPFunction(Double expValue, String expFunctionName, String expClojureName, GPFunction function){
+    void assertCreateGPFunction(Double expValue, String expFunctionName, String expClojureName, GPBiFunction function){
         assertEquals(expValue,function.apply(d0,d1));
         assertEquals(expFunctionName, function.getFunctionName());
         assertEquals(expClojureName,function.getClojureString());
