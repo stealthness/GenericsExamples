@@ -1,7 +1,9 @@
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 public class FunctionNode implements Node,Comparable<FunctionNode> {
@@ -10,13 +12,19 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
      * Function that the node will apply to the results from its two child nodes
      */
     private final GPFunction function;
+    /**
+     * List of Nodes to be used as inputs for the function
+     */
     List<Node> nodes;
 
     FunctionNode(GPFunction function, Node node0, Node node1) {
+        this(function,Arrays.asList(node0, node1));
+    }
+
+    FunctionNode(GPFunction function, List<Node> nodes) {
         this.function = function;
-        nodes = new ArrayList<>();
-        nodes.add(0,node0.clone());
-        nodes.add(1,node1.clone());
+        this.nodes = new ArrayList<>();
+        this.nodes.addAll(nodes);
     }
 
     /**

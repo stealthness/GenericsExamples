@@ -52,12 +52,13 @@ public class GP {
             newIndividuals.addAll(population.doCrossing(crossingRate));
             System.out.println("newIndividuals size : "+newIndividuals.size());
 
-            newIndividuals.stream().forEach(Individual::evaluate);
-            newIndividuals.sort(Individual::compareTo);
+
             newIndividuals = newIndividuals.stream().limit(50).collect(Collectors.toList());
             population.setIndividuals(newIndividuals);
             System.out.println("(after limit) size : "+newIndividuals.size());
 
+            newIndividuals.stream().forEach(Individual::evaluate);
+            newIndividuals.sort(Individual::compareTo);
 
             System.out.println("\n PART 3 - Mutations ");
 
