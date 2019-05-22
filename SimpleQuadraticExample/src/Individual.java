@@ -22,6 +22,7 @@ public class Individual implements Node,Comparable{
     private int maxDepth;
     private double[] range;
     private BiFunction<DoubleStream, Node,Double> fitnessFunction;
+    private BiFunction<Individual,Node,Double> fitnessFunction2;
 
 
     private Individual(){}
@@ -29,10 +30,14 @@ public class Individual implements Node,Comparable{
 
 
     public void evaluate(){
-        var d = DoubleStream.of(-1.0,-0.9,-0.8,-0.7,-0.6,-0.5,-0.4,-0.3,-0.2,-0.1
-                ,0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0);
-
-        var fit = fitnessFunction.apply(d, getRoot());
+        final TerminalNode oneTree = new TerminalNode(1.0);
+        final VariableNode xTree = new VariableNode(0);
+        final FunctionNode xSqrdTree = new FunctionNode(GPUtils.multiply, xTree, xTree);
+        final FunctionNode xPlus1Tree = new FunctionNode(GPUtils.add, xTree, oneTree);
+        final FunctionNode xSqrdPlusXPlus1TreeD2 = new FunctionNode(GPUtils.add, xSqrdTree, xPlus1Tree);
+        var fit2 = fitnessFunction2.apply(this,xSqrdPlusXPlus1TreeD2);
+        var fit = fitnessFunction.apply(getDoubleStream(), getRoot());
+        System.out.println("fit1 : "+fit + "   fit2 : "+fit2);
         setFitness(fit);
     }
 
@@ -77,6 +82,7 @@ public class Individual implements Node,Comparable{
         Individual individual = new Individual();
         individual.setRange(new double[]{-1.0,1.0});
         individual.setFitnessFunction(GPUtils.FitnessFunctionSumOfErrors);
+        individual.setFitnessFunction2(GPUtils.FitnessFunctionSumOfErrors2);
         individual.setRoot(node.clone());
         return individual;
     }
@@ -88,6 +94,7 @@ public class Individual implements Node,Comparable{
 
         individual.setRange(new double[]{-1.0,1.0});
         individual.setFitnessFunction(GPUtils.FitnessFunctionSumOfErrors);
+        individual.setFitnessFunction2(GPUtils.FitnessFunctionSumOfErrors2);
 
         setOfFunctions = GPUtils.getFunctionList("Basic");
         setOfTerminals = GPUtils.getTerminalsList("basic");
