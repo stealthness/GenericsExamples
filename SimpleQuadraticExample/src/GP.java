@@ -17,6 +17,7 @@ public class GP {
 
     void run(){
         population = Population.builder()
+                .fitnessFunction(GPUtils.FitnessFunctionSumOfErrors2)
                 .generationMethod("grow")
                 .initialMaxDepth(2)
                 .maxSize(50)

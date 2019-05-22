@@ -13,6 +13,7 @@ public class GPUtils {
     static GPFunction protectedDivision = new GPFunction((a, b)-> (b==0)?1.0:a/b,"protectedDivision","/");
 
     static BiFunction<DoubleStream, Node, Double> FitnessFunctionSumOfErrors = (d, node) -> d.reduce(0,(sum, x) -> sum + Math.abs((x*x + x + 1) - node.apply(new double[]{x})));
+    static BiFunction<Individual, Node, Double> FitnessFunctionSumOfErrors2 = (individual, node) -> individual.getDoubleStream().reduce(0,(sum, x) -> sum + Math.abs(node.apply(new double[]{x}) - individual.apply(new double[]{x})));
 
     static Function<Population,Individual> selectWeightedParent = population -> {
         // Get individuals

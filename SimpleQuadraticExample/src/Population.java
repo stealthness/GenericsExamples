@@ -4,7 +4,9 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 @Data
@@ -34,11 +36,13 @@ public class Population {
     /**
      * Method used to generate the initial population
      */
+    @Builder.Default
     private String generationMethod = "grow";
 
     /**
      * The initial depth of the generated individuals in the population
      */
+    @Builder.Default
     private int initialMaxDepth = 2;
 
     /**
@@ -54,7 +58,11 @@ public class Population {
      */
     int elitismLevel;
 
-
+    /**
+     * Fitness function is measure of of e
+     */
+    @Builder.Default
+    private BiFunction<Individual, Node, Double> fitnessFunction = GPUtils.FitnessFunctionSumOfErrors2;
 
     // generate population
 
