@@ -6,14 +6,23 @@ import java.util.stream.DoubleStream;
 
 public class GPUtils {
 
+    static final TerminalNode oneTree = new TerminalNode(1.0);
+    static final VariableNode xTree = new VariableNode(0);
+    static final FunctionNode xSqrdTree = new FunctionNode(GPUtils.multiply, xTree, xTree);
+    static final FunctionNode xPlus1Tree = new FunctionNode(GPUtils.add, xTree, oneTree);
+    static final FunctionNode xSqrdPlusXPlus1TreeD2 = new FunctionNode(GPUtils.add, xSqrdTree, xPlus1Tree);
+    static final FunctionNode oneDivideXTree = new FunctionNode(GPUtils.protectedDivision, oneTree, xTree);
+    static final FunctionNode xSqrdPlusOneDivideXTree = new FunctionNode(GPUtils.add, xSqrdTree, oneDivideXTree);
+    public static Node defaultTestNode1 = xSqrdPlusXPlus1TreeD2   ;
+    public static Node defaultTestNode2 = xSqrdPlusOneDivideXTree  ;
+
 
     static GPFunction add = new GPFunction(Double::sum,"add","+");
     static GPFunction subtract = new GPFunction((a, b)-> a-b,"subtract","-");
     static GPFunction multiply = new GPFunction((a, b)-> a*b, "multiply","*");
     static GPFunction protectedDivision = new GPFunction((a, b)-> (b==0)?1.0:a/b,"protectedDivision","/");
 
-    static BiFunction<DoubleStream, Node, Double> FitnessFunctionSumOfErrors = (d, node) -> d.reduce(0,(sum, x) -> sum + Math.abs((x*x + x + 1) - node.apply(new double[]{x})));
-    static BiFunction<Individual, Node, Double> FitnessFunctionSumOfErrors2 = (individual, node) -> individual.getDoubleStream().reduce(0,(sum, x) -> sum + Math.abs(node.apply(new double[]{x}) - individual.apply(new double[]{x})));
+    static BiFunction<Individual, Node, Double> FitnessFunctionSumOfErrors = (individual, node) -> individual.getDoubleStream().reduce(0,(sum, x) -> sum + Math.abs(node.apply(new double[]{x}) - individual.apply(new double[]{x})));
 
     static Function<Population,Individual> selectWeightedParent = population -> {
         // Get individuals

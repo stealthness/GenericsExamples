@@ -1,11 +1,15 @@
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Data
 @Builder
 public class GP {
 
-    private static final int MAX_RUN = 20;
+    private static final int MAX_RUN = 50;
     Population population;
 
     public static void main(String[] args) {
@@ -17,11 +21,12 @@ public class GP {
 
     void run(){
         population = Population.builder()
-                .fitnessFunction(GPUtils.FitnessFunctionSumOfErrors2)
+                .fitnessFunction(GPUtils.FitnessFunctionSumOfErrors)
                 .generationMethod("grow")
-                .initialMaxDepth(2)
+                .initialMaxDepth(1)
                 .maxSize(50)
                 .elitismLevel(5)
+                .testNode(GPUtils.defaultTestNode1)
                 .build();
         int count = 0;
         population.generate("full");
@@ -34,29 +39,41 @@ public class GP {
 
         while (!terminationCondition){
 
-            System.out.println("\n PART 1 - Mutations ");
+            List<Individual> newIndividuals = new ArrayList<>();
 
-            double mutationRate = 0.20;
+            System.out.println("\n PART 1 - Reproduction ");
+
+            int reproductionRate = 20;
+            newIndividuals.addAll(population.doReproduction(reproductionRate));
+            System.out.println("newIndividuals size :"+newIndividuals.size());
+
+            System.out.println("\n PART 2 - Crossing");
+            double crossingRate = 0.5;
+            newIndividuals.addAll(population.doCrossing(crossingRate));
+            System.out.println("newIndividuals size : "+newIndividuals.size());
+
+            newIndividuals.stream().forEach(Individual::evaluate);
+            newIndividuals.sort(Individual::compareTo);
+            newIndividuals = newIndividuals.stream().limit(50).collect(Collectors.toList());
+            population.setIndividuals(newIndividuals);
+            System.out.println("(after limit) size : "+newIndividuals.size());
+
+
+            System.out.println("\n PART 3 - Mutations ");
+
+            double mutationRate = 0.10;
             population.setIndividuals(population.doMutations(mutationRate));
-            population.evaluate();
-            population.sort();
-            System.out.println("size:"+population.size());
+            System.out.println("(after mutation) size : "+population.size());
 
-            System.out.println("\nPART 2 - Crossing");
-            double crossingRate = 0.3;
-            population.setIndividuals(population.doCrossing(crossingRate));
-            population.evaluate();
-            population.sort();
-            System.out.println("size:"+population.size());
 
-            System.out.println("\nPART 3 - Reduce");
-            double reduceRate = 0.5;
+            System.out.println("\n PART 4 - Reduce");
+            double reduceRate = 0.7;
             population.setIndividuals(population.doReduction(crossingRate));
             population.evaluate();
             population.sort();
-            System.out.println("size:"+population.size());
+            System.out.println("size:" + population.size());
 
-            System.out.println("PART 4 - Check termination : generation : "+count);
+            System.out.println("PART 5 - Check termination : generation : "+count);
 
             population.evaluate();
             terminationCondition = population.isTerminationConditionMet() || ++count > MAX_RUN;

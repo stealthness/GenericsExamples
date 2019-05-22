@@ -62,7 +62,10 @@ public class Population {
      * Fitness function is measure of of e
      */
     @Builder.Default
-    private BiFunction<Individual, Node, Double> fitnessFunction = GPUtils.FitnessFunctionSumOfErrors2;
+    private BiFunction<Individual, Node, Double> fitnessFunction = GPUtils.FitnessFunctionSumOfErrors;
+
+    @Builder.Default
+    private Node testNode = GPUtils.defaultTestNode2;
 
     // generate population
 
@@ -89,14 +92,21 @@ public class Population {
         generate(generationMethod);
     }
 
+    // reproduction function
+
+    List<Individual> doReproduction(int reproductionRate){
+        List<Individual> newList = new ArrayList<>();
+        IntStream.range(0,reproductionRate).forEach(i-> {
+                newList.add(GPUtils.selectWeightedParent.apply(this));
+        });
+        return newList;
+    }
+
     // crossover function
 
     List<Individual>  doCrossing(double crossingRate) {
         List<Individual> newIndividuals = new ArrayList<>();
-        individuals.stream().limit(elitismLevel).forEach(individual -> {
-            newIndividuals.add(individual);
-        });
-        individuals.stream().forEach(individual -> {
+        individuals.forEach(individual -> {
             if (Math.random() < crossingRate){
                 Individual randomIndividual = GPUtils.selectWeightedParent.apply(this);
                 Individual newIndividual = Individual.generate(individual.getRoot());
@@ -111,17 +121,8 @@ public class Population {
                 newIndividuals.add(newIndividual);
             }
         });
-        var currentSize = newIndividuals.size();
-        if (currentSize < size()){
-            individuals.stream().skip(elitismLevel)
-                    .limit(size() - currentSize)
-                    .forEach(individual -> newIndividuals.add(individual));
-        }
-        evaluate();
-        sort();
-        return newIndividuals.stream()
-                .limit(this.maxSize)
-                .collect(Collectors.toList());
+        System.out.println("crossing size : " + newIndividuals.size() + "   from : " + size());
+        return newIndividuals;
     }
 
     // mutate function
@@ -133,36 +134,27 @@ public class Population {
      */
     List<Individual> doMutations(double mutationRate) {
         List<Individual> newIndividuals = new ArrayList<>();
-        individuals.stream().limit(elitismLevel).forEach(individual -> {
-            newIndividuals.add(individual);
-        });
-        individuals.stream().skip(elitismLevel).forEach(individual -> {
+        individuals.forEach(individual -> {
             if (Math.random() < mutationRate){
                 int selectedNode = new Random().nextInt(individual.size());
-                individual.changeSubtreeAt(selectedNode,Individual.generate("grow",1,1).getRoot());
+                individual.changeSubtreeAt(selectedNode,Individual.generate("grow",new Random().nextInt(2)+1,1).getRoot());
                 individual.evaluate();
                 newIndividuals.add(individual);
-            }else{
+            }else {
                 newIndividuals.add(individual);
             }
         });
-        evaluate();
-        sort();
         return newIndividuals;
     }
 
     // reduce function
     List<Individual> doReduction(double reductionRate){
         List<Individual> newIndividuals = new ArrayList<>();
-        individuals.stream().limit(elitismLevel).forEach(individual -> {
-            newIndividuals.add(individual);
-        });
-        individuals.stream().skip(elitismLevel).forEach(individual -> {
+
+        individuals.stream().forEach(individual -> {
             individual.reduce(reductionRate);
             newIndividuals.add(individual);
         });
-        evaluate();
-        sort();
         return newIndividuals;
     }
 

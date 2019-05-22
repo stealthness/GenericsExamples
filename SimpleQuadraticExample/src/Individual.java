@@ -88,8 +88,7 @@ public class Individual implements Node,Comparable{
 
         Individual individual = new Individual();
         individual.setRange(new double[]{-1.0,1.0});
-        individual.setFitnessFunction(GPUtils.FitnessFunctionSumOfErrors);
-        individual.setFitnessFunction2(GPUtils.FitnessFunctionSumOfErrors2);
+        individual.setFitnessFunction2(GPUtils.FitnessFunctionSumOfErrors);
         individual.setRoot(node.clone());
         return individual;
     }
@@ -100,8 +99,7 @@ public class Individual implements Node,Comparable{
         individual.setMaxDepth(maxDepth);
 
         individual.setRange(new double[]{-1.0,1.0});
-        individual.setFitnessFunction(GPUtils.FitnessFunctionSumOfErrors);
-        individual.setFitnessFunction2(GPUtils.FitnessFunctionSumOfErrors2);
+        individual.setFitnessFunction2(GPUtils.FitnessFunctionSumOfErrors);
 
         setOfFunctions = GPUtils.getFunctionList("Basic");
         setOfTerminals = GPUtils.getTerminalsList("basic");
