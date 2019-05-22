@@ -28,16 +28,23 @@ public class Individual implements Node,Comparable{
     private Individual(){}
 
 
-
     public void evaluate(){
         final TerminalNode oneTree = new TerminalNode(1.0);
         final VariableNode xTree = new VariableNode(0);
         final FunctionNode xSqrdTree = new FunctionNode(GPUtils.multiply, xTree, xTree);
         final FunctionNode xPlus1Tree = new FunctionNode(GPUtils.add, xTree, oneTree);
+        evaluate(new FunctionNode(GPUtils.add, xSqrdTree, xPlus1Tree));
+
+    }
+
+
+    public void evaluate(Node node){
+        final TerminalNode oneTree = new TerminalNode(1.0);
+        final VariableNode xTree = new VariableNode(0);
+        final FunctionNode xSqrdTree = new FunctionNode(GPUtils.multiply, xTree, xTree);
+        final FunctionNode xPlus1Tree = new FunctionNode(GPUtils.add, xTree, oneTree);
         final FunctionNode xSqrdPlusXPlus1TreeD2 = new FunctionNode(GPUtils.add, xSqrdTree, xPlus1Tree);
-        var fit2 = fitnessFunction2.apply(this,xSqrdPlusXPlus1TreeD2);
-        var fit = fitnessFunction.apply(getDoubleStream(), getRoot());
-        System.out.println("fit1 : "+fit + "   fit2 : "+fit2);
+        var fit = fitnessFunction2.apply(this, node);
         setFitness(fit);
     }
 
