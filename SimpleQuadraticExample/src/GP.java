@@ -5,7 +5,7 @@ import lombok.Data;
 @Builder
 public class GP {
 
-    private static final int MAX_RUN = 1000;
+    private static final int MAX_RUN = 2;
     Population population;
 
     public static void main(String[] args) {
@@ -18,8 +18,8 @@ public class GP {
     void run(){
         population = Population.builder()
                 .generationMethod("grow")
-                .initialMaxDepth(2)
-                .maxSize(100)
+                .initialMaxDepth(1)
+                .maxSize(50)
                 .elitismLevel(25)
                 .build();
         int count = 0;

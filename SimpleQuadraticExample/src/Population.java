@@ -74,7 +74,6 @@ public class Population {
             Individual individual = Individual.generate(type,initialMaxDepth,1);
             individuals.add(individual);
         } else {
-            // to doo
         }
     }
 
@@ -91,8 +90,7 @@ public class Population {
         });
         individuals.stream().skip(elitismLevel).forEach(individual -> {
             if (Math.random() < crossingRate){
-                int randomSelectionIndex = new Random().nextInt(individuals.size()-elitismLevel)+elitismLevel;
-                Individual randomIndividual = this.getIndividuals().get(randomSelectionIndex);
+                Individual randomIndividual = GPUtils.selectWeightedParent.apply(this);
                 Individual newIndividual = Individual.generate(individual.getRoot());
                 int selectedNode1 = new Random().nextInt(individual.size());
                 int selectedNode2 = new Random().nextInt(randomIndividual.size());
@@ -107,6 +105,7 @@ public class Population {
                 newIndividuals.add(individual);
             }
         });
+        sort();
         return newIndividuals.stream().limit(this.maxSize).collect(Collectors.toList());
     }
 
@@ -124,9 +123,8 @@ public class Population {
         });
         individuals.stream().skip(elitismLevel).forEach(individual -> {
             if (Math.random() < mutationRate){
-                System.out.println("MUTATED");
                 int selectedNode = new Random().nextInt(individual.size());
-                individual.changeSubtreeAt(selectedNode,Individual.generate("full",1,1).getRoot());
+                individual.changeSubtreeAt(selectedNode,Individual.generate("grow",1,1).getRoot());
                 individual.evaluate();
                 newIndividuals.add(individual);
             }else{
@@ -189,5 +187,11 @@ public class Population {
     }
 
 
-
+    public double getSumOfFitness() {
+        double sum = 0.0;
+        for (Individual individual: individuals){
+            sum += individual.getFitness();
+        }
+        return sum;
+    }
 }

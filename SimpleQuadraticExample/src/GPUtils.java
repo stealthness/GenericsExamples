@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.DoubleStream;
 
 public class GPUtils {
@@ -12,6 +13,25 @@ public class GPUtils {
     static GPFunction protectedDivision = new GPFunction((a, b)-> (b==0)?1.0:a/b,"protectedDivision","/");
 
     static BiFunction<DoubleStream, Node, Double> FitnessFunctionSumOfErrors = (d, node) -> d.reduce(0,(sum, x) -> sum + Math.abs((x*x + x + 1) - node.apply(new double[]{x})));
+
+    static Function<Population,Individual> selectWeightedParent = population -> {
+        // Get individuals
+        final var individuals = population.getIndividuals();
+
+        // Spin roulette wheel
+        final var rouletteWheelPosition = Math.random() * population.getSumOfFitness();
+
+        // Find parent
+        var spinWheel = 0.0;
+        for (Individual individual : individuals) {
+            spinWheel += individual.getFitness();
+            if (spinWheel >= rouletteWheelPosition) {
+                return individual;
+            }
+        }
+        return individuals.get(individuals.size()-1);
+    };
+
 
     public static List<GPFunction> getFunctionList(String basic) {
         List<GPFunction> list = new ArrayList<>();
@@ -34,4 +54,6 @@ public class GPUtils {
         list.add(new VariableNode(0));
         return list;
     }
+
+
 }
