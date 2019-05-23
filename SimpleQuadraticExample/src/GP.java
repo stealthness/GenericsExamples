@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 public class GP {
 
     private static final int MAX_RUN = 50;
+    private static final int MAX_SIZE = 100;
     Population population;
 
     public static void main(String[] args) {
@@ -30,8 +31,8 @@ public class GP {
                 .generationMethod("full")
                 .initialMaxDepth(1)
                 .testNode(testNode)
-                .maxSize(50)
-                .elitismLevel(5)
+                .maxSize(MAX_SIZE)
+                .elitismLevel(30)
                 .build();
         int count = 0;
         population.generate("full");
@@ -51,24 +52,33 @@ public class GP {
 
             List<Individual> newIndividuals = new ArrayList<>();
 
+            /************** REPRODUCTION ********************/
             System.out.println("\n PART 1 - Reproduction ");
 
-            int reproductionRate = 5;
-            newIndividuals.addAll(population.doReproduction(reproductionRate));
-            System.out.println("newIndividuals size :"+newIndividuals.size());
+            newIndividuals.addAll(population.doReproduction(population.elitismLevel));
+
+            System.out.println("newIndividuals size : " + newIndividuals.size());
+            System.out.println(population.printPopulation(4));
+
+            /************** CROSSING ********************/
 
             System.out.println("\n PART 2 - Crossing");
-            double crossingRate = 0.5;
-            newIndividuals.addAll(population.doCrossing(crossingRate));
+            double crossingRate = 0.8;
+            List<Individual> crossingList = population.doCrossing(crossingRate);
+            var crossingLimit = MAX_SIZE - population.elitismLevel;
+            newIndividuals.addAll(crossingList.stream().sorted().limit(crossingLimit).collect(Collectors.toList()));
             System.out.println("newIndividuals size : "+newIndividuals.size());
 
-
-            newIndividuals = newIndividuals.stream().limit(50).collect(Collectors.toList());
             population.setIndividuals(newIndividuals);
-            System.out.println("(after limit) size : "+newIndividuals.size());
+            System.out.println("population size : "+newIndividuals.size());
+
+            System.out.println(population.printPopulation(4));
 
             newIndividuals.stream().forEach(individual -> individual.evaluate(population.getTestNode()));
             newIndividuals.sort(Individual::compareTo);
+
+
+            System.out.println(population.printPopulation(20));
 
             System.out.println("\n PART 3 - Mutations ");
 

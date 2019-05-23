@@ -107,10 +107,10 @@ public class Population {
 
     List<Individual>  doCrossing(double crossingRate) {
         List<Individual> newIndividuals = new ArrayList<>();
-        individuals.forEach(individual -> {
+        individuals.stream().skip(elitismLevel).forEach(individual -> {
             if (Math.random() < crossingRate){
                 System.out.print(".");
-                Individual randomIndividual = GPUtils.selectWeightedParent.apply(this);
+                Individual randomIndividual = Individual.generate(GPUtils.selectWeightedParent.apply(this).getRoot());
                 Individual newIndividual = Individual.generate(individual.getRoot());
                 int selectedNode1 = new Random().nextInt(individual.size());
                 int selectedNode2 = new Random().nextInt(randomIndividual.size());
@@ -123,7 +123,6 @@ public class Population {
                 newIndividuals.add(newIndividual);
             }
         });
-        System.out.println("crossing size : " + newIndividuals.size() + "   from : " + size());
         return newIndividuals;
     }
 
@@ -136,7 +135,8 @@ public class Population {
      */
     List<Individual> doMutations(double mutationRate) {
         List<Individual> newIndividuals = new ArrayList<>();
-        individuals.forEach(individual -> {
+        newIndividuals.addAll(individuals.stream().limit(elitismLevel).collect(Collectors.toList()));
+        individuals.stream().skip(elitismLevel).forEach(individual -> {
             if (individual.size()== 1 && Math.random() < 0.3){
                 int selectedNode = new Random().nextInt(individual.size());
                 individual.changeSubtreeAt(selectedNode,Individual.generate("grow",new Random().nextInt(1),1).getRoot());
@@ -158,7 +158,8 @@ public class Population {
     List<Individual> doReduction(double reductionRate){
         List<Individual> newIndividuals = new ArrayList<>();
 
-        individuals.stream().forEach(individual -> {
+        newIndividuals.addAll(individuals.stream().limit(elitismLevel).collect(Collectors.toList()));
+        individuals.stream().skip(elitismLevel).forEach(individual -> {
             individual.reduce(reductionRate);
             newIndividuals.add(individual);
         });
@@ -211,9 +212,9 @@ public class Population {
 
     public String printPopulation(int limit){
         var sb = new StringBuilder();
-        sb.append("population size :"+ this.size());
+        sb.append("population size : "+ this.size()+"\n");
         individuals.stream().limit(limit).forEach(individual -> {
-            sb.append(String.format("fitness : %-4.2f  |  %s  \n", individual.getFitness() ,individual.print()));
+            sb.append(String.format("fitness : %-6.2f  |  %-30.30s ...  \n", individual.getFitness() ,individual.print()));
         });
         return sb.toString();
     }
