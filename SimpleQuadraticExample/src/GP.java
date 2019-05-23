@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 @Builder
 public class GP {
 
-    private static final int MAX_RUN = 10;
+    private static final int MAX_RUN = 50;
     Population population;
 
     public static void main(String[] args) {
@@ -27,14 +27,14 @@ public class GP {
 
         population = Population.builder()
                 .fitnessFunction(GPUtils.FitnessFunctionSumOfErrors)
-                .generationMethod("grow")
+                .generationMethod("full")
                 .initialMaxDepth(1)
                 .testNode(testNode)
-                .maxSize(20)
-                .elitismLevel(5)
+                .maxSize(50)
+                .elitismLevel(10)
                 .build();
         int count = 0;
-        population.generate("grow");
+        population.generate("full");
         System.out.println("\n\nSTART LOOP, generation = " + count);
         population.evaluate(population.getTestNode());
         population.sort();
@@ -53,12 +53,12 @@ public class GP {
 
             System.out.println("\n PART 1 - Reproduction ");
 
-            int reproductionRate = 20;
+            int reproductionRate = 2;
             newIndividuals.addAll(population.doReproduction(reproductionRate));
             System.out.println("newIndividuals size :"+newIndividuals.size());
 
             System.out.println("\n PART 2 - Crossing");
-            double crossingRate = 0.6;
+            double crossingRate = 0.8;
             newIndividuals.addAll(population.doCrossing(crossingRate));
             System.out.println("newIndividuals size : "+newIndividuals.size());
 
@@ -72,13 +72,13 @@ public class GP {
 
             System.out.println("\n PART 3 - Mutations ");
 
-            double mutationRate = 0.20;
+            double mutationRate = 0.10;
             population.setIndividuals(population.doMutations(mutationRate));
             System.out.println("(after mutation) size : "+population.size());
 
 
             System.out.println("\n PART 4 - Reduce");
-            double reduceRate = 0.5;
+            double reduceRate = 0.2;
             population.setIndividuals(population.doReduction(crossingRate));
             population.evaluate(population.getTestNode());
             population.sort();
@@ -88,7 +88,7 @@ public class GP {
             population.evaluate(population.getTestNode());
             terminationCondition = population.isTerminationConditionMet() || ++count > MAX_RUN;
             System.out.println("continue ...");
-            System.out.println(population.printPopulation(5));
+            System.out.println(population.printPopulation(20));
 
             // Stats
             maxDepths.add(population.getIndividuals().stream().map(individual -> individual.getDepth()).max(Integer::compareTo).get());
@@ -103,7 +103,7 @@ public class GP {
 
         System.out.println("\n\nFINAL Result : " + population.getFittest(0).print());
         System.out.println(String.format("Fitness : %.2f", population.getFittest(0).getFitness()));
-        IntStream.range(0,count).skip(Math.min(45,count - 5)).forEach(i ->{
+        IntStream.range(0,count).skip(Math.min(20,count - 5)).forEach(i ->{
             System.out.println("gen | MaxS | MaxD | AvgS  | AvgD  |");
             System.out.println(String.format(" %-2d | %-4d | %-4d | %-5.2f | %-5.2f |",
                     i,maxSizes.get(i),maxDepths.get(i),

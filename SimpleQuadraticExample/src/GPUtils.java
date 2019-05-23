@@ -53,6 +53,10 @@ public class GPUtils {
                 System.out.println("<2>");
                 return Optional.of(new TerminalNode(0.0));
             }
+        } else{
+            if (node.print().startsWith("(* 0.0") || node.print().startsWith("(/ 0.0")){
+                return Optional.of(new TerminalNode((0.0)));
+            }
         }
         return Optional.empty();
     });

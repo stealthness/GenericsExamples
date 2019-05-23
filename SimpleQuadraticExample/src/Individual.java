@@ -180,7 +180,10 @@ public class Individual implements Node,Comparable{
                         ((FunctionNode)root).setNode(index, newNode.get());
                     }
                 }else if ( node.size()>3){
-                    //
+                    Optional<Node> newNode = GPUtils.reduceRules.apply(node);
+                    if (newNode.isPresent()){
+                        ((FunctionNode)root).setNode(index, newNode.get());
+                    }
                 }
 
             }

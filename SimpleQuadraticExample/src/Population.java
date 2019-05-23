@@ -109,6 +109,7 @@ public class Population {
         List<Individual> newIndividuals = new ArrayList<>();
         individuals.forEach(individual -> {
             if (Math.random() < crossingRate){
+                System.out.print(".");
                 Individual randomIndividual = GPUtils.selectWeightedParent.apply(this);
                 Individual newIndividual = Individual.generate(individual.getRoot());
                 int selectedNode1 = new Random().nextInt(individual.size());
