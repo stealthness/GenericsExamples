@@ -1,3 +1,6 @@
+import java.util.Optional;
+import java.util.function.Function;
+
 public interface Node{
 
     /**
@@ -29,6 +32,7 @@ public interface Node{
     default int getDepth(){
         return 0;
     }
+    
 
     Node clone();
 }

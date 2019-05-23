@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Data
 public class FunctionNode implements Node,Comparable<FunctionNode> {
@@ -160,6 +161,15 @@ public class FunctionNode implements Node,Comparable<FunctionNode> {
                 ((FunctionNode)node).reduce(reductionRate);
             }
         }
+    }
+
+    void editNode(List<Function<Node,Optional<Node>>> rules, double editingRate){
+        rules.stream().forEach(rule ->{
+            Optional<Node> result = rule.apply(this);
+            if (result.isPresent()){
+                //
+            }
+        });
     }
 
 }

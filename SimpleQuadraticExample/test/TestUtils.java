@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.List;
+
 public class TestUtils {
 
 
@@ -35,4 +38,12 @@ public class TestUtils {
     static final Node twoNode = new TerminalNode(2.0);
 
     static final Node xNode = new VariableNode(0);
+
+    // test for Editing
+
+    static final FunctionNode twoDivideZeroTree = new FunctionNode(GPUtils.protectedDivision, twoTree, zeroTree);
+    static final FunctionNode xDivideZeroTree = new FunctionNode(GPUtils.protectedDivision, xTree, zeroTree);
+    static final FunctionNode oneDivideByZeroTree = new FunctionNode(GPUtils.protectedDivision, oneTree, zeroTree);
+    static final List<FunctionNode> divideByZeroList = Arrays.asList(twoDivideZeroTree,xDivideZeroTree,oneDivideByZeroTree);
+
 }
