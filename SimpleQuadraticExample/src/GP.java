@@ -31,7 +31,7 @@ public class GP {
                 .initialMaxDepth(1)
                 .testNode(testNode)
                 .maxSize(50)
-                .elitismLevel(10)
+                .elitismLevel(5)
                 .build();
         int count = 0;
         population.generate("full");
@@ -53,12 +53,12 @@ public class GP {
 
             System.out.println("\n PART 1 - Reproduction ");
 
-            int reproductionRate = 2;
+            int reproductionRate = 5;
             newIndividuals.addAll(population.doReproduction(reproductionRate));
             System.out.println("newIndividuals size :"+newIndividuals.size());
 
             System.out.println("\n PART 2 - Crossing");
-            double crossingRate = 0.8;
+            double crossingRate = 0.5;
             newIndividuals.addAll(population.doCrossing(crossingRate));
             System.out.println("newIndividuals size : "+newIndividuals.size());
 
@@ -78,7 +78,7 @@ public class GP {
 
 
             System.out.println("\n PART 4 - Reduce");
-            double reduceRate = 0.2;
+            double reduceRate = 0.1;
             population.setIndividuals(population.doReduction(crossingRate));
             population.evaluate(population.getTestNode());
             population.sort();

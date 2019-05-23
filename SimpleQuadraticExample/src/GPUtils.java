@@ -38,19 +38,18 @@ public class GPUtils {
     static Function<Node,Optional<Node>> reduceRules = (node -> {
         if (node.size()==3){
             if (node.print().equals("(/ x0 x0)")){
-                System.out.println("<1>");
                 return Optional.of(new TerminalNode(1.0));
             } else if(node.print().startsWith("(*") && node.print().contains("0.0")){
                 return Optional.of(new TerminalNode(0.0));
-            } else if (node.print().startsWith("(/") && node.print().endsWith("0.0)")){
+            } else if (node.print().startsWith("(/") && (node.print().endsWith("0.0)")) || (node.print().endsWith("1.0)"))){
                 return Optional.of(new TerminalNode(1.0));
+            } else if (node.print().startsWith("(/ 1.0") || node.print().startsWith("* 1.0)")){
+                return Optional.of(((FunctionNode)node).getNode(1));
             } else if (node.print().startsWith("(+ 0.0") && node.print().endsWith("x0)")){
                 return Optional.of(new VariableNode(0));
             } else if (node.print().endsWith("x0 x0)") && (node.print().startsWith("+") || (node.print().startsWith("*")))){
                 return Optional.of(new TerminalNode(1.0));
             } else if (node.print().equals("(- x0 x0)")){
-
-                System.out.println("<2>");
                 return Optional.of(new TerminalNode(0.0));
             }
         } else{
@@ -80,9 +79,6 @@ public class GPUtils {
         list.add(new TerminalNode(0.0));
         list.add(new TerminalNode(1.0));
         list.add(new TerminalNode(2.0));
-        list.add(new TerminalNode(2.0));
-        list.add(new TerminalNode(3.0));
-        list.add(new TerminalNode(4.0));
         list.add(new VariableNode(0));
         return list;
     }
@@ -94,7 +90,7 @@ public class GPUtils {
     public static final Node testNode = new FunctionNode(GPUtils.add, subNode1,subNode2);
 
     public static final Node subNode3 = new FunctionNode(GPUtils.protectedDivision,new TerminalNode(1.0), new VariableNode(0));
-    public static final Node subNode4 = new FunctionNode(GPUtils.multiply, new VariableNode(0),new VariableNode(0));
+    public static final Node subNode4 = new FunctionNode(GPUtils.multiply, new TerminalNode(2.0),subNode2);
 
-    public static final Node testNode2 = new FunctionNode(GPUtils.add, subNode2,subNode3);
+    public static final Node testNode2 = new FunctionNode(GPUtils.add, subNode4,subNode3);
 }

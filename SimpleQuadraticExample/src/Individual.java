@@ -190,7 +190,6 @@ public class Individual implements Node,Comparable{
         }
 
 
-
     }
 
     public DoubleStream getDoubleStream() {

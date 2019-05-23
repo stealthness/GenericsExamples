@@ -137,7 +137,12 @@ public class Population {
     List<Individual> doMutations(double mutationRate) {
         List<Individual> newIndividuals = new ArrayList<>();
         individuals.forEach(individual -> {
-            if (Math.random() < mutationRate){
+            if (individual.size()== 1 && Math.random() < 0.3){
+                int selectedNode = new Random().nextInt(individual.size());
+                individual.changeSubtreeAt(selectedNode,Individual.generate("grow",new Random().nextInt(1),1).getRoot());
+                individual.evaluate(this.getTestNode());
+                newIndividuals.add(individual);
+            } else if (Math.random() < mutationRate){
                 int selectedNode = new Random().nextInt(individual.size());
                 individual.changeSubtreeAt(selectedNode,Individual.generate("grow",new Random().nextInt(2)+1,1).getRoot());
                 individual.evaluate(this.getTestNode());
@@ -208,7 +213,7 @@ public class Population {
         var sb = new StringBuilder();
         sb.append("population size :"+ this.size());
         individuals.stream().limit(limit).forEach(individual -> {
-            sb.append(individual.print() + "   fitness : " + individual.getFitness() +"\n");
+            sb.append(String.format("fitness : %-4.2f  |  %s  \n", individual.getFitness() ,individual.print()));
         });
         return sb.toString();
     }
