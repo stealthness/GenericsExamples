@@ -32,7 +32,7 @@ public interface Node{
     default int getDepth(){
         return 0;
     }
-    
+
 
     Node clone();
 }
