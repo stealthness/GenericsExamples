@@ -3,8 +3,6 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Data
 @Builder
@@ -23,28 +21,10 @@ public class GP {
 
     void run(){
 
-        Node testNode = GPUtils.testNode;
-        System.out.println(testNode.print());
 
         population = Population.builder()
-                .fitnessFunction(GPUtils.FitnessFunctionSumOfErrors)
-                .generationMethod("full")
-                .initialMaxDepth(1)
-                .testNode(testNode)
-                .maxSize(MAX_SIZE)
-                .elitismLevel(30)
                 .build();
         int count = 0;
-        population.generate("full");
-        System.out.println("\n\nSTART LOOP, generation = " + count);
-        population.evaluate(population.getTestNode());
-        population.sort();
-        System.out.println(population.printPopulation());
-
-        List<Double> avgSizes = new ArrayList<>();
-        List<Integer> maxSizes = new ArrayList<>();
-        List<Double> avgDepths = new ArrayList<>();
-        List<Integer> maxDepths = new ArrayList<>();
 
         boolean terminationCondition = false;
 
@@ -54,70 +34,16 @@ public class GP {
 
             /************** REPRODUCTION ********************/
             System.out.println("\n PART 1 - Reproduction ");
-
-            newIndividuals.addAll(population.doReproduction(population.elitismLevel));
-
-            System.out.println("newIndividuals size : " + newIndividuals.size());
-            System.out.println(population.printPopulation(4));
-
             /************** CROSSING ********************/
-
             System.out.println("\n PART 2 - Crossing");
-            double crossingRate = 0.8;
-            List<Individual> crossingList = population.doCrossing(crossingRate);
-            var crossingLimit = MAX_SIZE - population.elitismLevel;
-            newIndividuals.addAll(crossingList.stream().sorted().limit(crossingLimit).collect(Collectors.toList()));
-            System.out.println("newIndividuals size : "+newIndividuals.size());
-
-            population.setIndividuals(newIndividuals);
-            System.out.println("population size : "+newIndividuals.size());
-
-            System.out.println(population.printPopulation(4));
-
-            newIndividuals.stream().forEach(individual -> individual.evaluate(population.getTestNode()));
-            newIndividuals.sort(Individual::compareTo);
-
-
-            System.out.println(population.printPopulation(20));
-
             System.out.println("\n PART 3 - Mutations ");
-
-            double mutationRate = 0.10;
-            population.setIndividuals(population.doMutations(mutationRate));
-            System.out.println("(after mutation) size : "+population.size());
-
-
             System.out.println("\n PART 4 - Reduce");
-            double reduceRate = 0.1;
-            population.setIndividuals(population.doReduction(crossingRate));
-            population.evaluate(population.getTestNode());
-            population.sort();
-            System.out.println("size:" + population.size());
-            System.out.println("PART 5 - Check termination : generation : "+count);
-
-            population.evaluate(population.getTestNode());
-            terminationCondition = population.isTerminationConditionMet() || ++count > MAX_RUN;
-            System.out.println("continue ...");
-            System.out.println(population.printPopulation(20));
-
-            // Stats
-            maxDepths.add(population.getIndividuals().stream().map(individual -> individual.getDepth()).max(Integer::compareTo).get());
-            avgDepths.add(population.getIndividuals().stream().mapToInt(individual -> individual.getDepth()).sum()/50.0);
-            maxSizes.add(population.getIndividuals().stream().map(individual -> individual.size()).max(Integer::compareTo).get());
-            avgSizes.add(population.getIndividuals().stream().mapToInt(individual -> individual.size()).sum()/50.0);
+            System.out.println("\n PART 5 - Check termination : generation : "+count);
 
             System.out.println("\n\n");
         }
 
         // print result
 
-        System.out.println("\n\nFINAL Result : " + population.getFittest(0).print());
-        System.out.println(String.format("Fitness : %.2f", population.getFittest(0).getFitness()));
-        IntStream.range(0,count).skip(Math.min(20,count - 5)).forEach(i ->{
-            System.out.println("gen | MaxS | MaxD | AvgS  | AvgD  |");
-            System.out.println(String.format(" %-2d | %-4d | %-4d | %-5.2f | %-5.2f |",
-                    i,maxSizes.get(i),maxDepths.get(i),
-                    avgSizes.get(i),avgDepths.get(i)));
-        });
     }
 }

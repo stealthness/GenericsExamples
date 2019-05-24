@@ -23,8 +23,4 @@ public class VariableNode implements Node {
         return new VariableNode(index);
     }
 
-//    @Override
-//    public boolean equals(Object that){
-//        return that.getClass().equals(VariableNode.class) && this.getIndex() == ((VariableNode)that).getIndex();
-//    }
 }

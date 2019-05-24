@@ -43,6 +43,4 @@ class TerminalNodeTest {
         assertNotEquals(TestUtils.oneNode, TestUtils.xNode);
     }
 
-
-
 }

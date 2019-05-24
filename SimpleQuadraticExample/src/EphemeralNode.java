@@ -17,6 +17,6 @@ public class EphemeralNode implements Node {
 
     @Override
     public Node clone() {
-        return new TerminalNode(Math.random());
+        return new TerminalNode(Math.random()*(range[0]+range[1])-range[0]);
     }
 }
