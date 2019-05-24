@@ -42,4 +42,43 @@ class VariableNodeTest {
         IntStream.range(0,size).forEach(i -> inputs[i] = Math.random()*(range[0]+range[1])-range[0]);
         return inputs;
     }
+
+    @Test
+    void testPrintVariableNode(){
+        Node variableNode = new VariableNode(0);
+        assertEquals("x0",variableNode.print());
+        IntStream.range(0,10).forEach(i -> assertPrintVariableNode(i));
+
+    }
+
+    private void assertPrintVariableNode(int index){
+        Node variableNode = new VariableNode(index);
+        assertEquals("x"+index,variableNode.print());
+    }
+
+    @Test
+    void testClone(){
+        Node variableNode = new VariableNode(0);
+        Node copyNode = variableNode;
+        // shows that copied reference
+        assertEquals(System.identityHashCode(copyNode),System.identityHashCode(variableNode));
+        assertEquals(copyNode,variableNode);
+
+        Node clonedNode = variableNode.clone();
+        assertNotEquals(System.identityHashCode(clonedNode),System.identityHashCode(variableNode));
+        assertNotEquals(System.identityHashCode(clonedNode),System.identityHashCode(copyNode));
+        // lombok equals will see them as equal
+        assertEquals(clonedNode,copyNode);
+        assertEquals(clonedNode,variableNode);
+
+        // change ref to variableNode
+        variableNode = new VariableNode(1);
+        assertNotEquals(System.identityHashCode(copyNode),System.identityHashCode(variableNode));
+        assertNotEquals(variableNode, copyNode);
+        assertNotEquals(variableNode, clonedNode);
+
+
+    }
+
+
 }
