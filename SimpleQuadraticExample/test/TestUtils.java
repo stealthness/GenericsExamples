@@ -2,6 +2,9 @@ import java.util.stream.IntStream;
 
 class TestUtils {
 
+    public static double [] range1to1 = new double[]{-1.0,1.0};
+
+    public static Node eNode = new EphemeralNode(range1to1);
 
     public static Node ozeroNode = new TerminalNode(0.0);
     public static Node oneNode = new TerminalNode(1.0);
@@ -22,6 +25,6 @@ class TestUtils {
      * default range of [-1.0,1.0]
      */
     public static double[] createRandomInput(int size){
-        return createRandomInput(size, new double[]{-1.0,1.0});
+        return createRandomInput(size, range1to1);
     }
 }
