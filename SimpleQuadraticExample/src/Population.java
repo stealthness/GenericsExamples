@@ -1,6 +1,8 @@
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Builder
 /**
@@ -10,5 +12,11 @@ import lombok.Data;
  */
 public class Population {
 
+    /**
+     * Contains a List of the individuals. Each individual contains a Node, fitness
+     */
+    private List<Individual> individuals;
+
+    // Methods
 
 }

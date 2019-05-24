@@ -7,7 +7,8 @@ class PopulationTest {
 
 
     @Test
-    void todo(){
-        fail();
+    void testCreatPopulation(){
+        Population population = Population.builder().build();
+        assertEquals(Population.class, population.getClass());
     }
 }

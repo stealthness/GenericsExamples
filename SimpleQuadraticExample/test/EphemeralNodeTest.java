@@ -28,6 +28,7 @@ class EphemeralNodeTest {
         Node createdNode = zeroEphemeralNode.clone();
         assertEquals("0.0",createdNode.print());
     }
+
     @Test
     void testPrintIsInRange(){
         double[] range = new double[]{-1.0,2.0};

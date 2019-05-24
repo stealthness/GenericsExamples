@@ -1,21 +1,20 @@
+import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.function.BiFunction;
-import java.util.stream.DoubleStream;
 
 /**
  * The Individual class contains the
  */
 @Data
+@Builder
 public class Individual implements Node,Comparable{
+
+    Node root;
 
 
     @Override
     public Double apply(double[] inputs) {
-        return null;
+        return root.apply(inputs);
     }
 
     @Override

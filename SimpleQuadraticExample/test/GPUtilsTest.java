@@ -6,12 +6,4 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GPUtilsTest {
 
-
-    @Test
-    void todo(){
-        fail();
-    }
-
-
-
 }

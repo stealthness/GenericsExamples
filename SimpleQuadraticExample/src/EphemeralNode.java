@@ -7,7 +7,8 @@ public class EphemeralNode implements Node {
 
     @Override
     public Double apply(double[] inputs) {
-        return Math.random();
+        // should be never called
+        return null;
     }
 
     @Override
