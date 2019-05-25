@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FunctionNodeTest {
 
@@ -11,9 +10,8 @@ class FunctionNodeTest {
 
     @Test
     void testCreateFunctionNode(){
-        Node functionNode = new FunctionNode();
+        Node functionNode = new FunctionNode(new GPSingleFunction(GPUtils.identity), TestUtils.oneNode);
         assertEquals(FunctionNode.class,functionNode.getClass());
-        assertTrue(((FunctionNode)functionNode).getSubNode(0).isEmpty());
     }
 
     @Test
@@ -22,4 +20,7 @@ class FunctionNodeTest {
     }
 
 
+    @Test
+    void setSubNode() {
+    }
 }

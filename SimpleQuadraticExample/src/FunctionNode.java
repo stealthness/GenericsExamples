@@ -11,8 +11,15 @@ import java.util.stream.DoubleStream;
 public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     GPFunction function;
-
     List<Node> subNodes;
+
+
+
+    FunctionNode(GPFunction function, Node node){
+        this.function = function;
+        subNodes = Arrays.asList(node);
+    }
+
 
     Optional<Node> getSubNode(int index){
         if (subNodes== null || index > subNodes.size()){
@@ -31,8 +38,8 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
     }
 
     @Override
-    public Double apply(double[] inputs) {
-        return null;
+    public Double get(Double[] inputs) {
+        return function.apply(inputs,subNodes);
     }
 
     @Override

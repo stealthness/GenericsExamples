@@ -1,19 +1,10 @@
-import lombok.Builder;
-import lombok.Data;
+import java.util.List;
 
-@Data
-@Builder
-public class GPFunction {
-
-    @Builder.Default
-    final int maxSubNodes = 2;
-
-    final String clojureString;
+interface GPFunction {
 
 
+    Double apply(Double[] inputs, List<Node> nodes);
 
-    public Double apply(Double[] inputs){
-        return null;
-    }
+    int getMaxSubNodes();
 
 }

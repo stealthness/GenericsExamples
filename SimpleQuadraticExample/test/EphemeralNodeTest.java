@@ -10,34 +10,34 @@ class EphemeralNodeTest {
 
     @Test
     void testCreate(){
-        Node ephemeralNode = new EphemeralNode(new double[]{-5.0,5.0});
+        Node ephemeralNode = new EphemeralNode(new Double[]{-5.0,5.0});
         IntStream.range(0,MAX_RUNS).forEach(i ->assertEphemeralNodeCreation(ephemeralNode.clone(),((EphemeralNode)ephemeralNode).getRange()));
 
 
     }
 
-    private void assertEphemeralNodeCreation(Node createdNode,double[] range) {
+    private void assertEphemeralNodeCreation(Node createdNode,Double[] range) {
         assertEquals(TerminalNode.class, createdNode.getClass());
-        assertTrue(createdNode.apply(new double[]{0.0}) <= range[1]);
-        assertTrue(createdNode.apply(new double[]{0.0}) >= range[0]);
+        assertTrue(createdNode.get(new Double[]{0.0}) <= range[1]);
+        assertTrue(createdNode.get(new Double[]{0.0}) >= range[0]);
     }
 
     @Test
     void testPrintZero(){
-        Node zeroEphemeralNode = new EphemeralNode(new double[]{0.0,0.0});
+        Node zeroEphemeralNode = new EphemeralNode(new Double[]{0.0,0.0});
         Node createdNode = zeroEphemeralNode.clone();
         assertEquals("0.0",createdNode.print());
     }
 
     @Test
     void testPrintIsInRange(){
-        double[] range = new double[]{-1.0,2.0};
+        Double[] range = new Double[]{-1.0,2.0};
         Node ephemeralNode = new EphemeralNode(range);
         Node createdNode = ephemeralNode.clone();
         IntStream.range(0,MAX_RUNS).forEach(i ->assertPrintIsInRange(range,createdNode.print()));
     }
 
-    private void  assertPrintIsInRange(double[] expRange, String actString){
+    private void  assertPrintIsInRange(Double[] expRange, String actString){
         assertTrue(Double.valueOf(actString) < expRange[1], String.format("%s < %f is false",actString,expRange[1]));
         assertTrue(Double.valueOf(actString) > expRange[0], String.format("%s > %f is false",actString,expRange[0]));
     }

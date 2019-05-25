@@ -3,10 +3,10 @@ import lombok.Data;
 @Data
 public class EphemeralNode implements Node {
 
-    private final double[] range;
+    private final Double[] range;
 
     @Override
-    public Double apply(double[] inputs) {
+    public Double get(Double[] inputs) {
         // should be never called
         return null;
     }

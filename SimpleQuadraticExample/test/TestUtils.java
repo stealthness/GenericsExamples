@@ -2,7 +2,7 @@ import java.util.stream.IntStream;
 
 class TestUtils {
 
-    public static double [] range1to1 = new double[]{-1.0,1.0};
+    public static Double [] range1to1 = new Double[]{-1.0,1.0};
 
     public static Node eNode = new EphemeralNode(range1to1);
 
@@ -15,16 +15,17 @@ class TestUtils {
 
     public static Node xNode = new VariableNode(0);
 
-    public static double[] createRandomInput(int size, double[] range){
-        double[] inputs = new double[size];
-        IntStream.range(0,size).forEach(i -> inputs[i] = Math.random()*(range[0]+range[1])-range[0]);
-        return inputs;
-    }
 
     /**
      * default range of [-1.0,1.0]
      */
-    public static double[] createRandomInput(int size){
+    public static Double[] createRandomInput(int size){
         return createRandomInput(size, range1to1);
+    }
+
+    public static Double[] createRandomInput(int size, Double[] range){
+        Double[] inputs = new Double[size];
+        IntStream.range(0,size).forEach(i -> inputs[i] = Math.random()*(range[0]+range[1])-range[0]);
+        return inputs;
     }
 }

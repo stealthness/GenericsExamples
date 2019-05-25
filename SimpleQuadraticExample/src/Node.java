@@ -5,7 +5,7 @@ public interface Node{
      * @param inputs
      * @return
      */
-    Double apply(double[] inputs);
+    Double get(Double[] inputs);
 
     /**
      * print the the node express in LISP form
