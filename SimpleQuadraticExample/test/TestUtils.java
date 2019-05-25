@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TestUtils {
 
+    private static final double TOL =  0.0001;
     public static Double [] range1to1 = new Double[]{-1.0,1.0};
 
     public static Node eNode = new EphemeralNode(range1to1);
@@ -32,17 +33,23 @@ class TestUtils {
         return inputs;
     }
 
-    public static void assertInRange(int size,Node actNode, Double[] expRange, Double[] inputs){
+    public static void assertInRange(int size,Node actNode, Double[] inputs, Double[] expRange){
         if( inputs == null){
             inputs = createRandomInput(size, expRange);
         }
-        assertTrue(actNode.get(inputs) <= expRange[1]);
-        assertTrue(actNode.get(inputs) >= expRange[0]);
+        assertTrue(actNode.calculate(inputs) <= expRange[1]);
+        assertTrue(actNode.calculate(inputs) >= expRange[0]);
     }
 
     public static void assertNode(Double expResult, Node actNode, Double[] inputs){
-        Double actResult = actNode.get(inputs);
-        assertEquals(expResult,actResult ,String.format("\nfunction : %s\ninputs %s\n",
+        Double actResult = actNode.calculate(inputs);
+        assertEquals(expResult,actResult ,TOL ,String.format("\nfunction : %s\ninputs %s\n",
                 actNode.print(), Arrays.asList(inputs).toString()));
+    }
+
+    public static void assertNode(Double expResult, Node actNode) {
+        Double actResult = actNode.calculate(createRandomInput(1));
+        assertEquals(expResult, actResult, TOL, String.format("\nfunction : %s",
+                actNode.print()));
     }
 }

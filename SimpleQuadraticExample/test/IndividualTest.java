@@ -19,7 +19,7 @@ class IndividualTest {
     void testCreateIndividualWitTerminalNode(){
         individual = Individual.builder().root(TestUtils.oneNode).build();
         assertEquals(TerminalNode.class, individual.getRoot().getClass());
-        assertEquals(1.0, individual.get(TestUtils.createRandomInput(1)));
+        assertEquals(1.0, individual.calculate(TestUtils.createRandomInput(1)));
     }
 
 
@@ -28,7 +28,7 @@ class IndividualTest {
         individual = Individual.builder().root(TestUtils.xNode).build();
         assertEquals(VariableNode.class, individual.getRoot().getClass());
         Double[] input= TestUtils.createRandomInput(1);
-        assertEquals(input[0], individual.get(input));
+        assertEquals(input[0], individual.calculate(input));
     }
 
     @Test
@@ -37,7 +37,7 @@ class IndividualTest {
         assertEquals(TerminalNode.class, individual.getRoot().getClass());
         Double[] input= TestUtils.createRandomInput(1);
         Double[] expRange = TestUtils.range1to1;
-        assertTrue(Double.valueOf(individual.get(input)) <= expRange[1], String.format("%s < %f is false",individual.get(input),expRange[1]));
-        assertTrue(Double.valueOf(individual.get(input)) >= expRange[0], String.format("%s > %f is false",individual.get(input),expRange[0]));
+        assertTrue(Double.valueOf(individual.calculate(input)) <= expRange[1], String.format("%s < %f is false",individual.calculate(input),expRange[1]));
+        assertTrue(Double.valueOf(individual.calculate(input)) >= expRange[0], String.format("%s > %f is false",individual.calculate(input),expRange[0]));
     }
 }

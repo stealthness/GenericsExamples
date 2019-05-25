@@ -38,7 +38,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
     }
 
     @Override
-    public Double get(Double[] inputs) {
+    public Double calculate(Double[] inputs) {
         return function.apply(inputs,subNodes);
     }
 

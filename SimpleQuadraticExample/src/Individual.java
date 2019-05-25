@@ -13,8 +13,8 @@ public class Individual implements Node,Comparable{
 
 
     @Override
-    public Double get(Double[] inputs) {
-        return root.get(inputs);
+    public Double calculate(Double[] inputs) {
+        return root.calculate(inputs);
     }
 
     @Override

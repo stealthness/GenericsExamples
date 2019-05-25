@@ -18,7 +18,7 @@ class VariableNodeTest {
     void testSingleVariableApply(){
         Node variableNode = new VariableNode(0);
         Double[] input = new Double[]{Math.random()};
-        assertEquals(input[0],variableNode.get(input));
+        assertEquals(input[0],variableNode.calculate(input));
     }
 
     @Test
@@ -34,7 +34,7 @@ class VariableNodeTest {
     private void assertVariableNode(Double[] actInputs, Node variableNode){
         assertTrue(((VariableNode)variableNode).getIndex() < actInputs.length,
                 String.format("Index %n < %n is false",((VariableNode)variableNode).getIndex(),actInputs.length));
-        assertEquals(actInputs[((VariableNode) variableNode).getIndex()],variableNode.get(actInputs));
+        assertEquals(actInputs[((VariableNode) variableNode).getIndex()],variableNode.calculate(actInputs));
     }
 
     private Double[] createRandomInput(int size, Double[] range){

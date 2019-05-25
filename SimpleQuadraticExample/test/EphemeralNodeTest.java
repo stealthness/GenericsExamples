@@ -18,8 +18,8 @@ class EphemeralNodeTest {
 
     private void assertEphemeralNodeCreation(Node createdNode,Double[] range) {
         assertEquals(TerminalNode.class, createdNode.getClass());
-        assertTrue(createdNode.get(new Double[]{0.0}) <= range[1]);
-        assertTrue(createdNode.get(new Double[]{0.0}) >= range[0]);
+        assertTrue(createdNode.calculate(new Double[]{0.0}) <= range[1]);
+        assertTrue(createdNode.calculate(new Double[]{0.0}) >= range[0]);
     }
 
     @Test

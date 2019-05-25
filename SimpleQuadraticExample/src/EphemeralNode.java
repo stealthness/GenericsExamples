@@ -6,7 +6,7 @@ public class EphemeralNode implements Node {
     private final Double[] range;
 
     @Override
-    public Double get(Double[] inputs) {
+    public Double calculate(Double[] inputs) {
         // should be never called
         return null;
     }

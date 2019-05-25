@@ -9,7 +9,7 @@ public class VariableNode implements Node {
     private final int index;
 
     @Override
-    public Double get(Double[] inputs) {
+    public Double calculate(Double[] inputs) {
         return inputs[index];
     }
 
