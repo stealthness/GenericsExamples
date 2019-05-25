@@ -17,7 +17,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     FunctionNode(GPFunction function, Node node){
         this.function = function;
-        subNodes = Arrays.asList(node);
+        subNodes = Arrays.asList(node.clone());
     }
 
 
@@ -33,7 +33,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
             subNodes = new ArrayList<>();
         }
         if (subNodes.size() < function.getMaxSubNodes()){
-            subNodes.add(subNode);
+            subNodes.add(subNode.clone());
         }
     }
 
