@@ -5,25 +5,26 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 @Data
-public class GPSingleFunction implements GPFunction{
+public class GPBiFunction implements GPFunction{
 
 
-    private static final int MAX_NUMBER_SUB_NODES = 10;
+
     private BiFunction<Double[], List<Node>, Double> function;
 
 
-    GPSingleFunction(BiFunction<Double[], List<Node>, Double> function){
+    GPBiFunction(BiFunction<Double[], List<Node>, Double> function){
         this.function = function;
     }
 
 
     @Override
     public Double apply(Double[] inputs, List<Node> nodes) {
+
         return function.apply(inputs,nodes);
     }
 
     @Override
     public int getMaxSubNodes() {
-        return MAX_NUMBER_SUB_NODES;
+        return 2;
     }
 }

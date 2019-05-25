@@ -1,7 +1,7 @@
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TestUtils {
 
@@ -38,5 +38,11 @@ class TestUtils {
         }
         assertTrue(actNode.get(inputs) <= expRange[1]);
         assertTrue(actNode.get(inputs) >= expRange[0]);
+    }
+
+    public static void assertNode(Double expResult, Node actNode, Double[] inputs){
+        Double actResult = actNode.get(inputs);
+        assertEquals(expResult,actResult ,String.format("\nfunction : %s\ninputs %s\n",
+                actNode.print(), Arrays.asList(inputs).toString()));
     }
 }
