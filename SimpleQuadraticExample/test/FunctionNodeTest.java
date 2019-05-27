@@ -10,13 +10,13 @@ class FunctionNodeTest {
 
     @Test
     void testCreateFunctionNodeWithOneNode(){
-        Node functionNode = new FunctionNode(new GPSingleFunction(GPUtils.identity), TestUtils.oneNode);
+        Node functionNode = new FunctionNode(new GPSingleFunction(GPUtils.identity, "ID"), TestUtils.oneNode);
         assertEquals(FunctionNode.class,functionNode.getClass());
     }
 
     @Test
     void testCreateFunctionNodeWithENode(){
-        Node functionNode = new FunctionNode(new GPSingleFunction(GPUtils.identity), TestUtils.eNode);
+        Node functionNode = new FunctionNode(new GPSingleFunction(GPUtils.identity,"ID"), TestUtils.eNode);
         assertEquals(FunctionNode.class,functionNode.getClass());
         assertEquals(TerminalNode.class,((FunctionNode)functionNode).getSubNode(0).get().getClass());
     }

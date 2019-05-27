@@ -44,7 +44,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     @Override
     public String print() {
-        return null;
+        return String.format("(%s)", function.toClojureString());
     }
 
     @Override

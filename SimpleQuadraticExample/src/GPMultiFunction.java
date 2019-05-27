@@ -10,6 +10,7 @@ public class GPMultiFunction implements GPFunction{
 
 
     private BiFunction<Double[], List<Node>, Double> function;
+    private String clojureString;
 
 
     GPMultiFunction(BiFunction<Double[], List<Node>, Double> function){
@@ -22,6 +23,11 @@ public class GPMultiFunction implements GPFunction{
 
 
         return function.apply(inputs,nodes);
+    }
+
+    @Override
+    public String toClojureString() {
+        return clojureString;
     }
 
     @Override
