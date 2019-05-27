@@ -31,6 +31,8 @@ class TerminalNodeTest {
     void printTerminal() {
         assertEquals(String.valueOf(v0), t0.print());
         assertEquals(String.valueOf(v1), t1.print());
+        assertEquals("1.0",TestUtils.oneNode.print());
+        assertEquals("2.0",TestUtils.twoNode.print());
     }
 
 
@@ -41,6 +43,20 @@ class TerminalNodeTest {
         assertEquals(TestUtils.oneNode, new TerminalNode(1.0));
         assertNotEquals(TestUtils.twoNode, TestUtils.oneNode);
         assertNotEquals(TestUtils.oneNode, TestUtils.xNode);
+    }
+
+    @Test
+    void testSizeAndDepth(){
+        assertNodeDimension(1,0,t0);
+        assertNodeDimension(1,0,t1);
+        assertNodeDimension(1,0,TestUtils.oneNode);
+        assertNodeDimension(1,0,TestUtils.twoNode);
+        assertNodeDimension(1,0,TestUtils.xNode);
+    }
+
+    private void assertNodeDimension(int expSize, int expDepth, Node actNode) {
+        assertEquals(expDepth,actNode.getDepth());
+        assertEquals(expSize,actNode.size());
     }
 
 }

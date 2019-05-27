@@ -22,8 +22,11 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     FunctionNode(GPFunction function, List<Node> nodes){
         this.function = function;
+        if (subNodes == null){
+            subNodes = new ArrayList<>();
+        }
         nodes.forEach(subNode -> {
-            subNodes = Arrays.asList(subNode.clone());
+            subNodes.add(subNode.clone());
         });
 
     }
@@ -46,13 +49,27 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
     }
 
     @Override
+    public int size(){
+        return 1 + subNodes.stream().mapToInt(Node::size).sum();
+    }
+
+    @Override
+    public int getDepth(){
+        return 1 + subNodes.stream().mapToInt(Node::getDepth).max().getAsInt() ;
+    }
+
+    @Override
     public Double calculate(Double[] inputs) {
         return function.apply(inputs,subNodes);
     }
 
     @Override
     public String print() {
-        return String.format("(%s)", function.toClojureString());
+        var sb = new StringBuilder();
+        sb.append(String.format("(%s", function.toClojureString()));
+        subNodes.forEach(subNode-> sb.append(String.format(" %s",subNode.print())));
+        sb.append(")");
+        return sb.toString();
     }
 
     @Override

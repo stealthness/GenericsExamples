@@ -11,9 +11,9 @@ class GPBiFunctionTest {
     void calculateAddWithTerminalNode(){
         Node addNode = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"), Arrays.asList(TestUtils.oneNode,TestUtils.oneNode));
         assertEquals(FunctionNode.class,addNode.getClass());
-        assertEquals(3, addNode.size());
         assertEquals(1,addNode.getDepth());
-        assertEquals("(~+ 1.0 1.0)", addNode.print());
+        assertEquals("(+ 1.0 1.0)", addNode.print());
+        assertEquals(3, addNode.size());
 
         assertFunctionNode(Optional.of(2.0),Optional.of(3),Optional.of(1),Optional.of("(+ 1.0 1.0)"),Optional.empty(), addNode);
     }
@@ -22,7 +22,7 @@ class GPBiFunctionTest {
         assertEquals(FunctionNode.class,actNode.getClass());
         assertEquals(expSize.get(), actNode.size());
         assertEquals(expDepth.get(),actNode.getDepth());
-        assertEquals(expClojueString,actNode.print());
+        assertEquals(expClojueString.get(),actNode.print());
     }
 
 }
