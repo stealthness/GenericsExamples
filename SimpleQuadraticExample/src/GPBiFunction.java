@@ -13,6 +13,11 @@ public class GPBiFunction implements GPFunction{
     private String clojureString;
 
 
+    GPBiFunction(BiFunction<Double[], List<Node>, Double> function,String clojureString){
+        this.function = function;
+        this.clojureString = clojureString;
+    }
+
     GPBiFunction(BiFunction<Double[], List<Node>, Double> function){
         this.function = function;
     }

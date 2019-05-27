@@ -20,6 +20,14 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
         subNodes = Arrays.asList(node.clone());
     }
 
+    FunctionNode(GPFunction function, List<Node> nodes){
+        this.function = function;
+        nodes.forEach(subNode -> {
+            subNodes = Arrays.asList(subNode.clone());
+        });
+
+    }
+
 
     Optional<Node> getSubNode(int index){
         if (subNodes== null || index > subNodes.size()){
