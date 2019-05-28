@@ -38,9 +38,6 @@ class TestUtils {
     }
 
     public static void assertInRange(Double[] expRange, Node actNode, int size, Double[] inputs, Double[] inputRange){
-        System.out.println("<AinR4> node"+actNode.print());
-        System.out.println(inputRange[0]);
-        System.out.println(inputRange[1]);
         Double actResult = actNode.calculate(inputs);
         assertTrue(actResult  <= expRange[1], String.format("%f is not less than %f",actResult, expRange[1]));
         assertTrue(actResult  >= expRange[0], String.format("%f is not greater than %f",actResult, expRange[0]));

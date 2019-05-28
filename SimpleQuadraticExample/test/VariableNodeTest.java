@@ -47,7 +47,7 @@ class VariableNodeTest {
     void testPrintVariableNode(){
         Node variableNode = new VariableNode(0);
         assertEquals("x0",variableNode.print());
-        IntStream.range(0,10).forEach(i -> assertPrintVariableNode(i));
+        IntStream.range(0,10).forEach(this::assertPrintVariableNode);
 
     }
 
