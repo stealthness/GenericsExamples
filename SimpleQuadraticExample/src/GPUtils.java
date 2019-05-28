@@ -13,5 +13,10 @@ public class GPUtils {
     public static BiFunction<Double[], List<Node>, Double> sin  = ((inputs, nodes) ->Math.sin(nodes.get(0).calculate(inputs)));
 
 
-    public static BiFunction<Double[], List<Node>, Double> addBiFunction = null;
+    public static BiFunction<Double[], List<Node>, Double> addBiFunction = ((inputs,nodes) -> {
+        System.out.println("<1>");
+        System.out.println(nodes.get(0).calculate(inputs));
+        System.out.println(nodes.get(1).calculate(inputs));
+        return nodes.get(0).calculate(inputs)+nodes.get(1).calculate(inputs);
+    });
 }
