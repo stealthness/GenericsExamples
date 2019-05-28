@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TerminalNodeTest {
@@ -47,11 +49,8 @@ class TerminalNodeTest {
 
     @Test
     void testSizeAndDepth(){
-        assertNodeDimension(1,0,t0);
-        assertNodeDimension(1,0,t1);
-        assertNodeDimension(1,0,TestUtils.oneNode);
-        assertNodeDimension(1,0,TestUtils.twoNode);
-        assertNodeDimension(1,0,TestUtils.xNode);
+        List<Node> testList = List.of(t0,t1,TestUtils.oneNode,TestUtils.twoNode,TestUtils.xNode);
+        testList.forEach(node -> assertNodeDimension(1,0,node));
     }
 
     private void assertNodeDimension(int expSize, int expDepth, Node actNode) {
