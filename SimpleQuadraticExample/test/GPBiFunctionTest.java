@@ -8,21 +8,33 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class GPBiFunctionTest {
 
     @Test
-    void calculateAddWith2TerminalNodes(){
+    void testAddCalculateAddWith2TerminalNodes(){
         Node addNode = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"), Arrays.asList(TestUtils.oneNode,TestUtils.oneNode));
         assertFunctionNode(Optional.of(2.0),Optional.of(3),Optional.of(1),Optional.of("(+ 1.0 1.0)"),Optional.empty(), addNode);
     }
 
     @Test
-    void testCalculateWith1TerminalNodeAnd1VariableNode(){
+    void testAddCalculateWith1TerminalNodeAnd1VariableNode(){
         Node addNode = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"), Arrays.asList(TestUtils.oneNode,TestUtils.xNode));
         assertFunctionNode(Optional.of(2.0),Optional.of(3),Optional.of(1),Optional.of("(+ 1.0 x0)"),Optional.of(new Double[]{1.0}), addNode);
     }
 
     @Test
+    void testMultipleCalculateWith2TerminalNodes(){
+        Node multipleNode = new FunctionNode(new GPBiFunction(GPUtils.multipleBiFunction,"+"), Arrays.asList(TestUtils.oneNode,TestUtils.twoNode));
+        assertFunctionNode(Optional.of(2.0),Optional.of(3),Optional.of(1),Optional.of("(+ 1.0 2.0)"),Optional.empty(), multipleNode);
+    }
+
+    @Test
+    void testMultipleCalculateWith1TerminalNodeAnd1VariableNode(){
+        Node multipleNode = new FunctionNode(new GPBiFunction(GPUtils.multipleBiFunction,"+"), Arrays.asList(TestUtils.oneNode,TestUtils.xNode));
+        assertFunctionNode(Optional.of(2.0),Optional.of(3),Optional.of(1),Optional.of("(+ 1.0 x0)"),Optional.of(new Double[]{2.0}), multipleNode);
+    }
+
+    @Test
     void testCalculateWith2VariableNodes(){
-        Node addNode = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"), Arrays.asList(TestUtils.xNode,TestUtils.xNode));
-        assertFunctionNode(Optional.of(2.0),Optional.of(3),Optional.of(1),Optional.of("(+ x0 x0)"),Optional.of(new Double[]{1.0}), addNode);
+        Node addNode = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"*"), Arrays.asList(TestUtils.xNode,TestUtils.xNode));
+        assertFunctionNode(Optional.of(4.0),Optional.of(3),Optional.of(1),Optional.of("(* x0 x0)"),Optional.of(new Double[]{2.0}), addNode);
     }
 
     private void assertFunctionNode(Optional<Double> expValue, Optional<Integer> expSize, Optional<Integer>  expDepth, Optional<String>  expClojureString, Optional<Double[]> inputs, Node actNode){

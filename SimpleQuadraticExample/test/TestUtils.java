@@ -32,8 +32,6 @@ class TestUtils {
         Double[] inputs = new Double[size];
         inputs[0] = 0.67;
         IntStream.range(0,size).forEach(i -> inputs[i] = getRandomInRange(range[0],range[1]));
-
-        System.out.println("<input0> "+inputs[0]);
         return inputs;
     }
 
@@ -44,16 +42,11 @@ class TestUtils {
     }
 
     public static void assertInRange(Double[] expRange,Node actNode, int size){
-        System.out.println("<2>"+actNode.print());
-        System.out.println(range1to1[0]);
-        System.out.println(range1to1[1]);
-        System.out.println(size);
         assertEquals(Double[].class, range1to1.getClass());
         assertInRange(expRange, actNode, size, createRandomInput(size, range1to1));
     }
 
     public static void assertInRange(Double[] expRange, Node actNode, int size, Double[] inputRange){
-        System.out.println("<AinR> node : "+ actNode.print());
         assertInRange(expRange, actNode, size, createRandomInput(size, inputRange),inputRange);
     }
 
