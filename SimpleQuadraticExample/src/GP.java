@@ -34,13 +34,28 @@ public class GP {
 
             /************** REPRODUCTION ********************/
             System.out.println("\n PART 1 - Reproduction ");
+            newIndividuals.addAll(population.getReproductionSelection());
+
+
             /************** CROSSING ********************/
             System.out.println("\n PART 2 - Crossing");
-            System.out.println("\n PART 3 - Mutations ");
-            System.out.println("\n PART 4 - Reduce");
-            System.out.println("\n PART 5 - Check termination : generation : "+count);
+            newIndividuals.addAll(population.getCrossoverSelection());
 
+            /************** MUTATING ********************/
+            System.out.println("\n PART 3 - Mutations ");
+            newIndividuals.addAll(population.mutate());
+
+
+            /************** EDITING ********************/
+            System.out.println("\n PART 4 - edit");
+            newIndividuals.addAll(population.edit());
+
+
+            /************** TERMINATION ********************/
+            System.out.println("\n PART 5 - Check termination : generation : " + count++);
             System.out.println("\n\n");
+
+            terminationCondition = count > MAX_RUN || population.isTerminalConditionMet();
         }
 
         // print result

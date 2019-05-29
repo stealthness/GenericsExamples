@@ -1,0 +1,3 @@
+id001,1.0,2.0,3.0,3,1,+,(+ 1.0 2.0),addBiFunction
+id002,1.0,2.0,2.0,3,1,*,(* 1.0 2.0),multiplyBiFunction
+id003,1.0,2.0,-2.0,3,1,-,(- 1.0 2.0),subtractBiFunction

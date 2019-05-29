@@ -11,7 +11,7 @@ public class GPUtils {
 
 
     public static BiFunction<Double[], List<Node>, Double> addBiFunction = ((inputs,nodes) -> nodes.get(0).calculate(inputs)+nodes.get(1).calculate(inputs));
-    public static BiFunction<Double[], List<Node>, Double> multipleBiFunction = ((inputs,nodes) -> nodes.get(0).calculate(inputs)*nodes.get(1).calculate(inputs));
+    public static BiFunction<Double[], List<Node>, Double> multiplyBiFunction = ((inputs, nodes) -> nodes.get(0).calculate(inputs)*nodes.get(1).calculate(inputs));
     public static BiFunction<Double[], List<Node>, Double> subtractBiFunction = ((inputs,nodes) -> nodes.get(0).calculate(inputs)-nodes.get(1).calculate(inputs));
     public static BiFunction<Double[], List<Node>, Double> protectedDivisionBiFunction = ((inputs,nodes) -> {
         Double divisor = nodes.get(1).calculate(inputs);
