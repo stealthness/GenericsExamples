@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class IndividualTest {
@@ -44,26 +46,24 @@ class IndividualTest {
 
     @Test
     void testIndividualJustTerminalNodes(){
-        individual = Individual.builder()
-                .root(TestUtils.oneNode)
-                .build();
-        assertIndividualSize(1,0,individual);
-        individual = Individual.builder()
-                .root(TestUtils.xNode)
-                .build();
-        assertIndividualSize(1,0,individual);
+        var testList = Arrays.asList(TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode,TestUtils.eNode,TestUtils.xNode);
+        testList.stream().forEach(node -> {
+            individual = Individual.builder()
+                    .root(node)
+                    .build();
+            assertIndividualSize(1,0,individual);
+        });
     }
 
     @Test
     void testIndividualJustGPBiFunctionNodes(){
-        individual = Individual.builder()
-                .root(TestUtils.addNode)
-                .build();
-        assertIndividualSize(3,1,individual);
-        individual = Individual.builder()
-                .root(TestUtils.multiplyNode)
-                .build();
-        assertIndividualSize(3,1,individual);
+        var testList = Arrays.asList(TestUtils.addNode,TestUtils.multiplyNode);
+        testList.stream().forEach(node -> {
+            individual = Individual.builder()
+                    .root(node)
+                    .build();
+            assertIndividualSize(3,1,individual);
+        });
     }
 
 
