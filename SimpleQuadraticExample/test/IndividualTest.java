@@ -57,7 +57,8 @@ class IndividualTest {
 
     @Test
     void testIndividualJustGPBiFunctionNodes(){
-        var testList = Arrays.asList(TestUtils.addNode,TestUtils.multiplyNode);
+        var testList = Arrays.asList(TestUtils.addNode,TestUtils.multiplyNode, TestUtils.xPlusOne,TestUtils.xPlusTwo,
+                TestUtils.onePlusX,TestUtils.twoPlusX);
         testList.stream().forEach(node -> {
             individual = Individual.builder()
                     .root(node)

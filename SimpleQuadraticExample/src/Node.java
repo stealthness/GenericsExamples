@@ -1,3 +1,5 @@
+import java.util.Optional;
+
 public interface Node{
 
     /**
@@ -32,4 +34,13 @@ public interface Node{
 
 
     Node clone();
+
+    /**
+     * returns the subtree at index
+     * @param index
+     * @return subtree node at index
+     */
+    default Optional<Node> getSubtree(int index){
+        return  (index == 0)?Optional.of(this):Optional.empty();
+    }
 }

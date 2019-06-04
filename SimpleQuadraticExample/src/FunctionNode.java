@@ -12,12 +12,14 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     GPFunction function;
     List<Node> subNodes;
+    int maxSubNodes = -1;
 
 
 
     FunctionNode(GPFunction function, Node node){
         this.function = function;
         subNodes = Arrays.asList(node.clone());
+        setMaxSubNodes(function.getMaxSubNodes());
     }
 
     FunctionNode(GPFunction function, List<Node> nodes){
@@ -80,6 +82,25 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
     @Override
     public int compareTo(FunctionNode o) {
         return 0;
+    }
+
+
+
+    @Override
+    public Optional<Node> getSubtree(int index){
+        if (index == 0){
+            return Optional.of(this);
+        } else  if (index > 0 && index < this.size() ){
+            int count = 1;
+            for ( int i = 0; i< subNodes.size();i++){
+                if (index < count + subNodes.get(i).size()){
+                    return Optional.of(subNodes.get(index - count));
+                }
+                count += subNodes.get(i).size();
+            }
+
+        }
+        return Optional.empty();
     }
 
 }

@@ -1,6 +1,7 @@
 import java.util.List;
+import java.util.Random;
 import java.util.function.BiFunction;
-import java.util.function.Function;
+import java.util.stream.IntStream;
 
 public class GPUtils {
 
@@ -19,6 +20,21 @@ public class GPUtils {
         Double numerator = nodes.get(0).calculate(inputs);
         return numerator/(( divisor== 0.0)?1.0:divisor);
     });
+
+
+    public static Node generateFullTree(List<FunctionNode> functionNodeList, List<Node> leafNodeList, int maxDepth){
+        Node root;
+        if (maxDepth >0){
+            root = functionNodeList.get(new Random().nextInt(functionNodeList.size()));
+            if (root.getClass() == FunctionNode.class){
+                ((FunctionNode)root).setSubNode(0,generateFullTree(functionNodeList,leafNodeList,maxDepth-1));
+            }
+        }else{
+            root = leafNodeList.get(new Random().nextInt(leafNodeList.size()));
+        }
+
+        return root;
+    }
 
 
 }

@@ -15,6 +15,19 @@ import java.util.Optional;
 public class Population {
 
     /**
+     * the maximum number of individuals that a population can contain
+     */
+    private final int maxPopulation;
+
+    /**
+     * maximum depth that a generated tree can be
+     */
+    private final int maxGenerationDepth;
+
+    @Builder.Default
+    private final String generationMethod = "full";
+
+    /**
      * Contains a List of the individuals. Each individual contains a Node, fitness
      */
     private List<Individual> individuals;
@@ -35,8 +48,15 @@ public class Population {
         return newIndividuals;
     }
 
+    List<Individual> generate( int size){
+        if (generationMethod == null){
+            throw new NullPointerException("generation method not set");
+        }
+        return this.generate(generationMethod,size);
+    }
+
     public void intialise(){
-        this.setIndividuals(generate("full",4));
+        this.setIndividuals(generate("full",maxPopulation));
     }
 
 
@@ -100,7 +120,6 @@ public class Population {
 
 
     public Integer getMaxSize() {
-        System.out.println(individuals.stream().mapToInt(Individual::size).max());
         return individuals.stream().mapToInt(Individual::size).max().getAsInt();
     }
 

@@ -23,6 +23,16 @@ class TestUtils {
     public static Node multiplyNode = new FunctionNode(new GPBiFunction(GPUtils.multiplyBiFunction),Arrays.asList(oneNode,oneNode));
 
 
+    public static Node xPlusOne = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction),Arrays.asList(xNode,oneNode));
+    public static Node xPlusTwo = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction),Arrays.asList(xNode,twoNode));
+    public static Node onePlusX = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction),Arrays.asList(oneNode,xNode));
+    public static Node twoPlusX = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction),Arrays.asList(twoNode,xNode));
+
+
+    public static Node absOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"),Arrays.asList(oneNode));
+    public static Node recipOneNode = new FunctionNode(new GPSingleFunction(GPUtils.reciprocal,"recip"),Arrays.asList(oneNode));
+
+
     /**
      * default range of [-1.0,1.0]
      */
@@ -64,6 +74,23 @@ class TestUtils {
         Double actResult = actNode.calculate(createRandomInput(1));
         assertEquals(expResult, actResult, TOL, String.format("\nfunction : %s",
                 actNode.print()));
+    }
+
+    public static void assertNode(Node expNode, Node actNode) {
+        assertEquals(expNode.getClass(), actNode.getClass(), String.format("\nfunction : %s",
+                actNode.print()));
+        assertEquals(expNode.size(),actNode.size());
+        assertEquals(expNode.getDepth(),actNode.getDepth());
+        if (expNode.getClass()== VariableNode.class){
+            assertEquals(((VariableNode)expNode).getIndex(),((VariableNode)actNode).getIndex());
+        } else if (expNode.getClass()== TerminalNode.class){
+            assertEquals(((TerminalNode)expNode).getValue(),((TerminalNode)actNode).getValue());
+        }
+    }
+
+    public static void assertNodeSize(int expSize, int expDepth, Node actNode){
+        assertEquals(expSize, actNode.size(),String.format("individual : %s", actNode.print()));
+        assertEquals(expDepth, actNode.getDepth(),String.format("individual : %s", actNode.print()));
     }
 
 
