@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class GPUtils {
 
@@ -18,4 +19,6 @@ public class GPUtils {
         Double numerator = nodes.get(0).calculate(inputs);
         return numerator/(( divisor== 0.0)?1.0:divisor);
     });
+
+
 }

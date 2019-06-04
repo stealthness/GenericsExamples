@@ -3,6 +3,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -21,13 +22,24 @@ public class GP {
 
     void run(){
 
+        Optional<Individual> solution = findSolution();
+        if (solution.isEmpty()){
+            System.out.println("no Solution found");
+        }else{
+            System.out.println(String.format("Solution found : %s",solution.toString()));
+        }
+
+    }
+
+    private Optional<Individual> findSolution(){
 
         population = Population.builder()
-                .build();
+            .build();
+
+        population.intialise();
+
         int count = 0;
-
         boolean terminationCondition = false;
-
         while (!terminationCondition){
 
             List<Individual> newIndividuals = new ArrayList<>();
@@ -56,9 +68,10 @@ public class GP {
             System.out.println("\n\n");
 
             terminationCondition = count > MAX_RUN || population.isTerminalConditionMet();
+
+            // print result
+
         }
-
-        // print result
-
+        return population.getFittest(0);
     }
 }

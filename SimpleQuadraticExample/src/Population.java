@@ -2,8 +2,8 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @Builder
@@ -25,6 +25,19 @@ public class Population {
     private boolean logging = true;
 
 
+    List<Individual> generate(String generationMethod, int size){
+        var newIndividuals = new ArrayList<Individual>();
+        while (size-- > 0){
+            newIndividuals.add(Individual.builder()
+                    .root(new TerminalNode(0.0))
+                    .build());
+        }
+        return newIndividuals;
+    }
+
+    public void intialise(){
+        this.setIndividuals(generate("full",4));
+    }
 
 
     // Methods
@@ -71,5 +84,27 @@ public class Population {
      */
     public boolean isTerminalConditionMet(){
         return false;
+    }
+
+    public Optional<Individual> getFittest(int index) {
+        if (individuals == null ||individuals.size() == 0){
+            return Optional.empty();
+        }else{
+            return Optional.of(individuals.get(0));
+        }
+    }
+
+    public int size(){
+        return individuals.size();
+    }
+
+
+    public Integer getMaxSize() {
+        System.out.println(individuals.stream().mapToInt(Individual::size).max());
+        return individuals.stream().mapToInt(Individual::size).max().getAsInt();
+    }
+
+    public Integer getMaxDepth() {
+        return individuals.stream().mapToInt(Individual::maxDepth).max().getAsInt();
     }
 }

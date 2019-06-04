@@ -40,4 +40,36 @@ class IndividualTest {
         assertTrue(Double.valueOf(individual.calculate(input)) <= expRange[1], String.format("%s < %f is false",individual.calculate(input),expRange[1]));
         assertTrue(Double.valueOf(individual.calculate(input)) >= expRange[0], String.format("%s > %f is false",individual.calculate(input),expRange[0]));
     }
+
+
+    @Test
+    void testIndividualJustTerminalNodes(){
+        individual = Individual.builder()
+                .root(TestUtils.oneNode)
+                .build();
+        assertIndividualSize(1,0,individual);
+        individual = Individual.builder()
+                .root(TestUtils.xNode)
+                .build();
+        assertIndividualSize(1,0,individual);
+    }
+
+    @Test
+    void testIndividualJustGPBiFunctionNodes(){
+        individual = Individual.builder()
+                .root(TestUtils.addNode)
+                .build();
+        assertIndividualSize(3,1,individual);
+        individual = Individual.builder()
+                .root(TestUtils.multiplyNode)
+                .build();
+        assertIndividualSize(3,1,individual);
+    }
+
+
+
+    private void assertIndividualSize(int expSize, int expDepth, Individual individual){
+        assertEquals(expSize, individual.size(),String.format("individual : %s", individual.print()));
+        assertEquals(expDepth, individual.maxDepth(),String.format("individual : %s", individual.print()));
+    }
 }

@@ -19,6 +19,8 @@ class TestUtils {
 
 
     public static Node xNode = new VariableNode(0);
+    public static Node addNode = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction),Arrays.asList(oneNode,oneNode));
+    public static Node multiplyNode = new FunctionNode(new GPBiFunction(GPUtils.multiplyBiFunction),Arrays.asList(oneNode,oneNode));
 
 
     /**

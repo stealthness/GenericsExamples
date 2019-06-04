@@ -10,7 +10,16 @@ import lombok.Data;
 public class Individual implements Node,Comparable{
 
     Node root;
+    Double fitness;
 
+
+    /**
+     * Returns the size of  the root tree
+     * @return root size
+     */
+    public int size(){
+        return root.size();
+    }
 
     @Override
     public Double calculate(Double[] inputs) {
@@ -30,5 +39,9 @@ public class Individual implements Node,Comparable{
     @Override
     public int compareTo(Object o) {
         return 0;
+    }
+
+    public int maxDepth() {
+        return root.getDepth();
     }
 }
