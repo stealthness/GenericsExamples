@@ -59,10 +59,10 @@ class TestUtils {
         assertTrue(actResult  >= expRange[0], String.format("%f is not greater than %f",actResult, expRange[0]));
     }
 
-    public static void assertInRange(Double[] expRange,Node actNode, int size){
-        assertEquals(Double[].class, range1to1.getClass());
-        assertInRange(expRange, actNode, size, createRandomInput(size, range1to1));
-    }
+//    public static void assertInRange(Double[] expRange,Node actNode, int size){
+//        assertEquals(Double[].class, range1to1.getClass());
+//        assertInRange(expRange, actNode, size, createRandomInput(size, range1to1));
+//    }
 
     static void assertInRange(Double[] expRange, Node actNode, int size, Double[] inputRange){
         assertInRange(expRange, actNode, size, createRandomInput(size, inputRange),inputRange);
@@ -101,7 +101,7 @@ class TestUtils {
     }
 
 
-    static Double getRandomInRange(Double start, Double end){
+    private static Double getRandomInRange(Double start, Double end){
         return Math.random()*(start+end)-start;
     }
 }
