@@ -28,7 +28,10 @@ public class Individual implements Node,Comparable{
 
     @Override
     public String print() {
-        return null;
+        if (root.getClass() != FunctionNode.class){
+            return "("+root.print()+")";
+        }
+        return root.print();
     }
 
     @Override

@@ -11,6 +11,7 @@ public class GP {
 
     private static final int MAX_RUN = 50;
     private static final int MAX_SIZE = 100;
+    private static final String FULL = "full";
     Population population;
 
     public static void main(String[] args) {
@@ -34,7 +35,10 @@ public class GP {
     private Optional<Individual> findSolution(){
 
         population = Population.builder()
-            .build();
+                .maxPopulation(4)
+                .maxGenerationDepth(1)
+                .generationMethod(FULL)
+                .build();
 
         population.initialise();
 

@@ -4,6 +4,7 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Data
 @Builder
@@ -28,6 +29,13 @@ public class Population {
     private final String generationMethod = "full";
 
     /**
+     * Stores a list of allowable terminal nodes to generate trees from
+     */
+    private List<Node> terminalNodeList;
+
+    private List<GPFunction> functionNodeList;
+
+    /**
      * Contains a List of the individuals. Each individual contains a Node, fitness
      */
     private List<Individual> individuals;
@@ -41,11 +49,22 @@ public class Population {
     List<Individual> generate(String generationMethod, int size){
         var newIndividuals = new ArrayList<Individual>();
         while (size-- > 0){
-            newIndividuals.add(Individual.builder()
-                    .root(new TerminalNode(0.0))
-                    .build());
+            Node node = selectTerminalNode();
+            var individual = Individual.builder()
+                    .root(node.clone())
+                    .build();
+
+            newIndividuals.add(individual);
         }
         return newIndividuals;
+    }
+
+    private Node selectTerminalNode() {
+
+        // standard select equal random bag
+        int selection = new Random().nextInt(terminalNodeList.size());
+        Node node = terminalNodeList.get(selection);
+        return node;
     }
 
     List<Individual> generate( int size){
@@ -122,5 +141,13 @@ public class Population {
 
     public Integer getMaxDepth() {
         return individuals.stream().mapToInt(Individual::maxDepth).max().getAsInt();
+    }
+
+    public String print() {
+        var sb = new StringBuilder();
+        individuals.forEach(individual -> {
+            sb.append(individual.print()+"\n");
+        });
+        return sb.toString();
     }
 }

@@ -25,6 +25,11 @@ class IndividualTest {
         individual = Individual.builder().root(TestUtils.oneNode).build();
         assertEquals(TerminalNode.class, individual.getRoot().getClass());
         assertEquals(1.0, individual.calculate(TestUtils.createRandomInput(1)));
+
+        individual = Individual.builder().root(new TerminalNode(1.0)).build();
+        assertEquals(TerminalNode.class, individual.getRoot().getClass());
+        assertEquals(1.0, individual.calculate(TestUtils.createRandomInput(1)));
+        assertEquals("1.0",individual.print());
     }
 
 
