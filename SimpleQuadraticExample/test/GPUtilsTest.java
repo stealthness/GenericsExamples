@@ -29,7 +29,25 @@ class GPUtilsTest {
 
 
     @Test
-    void generateFullTreeOfDepth0() {
+    void generateFullTreeOfDepth1() {
+        node = GPUtils.generateFullTree(functionNodes.subList(0,1),leafNodes.subList(0,1),1);
+        TestUtils.assertNodeSize(2,1,node);
+        TestUtils.assertNode(TestUtils.absOneNode,node);
+    }
 
+
+    @Test
+    void generateFullTreeOfDepth2() {
+        node = GPUtils.generateFullTree(functionNodes.subList(0,1),leafNodes.subList(0,1),2);
+        TestUtils.assertNodeSize(3,2,node);
+        TestUtils.assertNode(TestUtils.absabsOneNode,node);
+    }
+
+
+    @Test
+    void generateFullTreeOfDepth3() {
+        node = GPUtils.generateFullTree(functionNodes.subList(0,1),leafNodes.subList(0,1),3);
+        TestUtils.assertNodeSize(4,3,node);
+        TestUtils.assertNode(TestUtils.absabsabsOneNode,node);
     }
 }

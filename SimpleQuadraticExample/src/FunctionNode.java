@@ -76,7 +76,11 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     @Override
     public Node clone() {
-        return null;
+        var subNodeList = new ArrayList<Node>();
+        subNodes.stream().forEach(node ->{
+            subNodeList.add(node.clone());
+        });
+        return new FunctionNode(function,subNodeList);
     }
 
     @Override

@@ -25,14 +25,13 @@ public class GPUtils {
     public static Node generateFullTree(List<FunctionNode> functionNodeList, List<Node> leafNodeList, int maxDepth){
         Node root;
         if (maxDepth >0){
-            root = functionNodeList.get(new Random().nextInt(functionNodeList.size()));
+            root = functionNodeList.get(new Random().nextInt(functionNodeList.size())).clone();
             if (root.getClass() == FunctionNode.class){
                 ((FunctionNode)root).setSubNode(0,generateFullTree(functionNodeList,leafNodeList,maxDepth-1));
             }
         }else{
             root = leafNodeList.get(new Random().nextInt(leafNodeList.size()));
         }
-
         return root;
     }
 

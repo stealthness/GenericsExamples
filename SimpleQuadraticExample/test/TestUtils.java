@@ -32,6 +32,9 @@ class TestUtils {
     public static Node absOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"),Arrays.asList(oneNode));
     public static Node recipOneNode = new FunctionNode(new GPSingleFunction(GPUtils.reciprocal,"recip"),Arrays.asList(oneNode));
 
+    static Node absabsOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"),Arrays.asList(absOneNode));
+    static Node absabsabsOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"),Arrays.asList(absabsOneNode));
+
 
     /**
      * default range of [-1.0,1.0]
