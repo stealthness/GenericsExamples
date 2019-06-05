@@ -11,7 +11,7 @@ class TestUtils {
     public static Double[] range0to1 = new Double[]{0.0,1.0};
     public static Node eNode = new EphemeralNode(range1to1);
 
-    public static Node ozeroNode = new TerminalNode(0.0);
+    public static Node zeroNode = new TerminalNode(0.0);
     public static Node oneNode = new TerminalNode(1.0);
     public static Node twoNode = new TerminalNode(2.0);
     public static Node threeNode = new TerminalNode(3.0);
@@ -31,6 +31,8 @@ class TestUtils {
 
     public static Node absOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"),Arrays.asList(oneNode));
     public static Node recipOneNode = new FunctionNode(new GPSingleFunction(GPUtils.reciprocal,"recip"),Arrays.asList(oneNode));
+
+    public static Node addOneTwoThree = new FunctionNode(new GPMultiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(oneNode,twoNode,threeNode));
 
     static Node absabsOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"),Arrays.asList(absOneNode));
     static Node absabsabsOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"),Arrays.asList(absabsOneNode));
@@ -80,20 +82,21 @@ class TestUtils {
     }
 
     public static void assertNode(Node expNode, Node actNode) {
-        assertEquals(expNode.getClass(), actNode.getClass(), String.format("\nfunction : %s",
-                actNode.print()));
-        assertEquals(expNode.size(),actNode.size());
-        assertEquals(expNode.getDepth(),actNode.getDepth());
+        final String msg = String.format("\nfunction : %s",actNode.print());
+        assertEquals(expNode.getClass(), actNode.getClass(), msg);
+        assertNodeSize(expNode.size(),expNode.getDepth(),actNode);
+        assertEquals(expNode.print(),actNode.print(),msg);
         if (expNode.getClass()== VariableNode.class){
-            assertEquals(((VariableNode)expNode).getIndex(),((VariableNode)actNode).getIndex());
+            assertEquals(((VariableNode)expNode).getIndex(),((VariableNode)actNode).getIndex(),msg);
         } else if (expNode.getClass()== TerminalNode.class){
-            assertEquals(((TerminalNode)expNode).getValue(),((TerminalNode)actNode).getValue());
+            assertEquals(((TerminalNode)expNode).getValue(),((TerminalNode)actNode).getValue(),msg);
         }
     }
 
     public static void assertNodeSize(int expSize, int expDepth, Node actNode){
-        assertEquals(expSize, actNode.size(),String.format("individual : %s", actNode.print()));
-        assertEquals(expDepth, actNode.getDepth(),String.format("individual : %s", actNode.print()));
+        final String msg = String.format("\nfunction : %s",actNode.print());
+        assertEquals(expSize, actNode.size(),msg);
+        assertEquals(expDepth, actNode.getDepth(),msg);
     }
 
 

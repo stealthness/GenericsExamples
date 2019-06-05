@@ -13,8 +13,9 @@ public class GPMultiFunction implements GPFunction{
     private String clojureString;
 
 
-    GPMultiFunction(BiFunction<Double[], List<Node>, Double> function){
+    GPMultiFunction(BiFunction<Double[], List<Node>, Double> function, String clojureString){
         this.function = function;
+        this.clojureString = clojureString;
     }
 
 

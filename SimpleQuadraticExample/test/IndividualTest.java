@@ -1,7 +1,10 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,27 +50,51 @@ class IndividualTest {
     @Test
     void testIndividualJustTerminalNodes(){
         var testList = Arrays.asList(TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode,TestUtils.eNode,TestUtils.xNode);
-        testList.stream().forEach(node -> {
-            individual = Individual.builder()
-                    .root(node)
-                    .build();
-            assertIndividualSize(1,0,individual);
-        });
+        testIndividualFunctionNodes(1,0,testList);
     }
 
     @Test
     void testIndividualJustGPBiFunctionNodes(){
         var testList = Arrays.asList(TestUtils.addNode,TestUtils.multiplyNode, TestUtils.xPlusOne,TestUtils.xPlusTwo,
                 TestUtils.onePlusX,TestUtils.twoPlusX);
+        testIndividualFunctionNodes(3,1,testList);
+    }
+
+    @Test
+    void testIndividualJustGPMultiFunctionNodes(){
+        var testList = Arrays.asList(TestUtils.addOneTwoThree);
+        var expCalculation = Arrays.asList(0.0);
+        individual = Individual.builder().root(testList.get(0)).build();
+
+        Double[] inputs = new Double[]{0.0,1.0,-2.0};
+        assertIndividualCalculation(6.0, inputs,individual);
+
+        testIndividualFunctionNodes(4,1,testList);
+        testIndividualCalculations(expCalculation,inputs,testList);
+    }
+
+    private void testIndividualFunctionNodes(int expSize, int expDepth, List<Node> testList){
         testList.stream().forEach(node -> {
             individual = Individual.builder()
                     .root(node)
                     .build();
-            assertIndividualSize(3,1,individual);
+            assertIndividualSize(expSize,expDepth,individual);
+        });
+    }
+
+    private void testIndividualCalculations(List<Double> expCalculations, Double[] inputs, List<Node> testList){
+        IntStream.range(0,testList.size()).forEach(i -> {
+            individual = Individual.builder()
+                    .root(testList.get(i))
+                    .build();
+            assertIndividualCalculation(expCalculations.get(i),inputs,individual);
         });
     }
 
 
+    private void assertIndividualCalculation(Double expCalculation, Double[] inputs,Individual individual){
+        assertEquals(expCalculation, individual.calculate(inputs),String.format("individual : %s", individual.print()));
+    }
 
     private void assertIndividualSize(int expSize, int expDepth, Individual individual){
         assertEquals(expSize, individual.size(),String.format("individual : %s", individual.print()));
