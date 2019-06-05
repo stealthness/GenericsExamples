@@ -49,13 +49,10 @@ public class Population {
     }
 
     List<Individual> generate( int size){
-        if (generationMethod == null){
-            throw new NullPointerException("generation method not set");
-        }
         return this.generate(generationMethod,size);
     }
 
-    public void intialise(){
+    public void initialise(){
         this.setIndividuals(generate("full",maxPopulation));
     }
 

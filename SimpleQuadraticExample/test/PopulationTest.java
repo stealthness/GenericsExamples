@@ -9,22 +9,22 @@ class PopulationTest {
 
 
     private static final double MAX_RUNS = 10;
+    Population population;
 
     @Test
     void testCreatPopulation(){
-        Population population = Population.builder().build();
+        population = Population.builder().build();
         assertEquals(Population.class, population.getClass());
     }
 
     @Test
     void generateTreesOfDepth0(){
         for (int i = 0; i < MAX_RUNS;i++){
-
             int maxPopulationSize = new Random().nextInt(10)+10;
-            Population population = Population.builder()
+            population = Population.builder()
                                     .maxPopulation(maxPopulationSize)
                                     .build();
-            population.intialise();
+            population.initialise();
             assertEquals(maxPopulationSize,population.getMaxPopulation());
             assertEquals(Population.class, population.getClass());
             assertPopulation(Optional.of(1),Optional.of(0), population);
@@ -36,12 +36,12 @@ class PopulationTest {
         for (int i = 0; i < MAX_RUNS;i++){
 
             int maxPopulationSize = new Random().nextInt(10)+10;
-            Population population = Population.builder()
+            population = Population.builder()
                     .maxGenerationDepth(1)
                     .generationMethod("full")
                     .maxPopulation(maxPopulationSize)
                     .build();
-            population.intialise();
+            population.initialise();
             assertEquals(maxPopulationSize,population.getMaxPopulation());
             assertEquals(Population.class, population.getClass());
             assertPopulation(Optional.of(2),Optional.of(1), population);
@@ -57,4 +57,6 @@ class PopulationTest {
             assertEquals(expDepth.get(),actPopulation.getMaxDepth());
         }
     }
+
+
 }

@@ -39,8 +39,8 @@ class IndividualTest {
         assertEquals(TerminalNode.class, individual.getRoot().getClass());
         Double[] input= TestUtils.createRandomInput(1);
         Double[] expRange = TestUtils.range1to1;
-        assertTrue(Double.valueOf(individual.calculate(input)) <= expRange[1], String.format("%s < %f is false",individual.calculate(input),expRange[1]));
-        assertTrue(Double.valueOf(individual.calculate(input)) >= expRange[0], String.format("%s > %f is false",individual.calculate(input),expRange[0]));
+        assertTrue(individual.calculate(input) <= expRange[1], String.format("%s < %f is false",individual.calculate(input),expRange[1]));
+        assertTrue(individual.calculate(input) >= expRange[0], String.format("%s > %f is false",individual.calculate(input),expRange[0]));
     }
 
 

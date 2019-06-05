@@ -36,7 +36,7 @@ public class GP {
         population = Population.builder()
             .build();
 
-        population.intialise();
+        population.initialise();
 
         int count = 0;
         boolean terminationCondition = false;
