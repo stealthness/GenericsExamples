@@ -61,13 +61,15 @@ public class Individual implements Node,Comparable{
         Node root;
         if (depth == 0){
             root = selectTerminalNode(terminalList);
+        }else{
+            root = generateNode(terminalList,functionList,method,depth);
         }
 
-        if (method.equals(FULL)){
-            root = generateNode(terminalList,functionList,FULL,depth);
-        } else{
-            root = generateNode(terminalList,functionList,GROW,depth);
-        }
+//        if (method.equals(FULL)){
+//            root = generateNode(terminalList,functionList,FULL,depth);
+//        } else{
+//            root = generateNode(terminalList,functionList,GROW,depth);
+//        }
         return Individual.builder().root(root).build();
     }
 
@@ -76,7 +78,6 @@ public class Individual implements Node,Comparable{
         if (depth == 0){
             node = selectTerminalNode(terminalList);
         }else if (method.equals(FULL)){
-            System.out.println("<2>");
             node = selectFunctionNode(functionList);
             for (int i = 0 ; i<Math.min(2, ((FunctionNode)node).getMaxSubNodes()); i++){
                 ((FunctionNode)node).setSubNode(i, generateNode(terminalList,functionList,method,depth-1));
