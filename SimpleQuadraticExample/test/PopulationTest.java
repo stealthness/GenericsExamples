@@ -46,9 +46,7 @@ class PopulationTest {
                                     .terminalNodeList(terminalList0to4)
                                     .build();
             population.initialise();
-            assertEquals(maxPopulationSize,population.getMaxPopulation());
-            assertEquals(Population.class, population.getClass());
-            assertPopulation(Optional.of(1),Optional.of(0), population);
+            assertPopulation(Optional.of(1),Optional.of(0), Optional.of(maxPopulationSize),population);
         }
     }
 
@@ -65,9 +63,7 @@ class PopulationTest {
                     .terminalNodeList(terminalList0to4)
                     .build();
             population.initialise();
-            assertEquals(maxPopulationSize,population.getMaxPopulation());
-            assertEquals(Population.class, population.getClass());
-            assertPopulation(Optional.of(3),Optional.of(1), population);
+            assertPopulation(Optional.of(3),Optional.of(1), Optional.of(maxPopulationSize), population);
         }
     }
 
@@ -87,14 +83,15 @@ class PopulationTest {
                     .terminalNodeList(terminalList)
                     .build();
             population.initialise();
-            assertEquals(maxPopulationSize,population.getMaxPopulation());
-            assertEquals(Population.class, population.getClass());
-            assertPopulation(Optional.of(2),Optional.of(1), population);
+            assertPopulation(Optional.of(2),Optional.of(1),Optional.of(maxPopulationSize),population);
         }
     }
 
-    private void assertPopulation(Optional<Integer> expSize,Optional<Integer> expDepth, Population actPopulation){
-
+    private void assertPopulation(Optional<Integer> expSize,Optional<Integer> expDepth, Optional<Integer> expMaxPopulation, Population actPopulation){
+        assertEquals(Population.class, population.getClass());
+        if (!expMaxPopulation.isEmpty()){
+            assertEquals(expMaxPopulation.get(),population.getMaxPopulation());
+        }
         if (!expSize.isEmpty()){
             assertEquals(expSize.get(),actPopulation.getMaxSize());
         }
