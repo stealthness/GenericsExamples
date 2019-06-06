@@ -14,7 +14,11 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
     List<Node> subNodes;
     int maxSubNodes = -1;
 
-
+    FunctionNode(GPFunction function){
+        this.function = function;
+        subNodes = new ArrayList<>();
+        setMaxSubNodes(function.getMaxSubNodes());
+    }
 
     FunctionNode(GPFunction function, Node node){
         this.function = function;

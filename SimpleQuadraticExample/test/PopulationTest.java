@@ -41,8 +41,30 @@ class PopulationTest {
     @Test
     void generateTreesOfDepth1(){
 
-        List<Node> terminalList = Arrays.asList(TestUtils.oneNode);
+        List<Node> terminalList = Arrays.asList(TestUtils.zeroNode,TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode,TestUtils.fourNode);
         List<GPFunction> functionList = Arrays.asList(new GPBiFunction(GPUtils.addBiFunction,"+"),new GPBiFunction(GPUtils.multiplyBiFunction,"*"));
+        for (int i = 0; i < MAX_RUNS;i++){
+
+            int maxPopulationSize = new Random().nextInt(10)+10;
+            population = Population.builder()
+                    .maxGenerationDepth(1)
+                    .generationMethod("full")
+                    .maxPopulation(maxPopulationSize)
+                    .functionNodeList(functionList)
+                    .terminalNodeList(terminalList)
+                    .build();
+            population.initialise();
+            assertEquals(maxPopulationSize,population.getMaxPopulation());
+            assertEquals(Population.class, population.getClass());
+            assertPopulation(Optional.of(3),Optional.of(1), population);
+        }
+    }
+
+    @Test
+    void generateTreesOfDepth1WithGPSingleFunction(){
+
+        List<Node> terminalList = Arrays.asList(TestUtils.zeroNode,TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode,TestUtils.fourNode);
+        List<GPFunction> functionList = Arrays.asList(new GPSingleFunction(GPUtils.abs,"abs"),new GPSingleFunction(GPUtils.reciprocal,"1/x"));
         for (int i = 0; i < MAX_RUNS;i++){
 
             int maxPopulationSize = new Random().nextInt(10)+10;

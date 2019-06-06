@@ -49,12 +49,8 @@ public class Population {
     List<Individual> generate(String generationMethod, int size){
         var newIndividuals = new ArrayList<Individual>();
         while (size-- > 0){
-            Node node = selectTerminalNode();
-            var individual = Individual.builder()
-                    .root(node.clone())
-                    .build();
 
-            newIndividuals.add(individual);
+            newIndividuals.add(Individual.generate(terminalNodeList,functionNodeList,"full",maxGenerationDepth));
         }
         return newIndividuals;
     }
