@@ -5,18 +5,18 @@ import java.util.function.BiFunction;
 public class GPUtils {
 
 
-    public static BiFunction<Double[], List<Node>, Double> identity = ((inputs, nodes) -> nodes.get(0).calculate(inputs));
-    public static BiFunction<Double[], List<Node>, Double> abs = ((inputs, nodes) -> -nodes.get(0).calculate(inputs));
-    public static BiFunction<Double[], List<Node>, Double> reciprocal = ((inputs, nodes) -> 1/nodes.get(0).calculate(inputs));
-    public static BiFunction<Double[], List<Node>, Double> sin  = ((inputs, nodes) ->Math.sin(nodes.get(0).calculate(inputs)));
+    static BiFunction<Double[], List<Node>, Double> identity = ((inputs, nodes) -> nodes.get(0).calculate(inputs));
+    static BiFunction<Double[], List<Node>, Double> abs = ((inputs, nodes) -> -nodes.get(0).calculate(inputs));
+    static BiFunction<Double[], List<Node>, Double> reciprocal = ((inputs, nodes) -> 1/nodes.get(0).calculate(inputs));
+    static BiFunction<Double[], List<Node>, Double> sin  = ((inputs, nodes) ->Math.sin(nodes.get(0).calculate(inputs)));
 
 
-    public static BiFunction<Double[], List<Node>, Double> addBiFunction =
+    static BiFunction<Double[], List<Node>, Double> addBiFunction =
             ((inputs,nodes) -> nodes.stream()
                     .mapToDouble(node -> node.calculate(inputs))
-                    .reduce(0.0,(a, b)-> a+b));
+                    .reduce(0.0, Double::sum));
 
-    public static BiFunction<Double[], List<Node>, Double> multiplyBiFunction =
+    static BiFunction<Double[], List<Node>, Double> multiplyBiFunction =
             ((inputs, nodes) -> nodes.get(0).calculate(inputs)*nodes.get(1).calculate(inputs));
 
     public static BiFunction<Double[], List<Node>, Double> subtractBiFunction =
@@ -29,7 +29,7 @@ public class GPUtils {
                 return numerator/(( divisor== 0.0)?1.0:divisor);
             });
 
-    public static Node generateFullTree(List<FunctionNode> functionNodeList, List<Node> leafNodeList, int maxDepth){
+    static Node generateFullTree(List<FunctionNode> functionNodeList, List<Node> leafNodeList, int maxDepth){
         Node root;
         if (maxDepth >0){
             root = functionNodeList.get(new Random().nextInt(functionNodeList.size())).clone();

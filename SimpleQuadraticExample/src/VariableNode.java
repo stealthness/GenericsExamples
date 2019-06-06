@@ -1,7 +1,5 @@
 import lombok.Data;
 
-import java.util.Optional;
-
 /**
  * Variable Node will return the index value of the inputs
  */

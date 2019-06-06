@@ -1,11 +1,6 @@
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.DoubleStream;
+import java.util.*;
 
 @Data
 public class FunctionNode implements Node,Comparable<FunctionNode>{
@@ -22,7 +17,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     FunctionNode(GPFunction function, Node node){
         this.function = function;
-        subNodes = Arrays.asList(node.clone());
+        subNodes = Collections.singletonList(node.clone());
         setMaxSubNodes(function.getMaxSubNodes());
     }
 
@@ -31,9 +26,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
         if (subNodes == null){
             subNodes = new ArrayList<>();
         }
-        nodes.forEach(subNode -> {
-            subNodes.add(subNode.clone());
-        });
+        nodes.forEach(subNode -> subNodes.add(subNode.clone()));
 
     }
 
@@ -81,7 +74,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
     @Override
     public Node clone() {
         var subNodeList = new ArrayList<Node>();
-        subNodes.stream().forEach(node -> subNodeList.add(node.clone()));
+        subNodes.forEach(node -> subNodeList.add(node.clone()));
         return new FunctionNode(function,subNodeList);
     }
 
@@ -98,11 +91,11 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
             return Optional.of(this);
         } else  if (index > 0 && index < this.size() ){
             int count = 1;
-            for ( int i = 0; i< subNodes.size();i++){
-                if (index < count + subNodes.get(i).size()){
+            for (Node subNode : subNodes) {
+                if (index < count + subNode.size()) {
                     return Optional.of(subNodes.get(index - count));
                 }
-                count += subNodes.get(i).size();
+                count += subNode.size();
             }
 
         }

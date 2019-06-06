@@ -2,6 +2,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,8 +10,8 @@ import java.util.Optional;
 @Builder
 public class GP {
 
-    private static final int MAX_RUN = 50;
-    private static final int MAX_SIZE = 100;
+    private static final int MAX_RUN = 2;
+    private static final int MAX_SIZE = 10;
     private static final String FULL = "full";
     Population population;
 
@@ -34,13 +35,20 @@ public class GP {
 
     private Optional<Individual> findSolution(){
 
+        List<Node> terminalList = Arrays.asList(new TerminalNode(1.0),new TerminalNode(0.0),new TerminalNode(2.0));
+        List<GPFunction> functionList = Arrays.asList(new GPBiFunction(GPUtils.addBiFunction,"+"),new GPBiFunction(GPUtils.multiplyBiFunction,"*"));
+
         population = Population.builder()
                 .maxPopulation(4)
-                .maxGenerationDepth(1)
-                .generationMethod(FULL)
+                .maxGenerationDepth(3)
+                .generationMethod("grow")
+                .terminalNodeList(terminalList)
+                .functionNodeList(functionList)
                 .build();
 
         population.initialise();
+
+        System.out.println(population.print());
 
         int count = 0;
         boolean terminationCondition = false;
@@ -74,6 +82,7 @@ public class GP {
             terminationCondition = count > MAX_RUN || population.isTerminalConditionMet();
 
             // print result
+            System.out.println(population.print());
 
         }
         return population.getFittest(0);

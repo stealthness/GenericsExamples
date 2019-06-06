@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-@Data
-@Builder
 /**
  * Populations contains a list of individuals, how the initial population is constructed
  * The rates at which population is mutated, breed and crossed with. Also contains the
  * evaluation, selection and fitness function
  */
+@Data
+@Builder
 public class Population {
 
     /**
@@ -46,11 +46,10 @@ public class Population {
     private boolean logging = true;
 
 
-    List<Individual> generate(String generationMethod, int size){
+    private List<Individual> generate(String generationMethod, int size){
         var newIndividuals = new ArrayList<Individual>();
         while (size-- > 0){
-
-            newIndividuals.add(Individual.generate(terminalNodeList,functionNodeList,"full",maxGenerationDepth));
+            newIndividuals.add(Individual.generate(terminalNodeList,functionNodeList,generationMethod,maxGenerationDepth));
         }
         return newIndividuals;
     }
@@ -67,14 +66,14 @@ public class Population {
         return this.generate(generationMethod,size);
     }
 
-    public void initialise(){
-        this.setIndividuals(generate("full",maxPopulation));
+    void initialise(){
+        this.setIndividuals(generate(generationMethod,maxPopulation));
     }
 
 
     // Methods
 
-    public List<Individual> getReproductionSelection() {
+    List<Individual> getReproductionSelection() {
         List<Individual> selected = new ArrayList<>();
 
         if (this.logging){
@@ -83,7 +82,7 @@ public class Population {
         return selected;
     }
 
-    public List<Individual> getCrossoverSelection() {
+    List<Individual> getCrossoverSelection() {
         List<Individual> selected = new ArrayList<>();
 
         if (this.logging){
@@ -92,7 +91,7 @@ public class Population {
         return selected;
     }
 
-    public List<Individual> mutate() {
+    List<Individual> mutate() {
         List<Individual> selected = new ArrayList<>();
 
         if (this.logging){
@@ -101,7 +100,7 @@ public class Population {
         return selected;
     }
 
-    public List<Individual> edit() {
+    List<Individual> edit() {
         List<Individual> selected = new ArrayList<>();
 
         if (this.logging){
@@ -112,13 +111,13 @@ public class Population {
 
     /**
      * If the terminal condition has been met (ie a program that finds an acceptable solution) then returns true, false otherwise.
-     * @return
+     * @return true if terminal condition is met
      */
-    public boolean isTerminalConditionMet(){
+    boolean isTerminalConditionMet(){
         return false;
     }
 
-    public Optional<Individual> getFittest(int index) {
+    Optional<Individual> getFittest(int index) {
         if (individuals == null ||individuals.size() == 0){
             return Optional.empty();
         }else{
@@ -131,19 +130,21 @@ public class Population {
     }
 
 
-    public Integer getMaxSize() {
+    Integer getMaxSize() {
         return individuals.stream().mapToInt(Individual::size).max().getAsInt();
     }
 
-    public Integer getMaxDepth() {
+    Integer getMaxDepth() {
         return individuals.stream().mapToInt(Individual::maxDepth).max().getAsInt();
     }
 
     public String print() {
         var sb = new StringBuilder();
-        individuals.forEach(individual -> {
-            sb.append(individual.print()+"\n");
-        });
+        if (individuals.isEmpty()){
+            sb.append("Population is Empty");
+        }else{
+            individuals.forEach(individual -> sb.append(individual.print()).append("\n"));
+        }
         return sb.toString();
     }
 }

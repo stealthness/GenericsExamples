@@ -3,7 +3,6 @@ import lombok.Data;
 
 import java.util.List;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 
 /**
@@ -15,7 +14,7 @@ public class Individual implements Node,Comparable{
 
     private static final String FULL = "full";
     private static final String GROW = "grow";
-    private static final double FUNCTION_TERMINAL_SELECTION_RATIO = 1.0;
+    private static final double FUNCTION_TERMINAL_SELECTION_RATIO = 0.5;
     Node root;
     Double fitness;
 
@@ -43,7 +42,7 @@ public class Individual implements Node,Comparable{
 
     @Override
     public Node clone() {
-        return null;
+        return root.clone();
     }
 
     @Override
@@ -51,18 +50,18 @@ public class Individual implements Node,Comparable{
         return 0;
     }
 
-    public int maxDepth() {
+    int maxDepth() {
         return root.getDepth();
     }
 
 
     /**
      * Returns a new Individual with randomly selected tree
-     * @param terminalList
-     * @param functionList
-     * @param method
-     * @param depth
-     * @return
+     * @param terminalList a list of functions that can be selected
+     * @param functionList a list of terminal that can be selected
+     * @param method either "grow" or "full"
+     * @param depth the maximum depth that tree will be generated too
+     * @return a new individual with randomly generated tree
      */
     static Individual generate(List<Node> terminalList, List<GPFunction> functionList, String method, int depth){
 
@@ -108,8 +107,7 @@ public class Individual implements Node,Comparable{
     private static Node selectTerminalNode(List<Node> terminalNodeList) {
         // standard select equal random bag
         int selection = new Random().nextInt(terminalNodeList.size());
-        Node node = terminalNodeList.get(selection).clone();
-        return node;
+        return terminalNodeList.get(selection).clone();
     }
 
 }

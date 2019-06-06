@@ -29,7 +29,7 @@ public class TerminalNode implements Node {
 
     /**
      * Given an input (which is not used), calculates the return value, which is the value on the TerminalNode.
-     * @param inputs
+     * @param inputs not needed for TerminalNode
      * @return value
      */
     @Override
