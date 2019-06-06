@@ -15,10 +15,12 @@ class PopulationTest {
 
     private static final String TESTCASE_FILENAME = "D:\\WS\\Java\\GeneticsAlgorithmsExamples\\SimpleQuadraticExample\\testcases\\ExpPopulationPrint.txt";
     private static final double MAX_RUNS = 10;
+    private static final String FULL = "full";
     List<Node> terminalList0;
     List<Node> terminalList1;
     List<Node> terminalList0to4;
     List<GPFunction> functionListAddMulti;
+    List<GPFunction> functionListSingle;
     Population population;
 
 
@@ -29,6 +31,7 @@ class PopulationTest {
         terminalList1 = Arrays.asList(TestUtils.oneNode);
         terminalList0to4 = Arrays.asList(TestUtils.zeroNode,TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode,TestUtils.fourNode);
         functionListAddMulti = Arrays.asList(new GPBiFunction(GPUtils.addBiFunction,"+"),new GPBiFunction(GPUtils.multiplyBiFunction,"*"));
+        functionListSingle = Arrays.asList(new GPSingleFunction(GPUtils.abs,"abs"),new GPSingleFunction(GPUtils.reciprocal,"1/x"));
     }
 
     @Test
@@ -51,52 +54,59 @@ class PopulationTest {
     }
 
     @Test
-    void generateTreesOfDepth1(){
-        for (int i = 0; i < MAX_RUNS;i++){
-
-            int maxPopulationSize = new Random().nextInt(10)+10;
-            population = Population.builder()
-                    .maxGenerationDepth(1)
-                    .generationMethod("full")
-                    .maxPopulation(maxPopulationSize)
-                    .functionNodeList(functionListAddMulti)
-                    .terminalNodeList(terminalList0to4)
-                    .build();
-            population.initialise();
-            assertPopulation(Optional.of(3),Optional.of(1), Optional.of(maxPopulationSize), population);
-        }
+    void generateTreesOfDepth1withGPBiFunction(){
+        generateTreeAndTest(functionListAddMulti,terminalList0to4,FULL,1,Optional.of(3),Optional.of(1));
+    }
+    @Test
+    void generateTreesOfDepth2withGPBiFunctions(){
+        generateTreeAndTest(functionListAddMulti,terminalList0to4,FULL,2,Optional.of(7),Optional.of(2));
+    }
+    @Test
+    void generateTreesOfDepth3withGPBiFunctions(){
+        generateTreeAndTest(functionListAddMulti,terminalList0to4,FULL,3,Optional.of(15),Optional.of(3));
     }
 
     @Test
     void generateTreesOfDepth1WithGPSingleFunction(){
+        generateTreeAndTest(functionListSingle,terminalList0to4,FULL,1,Optional.of(2),Optional.of(1));
+    }
 
-        List<Node> terminalList = Arrays.asList(TestUtils.zeroNode,TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode,TestUtils.fourNode);
-        List<GPFunction> functionList = Arrays.asList(new GPSingleFunction(GPUtils.abs,"abs"),new GPSingleFunction(GPUtils.reciprocal,"1/x"));
+    @Test
+    void generateTreesOfDepth2WithGPSingleFunction(){
+        generateTreeAndTest(functionListSingle,terminalList0to4,FULL,2,Optional.of(3),Optional.of(2));
+    }
+
+    @Test
+    void generateTreesOfDepth3WithGPSingleFunction(){
+        generateTreeAndTest(functionListSingle,terminalList0to4,FULL,3,Optional.of(4),Optional.of(3));
+    }
+
+    private void generateTreeAndTest(List<GPFunction> functionList, List<Node> terminalList, String generationMethod,
+                                     int maxGenerationDepth, Optional<Integer> expSize, Optional<Integer> expDepth){
         for (int i = 0; i < MAX_RUNS;i++){
-
             int maxPopulationSize = new Random().nextInt(10)+10;
             population = Population.builder()
-                    .maxGenerationDepth(1)
-                    .generationMethod("full")
+                    .maxGenerationDepth(maxGenerationDepth)
+                    .generationMethod(generationMethod)
                     .maxPopulation(maxPopulationSize)
                     .functionNodeList(functionList)
                     .terminalNodeList(terminalList)
                     .build();
             population.initialise();
-            assertPopulation(Optional.of(2),Optional.of(1),Optional.of(maxPopulationSize),population);
+            assertPopulation(expSize,expDepth, Optional.of(maxPopulationSize),population);
         }
     }
 
     private void assertPopulation(Optional<Integer> expSize,Optional<Integer> expDepth, Optional<Integer> expMaxPopulation, Population actPopulation){
         assertEquals(Population.class, population.getClass());
         if (!expMaxPopulation.isEmpty()){
-            assertEquals(expMaxPopulation.get(),population.getMaxPopulation());
+            assertEquals(expMaxPopulation.get(),population.getMaxPopulation(),"Population's individuals size");
         }
         if (!expSize.isEmpty()){
-            assertEquals(expSize.get(),actPopulation.getMaxSize());
+            assertEquals(expSize.get(),actPopulation.getMaxSize(),"Population's max individual size");
         }
         if (!expDepth.isEmpty()){
-            assertEquals(expDepth.get(),actPopulation.getMaxDepth());
+            assertEquals(expDepth.get(),actPopulation.getMaxDepth(),"Population's max individual depth");
         }
     }
 
