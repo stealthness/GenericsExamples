@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,7 +15,21 @@ class PopulationTest {
 
     private static final String TESTCASE_FILENAME = "D:\\WS\\Java\\GeneticsAlgorithmsExamples\\SimpleQuadraticExample\\testcases\\ExpPopulationPrint.txt";
     private static final double MAX_RUNS = 10;
+    List<Node> terminalList0;
+    List<Node> terminalList1;
+    List<Node> terminalList0to4;
+    List<GPFunction> functionListAddMulti;
     Population population;
+
+
+    @BeforeEach
+
+    void setUp(){
+        terminalList0 = Arrays.asList(TestUtils.zeroNode);
+        terminalList1 = Arrays.asList(TestUtils.oneNode);
+        terminalList0to4 = Arrays.asList(TestUtils.zeroNode,TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode,TestUtils.fourNode);
+        functionListAddMulti = Arrays.asList(new GPBiFunction(GPUtils.addBiFunction,"+"),new GPBiFunction(GPUtils.multiplyBiFunction,"*"));
+    }
 
     @Test
     void testCreatPopulation(){
@@ -24,12 +39,11 @@ class PopulationTest {
 
     @Test
     void generateTreesOfDepth0(){
-        List<Node> terminalList = Arrays.asList(TestUtils.zeroNode,TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode,TestUtils.fourNode);
         for (int i = 0; i < MAX_RUNS;i++){
             int maxPopulationSize = new Random().nextInt(10)+10;
             population = Population.builder()
                                     .maxPopulation(maxPopulationSize)
-                                    .terminalNodeList(terminalList)
+                                    .terminalNodeList(terminalList0to4)
                                     .build();
             population.initialise();
             assertEquals(maxPopulationSize,population.getMaxPopulation());
@@ -40,9 +54,6 @@ class PopulationTest {
 
     @Test
     void generateTreesOfDepth1(){
-
-        List<Node> terminalList = Arrays.asList(TestUtils.zeroNode,TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode,TestUtils.fourNode);
-        List<GPFunction> functionList = Arrays.asList(new GPBiFunction(GPUtils.addBiFunction,"+"),new GPBiFunction(GPUtils.multiplyBiFunction,"*"));
         for (int i = 0; i < MAX_RUNS;i++){
 
             int maxPopulationSize = new Random().nextInt(10)+10;
@@ -50,8 +61,8 @@ class PopulationTest {
                     .maxGenerationDepth(1)
                     .generationMethod("full")
                     .maxPopulation(maxPopulationSize)
-                    .functionNodeList(functionList)
-                    .terminalNodeList(terminalList)
+                    .functionNodeList(functionListAddMulti)
+                    .terminalNodeList(terminalList0to4)
                     .build();
             population.initialise();
             assertEquals(maxPopulationSize,population.getMaxPopulation());
