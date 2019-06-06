@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
@@ -29,7 +28,7 @@ class IndividualTest {
         individual = Individual.builder().root(new TerminalNode(1.0)).build();
         assertEquals(TerminalNode.class, individual.getRoot().getClass());
         assertEquals(1.0, individual.calculate(TestUtils.createRandomInput(1)));
-        assertEquals("1.0",individual.print());
+        assertEquals("(1.0)",individual.print());
     }
 
 
@@ -68,7 +67,7 @@ class IndividualTest {
     @Test
     void testIndividualJustGPMultiFunctionNodes(){
         var testList = Arrays.asList(TestUtils.addOneTwoThree);
-        var expCalculation = Arrays.asList(0.0);
+        var expCalculation = Arrays.asList(6.0);
         individual = Individual.builder().root(testList.get(0)).build();
 
         Double[] inputs = new Double[]{0.0,1.0,-2.0};

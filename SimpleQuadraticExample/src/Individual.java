@@ -56,6 +56,14 @@ public class Individual implements Node,Comparable{
     }
 
 
+    /**
+     * Returns a new Individual with randomly selected tree
+     * @param terminalList
+     * @param functionList
+     * @param method
+     * @param depth
+     * @return
+     */
     static Individual generate(List<Node> terminalList, List<GPFunction> functionList, String method, int depth){
 
         Node root;
@@ -64,12 +72,6 @@ public class Individual implements Node,Comparable{
         }else{
             root = generateNode(terminalList,functionList,method,depth);
         }
-
-//        if (method.equals(FULL)){
-//            root = generateNode(terminalList,functionList,FULL,depth);
-//        } else{
-//            root = generateNode(terminalList,functionList,GROW,depth);
-//        }
         return Individual.builder().root(root).build();
     }
 
@@ -79,11 +81,11 @@ public class Individual implements Node,Comparable{
             node = selectTerminalNode(terminalList);
         }else if (method.equals(FULL)){
             node = selectFunctionNode(functionList);
-            for (int i = 0 ; i<Math.min(2, ((FunctionNode)node).getMaxSubNodes()); i++){
+            for (int i = 0 ; i < Math.min(2, ((FunctionNode)node).getMaxSubNodes()); i++){
                 ((FunctionNode)node).setSubNode(i, generateNode(terminalList,functionList,method,depth-1));
             }
         }else if (method.equals(GROW)){
-            if (Math.random()< FUNCTION_TERMINAL_SELECTION_RATIO){
+            if (Math.random() < FUNCTION_TERMINAL_SELECTION_RATIO){
                 node = selectTerminalNode(terminalList);
             }else{
                 node = selectFunctionNode(functionList);

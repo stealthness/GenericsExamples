@@ -21,8 +21,6 @@ public class GPMultiFunction implements GPFunction{
 
     @Override
     public Double apply(Double[] inputs, List<Node> nodes) {
-
-
         return function.apply(inputs,nodes);
     }
 
