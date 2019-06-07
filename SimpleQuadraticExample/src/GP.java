@@ -40,7 +40,7 @@ public class GP {
 
         population = Population.builder()
                 .maxPopulation(4)
-                .maxGenerationDepth(3)
+                .maxGenerationDepth(1)
                 .generationMethod("grow")
                 .terminalNodeList(terminalList)
                 .functionNodeList(functionList)

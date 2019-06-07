@@ -2,6 +2,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 
@@ -52,6 +53,11 @@ public class Individual implements Node,Comparable{
 
     int maxDepth() {
         return root.getDepth();
+    }
+
+    @Override
+    public Optional<Node> getSubtree(int index){
+        return root.getSubtree(index);
     }
 
 

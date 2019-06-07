@@ -92,6 +92,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
         } else  if (index > 0 && index < this.size() ){
             int count = 1;
             for (Node subNode : subNodes) {
+                System.out.println();
                 if (index < count + subNode.size()) {
                     return Optional.of(subNodes.get(index - count));
                 }
@@ -101,5 +102,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
         }
         return Optional.empty();
     }
+
+
 
 }

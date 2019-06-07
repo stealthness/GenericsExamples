@@ -42,7 +42,7 @@ class IndividualTest {
 
     @Test
     void testCreateIndividualWitEphemeralNode(){
-        individual = Individual.builder().root(TestUtils.eNode.clone()).build();
+        individual = Individual.generate(Arrays.asList(TestUtils.eNode),null,"grow",0);
         assertEquals(TerminalNode.class, individual.getRoot().getClass());
         Double[] input= TestUtils.createRandomInput(1);
         Double[] expRange = TestUtils.range1to1;
@@ -76,6 +76,26 @@ class IndividualTest {
         testIndividualFunctionNodes(4,1,testList);
         testIndividualCalculations(expCalculation,inputs,testList);
     }
+
+
+    @Test
+    void testGetNodeAt0(){
+        List<Node> testList = Arrays.asList(TestUtils.onePlusX);
+        List<Node> expNode = Arrays.asList(TestUtils.oneNode,TestUtils.xNode);
+
+        individual = Individual.builder().root(testList.get(0)).build();
+        TestUtils.assertNode(testList.get(0),individual.getRoot());
+        assertEquals(testList.get(0).size(),individual.size(),"Individual's Size not equal to root Node's size");
+        System.out.println(individual.print());
+        IntStream.range(1,individual.size()).forEach(i->{
+            System.out.println(i);
+            TestUtils.assertNode(expNode.get(i-1),individual.getSubtree(i).get());
+        });
+
+    }
+
+
+    // private helper method
 
     private void testIndividualFunctionNodes(int expSize, int expDepth, List<Node> testList){
         testList.stream().forEach(node -> {

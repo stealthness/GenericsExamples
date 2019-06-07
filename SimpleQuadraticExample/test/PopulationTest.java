@@ -16,6 +16,7 @@ class PopulationTest {
     private static final String TESTCASE_FILENAME = "D:\\WS\\Java\\GeneticsAlgorithmsExamples\\SimpleQuadraticExample\\testcases\\ExpPopulationPrint.txt";
     private static final double MAX_RUNS = 10;
     private static final String FULL = "full";
+    private List<Node> terminalListE;
     List<Node> terminalList0;
     List<Node> terminalList1;
     List<Node> terminalList0to4;
@@ -27,6 +28,7 @@ class PopulationTest {
     @BeforeEach
 
     void setUp(){
+        terminalListE = Arrays.asList(TestUtils.eNode);
         terminalList0 = Arrays.asList(TestUtils.zeroNode);
         terminalList1 = Arrays.asList(TestUtils.oneNode);
         terminalList0to4 = Arrays.asList(TestUtils.zeroNode,TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode,TestUtils.fourNode);
@@ -81,6 +83,18 @@ class PopulationTest {
         generateTreeAndTest(functionListSingle,terminalList0to4,FULL,3,Optional.of(4),Optional.of(3));
     }
 
+    @Test
+    void generateTreesOfDepth0WithEphemeral(){
+        Individual individual = Individual.builder().root(terminalListE.get(0)).build();
+        System.out.println(individual.print());
+        System.out.println(individual.calculate(new Double[]{2.2}));
+        System.out.println(individual.getRoot().print());
+
+        generateTreeAndTest(functionListSingle,terminalListE,FULL,0,Optional.of(1),Optional.of(0));
+    }
+
+
+
     private void generateTreeAndTest(List<GPFunction> functionList, List<Node> terminalList, String generationMethod,
                                      int maxGenerationDepth, Optional<Integer> expSize, Optional<Integer> expDepth){
         for (int i = 0; i < MAX_RUNS;i++){
@@ -93,6 +107,7 @@ class PopulationTest {
                     .terminalNodeList(terminalList)
                     .build();
             population.initialise();
+            System.out.println(population.print());
             assertPopulation(expSize,expDepth, Optional.of(maxPopulationSize),population);
         }
     }

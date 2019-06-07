@@ -24,10 +24,10 @@ class TestUtils {
     static Node multiplyNode = new FunctionNode(new GPBiFunction(GPUtils.multiplyBiFunction),Arrays.asList(oneNode,oneNode));
 
 
-    static Node xPlusOne = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction),Arrays.asList(xNode,oneNode));
-    static Node xPlusTwo = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction),Arrays.asList(xNode,twoNode));
-    static Node onePlusX = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction),Arrays.asList(oneNode,xNode));
-    static Node twoPlusX = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction),Arrays.asList(twoNode,xNode));
+    static Node xPlusOne = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(xNode,oneNode));
+    static Node xPlusTwo = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(xNode,twoNode));
+    static Node onePlusX = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(oneNode,xNode));
+    static Node twoPlusX = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(twoNode,xNode));
 
 
     static Node absOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(oneNode));
