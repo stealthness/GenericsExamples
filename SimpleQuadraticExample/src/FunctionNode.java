@@ -87,6 +87,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     @Override
     public Optional<Node> getSubtree(int index){
+        System.out.println("** index "+index + "   on " +this.print());
         int count;
         if (index == 0){
             return Optional.of(this);
@@ -95,11 +96,11 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
             for (int i = 0 ; i< subNodes.size();i++) {
 
                 int subNodeIndex = getSubNodeIndex(i);
-//                System.out.println("i : " + i);
-//                System.out.println("subNode is " + subNodes.get(i).print());
-//                System.out.println("subNode size : "+ subNodes.get(i).size());
-//                System.out.println("getSubNodeIndex : " + subNodeIndex);
-//                System.out.println(index <= subNodeIndex + subNodes.get(i).size());
+                System.out.println("i : " + i);
+                System.out.println("subNode is " + subNodes.get(i).print());
+                System.out.println("subNode size : "+ subNodes.get(i).size());
+                System.out.println("getSubNodeIndex : " + subNodeIndex);
+                System.out.println(index <= subNodeIndex + subNodes.get(i).size());
                 if (index < subNodeIndex + subNodes.get(i).size()) {
                     System.out.println(subNodes.get(i).getSubtree(index - subNodeIndex).get().print());
                     return Optional.of(subNodes.get(i).getSubtree(index - subNodeIndex).get());
@@ -111,6 +112,17 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
     }
     
     int getSubNodeIndex(int subNodeIndex){
+        if (subNodes.size() < subNodeIndex) {
+            throw new IllegalArgumentException("Index out of bounds");
+        }if (subNodes.size() == 0){
+            return -1; // error
+        } else if (subNodeIndex == 0){
+            return 1;
+        }else if (subNodeIndex == 1){
+            return 1 + subNodes.get(0).size();
+        }
+
+
         int count = 0;
         var sum  = 1;
         while ( count < this.size()){

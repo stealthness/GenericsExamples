@@ -83,30 +83,14 @@ class IndividualTest {
         List<Node> testList = Arrays.asList(TestUtils.onePlusX);
         List<Node> expNode = Arrays.asList(TestUtils.oneNode,TestUtils.xNode);
 
-        individual = Individual.builder().root(testList.get(0)).build();
-        TestUtils.assertNode(testList.get(0),individual.getRoot());
-        assertEquals(testList.get(0).size(),individual.size(),"Individual's Size not equal to root Node's size");
-
-        IntStream.range(1,individual.size()).forEach(i->{
-            System.out.println(i);
-            TestUtils.assertNode(expNode.get(i-1),individual.getSubtree(i).get());
-        });
+        testGetNode(expNode,testList);
     }
 
     @Test
     void testGetNodeAtDepth3(){
         List<Node> testList = Arrays.asList(TestUtils.addOneTwoThree);
         List<Node> expNode = Arrays.asList(TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode);
-
-        individual = Individual.builder().root(testList.get(0)).build();
-        TestUtils.assertNode(testList.get(0),individual.getRoot());
-        assertEquals(testList.get(0).size(),individual.size(),"Individual's Size not equal to root Node's size");
-
-
-        IntStream.range(1,individual.size()).forEach(i->{
-            System.out.println(i);
-            TestUtils.assertNode(expNode.get(i-1),individual.getSubtree(i).get());
-        });
+        testGetNode(expNode,testList);
     }
 
     @Test
@@ -115,20 +99,58 @@ class IndividualTest {
         List<Node> testList = Arrays.asList(TestUtils.absabsabsOneNode);
         List<Node> expNode = Arrays.asList(TestUtils.absabsOneNode,TestUtils.absOneNode,TestUtils.oneNode);
 
-        TestUtils.assertNode(TestUtils.absabsabsOneNode,TestUtils.absabsabsOneNode.getSubtree(0).get());
-        System.out.println();
-        TestUtils.assertNode(TestUtils.absabsOneNode,TestUtils.absabsabsOneNode.getSubtree(1).get());
-        System.out.println();
-        TestUtils.assertNode(TestUtils.absOneNode,TestUtils.absabsabsOneNode.getSubtree(2).get());
-        System.out.println();
-        TestUtils.assertNode(TestUtils.oneNode,TestUtils.absabsabsOneNode.getSubtree(3).get());
+        testGetNode(expNode,testList);
+    }
+
+    @Test
+    void testGetSubNode2(){
+        List<Node> testList = Arrays.asList(TestUtils.xPlusOneDivideXSubtructAbsOnePlusX);
+        List<Node> expNode = Arrays.asList(TestUtils.xPlusOneDivideX,TestUtils.xNode,TestUtils.oneDivideX,TestUtils.oneNode,
+                TestUtils.xNode,TestUtils.absAddOneXPlusOneTwoThree,TestUtils.addOneXPlusOneTwoThree,TestUtils.oneNode,TestUtils.xPlusOne,TestUtils.xNode,TestUtils.oneNode,
+                TestUtils.twoNode,TestUtils.threeNode);
+
+        testGetNode(expNode,testList);
+    }
+    @Test
+    void testGetSubNode5(){
+        List<Node> testList = Arrays.asList(TestUtils.absAddOneXPlusOneTwoThree);
+        List<Node> expNode = Arrays.asList(TestUtils.addOneXPlusOneTwoThree,TestUtils.oneNode,TestUtils.xPlusOne,TestUtils.xNode,TestUtils.oneNode,
+                TestUtils.twoNode,TestUtils.threeNode);
+
+        testGetNode(expNode,testList);
+    }
+
+    @Test
+    void testGetSubNode3(){
+        List<Node> testList = Arrays.asList(TestUtils.xPlusOneDivideX);
+        List<Node> expNode = Arrays.asList(TestUtils.xNode,TestUtils.oneDivideX,TestUtils.oneNode,
+                TestUtils.xNode);
+
+        testGetNode(expNode,testList);
+    }
+    @Test
+    void testGetSubNode4(){
+        List<Node> testList = Arrays.asList(TestUtils.oneDivideX);
+        List<Node> expNode = Arrays.asList(TestUtils.oneNode,
+                TestUtils.xNode);
+
+        testGetNode(expNode,testList);
     }
 
 
-
-
-
     // private helper method
+
+
+    private void testGetNode(List<Node> expNode, List<Node> testList){
+        individual = Individual.builder().root(testList.get(0)).build();
+        TestUtils.assertNode(testList.get(0),individual.getRoot());
+        assertEquals(testList.get(0).size(),individual.size(),"Individual's Size not equal to root Node's size");
+
+        IntStream.range(1,individual.size()).forEach(i->{
+            System.out.println(i);
+            TestUtils.assertNode(expNode.get(i-1),individual.getSubtree(i).get());
+        });
+    }
 
     private void testIndividualFunctionNodes(int expSize, int expDepth, List<Node> testList){
         testList.stream().forEach(node -> {
