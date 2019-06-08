@@ -89,17 +89,12 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
             subNodes = new ArrayList<>();
             subNodes.add(subNode);
         } else if (size() > index){
-
             for (int i = 0 ; i< subNodes.size();i++) {
-
                 int subNodeIndex = getSubNodeIndex(i);
                 if (index == subNodeIndex){
                     subNodes.remove(i);
                     subNodes.add(i,subNode);
                 }else if (index < subNodeIndex + subNodes.get(i).size()) {
-                    System.out.println(index);
-                    System.out.println(subNodeIndex);
-                    System.out.println(subNodes.get(i).size());
 //                    setSubNodeAt(index-subNodeIndex,subNode);
                 }
             }
@@ -110,20 +105,11 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     @Override
     public Optional<Node> getSubtree(int index){
-        System.out.println("** index "+index + "   on " +this.print());
-        int count;
         if (index == 0){
             return Optional.of(this);
         } else  if (index > 0 && index < this.size() ){
-
             for (int i = 0 ; i< subNodes.size();i++) {
-
                 int subNodeIndex = getSubNodeIndex(i);
-                System.out.println("i : " + i);
-                System.out.println("subNode is " + subNodes.get(i).print());
-                System.out.println("subNode size : "+ subNodes.get(i).size());
-                System.out.println("getSubNodeIndex : " + subNodeIndex);
-                System.out.println(index <= subNodeIndex + subNodes.get(i).size());
                 if (index < subNodeIndex + subNodes.get(i).size()) {
                     System.out.println(subNodes.get(i).getSubtree(index - subNodeIndex).get().print());
                     return Optional.of(subNodes.get(i).getSubtree(index - subNodeIndex).get());
@@ -143,18 +129,17 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
             return 1;
         }else if (subNodeIndex == 1){
             return 1 + subNodes.get(0).size();
-        }
-
-
-        int count = 0;
-        var sum  = 1;
-        while ( count < this.size()){
-            if (count++ == subNodeIndex){
-                return sum;
+        } else{
+            int count = 1;
+            var sum  = 1 + subNodes.get(0).size();
+            while ( count < this.size()){
+                if (count++ == subNodeIndex){
+                    return sum;
+                }
+                sum += subNodes.get(count).size();
             }
-            sum += subNodes.get(count).size();
+            return sum;
         }
-        return sum;
     }
 
 

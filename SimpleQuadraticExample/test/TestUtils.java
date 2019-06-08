@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,9 +21,23 @@ class TestUtils {
 
 
     static Node xNode = new VariableNode(0);
+    static Node x0Node = new VariableNode(0);
+    static Node x1Node = new VariableNode(1);
     static Node addNode = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction),Arrays.asList(oneNode,oneNode));
     static Node multiplyNode = new FunctionNode(new GPBiFunction(GPUtils.multiplyBiFunction),Arrays.asList(oneNode,oneNode));
 
+    static Node absZeronNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(zeroNode));
+    static Node absOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(oneNode));
+    static Node absTwoNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(twoNode));
+    static Node absThreeNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(threeNode));
+    static Node absFourNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(fourNode));
+    static Node absX0Node = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(x0Node));
+    static Node absX1Node = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(x1Node));
+
+    static Node absX0OneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), List.of(x0Node,oneNode));
+    static Node absTwoX1Node = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), List.of(twoNode, x1Node));
+    static Node absOneTwoNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), List.of(oneNode, twoNode));
+    static Node absZeroOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), List.of(zeroNode, oneNode));
 
     static Node xPlusOne = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(xNode,oneNode));
     static Node twoPlusOne = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(twoNode,oneNode));
@@ -33,13 +48,18 @@ class TestUtils {
     static Node twoPlusX = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(twoNode,xNode));
     static Node oneDivideX = new FunctionNode(new GPBiFunction(GPUtils.protectedDivisionBiFunction,"/"),Arrays.asList(oneNode,xNode));
 
-    static Node absOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(oneNode));
+
     static Node recipOneNode = new FunctionNode(new GPSingleFunction(GPUtils.reciprocal,"recip"), Collections.singletonList(oneNode));
 
     static Node addOneTwoThree = new FunctionNode(new GPMultiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(oneNode,twoNode,threeNode));
     static Node addXTwoThree = new FunctionNode(new GPMultiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(xNode,twoNode,threeNode));
     static Node addOneXThree = new FunctionNode(new GPMultiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(oneNode,xNode,threeNode));
     static Node addOneTwoX = new FunctionNode(new GPMultiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(oneNode,twoNode,xNode));
+
+    static Node xSqrd = new FunctionNode(new GPMultiFunction(GPUtils.multiplyBiFunction,"*"),Arrays.asList(xNode,xNode));
+    static Node xSqrdPlusOneDivideX= new FunctionNode(new GPMultiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(xSqrd,oneDivideX));
+
+
 
     static Node absabsOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(absOneNode));
     static Node absabsabsOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(absabsOneNode));

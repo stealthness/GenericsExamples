@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-public class CrossoverTest {
+class CrossoverTest {
 
 
 
@@ -19,6 +19,10 @@ public class CrossoverTest {
 
         TestUtils.assertNode(TestUtils.xPlusX,child0);
         TestUtils.assertNode(TestUtils.onePlusTwo,child1);
+
+
+
+
 
 
     }

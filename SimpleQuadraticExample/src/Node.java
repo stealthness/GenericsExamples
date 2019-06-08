@@ -35,8 +35,6 @@ public interface Node{
 
     Node clone();
 
-
-
     /**
      * returns the subtree at index
      * @param index
