@@ -38,13 +38,13 @@ class GPBiFunctionTest {
 
     @Test
     void testAddCalculateAddWith2TerminalNodes(){
-        Node addNode = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"), Arrays.asList(TestUtils.oneNode,TestUtils.oneNode));
+        Node addNode = new FunctionNode(new GPBiFunction(GPUtils.add,"+"), Arrays.asList(TestUtils.oneNode,TestUtils.oneNode));
         assertFunctionNode(Optional.of(2.0),Optional.of(3),Optional.of(1),Optional.of("(+ 1.0 1.0)"),Optional.empty(), addNode);
     }
 
     @Test
     void testAddCalculateWith1TerminalNodeAnd1VariableNode(){
-        Node addNode = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"), Arrays.asList(TestUtils.oneNode,TestUtils.xNode));
+        Node addNode = new FunctionNode(new GPBiFunction(GPUtils.add,"+"), Arrays.asList(TestUtils.oneNode,TestUtils.xNode));
         assertFunctionNode(Optional.of(2.0),Optional.of(3),Optional.of(1),Optional.of("(+ 1.0 x0)"),Optional.of(new Double[]{1.0}), addNode);
     }
 

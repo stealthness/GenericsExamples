@@ -36,7 +36,7 @@ public class GP {
     private Optional<Individual> findSolution(){
 
         List<Node> terminalList = Arrays.asList(new TerminalNode(1.0),new TerminalNode(0.0),new TerminalNode(2.0));
-        List<GPFunction> functionList = Arrays.asList(new GPBiFunction(GPUtils.addBiFunction,"+"),new GPBiFunction(GPUtils.multiplyBiFunction,"*"));
+        List<GPFunction> functionList = Arrays.asList(new GPBiFunction(GPUtils.add,"+"),new GPBiFunction(GPUtils.multiplyBiFunction,"*"));
 
         population = Population.builder()
                 .maxPopulation(4)

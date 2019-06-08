@@ -32,7 +32,7 @@ class PopulationTest {
         terminalList0 = Arrays.asList(TestUtils.zeroNode);
         terminalList1 = Arrays.asList(TestUtils.oneNode);
         terminalList0to4 = Arrays.asList(TestUtils.zeroNode,TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode,TestUtils.fourNode);
-        functionListAddMulti = Arrays.asList(new GPBiFunction(GPUtils.addBiFunction,"+"),new GPBiFunction(GPUtils.multiplyBiFunction,"*"));
+        functionListAddMulti = Arrays.asList(new GPBiFunction(GPUtils.add,"+"),new GPBiFunction(GPUtils.multiplyBiFunction,"*"));
         functionListSingle = Arrays.asList(new GPSingleFunction(GPUtils.abs,"abs"),new GPSingleFunction(GPUtils.reciprocal,"1/x"));
     }
 

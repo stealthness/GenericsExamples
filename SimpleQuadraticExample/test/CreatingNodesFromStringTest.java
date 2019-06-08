@@ -37,6 +37,20 @@ public class CreatingNodesFromStringTest {
         assertNodesFromStrings(actStrings, expNodes);
     }
 
+    @Test
+    void testTreesOfSize3Depth2(){
+        var actStrings = Arrays.asList("(+ x0 1.0)","(/ 1.0 x0)","(* x0 x0)","(+ 2.0 x0)");
+        var expNodes = Arrays.asList(TestUtils.xPlusOne,TestUtils.oneDivideX,TestUtils.xSqrd,TestUtils.twoPlusX);
+        assertNodesFromStrings(actStrings, expNodes);
+    }
+
+    @Test
+    void testTreesOfSize4Depth1(){
+        var actStrings = Arrays.asList("(+ 1.0 2.0 3.0)","(+ 1.0 2.0 x0)");
+        var expNodes = Arrays.asList(TestUtils.addOneTwoThree,TestUtils.addOneTwoX);
+        assertNodesFromStrings(actStrings, expNodes);
+    }
+
 
 
 
@@ -50,7 +64,7 @@ public class CreatingNodesFromStringTest {
         }
         for (int i = 0 ; i< actStrings.size() ; i++){
             Node actNode = createNodeFromString(actStrings.get(i));
-            System.out.println((actNode==null)?"null":actNode.print() + "  :  " + expNodes.get(i).print()) ;
+            System.out.println(String.format("From String : %s  ActNode : %s    expNode : %s",actStrings.get(i),(actNode==null)?"null":actNode.print(), expNodes.get(i).print()));
             TestUtils.assertNode(expNodes.get(i),actNode);
             assertEquals(expNodes.get(i).print(),actNode.print());
         }
@@ -61,8 +75,7 @@ public class CreatingNodesFromStringTest {
         if (strings.size()==1){
             return getTerminalNode(strings.get(0));
         } else if (strings.size() == 2){
-            Node subNode = getTerminalNode(strings.get(1));
-            return new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"),Arrays.asList(subNode));
+            return createFunctionNodeFromString(strings);
         } else {
             if (false){
                 // replace later with check brackets
@@ -71,17 +84,33 @@ public class CreatingNodesFromStringTest {
                 for (int i = 1 ; i< strings.size() ; i++){
                     subNodes.add(getTerminalNode(strings.get(i)));
                 }
-                return new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"),subNodes);
+                return createFunctionNodeFromString(strings);
             }
 
         }
         return null;
     }
 
+    private Node createFunctionNodeFromString(List<String> strings) {
+        List<Node> subNodes = new ArrayList<>();
+        for (int i = 1; i < strings.size() ; i++){
+            subNodes.add(getTerminalNode(strings.get(i)));
+        }
+        String functionString = strings.get(0).replace("(","");
+        System.out.println(functionString);
+        return switch (functionString) {
+            case "abs" -> new FunctionNode(new GPSingleFunction(GPUtils.abs, functionString), subNodes);
+            case "+" -> new FunctionNode(new GPMultiFunction(GPUtils.add, functionString), subNodes);
+            case "/" -> new FunctionNode(new GPMultiFunction(GPUtils.protectedDivisionBiFunction, functionString), subNodes);
+            case "*" -> new FunctionNode(new GPMultiFunction(GPUtils.multiplyBiFunction, functionString), subNodes);
+            default -> null;
+        };
+    }
+
     private Node getTerminalNode(String string) {
-        final String strip = string.replace("(", " ").replace(")", " ").strip();
+        String strip = string.replace("(", "").replace(")", "");
         if (strip.startsWith("x")){
-            return new VariableNode(Integer.valueOf(string.substring(1,2)));
+            return new VariableNode(Integer.valueOf(strip.replace("x", "")));
         }else{
             return new TerminalNode(Double.valueOf(strip));
         }
