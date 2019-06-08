@@ -43,7 +43,6 @@ public interface Node{
      * @return subtree node at index
      */
     default Optional<Node> getSubtree(int index){
-        System.out.println("super");
         return  (index == 0)?Optional.of(this):Optional.empty();
     }
 }

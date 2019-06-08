@@ -29,6 +29,19 @@ public class GPUtils {
                 return numerator/(( divisor== 0.0)?1.0:divisor);
             });
 
+    public static BiFunction<List<Node>, Double, Node> mutateIndex1 = (nodes,mutateRate) -> {
+        if (nodes.get(0).size() == 0){
+            return nodes.get(0);
+        }
+        Node mutatedNode =  nodes.get(0).clone();
+        System.out.println(mutatedNode.print());
+        ((FunctionNode)mutatedNode).setSubNode(1,nodes.get(0));
+        System.out.println(mutatedNode.print());
+        return mutatedNode;
+    };
+
+    // static methods
+
     static Node generateFullTree(List<FunctionNode> functionNodeList, List<Node> leafNodeList, int maxDepth){
         Node root;
         if (maxDepth >0){

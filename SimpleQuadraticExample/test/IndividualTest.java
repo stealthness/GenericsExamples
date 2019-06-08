@@ -86,13 +86,46 @@ class IndividualTest {
         individual = Individual.builder().root(testList.get(0)).build();
         TestUtils.assertNode(testList.get(0),individual.getRoot());
         assertEquals(testList.get(0).size(),individual.size(),"Individual's Size not equal to root Node's size");
-        System.out.println(individual.print());
+
         IntStream.range(1,individual.size()).forEach(i->{
             System.out.println(i);
             TestUtils.assertNode(expNode.get(i-1),individual.getSubtree(i).get());
         });
-
     }
+
+    @Test
+    void testGetNodeAtDepth3(){
+        List<Node> testList = Arrays.asList(TestUtils.addOneTwoThree);
+        List<Node> expNode = Arrays.asList(TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode);
+
+        individual = Individual.builder().root(testList.get(0)).build();
+        TestUtils.assertNode(testList.get(0),individual.getRoot());
+        assertEquals(testList.get(0).size(),individual.size(),"Individual's Size not equal to root Node's size");
+
+
+        IntStream.range(1,individual.size()).forEach(i->{
+            System.out.println(i);
+            TestUtils.assertNode(expNode.get(i-1),individual.getSubtree(i).get());
+        });
+    }
+
+    @Test
+    void testGetSubNode1(){
+
+        List<Node> testList = Arrays.asList(TestUtils.absabsabsOneNode);
+        List<Node> expNode = Arrays.asList(TestUtils.absabsOneNode,TestUtils.absOneNode,TestUtils.oneNode);
+
+        TestUtils.assertNode(TestUtils.absabsabsOneNode,TestUtils.absabsabsOneNode.getSubtree(0).get());
+        System.out.println();
+        TestUtils.assertNode(TestUtils.absabsOneNode,TestUtils.absabsabsOneNode.getSubtree(1).get());
+        System.out.println();
+        TestUtils.assertNode(TestUtils.absOneNode,TestUtils.absabsabsOneNode.getSubtree(2).get());
+        System.out.println();
+        TestUtils.assertNode(TestUtils.oneNode,TestUtils.absabsabsOneNode.getSubtree(3).get());
+    }
+
+
+
 
 
     // private helper method

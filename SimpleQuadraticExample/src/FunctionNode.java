@@ -87,20 +87,39 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     @Override
     public Optional<Node> getSubtree(int index){
+        int count;
         if (index == 0){
             return Optional.of(this);
         } else  if (index > 0 && index < this.size() ){
-            int count = 1;
-            for (Node subNode : subNodes) {
-                System.out.println();
-                if (index < count + subNode.size()) {
-                    return Optional.of(subNodes.get(index - count));
+
+            for (int i = 0 ; i< subNodes.size();i++) {
+
+                int subNodeIndex = getSubNodeIndex(i);
+//                System.out.println("i : " + i);
+//                System.out.println("subNode is " + subNodes.get(i).print());
+//                System.out.println("subNode size : "+ subNodes.get(i).size());
+//                System.out.println("getSubNodeIndex : " + subNodeIndex);
+//                System.out.println(index <= subNodeIndex + subNodes.get(i).size());
+                if (index < subNodeIndex + subNodes.get(i).size()) {
+                    System.out.println(subNodes.get(i).getSubtree(index - subNodeIndex).get().print());
+                    return Optional.of(subNodes.get(i).getSubtree(index - subNodeIndex).get());
                 }
-                count += subNode.size();
             }
 
         }
         return Optional.empty();
+    }
+    
+    int getSubNodeIndex(int subNodeIndex){
+        int count = 0;
+        var sum  = 1;
+        while ( count < this.size()){
+            if (count++ == subNodeIndex){
+                return sum;
+            }
+            sum += subNodes.get(count).size();
+        }
+        return sum;
     }
 
 
