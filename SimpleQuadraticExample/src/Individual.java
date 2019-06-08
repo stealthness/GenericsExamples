@@ -87,7 +87,7 @@ public class Individual implements Node,Comparable{
         }else if (method.equals(FULL)){
             node = selectFunctionNode(functionList);
             for (int i = 0 ; i < Math.min(2, ((FunctionNode)node).getMaxSubNodes()); i++){
-                ((FunctionNode)node).setSubNode(i, generateNode(terminalList,functionList,method,depth-1));
+                ((FunctionNode)node).setSubNode(generateNode(terminalList,functionList,method,depth-1));
             }
         }else if (method.equals(GROW)){
             if (Math.random() < FUNCTION_TERMINAL_SELECTION_RATIO){
@@ -95,7 +95,7 @@ public class Individual implements Node,Comparable{
             }else{
                 node = selectFunctionNode(functionList);
                 for (int i = 0 ; i<Math.min(2, ((FunctionNode)node).getMaxSubNodes()); i++){
-                    ((FunctionNode)node).setSubNode(i, generateNode(terminalList,functionList,method,depth-1));
+                    ((FunctionNode)node).setSubNode(generateNode(terminalList,functionList,method,depth-1));
                 }
             }
 

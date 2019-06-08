@@ -25,6 +25,8 @@ class TestUtils {
 
 
     static Node xPlusOne = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(xNode,oneNode));
+    static Node twoPlusOne = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(twoNode,oneNode));
+    static Node onePlusTwo = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(oneNode,twoNode));
     static Node xPlusTwo = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(xNode,twoNode));
     static Node xPlusX = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(xNode,xNode));
     static Node onePlusX = new FunctionNode(new GPBiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(oneNode,xNode));
@@ -35,6 +37,9 @@ class TestUtils {
     static Node recipOneNode = new FunctionNode(new GPSingleFunction(GPUtils.reciprocal,"recip"), Collections.singletonList(oneNode));
 
     static Node addOneTwoThree = new FunctionNode(new GPMultiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(oneNode,twoNode,threeNode));
+    static Node addXTwoThree = new FunctionNode(new GPMultiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(xNode,twoNode,threeNode));
+    static Node addOneXThree = new FunctionNode(new GPMultiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(oneNode,xNode,threeNode));
+    static Node addOneTwoX = new FunctionNode(new GPMultiFunction(GPUtils.addBiFunction,"+"),Arrays.asList(oneNode,twoNode,xNode));
 
     static Node absabsOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(absOneNode));
     static Node absabsabsOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(absabsOneNode));

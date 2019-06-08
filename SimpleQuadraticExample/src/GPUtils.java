@@ -29,14 +29,18 @@ public class GPUtils {
                 return numerator/(( divisor== 0.0)?1.0:divisor);
             });
 
+    // Mutate Functions
+
     public static BiFunction<List<Node>, Double, Node> mutateIndex1 = (nodes,mutateRate) -> {
+        System.out.println("node : " + nodes.get(0).print());
+        System.out.println("mutate : " + nodes.get(1).print());
         if (nodes.get(0).size() == 0){
             return nodes.get(0);
         }
         Node mutatedNode =  nodes.get(0).clone();
-        System.out.println(mutatedNode.print());
-        ((FunctionNode)mutatedNode).setSubNode(1,nodes.get(0));
-        System.out.println(mutatedNode.print());
+        System.out.println("** pre-mutation  : "+mutatedNode.print());
+        ((FunctionNode)mutatedNode).setSubNodeAt(1,nodes.get(1));
+        System.out.println("** post-mutation : "+mutatedNode.print());
         return mutatedNode;
     };
 
@@ -47,7 +51,7 @@ public class GPUtils {
         if (maxDepth >0){
             root = functionNodeList.get(new Random().nextInt(functionNodeList.size())).clone();
             if (root.getClass() == FunctionNode.class){
-                ((FunctionNode)root).setSubNode(0,generateFullTree(functionNodeList,leafNodeList,maxDepth-1));
+                ((FunctionNode)root).setSubNode(generateFullTree(functionNodeList,leafNodeList,maxDepth-1));
             }
         }else{
             root = leafNodeList.get(new Random().nextInt(leafNodeList.size()));

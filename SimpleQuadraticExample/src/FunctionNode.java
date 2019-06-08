@@ -38,7 +38,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
         return Optional.of(subNodes.get(0));
     }
 
-    void setSubNode(int index, Node subNode){
+    void setSubNode(Node subNode){
         if (subNodes == null){
             subNodes = new ArrayList<>();
         }
@@ -84,6 +84,29 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
     }
 
 
+    void setSubNodeAt(int index, Node subNode){
+        if (subNodes == null && index == 0){
+            subNodes = new ArrayList<>();
+            subNodes.add(subNode);
+        } else if (size() > index){
+
+            for (int i = 0 ; i< subNodes.size();i++) {
+
+                int subNodeIndex = getSubNodeIndex(i);
+                if (index == subNodeIndex){
+                    subNodes.remove(i);
+                    subNodes.add(i,subNode);
+                }else if (index < subNodeIndex + subNodes.get(i).size()) {
+                    System.out.println(index);
+                    System.out.println(subNodeIndex);
+                    System.out.println(subNodes.get(i).size());
+//                    setSubNodeAt(index-subNodeIndex,subNode);
+                }
+            }
+        } else{
+            throw new IllegalArgumentException("index out of bounds");
+        }
+    }
 
     @Override
     public Optional<Node> getSubtree(int index){

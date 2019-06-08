@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class GPUtilsTest {
 
     Node node;
@@ -23,7 +21,7 @@ class GPUtilsTest {
     @Test
     void testSetUp(){
         node = functionNodes.get(0);
-        ((FunctionNode)node).setSubNode(0,leafNodes.get(0));
+        ((FunctionNode)node).setSubNode(leafNodes.get(0));
         TestUtils.assertNode(TestUtils.absOneNode,node);
     }
 

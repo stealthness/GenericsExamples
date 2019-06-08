@@ -80,7 +80,7 @@ class IndividualTest {
 
     @Test
     void testGetNodeAt0(){
-        List<Node> testList = Arrays.asList(TestUtils.onePlusX);
+        Node testList = TestUtils.onePlusX;
         List<Node> expNode = Arrays.asList(TestUtils.oneNode,TestUtils.xNode);
 
         testGetNode(expNode,testList);
@@ -88,7 +88,7 @@ class IndividualTest {
 
     @Test
     void testGetNodeAtDepth3(){
-        List<Node> testList = Arrays.asList(TestUtils.addOneTwoThree);
+        Node testList = TestUtils.addOneTwoThree;
         List<Node> expNode = Arrays.asList(TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode);
         testGetNode(expNode,testList);
     }
@@ -96,7 +96,7 @@ class IndividualTest {
     @Test
     void testGetSubNode1(){
 
-        List<Node> testList = Arrays.asList(TestUtils.absabsabsOneNode);
+        Node testList = TestUtils.absabsabsOneNode;
         List<Node> expNode = Arrays.asList(TestUtils.absabsOneNode,TestUtils.absOneNode,TestUtils.oneNode);
 
         testGetNode(expNode,testList);
@@ -104,7 +104,7 @@ class IndividualTest {
 
     @Test
     void testGetSubNode2(){
-        List<Node> testList = Arrays.asList(TestUtils.xPlusOneDivideXSubtructAbsOnePlusX);
+        Node testList = TestUtils.xPlusOneDivideXSubtructAbsOnePlusX;
         List<Node> expNode = Arrays.asList(TestUtils.xPlusOneDivideX,TestUtils.xNode,TestUtils.oneDivideX,TestUtils.oneNode,
                 TestUtils.xNode,TestUtils.absAddOneXPlusOneTwoThree,TestUtils.addOneXPlusOneTwoThree,TestUtils.oneNode,TestUtils.xPlusOne,TestUtils.xNode,TestUtils.oneNode,
                 TestUtils.twoNode,TestUtils.threeNode);
@@ -113,7 +113,7 @@ class IndividualTest {
     }
     @Test
     void testGetSubNode5(){
-        List<Node> testList = Arrays.asList(TestUtils.absAddOneXPlusOneTwoThree);
+        Node testList = TestUtils.absAddOneXPlusOneTwoThree;
         List<Node> expNode = Arrays.asList(TestUtils.addOneXPlusOneTwoThree,TestUtils.oneNode,TestUtils.xPlusOne,TestUtils.xNode,TestUtils.oneNode,
                 TestUtils.twoNode,TestUtils.threeNode);
 
@@ -122,7 +122,7 @@ class IndividualTest {
 
     @Test
     void testGetSubNode3(){
-        List<Node> testList = Arrays.asList(TestUtils.xPlusOneDivideX);
+        Node testList = TestUtils.xPlusOneDivideX;
         List<Node> expNode = Arrays.asList(TestUtils.xNode,TestUtils.oneDivideX,TestUtils.oneNode,
                 TestUtils.xNode);
 
@@ -130,21 +130,21 @@ class IndividualTest {
     }
     @Test
     void testGetSubNode4(){
-        List<Node> testList = Arrays.asList(TestUtils.oneDivideX);
+        Node testList = TestUtils.oneDivideX;
         List<Node> expNode = Arrays.asList(TestUtils.oneNode,
                 TestUtils.xNode);
 
-        testGetNode(expNode,testList);
+        IndividualTest.testGetNode(expNode,testList);
     }
 
 
     // private helper method
 
 
-    private void testGetNode(List<Node> expNode, List<Node> testList){
-        individual = Individual.builder().root(testList.get(0)).build();
-        TestUtils.assertNode(testList.get(0),individual.getRoot());
-        assertEquals(testList.get(0).size(),individual.size(),"Individual's Size not equal to root Node's size");
+    public static void testGetNode(List<Node> expNode, Node testNode){
+        var individual = Individual.builder().root(testNode).build();
+        TestUtils.assertNode(testNode,individual.getRoot());
+        assertEquals(testNode.size(),individual.size(),"Individual's Size not equal to root Node's size");
 
         IntStream.range(1,individual.size()).forEach(i->{
             System.out.println(i);
