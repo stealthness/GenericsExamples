@@ -109,10 +109,7 @@ public class GPUtils {
         String functionString = strings.get(0).replace("(","");
         System.out.println(functionString);
         return switch (functionString) {
-            case "+" -> new FunctionNode(getGPFunction(functionString), subNodes);
-            case "/" -> new FunctionNode(new GPBiFunction(divide, functionString), subNodes);
-            case "*" -> new FunctionNode(new GPMultiFunction(multiply, functionString), subNodes);
-            case "-" -> new FunctionNode(new GPBiFunction(subtract, functionString), subNodes);
+            case "+","/","*","-"  -> new FunctionNode(getGPFunction(functionString), subNodes);
             default -> {
                 Node r = null;
                 for (Field field : GPUtils.class.getDeclaredFields()) {
@@ -151,7 +148,38 @@ public class GPUtils {
     }
 
     public static GPFunction getGPFunction(String functionString){
-        return new GPMultiFunction(add, functionString);
+        return switch (functionString) {
+            case "+" -> new GPMultiFunction(add, functionString);
+            case "/" -> new GPBiFunction(divide, functionString);
+            case "*" -> new GPMultiFunction(multiply, functionString);
+            case "-" -> new GPBiFunction(subtract, functionString);
+            default -> {
+                GPFunction function = null;
+                for (Field field : GPUtils.class.getDeclaredFields()) {
+
+                    if (functionString.equals(field.getName())){
+                        try {
+                            switch (functionString) {
+                                case "abs", "reciprocal", "identity" -> {
+                                    Class<?> functionClass = Class.forName(GPSingleFunction.class.getName());
+                                    Constructor<?> functionConstructor = functionClass.getDeclaredConstructors()[0];
+                                    function = (GPFunction) functionConstructor.newInstance(GPUtils.class.getDeclaredField(functionString).get(null), functionString);
+                                }
+                                default -> {
+                                    Class<?> functionClass = Class.forName(GPMultiFunction.class.getName());
+                                    Constructor<?> functionConstructor = functionClass.getDeclaredConstructors()[0];
+                                    function = (GPFunction) functionConstructor.newInstance(GPUtils.class.getDeclaredField(functionString).get(null), functionString);
+                                }
+                            }
+                        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    }
+                }
+                break function;
+            }
+        };
     }
 
 }
