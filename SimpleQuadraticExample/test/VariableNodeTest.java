@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class VariableNodeTest {
 
     private static final int MAX_RUNS = 100;
-    
+
 
     @Test
     void testVariableCreate(){

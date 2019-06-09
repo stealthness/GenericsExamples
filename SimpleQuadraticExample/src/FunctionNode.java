@@ -106,18 +106,31 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     @Override
     public Optional<Node> getSubtree(int index){
+
+        System.out.println(String.format("\n\nCalled getSubTree() with index %d",index));
         if (index == 0){
             return Optional.of(this);
         } else  if (index > 0 && index < this.size() ){
             for (int i = 0 ; i< subNodes.size();i++) {
                 int subNodeIndex = getSubNodeIndex(i);
                 if (index < subNodeIndex + subNodes.get(i).size()) {
-                    System.out.println(subNodes.get(i).getSubtree(index - subNodeIndex).get().print());
-                    return Optional.of(subNodes.get(i).getSubtree(index - subNodeIndex).get());
+                    Optional<Node> node = subNodes.get(i).getSubtree(index - subNodeIndex);
+                    System.out.println(String.format("\n\nThis %s   :  index %d",this.print(),index));
+                    System.out.println(String.format("subnode size %d   :  subNodeIndex %d  :  subNode(%d) : %s" , subNodes.get(i).size(), subNodeIndex ,i,subNodes.get(i).print()));
+                    if (node.isEmpty()){
+                        System.out.println("************************");
+                    }else{
+
+                        System.out.println(node.get().print());
+                    }
+                    return node;
                 }
             }
 
         }
+        System.out.println("\n\nSUPER BAD");
+        System.out.println(String.format("This %s   :  index %d",this.print(),index));
+        System.out.println("SUPER BAD");
         return Optional.empty();
     }
     

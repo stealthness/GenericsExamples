@@ -114,6 +114,8 @@ class IndividualTest {
     @Test
     void testGetSubNode5(){
         Node testList = TestUtils.absAddOneXPlusOneTwoThree;
+        System.out.println(testList.print());
+
         List<Node> expNode = Arrays.asList(TestUtils.addOneXPlusOneTwoThree,TestUtils.oneNode,TestUtils.xPlusOne,TestUtils.xNode,TestUtils.oneNode,
                 TestUtils.twoNode,TestUtils.threeNode);
 

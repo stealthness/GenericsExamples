@@ -1,3 +1,8 @@
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiFunction;
@@ -20,13 +25,13 @@ public class GPUtils {
             ((inputs,nodes) -> nodes.stream()
                     .mapToDouble(node -> node.calculate(inputs)).min().getAsDouble());
 
-    static BiFunction<Double[], List<Node>, Double> multiplyBiFunction =
+    static BiFunction<Double[], List<Node>, Double> multiply =
             ((inputs, nodes) -> nodes.get(0).calculate(inputs)*nodes.get(1).calculate(inputs));
 
-    public static BiFunction<Double[], List<Node>, Double> subtractBiFunction =
+    public static BiFunction<Double[], List<Node>, Double> subtract =
             ((inputs,nodes) -> nodes.get(0).calculate(inputs)-nodes.get(1).calculate(inputs));
 
-    public static BiFunction<Double[], List<Node>, Double> protectedDivisionBiFunction =
+    public static BiFunction<Double[], List<Node>, Double> divide =
             ((inputs,nodes) -> {
                 Double divisor = nodes.get(1).calculate(inputs);
                 Double numerator = nodes.get(0).calculate(inputs);
@@ -63,5 +68,76 @@ public class GPUtils {
         return root;
     }
 
+
+    static Node createNodeFromString(String string){
+        List<String> strings = Arrays.asList(string.split(" "));
+        if (strings.size()==1){
+            return getTerminalNode(strings.get(0));
+        } else if (strings.size() == 2){
+            return createFunctionNodeFromString(strings);
+        } else {
+            if (false){
+                // replace later with check brackets
+            } else{
+                List subNodes = new ArrayList();
+                for (int i = 1 ; i< strings.size() ; i++){
+                    subNodes.add(getTerminalNode(strings.get(i)));
+                }
+                return createFunctionNodeFromString(strings);
+            }
+
+        }
+        return null;
+    }
+
+    static Node createFunctionNodeFromString(List<String> strings) {
+        List<Node> subNodes = new ArrayList<>();
+        for (int i = 1; i < strings.size() ; i++){
+            subNodes.add(getTerminalNode(strings.get(i)));
+        }
+        String functionString = strings.get(0).replace("(","");
+        System.out.println(functionString);
+        return switch (functionString) {
+            case "+" -> new FunctionNode(new GPMultiFunction(add, functionString), subNodes);
+            case "/" -> new FunctionNode(new GPBiFunction(divide, functionString), subNodes);
+            case "*" -> new FunctionNode(new GPMultiFunction(multiply, functionString), subNodes);
+            case "-" -> new FunctionNode(new GPBiFunction(subtract, functionString), subNodes);
+            default -> {
+                var fields = GPUtils.class.getDeclaredFields();
+                Node r = null;
+                for (Field field : fields) {
+                    if (functionString.equals(field.getName())){
+                        try {
+                            r = switch (functionString){
+                                case "abs","1/x","identity" -> {
+                                    Class<?> functionClass = Class.forName("GPSingleFunction");
+                                    Constructor<?> functionConstructor = functionClass.getDeclaredConstructors()[0];
+
+                                    break new FunctionNode((GPFunction) functionConstructor.newInstance(GPUtils.class.getDeclaredField(functionString).get(null),functionString), subNodes);
+                                }
+                                default -> {
+                                    Class<?> functionClass = Class.forName("GPMultiFunction");
+                                    Constructor<?> functionConstructor = functionClass.getDeclaredConstructors()[0];
+                                    break new FunctionNode((GPFunction) functionConstructor.newInstance(GPUtils.class.getDeclaredField(functionString).get(null),functionString), subNodes);
+                                }
+                            };
+                        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                break r;
+            }
+        };
+    }
+
+    static Node getTerminalNode(String string) {
+        String strip = string.replace("(", "").replace(")", "");
+        if (strip.startsWith("x")){
+            return new VariableNode(Integer.valueOf(strip.replace("x", "")));
+        }else{
+            return new TerminalNode(Double.valueOf(strip));
+        }
+    }
 
 }
