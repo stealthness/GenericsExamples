@@ -27,6 +27,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
             subNodes = new ArrayList<>();
         }
         nodes.forEach(subNode -> subNodes.add(subNode.clone()));
+        setMaxSubNodes(function.getMaxSubNodes());
 
     }
 

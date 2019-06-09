@@ -1,8 +1,13 @@
+import lombok.val;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -99,11 +104,36 @@ public class CreatingNodesFromStringTest {
         String functionString = strings.get(0).replace("(","");
         System.out.println(functionString);
         return switch (functionString) {
-            case "abs" -> new FunctionNode(new GPSingleFunction(GPUtils.abs, functionString), subNodes);
             case "+" -> new FunctionNode(new GPMultiFunction(GPUtils.add, functionString), subNodes);
-            case "/" -> new FunctionNode(new GPMultiFunction(GPUtils.protectedDivisionBiFunction, functionString), subNodes);
+            case "/" -> new FunctionNode(new GPBiFunction(GPUtils.protectedDivisionBiFunction, functionString), subNodes);
             case "*" -> new FunctionNode(new GPMultiFunction(GPUtils.multiplyBiFunction, functionString), subNodes);
-            default -> null;
+            case "-" -> new FunctionNode(new GPBiFunction(GPUtils.subtractBiFunction, functionString), subNodes);
+            default -> {
+                var fields = GPUtils.class.getDeclaredFields();
+                Node r = null;
+                for (Field field : fields) {
+                    if (functionString.equals(field.getName())){
+                        try {
+                            r = switch (functionString){
+                                case "abs","1/x","identity" -> {
+                                    Class<?> functionClass = Class.forName("GPSingleFunction");
+                                    Constructor<?> functionConstructor = functionClass.getDeclaredConstructors()[0];
+
+                                    break new FunctionNode((GPFunction) functionConstructor.newInstance(GPUtils.class.getDeclaredField(functionString).get(null),functionString), subNodes);
+                                }
+                                default -> {
+                                    Class<?> functionClass = Class.forName("GPMultiFunction");
+                                    Constructor<?> functionConstructor = functionClass.getDeclaredConstructors()[0];
+                                    break new FunctionNode((GPFunction) functionConstructor.newInstance(GPUtils.class.getDeclaredField(functionString).get(null),functionString), subNodes);
+                                }
+                            };
+                        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                break r;
+            }
         };
     }
 

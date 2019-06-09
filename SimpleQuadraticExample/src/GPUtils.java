@@ -16,6 +16,10 @@ public class GPUtils {
                     .mapToDouble(node -> node.calculate(inputs))
                     .reduce(0.0, Double::sum));
 
+    static BiFunction<Double[], List<Node>, Double> min =
+            ((inputs,nodes) -> nodes.stream()
+                    .mapToDouble(node -> node.calculate(inputs)).min().getAsDouble());
+
     static BiFunction<Double[], List<Node>, Double> multiplyBiFunction =
             ((inputs, nodes) -> nodes.get(0).calculate(inputs)*nodes.get(1).calculate(inputs));
 
