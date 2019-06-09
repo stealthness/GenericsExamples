@@ -81,7 +81,7 @@ public class GPUtils {
                     if (strings.get(i).contains("(")){
                         String openString = strings.get(i);
                         while(isStillOpen(openString)){
-                            openString = openString + " "+strings.get(++i);
+                            openString += " "+strings.get(++i);
                         }
                         newString.add(openString);
                     }else {
@@ -118,14 +118,14 @@ public class GPUtils {
                     if (functionString.equals(field.getName())){
                         try {
                             r = switch (functionString){
-                                case "abs","1/x","identity" -> {
-                                    Class<?> functionClass = Class.forName("GPSingleFunction");
+                                case "abs","reciprocal","identity" -> {
+                                    Class<?> functionClass = Class.forName(GPSingleFunction.class.getName());
                                     Constructor<?> functionConstructor = functionClass.getDeclaredConstructors()[0];
 
                                     break new FunctionNode((GPFunction) functionConstructor.newInstance(GPUtils.class.getDeclaredField(functionString).get(null),functionString), subNodes);
                                 }
                                 default -> {
-                                    Class<?> functionClass = Class.forName("GPMultiFunction");
+                                    Class<?> functionClass = Class.forName(GPMultiFunction.class.getName());
                                     Constructor<?> functionConstructor = functionClass.getDeclaredConstructors()[0];
                                     break new FunctionNode((GPFunction) functionConstructor.newInstance(GPUtils.class.getDeclaredField(functionString).get(null),functionString), subNodes);
                                 }

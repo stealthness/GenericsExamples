@@ -111,6 +111,7 @@ class IndividualTest {
 
         testGetNode(expNode,testList);
     }
+
     @Test
     void testGetSubNode5(){
         Node testList = TestUtils.absAddOneXPlusOneTwoThree;

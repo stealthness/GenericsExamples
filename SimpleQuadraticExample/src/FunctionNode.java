@@ -106,51 +106,26 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     @Override
     public Optional<Node> getSubtree(int index){
-
-        System.out.println(String.format("\n\nCalled getSubTree() with index %d",index));
         if (index == 0){
             return Optional.of(this);
         } else  if (index > 0 && index < this.size() ){
-            for (int i = 0 ; i< subNodes.size();i++) {
+            for (int i = 0 ; i < subNodes.size();i++) {
                 int subNodeIndex = getSubNodeIndex(i);
                 if (index < subNodeIndex + subNodes.get(i).size()) {
-                    Optional<Node> node = subNodes.get(i).getSubtree(index - subNodeIndex);
-                    System.out.println(String.format("\n\nThis %s   :  index %d",this.print(),index));
-                    System.out.println(String.format("subnode size %d   :  subNodeIndex %d  :  subNode(%d) : %s" , subNodes.get(i).size(), subNodeIndex ,i,subNodes.get(i).print()));
-                    if (node.isEmpty()){
-                        System.out.println("************************");
-                    }else{
-
-                        System.out.println(node.get().print());
-                    }
-                    return node;
+                    return subNodes.get(i).getSubtree(index - subNodeIndex);
                 }
             }
-
         }
-        System.out.println("\n\nSUPER BAD");
-        System.out.println(String.format("This %s   :  index %d",this.print(),index));
-        System.out.println("SUPER BAD");
         return Optional.empty();
     }
     
-    int getSubNodeIndex(int subNodeIndex){
-        if (subNodes.size() < subNodeIndex) {
+    private int getSubNodeIndex(int subNodeIndex){
+        if (subNodes.size() < subNodeIndex || subNodes.size() == 0) {
             throw new IllegalArgumentException("Index out of bounds");
-        }if (subNodes.size() == 0){
-            return -1; // error
-        } else if (subNodeIndex == 0){
-            return 1;
-        }else if (subNodeIndex == 1){
-            return 1 + subNodes.get(0).size();
-        } else{
-            int count = 1;
-            var sum  = 1 + subNodes.get(0).size();
-            while ( count < this.size()){
-                if (count++ == subNodeIndex){
-                    return sum;
-                }
-                sum += subNodes.get(count).size();
+        }else{
+            var sum  = 1 ;
+            for (int i = 0; i<subNodeIndex;i++){
+                sum += subNodes.get(i).size();
             }
             return sum;
         }
