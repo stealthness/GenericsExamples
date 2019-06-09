@@ -107,35 +107,7 @@ public class GPUtils {
             subNodes.add(createNodeFromString(strings.get(i)));
         }
         String functionString = strings.get(0).replace("(","");
-        System.out.println(functionString);
-        return switch (functionString) {
-            case "+","/","*","-"  -> new FunctionNode(getGPFunction(functionString), subNodes);
-            default -> {
-                Node r = null;
-                for (Field field : GPUtils.class.getDeclaredFields()) {
-                    if (functionString.equals(field.getName())){
-                        try {
-                            r = switch (functionString){
-                                case "abs","reciprocal","identity" -> {
-                                    Class<?> functionClass = Class.forName(GPSingleFunction.class.getName());
-                                    Constructor<?> functionConstructor = functionClass.getDeclaredConstructors()[0];
-
-                                    break new FunctionNode((GPFunction) functionConstructor.newInstance(GPUtils.class.getDeclaredField(functionString).get(null),functionString), subNodes);
-                                }
-                                default -> {
-                                    Class<?> functionClass = Class.forName(GPMultiFunction.class.getName());
-                                    Constructor<?> functionConstructor = functionClass.getDeclaredConstructors()[0];
-                                    break new FunctionNode((GPFunction) functionConstructor.newInstance(GPUtils.class.getDeclaredField(functionString).get(null),functionString), subNodes);
-                                }
-                            };
-                        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                break r;
-            }
-        };
+        return new FunctionNode(getGPFunction(functionString), subNodes);
     }
 
     private static Node getTerminalNode(String string) {
