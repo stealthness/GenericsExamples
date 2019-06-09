@@ -28,10 +28,10 @@ public class GPUtils {
     static BiFunction<Double[], List<Node>, Double> multiply =
             ((inputs, nodes) -> nodes.get(0).calculate(inputs)*nodes.get(1).calculate(inputs));
 
-    public static BiFunction<Double[], List<Node>, Double> subtract =
+    static BiFunction<Double[], List<Node>, Double> subtract =
             ((inputs,nodes) -> nodes.get(0).calculate(inputs)-nodes.get(1).calculate(inputs));
 
-    public static BiFunction<Double[], List<Node>, Double> divide =
+    static BiFunction<Double[], List<Node>, Double> divide =
             ((inputs,nodes) -> {
                 Double divisor = nodes.get(1).calculate(inputs);
                 Double numerator = nodes.get(0).calculate(inputs);
@@ -73,27 +73,37 @@ public class GPUtils {
         List<String> strings = Arrays.asList(string.split(" "));
         if (strings.size()==1){
             return getTerminalNode(strings.get(0));
-        } else if (strings.size() == 2){
-            return createFunctionNodeFromString(strings);
         } else {
-            if (false){
-                // replace later with check brackets
-            } else{
-                List subNodes = new ArrayList();
-                for (int i = 1 ; i< strings.size() ; i++){
-                    subNodes.add(getTerminalNode(strings.get(i)));
+            if (string.chars().filter(ch -> ch == '(').count() >1){
+                List<String> newString = new ArrayList<>();
+                newString.add(strings.get(0));
+                for (int i = 1  ; i < strings.size(); i++){
+                    if (strings.get(i).contains("(")){
+                        String openString = strings.get(i);
+                        while(isStillOpen(openString)){
+                            openString = openString + " "+strings.get(++i);
+                        }
+                        newString.add(openString);
+                    }else {
+                        newString.add(strings.get(i));
+                    }
                 }
+                return createFunctionNodeFromString(newString);
+            } else{
                 return createFunctionNodeFromString(strings);
             }
-
         }
-        return null;
     }
 
-    static Node createFunctionNodeFromString(List<String> strings) {
+    private static boolean isStillOpen(String openString) {
+        return openString.chars().filter(ch -> ch =='(').count()> openString.chars().filter(ch -> ch ==')').count();
+
+    }
+
+    private static Node createFunctionNodeFromString(List<String> strings) {
         List<Node> subNodes = new ArrayList<>();
         for (int i = 1; i < strings.size() ; i++){
-            subNodes.add(getTerminalNode(strings.get(i)));
+            subNodes.add(createNodeFromString(strings.get(i)));
         }
         String functionString = strings.get(0).replace("(","");
         System.out.println(functionString);
@@ -103,9 +113,8 @@ public class GPUtils {
             case "*" -> new FunctionNode(new GPMultiFunction(multiply, functionString), subNodes);
             case "-" -> new FunctionNode(new GPBiFunction(subtract, functionString), subNodes);
             default -> {
-                var fields = GPUtils.class.getDeclaredFields();
                 Node r = null;
-                for (Field field : fields) {
+                for (Field field : GPUtils.class.getDeclaredFields()) {
                     if (functionString.equals(field.getName())){
                         try {
                             r = switch (functionString){
@@ -131,7 +140,7 @@ public class GPUtils {
         };
     }
 
-    static Node getTerminalNode(String string) {
+    private static Node getTerminalNode(String string) {
         String strip = string.replace("(", "").replace(")", "");
         if (strip.startsWith("x")){
             return new VariableNode(Integer.valueOf(strip.replace("x", "")));

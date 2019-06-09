@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,6 +49,26 @@ public class CreatingNodesFromStringTest {
         assertNodesFromStrings(actStrings, expNodes);
     }
 
+    @Test
+    void testTreesOfSizeOneFunctionAtDepth1(){
+        var actStrings = Arrays.asList("(+ 1.0 (+ x0 1.0) 2.0 3.0)","(+ x0 (/ 1.0 x0))");
+        var expNodes = Arrays.asList(TestUtils.addOneXPlusOneTwoThree,TestUtils.xPlusOneDivideX);
+        assertNodesFromStrings(actStrings, expNodes);
+    }
+
+    @Test
+    void testTreesOfSize3Depth3(){
+        var actStrings = Arrays.asList("(abs 1.0)", "(abs (abs 1.0))","(abs (abs (abs 1.0)))");
+        var expNodes = Arrays.asList(TestUtils.absOneNode,TestUtils.absabsOneNode,TestUtils.absabsabsOneNode);
+        assertNodesFromStrings(actStrings, expNodes);
+    }
+
+    @Test
+    void testHardCase(){
+        var actStrings = Arrays.asList("(- (+ x0 (/ 1.0 x0)) (abs (+ 1.0 (+ x0 1.0) 2.0 3.0)))");
+        var expNodes = Arrays.asList(TestUtils.xPlusOneDivideXSubtructAbsOnePlusX);
+        assertNodesFromStrings(actStrings, expNodes);
+    }
 
 
 
