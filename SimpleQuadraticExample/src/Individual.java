@@ -80,7 +80,7 @@ public class Individual implements Node,Comparable{
         return Individual.builder().root(root).build();
     }
 
-    private static Node generateNode(List<Node> terminalList, List<GPFunction> functionList, String method, int depth){
+    public static Node generateNode(List<Node> terminalList, List<GPFunction> functionList, String method, int depth){
         Node node = null;
         if (depth == 0){
             node = selectTerminalNode(terminalList);

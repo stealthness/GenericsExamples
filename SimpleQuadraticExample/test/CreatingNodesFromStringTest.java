@@ -82,7 +82,7 @@ public class CreatingNodesFromStringTest {
         }
         for (int i = 0 ; i< actStrings.size() ; i++){
             Node actNode = GPUtils.createNodeFromString(actStrings.get(i));
-            System.out.println(String.format("From String : %s  ActNode : %s    expNode : %s",actStrings.get(i),(actNode==null)?"null":actNode.print(), expNodes.get(i).print()));
+            //System.out.println(String.format("From String : %s  ActNode : %s    expNode : %s",actStrings.get(i),(actNode==null)?"null":actNode.print(), expNodes.get(i).print()));
             TestUtils.assertNode(expNodes.get(i),actNode);
             assertEquals(expNodes.get(i).print(),actNode.print());
         }

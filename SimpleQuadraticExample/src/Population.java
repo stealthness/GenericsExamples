@@ -1,10 +1,7 @@
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Populations contains a list of individuals, how the initial population is constructed
@@ -44,6 +41,9 @@ public class Population {
      */
     @Builder.Default
     private boolean logging = true;
+
+    @Builder.Default
+    private Double mutateRate = 0.25;
 
 
     private List<Individual> generate(String generationMethod, int size){
@@ -92,12 +92,26 @@ public class Population {
     }
 
     List<Individual> mutate() {
+
+        var mutateFunction = GPUtils.mutateIndex1;
+
         List<Individual> selected = new ArrayList<>();
+        for (Individual individual: individuals){
+            selected.add(Individual.builder().root(mutateFunction.apply(Arrays.asList(individual.getRoot(),generateRoot()),mutateRate)).build());
+        }
 
         if (this.logging){
             System.out.println(String.format("mutate.size() = %d", selected.size()));
         }
         return selected;
+    }
+
+    /**
+     * generates a root
+     * @return
+     */
+    private Node generateRoot() {
+        return Individual.generateNode(terminalNodeList,functionNodeList,generationMethod,getMaxGenerationDepth());
     }
 
     List<Individual> edit() {

@@ -68,6 +68,7 @@ public class GP {
             /************** MUTATING ********************/
             System.out.println("\n PART 3 - Mutations ");
             newIndividuals.addAll(population.mutate());
+            population.setIndividuals(newIndividuals);
 
 
             /************** EDITING ********************/

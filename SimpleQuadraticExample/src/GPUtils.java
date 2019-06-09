@@ -40,17 +40,18 @@ public class GPUtils {
 
     // Mutate Functions
 
-    public static BiFunction<List<Node>, Double, Node> mutateIndex1 = (nodes,mutateRate) -> {
-        System.out.println("node : " + nodes.get(0).print());
-        System.out.println("mutate : " + nodes.get(1).print());
-        if (nodes.get(0).size() == 0){
+    static BiFunction<List<Node>, Double, Node> mutateIndex1 = (nodes,mutateRate) -> {
+        if (Math.random() > mutateRate){
             return nodes.get(0);
+        }else{
+            if (nodes.get(0).size()==1){
+                return nodes.get(1).clone();
+            }else{
+                Node mutatedNode =  nodes.get(0).clone();
+                ((FunctionNode)mutatedNode).setSubNodeAt(1,nodes.get(1));
+                return mutatedNode;
+            }
         }
-        Node mutatedNode =  nodes.get(0).clone();
-        System.out.println("** pre-mutation  : "+mutatedNode.print());
-        ((FunctionNode)mutatedNode).setSubNodeAt(1,nodes.get(1));
-        System.out.println("** post-mutation : "+mutatedNode.print());
-        return mutatedNode;
     };
 
     // static methods
@@ -108,7 +109,7 @@ public class GPUtils {
         String functionString = strings.get(0).replace("(","");
         System.out.println(functionString);
         return switch (functionString) {
-            case "+" -> new FunctionNode(new GPMultiFunction(add, functionString), subNodes);
+            case "+" -> new FunctionNode(getGPFunction(functionString), subNodes);
             case "/" -> new FunctionNode(new GPBiFunction(divide, functionString), subNodes);
             case "*" -> new FunctionNode(new GPMultiFunction(multiply, functionString), subNodes);
             case "-" -> new FunctionNode(new GPBiFunction(subtract, functionString), subNodes);
@@ -147,6 +148,10 @@ public class GPUtils {
         }else{
             return new TerminalNode(Double.valueOf(strip));
         }
+    }
+
+    public static GPFunction getGPFunction(String functionString){
+        return new GPMultiFunction(add, functionString);
     }
 
 }

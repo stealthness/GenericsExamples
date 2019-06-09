@@ -19,11 +19,5 @@ class CrossoverTest {
 
         TestUtils.assertNode(TestUtils.xPlusX,child0);
         TestUtils.assertNode(TestUtils.onePlusTwo,child1);
-
-
-
-
-
-
     }
 }
