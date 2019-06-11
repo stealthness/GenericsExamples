@@ -104,20 +104,20 @@ class TestUtils {
     static void assertNode(Double expResult, Node actNode, Double[] inputs){
         Double actResult = actNode.calculate(inputs);
         assertEquals(expResult,actResult ,TOL ,String.format("\nfunction : %s\ninputs %s\n",
-                actNode.toTreeString(), Arrays.asList(inputs).toString()));
+                actNode.toClojureString(), Arrays.asList(inputs).toString()));
     }
 
     static void assertNode(Double expResult, Node actNode) {
         Double actResult = actNode.calculate(createRandomInput(1));
         assertEquals(expResult, actResult, TOL, String.format("\nfunction : %s",
-                actNode.toTreeString()));
+                actNode.toClojureString()));
     }
 
     static void assertNode(Node expNode, Node actNode) {
-        final String msg = String.format("\n expNode %s, actNode : %s",expNode.toTreeString(), actNode.toTreeString());
+        final String msg = String.format("\n expNode %s, actNode : %s",expNode.toClojureString(), actNode.toClojureString());
         assertEquals(expNode.getClass(), actNode.getClass(), msg);
         assertNodeSize(expNode.size(),expNode.getDepth(),actNode);
-        assertEquals(expNode.toTreeString(),actNode.toTreeString(),msg);
+        assertEquals(expNode.toClojureString(),actNode.toClojureString(),msg);
         if (expNode.getClass()== VariableNode.class){
             assertEquals(((VariableNode)expNode).getIndex(),((VariableNode)actNode).getIndex(),msg);
         } else if (expNode.getClass()== TerminalNode.class){
@@ -126,7 +126,7 @@ class TestUtils {
     }
 
     static void assertNodeSize(int expSize, int expDepth, Node actNode){
-        final String msg = String.format("\n expSize %d, expDepth %d actNode : %s",expSize, expDepth, actNode.toTreeString());
+        final String msg = String.format("\n expSize %d, expDepth %d actNode : %s",expSize, expDepth, actNode.toClojureString());
         assertEquals(expSize, actNode.size(),msg);
         assertEquals(expDepth, actNode.getDepth(),msg);
     }

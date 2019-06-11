@@ -31,10 +31,10 @@ class TerminalNodeTest {
 
     @Test
     void printTerminal() {
-        assertEquals(String.valueOf(v0), t0.toTreeString());
-        assertEquals(String.valueOf(v1), t1.toTreeString());
-        assertEquals("1.0",TestUtils.oneNode.toTreeString());
-        assertEquals("2.0",TestUtils.twoNode.toTreeString());
+        assertEquals(String.valueOf(v0), t0.toClojureString());
+        assertEquals(String.valueOf(v1), t1.toClojureString());
+        assertEquals("1.0",TestUtils.oneNode.toClojureString());
+        assertEquals("2.0",TestUtils.twoNode.toClojureString());
     }
 
 

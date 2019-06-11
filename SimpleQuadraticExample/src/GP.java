@@ -82,7 +82,7 @@ public class GP {
 
             terminationCondition = count > MAX_RUN || population.isTerminalConditionMet();
 
-            // toTreeString result
+            // toClojureString result
             System.out.println(population.print());
 
         }

@@ -7,7 +7,6 @@ import java.util.function.BiFunction;
 @Data
 public class GPSingleFunction implements GPFunction{
 
-
     private static final int MAX_NUMBER_SUB_NODES = 1;
     private final BiFunction<Double[], List<Node>, Double> function;
     private final String clojureString;

@@ -1,5 +1,8 @@
 import java.util.Optional;
 
+/**
+ * Interface Node provide the...
+ */
 public interface Node{
 
     /**
@@ -10,10 +13,10 @@ public interface Node{
     Double calculate(Double[] inputs);
 
     /**
-     * toTreeString the the node express in LISP form
+     * toClojureString the the node express in LISP form
      * @return
      */
-    String toTreeString();
+    String toClojureString();
 
     /**
      * the size of the tree, which is count of the number of the nodes.
@@ -31,7 +34,6 @@ public interface Node{
     default int getDepth(){
         return 0;
     }
-
 
     Node clone();
 

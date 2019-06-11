@@ -48,14 +48,14 @@ class VariableNodeTest {
     @Test
     void testPrintVariableNode(){
         Node variableNode = new VariableNode(0);
-        assertEquals("x0",variableNode.toTreeString());
+        assertEquals("x0",variableNode.toClojureString());
         IntStream.range(0,10).forEach(this::assertPrintVariableNode);
 
     }
 
     private void assertPrintVariableNode(int index){
         Node variableNode = new VariableNode(index);
-        assertEquals("x"+index,variableNode.toTreeString());
+        assertEquals("x"+index,variableNode.toClojureString());
     }
 
     @Test

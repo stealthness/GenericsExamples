@@ -34,11 +34,11 @@ public class Individual implements Node,Comparable{
     }
 
     @Override
-    public String toTreeString() {
+    public String toClojureString() {
         if (root.getClass() != FunctionNode.class){
-            return "("+root.toTreeString()+")";
+            return "("+root.toClojureString()+")";
         }
-        return root.toTreeString();
+        return root.toClojureString();
     }
 
     @Override

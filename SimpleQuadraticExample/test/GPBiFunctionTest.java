@@ -74,7 +74,7 @@ class GPBiFunctionTest {
         assertEquals(FunctionNode.class,actNode.getClass());
         assertEquals(expSize.get(), actNode.size());
         assertEquals(expDepth.get(),actNode.getDepth());
-        assertEquals(expClojureString.get(),actNode.toTreeString());
+        assertEquals(expClojureString.get(),actNode.toClojureString());
         assertEquals(expValue.get(),actNode.calculate(inputs.orElse(null)));
     }
 

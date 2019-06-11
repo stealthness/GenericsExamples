@@ -14,7 +14,7 @@ public class VariableNode implements Node {
     }
 
     @Override
-    public String toTreeString() {
+    public String toClojureString() {
         return "x"+index;
     }
 

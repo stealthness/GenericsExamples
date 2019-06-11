@@ -86,9 +86,9 @@ class PopulationTest {
     @Test
     void generateTreesOfDepth0WithEphemeral(){
         Individual individual = Individual.builder().root(terminalListE.get(0)).build();
-        System.out.println(individual.toTreeString());
+        System.out.println(individual.toClojureString());
         System.out.println(individual.calculate(new Double[]{2.2}));
-        System.out.println(individual.getRoot().toTreeString());
+        System.out.println(individual.getRoot().toClojureString());
 
         generateTreeAndTest(functionListSingle,terminalListE,FULL,0,Optional.of(1),Optional.of(0));
     }
