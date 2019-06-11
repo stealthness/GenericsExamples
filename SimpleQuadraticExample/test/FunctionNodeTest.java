@@ -1,13 +1,11 @@
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,42 +35,29 @@ class FunctionNodeTest {
         var testList = Arrays.asList(TestUtils.oneNode, TestUtils.twoNode, TestUtils.threeNode, TestUtils.xNode);
         testList.stream().forEach(node -> TestUtils.assertNode(node,node.getSubtree(0).get()));
         testList.stream().forEach(node -> assertTrue(node.getSubtree(1).isEmpty()));
-
     }
 
-    @Test
-    void testGetSubtreeAt1(){
-        var testList = Arrays.asList(TestUtils.xPlusOne, TestUtils.xPlusTwo, TestUtils.onePlusX, TestUtils.twoPlusX);
-        var expList = Arrays.asList(TestUtils.xNode, TestUtils.xNode, TestUtils.oneNode, TestUtils.twoNode);
-        IntStream.range(0,testList.size()).forEach(i ->{
-            TestUtils.assertNodeSize(3,1,testList.get(i));
-            TestUtils.assertNode(expList.get(i),testList.get(i).getSubtree(1).get());
-        });
-    }
 
     @Test
-    void testGetSubtreeAt1ForSingleFunction(){
-
-        var testList = Arrays.asList(TestUtils.absOneNode,TestUtils.recipOneNode);
-        var expList = Arrays.asList(TestUtils.oneNode, TestUtils.oneNode);
-        IntStream.range(0,testList.size()).forEach(i ->{
-            TestUtils.assertNodeSize(2,1,testList.get(i));
-            TestUtils.assertNode(testList.get(i),testList.get(i).getSubtree(0).get());
-            TestUtils.assertNode(expList.get(i),testList.get(i).getSubtree(1).get());
-            assertTrue(TestUtils.absOneNode.getSubtree(3).isEmpty());
-        });
-    }
-
-    @Test
-    void test1(){
+    void testGetSubtreeAt(){
         testTestCase("testcase001");
         testTestCase("testcase002");
+    }
+
+    @Test
+    void testGetSubtreeAtForSingleFunction(){
         testTestCase("single001");
         testTestCase("single002");
         testTestCase("single003");
         testTestCase("single004");
         testTestCase("single005");
         testTestCase("single006");
+    }
+
+    @Test
+    void testGetSubtreeAtMultipleFunction(){
+        testTestCase("multi001");
+        testTestCase("multi002");
     }
 
     void testTestCase(String testCase){
