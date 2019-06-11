@@ -1,40 +1,11 @@
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GPBiFunctionTest {
-
-    String testID;
-    Optional<Double> expValue;
-    Optional<Double> expSubNode0;
-    Optional<Double> expSubNode1;
-    Optional<Integer> expSize;
-    Optional<Integer> expDepth;
-    Optional<GPBiFunction> expFunction;
-    Optional<String> expClojureString;
-    Optional<String> expToString;
-    Node actNode;
-
-    private static final String TESTCASE_FILENAME = "D:\\WS\\Java\\GeneticsAlgorithmsExamples\\SimpleQuadraticExample\\testcases\\GPBiFunctionTestCases.csv";
-    List<String> testCases;
-
-
-    @BeforeEach
-    void begin(){
-        try {
-            testCases = Files.readAllLines(Paths.get(TESTCASE_FILENAME));
-        } catch (IOException e) {
-            new IOException("File not found");
-        }
-    }
 
     @Test
     void testAddCalculateAddWith2TerminalNodes(){

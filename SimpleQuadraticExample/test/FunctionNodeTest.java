@@ -81,5 +81,5 @@ class FunctionNodeTest {
         assertTrue(node.getSubtree(node.size()).isEmpty());
 
     }
-    
+
 }
