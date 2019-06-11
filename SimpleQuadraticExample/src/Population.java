@@ -2,6 +2,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
 /**
  * Populations contains a list of individuals, how the initial population is constructed
@@ -44,6 +45,9 @@ public class Population {
 
     @Builder.Default
     private Double mutateRate = 0.25;
+
+    @Builder.Default
+    private BiFunction<List<Node>, Double, Node>  mutateFunction = GPUtils.mutateRandomIndex;
 
 
     private List<Individual> generate(String generationMethod, int size){
@@ -92,8 +96,6 @@ public class Population {
     }
 
     List<Individual> mutate() {
-
-        var mutateFunction = GPUtils.mutateIndex1;
 
         List<Individual> selected = new ArrayList<>();
         for (Individual individual: individuals){

@@ -64,7 +64,7 @@ class TestUtils {
     static Node absabsOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(absOneNode));
     static Node absabsabsOneNode = new FunctionNode(new GPSingleFunction(GPUtils.abs,"abs"), Collections.singletonList(absabsOneNode));
 
-    static Node xPlusOneDivideX = new FunctionNode(new GPSingleFunction(GPUtils.add,"+"), Arrays.asList(xNode, oneDivideX));
+    static Node xPlusOneDivideX = new FunctionNode(GPUtils.getGPFunction("+"), Arrays.asList(xNode, oneDivideX));
     static Node addOneXPlusOneTwoThree = new FunctionNode(new GPMultiFunction(GPUtils.add,"+"),Arrays.asList(oneNode,xPlusOne,twoNode,threeNode));
     static Node absAddOneXPlusOneTwoThree = new FunctionNode(new GPMultiFunction(GPUtils.abs,"abs"),Collections.singletonList(addOneXPlusOneTwoThree));
 
@@ -114,7 +114,7 @@ class TestUtils {
     }
 
     static void assertNode(Node expNode, Node actNode) {
-        final String msg = String.format("\nfunction : %s",actNode.print());
+        final String msg = String.format("\n expNode %s, actNode : %s",expNode.print(), actNode.print());
         assertEquals(expNode.getClass(), actNode.getClass(), msg);
         assertNodeSize(expNode.size(),expNode.getDepth(),actNode);
         assertEquals(expNode.print(),actNode.print(),msg);
@@ -126,7 +126,7 @@ class TestUtils {
     }
 
     static void assertNodeSize(int expSize, int expDepth, Node actNode){
-        final String msg = String.format("\nfunction : %s",actNode.print());
+        final String msg = String.format("\n expSize %d, expDepth %d actNode : %s",expSize, expDepth, actNode.print());
         assertEquals(expSize, actNode.size(),msg);
         assertEquals(expDepth, actNode.getDepth(),msg);
     }

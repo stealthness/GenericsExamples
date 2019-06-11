@@ -85,6 +85,11 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
     }
 
 
+    /**
+     * Set 
+     * @param index
+     * @param subNode
+     */
     void setSubNodeAt(int index, Node subNode){
         if (subNodes == null && index == 0){
             subNodes = new ArrayList<>();
@@ -95,8 +100,10 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
                 if (index == subNodeIndex){
                     subNodes.remove(i);
                     subNodes.add(i,subNode);
-                }else if (index < subNodeIndex + subNodes.get(i).size()) {
-//                    setSubNodeAt(index-subNodeIndex,subNode);
+                    break;
+                }else if (index < getSubNodeIndex(i) + subNodes.get(i).size()){
+                    ((FunctionNode)subNodes.get(i)).setSubNodeAt(index - subNodeIndex, subNode);
+                    break;
                 }
             }
         } else{

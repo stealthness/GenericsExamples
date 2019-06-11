@@ -54,6 +54,54 @@ public class GPUtils {
         }
     };
 
+    static BiFunction<List<String>,Integer[], List<Node>> crossoverAt = (parentList,indexes) -> {
+        var parentNode0 = GPUtils.createNodeFromString(parentList.get(0));
+        var parentNode1 = GPUtils.createNodeFromString(parentList.get(1));
+        Node child0 = parentNode0.clone();
+        ((FunctionNode)child0).setSubNodeAt(indexes[0],parentNode1.getSubtree(indexes[1]).get());
+        Node child1 = parentNode1.clone();
+        ((FunctionNode)child1).setSubNodeAt(indexes[1],parentNode0.getSubtree(indexes[0]).get());
+        return Arrays.asList(child0,child1);
+    };
+
+
+
+    static BiFunction<List<String>, Double, List<Node>> crossoverAt1 = (parentList,crossoverRate) -> {
+        var parentNode0 = GPUtils.createNodeFromString(parentList.get(0));
+        var parentNode1 = GPUtils.createNodeFromString(parentList.get(1));
+        Node child0 = parentNode0.clone();
+        ((FunctionNode)child0).setSubNodeAt(1,parentNode1.getSubtree(1).get());
+        Node child1 = parentNode1.clone();
+        ((FunctionNode)child1).setSubNodeAt(1,parentNode0.getSubtree(1).get());
+        return Arrays.asList(child0,child1);
+    };
+
+    static BiFunction<List<String>, Double, List<Node>> crossoverAt2 = (parentList,crossoverRate) -> {
+        var parentNode0 = GPUtils.createNodeFromString(parentList.get(0));
+        var parentNode1 = GPUtils.createNodeFromString(parentList.get(1));
+
+        Node child0 = parentNode0.clone();
+        ((FunctionNode)child0).setSubNodeAt(2,parentNode1.getSubtree(2).get());
+        Node child1 = parentNode1.clone();
+        ((FunctionNode)child1).setSubNodeAt(2,parentNode0.getSubtree(2).get());
+        return Arrays.asList(child0,child1);
+    };
+
+    static BiFunction<List<Node>, Double, Node> mutateRandomIndex = (nodes,mutateRate) -> {
+        if (Math.random() > mutateRate){
+            return nodes.get(0);
+        }else{
+            if (nodes.get(0).size()==1){  // only a single terminal node
+                return nodes.get(1).clone();
+            }else{
+                int randomIndex = new Random().nextInt(nodes.get(0).size());
+                Node mutatedNode =  nodes.get(0).clone();
+                ((FunctionNode)mutatedNode).setSubNodeAt(randomIndex ,nodes.get(1));
+                return mutatedNode;
+            }
+        }
+    };
+
     // static methods
 
     static Node generateFullTree(List<FunctionNode> functionNodeList, List<Node> leafNodeList, int maxDepth){
@@ -153,5 +201,6 @@ public class GPUtils {
             }
         };
     }
+
 
 }
