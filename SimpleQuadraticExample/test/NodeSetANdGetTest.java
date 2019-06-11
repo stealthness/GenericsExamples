@@ -2,47 +2,66 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class NodeSetANdGetTest {
 
+    private static final String TESTCASE_FILENAME = "testcases//nodeReplaceTreeAt.txt";
 
     @Test
-    void testSimpleDepth1Tree(){
+    void test1(){
+        testTestcase("testcase001");
+        testTestcase("testcase002");
+    }
 
-//        testSimpleChangeNodeAt(
-//                Arrays.asList(TestUtils.xNode,TestUtils.oneNode),
-//                Arrays.asList(TestUtils.xPlusOne,TestUtils.xPlusX),
-//                TestUtils.xPlusOne,TestUtils.xNode);
-//
-//        testSimpleChangeNodeAt(
-//                Arrays.asList(TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode),
-//                Arrays.asList(TestUtils.addXTwoThree,TestUtils.addOneXThree,TestUtils.addOneTwoX),
-//                TestUtils.addOneTwoThree,TestUtils.xNode);
-//
-//        testSimpleChangeNodeAt(
-//                Arrays.asList(TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode),
-//                Arrays.asList(TestUtils.addXTwoThree,TestUtils.addOneXThree,TestUtils.addOneTwoX),
-//                TestUtils.addOneTwoThree,TestUtils.xNode);
-//    }
+    @Test
+    void test2(){
+        testTestcase("testcase003");
+    }
 
-//    @Test
-//    void testTreeDepth2(){
-//        Node testNode = TestUtils.xSqrdPlusOneDivideX;
-//        List<Node> expNodeAtIndex = Arrays.asList(TestUtils.xSqrd,TestUtils.xNode,TestUtils.xNode,TestUtils.oneDivideX,TestUtils.oneNode,TestUtils.xNode);
-//        IndividualTest.testGetNode(expNodeAtIndex,testNode);
-//        assertEquals(2.0,testNode.calculate(new Double[]{1.0}),0.0001);
-//        assertEquals(0.0,testNode.calculate(new Double[]{-1.0}),0.0001);
-//        assertEquals(2.25,testNode.calculate(new Double[]{0.5}),0.0001);
-//    }
-//
-//    void testSimpleChangeNodeAt(List<Node> expNodeAtIndex, List<Node> expChangeNodes,Node testNode,Node changeNode){
-//        IndividualTest.testGetNode(expNodeAtIndex,testNode);
-//        for (int i = 0; i < testNode.size()-1;i++){
-//            System.out.println("i : "+i);
-//            Node newNode = testNode.clone();
-//            ((FunctionNode)newNode).replaceSubtreeAt(i+1,changeNode);
-//            TestUtils.assertNode(expChangeNodes.get(i),newNode);
+    @Test
+    void test3(){
+        testTestcase("testcase004");
+    }
+
+    @Test
+    void test4(){
+        testTestcase("testcase005");
+        testTestcase("testcase006");
+    }
+
+    @Test
+    void test5(){
+        testTestcase("testcase007");
+    }
+
+    void testTestcase(String testCase){
+        List<String> testCaseStrings = TestUtils.getTestCase(testCase,TESTCASE_FILENAME, Optional.of(4));
+        testCaseStrings.forEach(System.out::println);
+        assertEquals(4,testCaseStrings.size());
+        var info = Arrays.asList(testCaseStrings.get(0).split(","));
+        if (!info.get(2).equals("0")){
+            Node testNode = GPUtils.createNodeFromString(testCaseStrings.get(1));
+            List<Node> subNode = createNodesFromStrings(testCaseStrings, 2);
+            List<Node> expNode = createNodesFromStrings(testCaseStrings, 3);
+            for (int i = 0; i < expNode.size(); i++){
+                Node actNode = testNode.clone();
+                ((FunctionNode)actNode).replaceSubtreeAt(Integer.valueOf(info.get(2)),subNode.get(i));
+                TestUtils.assertNode(expNode.get(i),actNode);
+            }
+        }else{
+            System.out.println("Node can not change index 0");
+        }
+      }
+
+    private List<Node> createNodesFromStrings(List<String> testCaseStrings, int i) {
+        return Arrays.asList(testCaseStrings.get(i)
+                .split(","))
+                .stream()
+                .map(GPUtils::createNodeFromString)
+                .collect(Collectors.toList());
     }
 }
