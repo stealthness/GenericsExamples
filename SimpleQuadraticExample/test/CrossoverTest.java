@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
@@ -68,7 +69,7 @@ class CrossoverTest {
 
     void testTestCase(String testCase){
 
-        List<String> testCaseStrings = getTestCase(testCase);
+        List<String> testCaseStrings = TestUtils.getTestCase(testCase,TESTCASE_FILENAME, Optional.of(3));
         assertEquals(3,testCaseStrings.size());
         var strings = Arrays.asList(testCaseStrings.get(0).split(","));
         parentList = Arrays.asList(testCaseStrings.get(1).split(","));
@@ -76,22 +77,4 @@ class CrossoverTest {
         testCrossOverAt(expChildrenList,parentList,new Integer[]{Integer.valueOf(strings.get(2)),Integer.valueOf(strings.get(3))},GPUtils.crossoverAt);
     }
 
-
-    List<String> getTestCase(String testcase){
-        try {
-            String[] testInfo = Files.lines(Path.of(TESTCASE_FILENAME))
-                    .filter(line -> line.startsWith(testcase))
-                    .findFirst()
-                    .get()
-                    .split(",");
-            int testStart = Integer.valueOf(testInfo[1]);
-            return Files.lines(Path.of(TESTCASE_FILENAME))
-                    .skip(testStart-1)
-                    .limit(3)
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 }

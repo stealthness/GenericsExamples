@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,7 +63,7 @@ class FunctionNodeTest {
 
     void testTestCase(String testCase){
 
-        List<String> testCaseStrings = getTestCase(testCase);
+        List<String> testCaseStrings = TestUtils.getTestCase(testCase,TESTCASE_FILENAME, Optional.of(3));;
         assertEquals(3,testCaseStrings.size());
         var strings = Arrays.asList(testCaseStrings.get(0).split(","));
         node = GPUtils.createNodeFromString(strings.get(1));
@@ -80,23 +81,5 @@ class FunctionNodeTest {
         assertTrue(node.getSubtree(node.size()).isEmpty());
 
     }
-
-
-    List<String> getTestCase(String testcase){
-        try {
-            String[] testInfo = Files.lines(Path.of(TESTCASE_FILENAME))
-                    .filter(line -> line.startsWith(testcase))
-                    .findFirst()
-                    .get()
-                    .split(",");
-            int testStart = Integer.valueOf(testInfo[1]);
-            return Files.lines(Path.of(TESTCASE_FILENAME))
-                    .skip(testStart-1)
-                    .limit(3)
-                    .collect(Collectors.toList());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+    
 }

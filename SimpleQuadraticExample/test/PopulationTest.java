@@ -149,17 +149,14 @@ class PopulationTest {
 
 
     String getTestCase(String testcase){
-        try {
-            String[] testInfo = Files.lines(Path.of(TESTCASE_FILENAME)).filter(line -> line.startsWith(testcase)).findFirst().get().split(",");
-            int testStart = Integer.valueOf(testInfo[1]);
-            int testSize = Integer.valueOf(testInfo[2]);
-            var sb = new StringBuilder();
-            Files.lines(Path.of(TESTCASE_FILENAME)).skip(testStart).limit(testSize).forEach(line -> sb.append(line+"\n"));
-            return sb.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "test case not found";
+        List<String> strings = TestUtils.getTestCase(testcase,TESTCASE_FILENAME,Optional.empty());
+        String[] info = strings.get(0).split(",");
+        int populationSize= Integer.valueOf(info[2]);
+        var sb = new StringBuilder();
+        strings.stream().skip(1).forEach(string->{
+            sb.append(string).append("\n");
+        });
+        return sb.toString();
     }
 
 

@@ -1,6 +1,11 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -131,8 +136,37 @@ class TestUtils {
         assertEquals(expDepth, actNode.getDepth(),msg);
     }
 
+    // Read Test Case Files
+
+    public static List<String> getTestCase(String testcase, String filePath, Optional<Integer> testLimit){
+        try {
+            String[] testInfo = Files.lines(Path.of(filePath))
+                    .filter(line -> line.startsWith(testcase))
+                    .findFirst()
+                    .get()
+                    .split(",");
+            int testStart = Integer.valueOf(testInfo[1]);
+            if (testLimit .isEmpty()){
+                testLimit = Optional.of(Integer.valueOf(testInfo[2])+1);
+            }
+            return Files.lines(Path.of(filePath))
+                    .skip(testStart-1)
+                    .limit(testLimit.get())
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    // private helper Method
 
     private static Double getRandomInRange(Double start, Double end){
         return Math.random()*(start+end)-start;
     }
+
+
+
+
 }
