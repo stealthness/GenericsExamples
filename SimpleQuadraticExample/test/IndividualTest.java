@@ -28,7 +28,7 @@ class IndividualTest {
         individual = Individual.builder().root(new TerminalNode(1.0)).build();
         assertEquals(TerminalNode.class, individual.getRoot().getClass());
         assertEquals(1.0, individual.calculate(TestUtils.createRandomInput(1)));
-        assertEquals("(1.0)",individual.print());
+        assertEquals("(1.0)",individual.toTreeString());
     }
 
 
@@ -115,7 +115,7 @@ class IndividualTest {
     @Test
     void testGetSubNode5(){
         Node testList = TestUtils.absAddOneXPlusOneTwoThree;
-        System.out.println(testList.print());
+        System.out.println(testList.toTreeString());
 
         List<Node> expNode = Arrays.asList(TestUtils.addOneXPlusOneTwoThree,TestUtils.oneNode,TestUtils.xPlusOne,TestUtils.xNode,TestUtils.oneNode,
                 TestUtils.twoNode,TestUtils.threeNode);
@@ -175,11 +175,11 @@ class IndividualTest {
 
 
     private void assertIndividualCalculation(Double expCalculation, Double[] inputs,Individual individual){
-        assertEquals(expCalculation, individual.calculate(inputs),String.format("individual : %s", individual.print()));
+        assertEquals(expCalculation, individual.calculate(inputs),String.format("individual : %s", individual.toTreeString()));
     }
 
     private void assertIndividualSize(int expSize, int expDepth, Individual individual){
-        assertEquals(expSize, individual.size(),String.format("individual : %s", individual.print()));
-        assertEquals(expDepth, individual.maxDepth(),String.format("individual : %s", individual.print()));
+        assertEquals(expSize, individual.size(),String.format("individual : %s", individual.toTreeString()));
+        assertEquals(expDepth, individual.maxDepth(),String.format("individual : %s", individual.toTreeString()));
     }
 }

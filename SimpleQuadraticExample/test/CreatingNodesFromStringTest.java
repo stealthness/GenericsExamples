@@ -75,16 +75,16 @@ public class CreatingNodesFromStringTest {
     private void assertNodesFromStrings(List<String> actStrings, List<Node> expNodes) {
         for (int i = 0 ; i< actStrings.size() ; i++){
             if (expNodes.get(0).size() == 1){ // is TerminalNode or VariableNode
-                assertEquals(expNodes.get(i).print(),actStrings.get(i).replace("("," ").replace(")"," ").strip());
+                assertEquals(expNodes.get(i).toTreeString(),actStrings.get(i).replace("("," ").replace(")"," ").strip());
             }else{  // Node is FunctionNode
-                assertEquals(expNodes.get(i).print(),actStrings.get(i));
+                assertEquals(expNodes.get(i).toTreeString(),actStrings.get(i));
             }
         }
         for (int i = 0 ; i< actStrings.size() ; i++){
             Node actNode = GPUtils.createNodeFromString(actStrings.get(i));
-            //System.out.println(String.format("From String : %s  ActNode : %s    expNode : %s",actStrings.get(i),(actNode==null)?"null":actNode.print(), expNodes.get(i).print()));
+            //System.out.println(String.format("From String : %s  ActNode : %s    expNode : %s",actStrings.get(i),(actNode==null)?"null":actNode.toTreeString(), expNodes.get(i).toTreeString()));
             TestUtils.assertNode(expNodes.get(i),actNode);
-            assertEquals(expNodes.get(i).print(),actNode.print());
+            assertEquals(expNodes.get(i).toTreeString(),actNode.toTreeString());
         }
     }
 

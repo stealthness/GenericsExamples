@@ -64,10 +64,10 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
     }
 
     @Override
-    public String print() {
+    public String toTreeString() {
         var sb = new StringBuilder();
         sb.append(String.format("(%s", function.toClojureString()));
-        subNodes.forEach(subNode-> sb.append(String.format(" %s",subNode.print())));
+        subNodes.forEach(subNode-> sb.append(String.format(" %s",subNode.toTreeString())));
         sb.append(")");
         return sb.toString();
     }

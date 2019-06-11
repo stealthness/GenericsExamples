@@ -22,7 +22,7 @@ class EphemeralNodeTest {
     void testPrintZero(){
         Node zeroEphemeralNode = new EphemeralNode(new Double[]{0.0,0.0});
         Node createdNode = zeroEphemeralNode.clone();
-        assertEquals("0.0",createdNode.print());
+        assertEquals("0.0",createdNode.toTreeString());
     }
 
     @Test
@@ -31,14 +31,14 @@ class EphemeralNodeTest {
         Node ephemeralNode = new EphemeralNode(range);
         IntStream.range(0,MAX_RUNS).forEach(i ->{
             Node createdNode = ephemeralNode.clone();
-            assertPrintIsInRange(range,createdNode.print());
+            assertPrintIsInRange(range,createdNode.toTreeString());
         });
     }
 
 
     private void assertEphemeralNodeCreation(Double[] expRange, Node actNode, Double[] actRange) {
         assertEquals(TerminalNode.class, actNode.getClass());
-        assertPrintIsInRange(expRange,actNode.print());
+        assertPrintIsInRange(expRange,actNode.toTreeString());
         assertEphemeralRange(expRange,actRange);
         assertEphemeralCalculation(expRange,actNode);
     }

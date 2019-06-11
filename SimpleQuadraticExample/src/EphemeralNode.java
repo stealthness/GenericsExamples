@@ -12,7 +12,7 @@ public class EphemeralNode implements Node {
     }
 
     @Override
-    public String print() {
+    public String toTreeString() {
         return "R[" + range[0] + "," + range[1] + "]";
     }
 

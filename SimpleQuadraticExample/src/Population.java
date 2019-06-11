@@ -159,7 +159,7 @@ public class Population {
         if (individuals.isEmpty()){
             sb.append("Population is Empty");
         }else{
-            individuals.forEach(individual -> sb.append(individual.print()).append("\n"));
+            individuals.forEach(individual -> sb.append(individual.toTreeString()).append("\n"));
         }
         return sb.toString();
     }

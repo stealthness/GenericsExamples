@@ -42,7 +42,7 @@ public class TerminalNode implements Node {
      * @return value as a string
      */
     @Override
-    public String print() {
+    public String toTreeString() {
         return value.toString();
     }
 

@@ -104,20 +104,20 @@ class TestUtils {
     static void assertNode(Double expResult, Node actNode, Double[] inputs){
         Double actResult = actNode.calculate(inputs);
         assertEquals(expResult,actResult ,TOL ,String.format("\nfunction : %s\ninputs %s\n",
-                actNode.print(), Arrays.asList(inputs).toString()));
+                actNode.toTreeString(), Arrays.asList(inputs).toString()));
     }
 
     static void assertNode(Double expResult, Node actNode) {
         Double actResult = actNode.calculate(createRandomInput(1));
         assertEquals(expResult, actResult, TOL, String.format("\nfunction : %s",
-                actNode.print()));
+                actNode.toTreeString()));
     }
 
     static void assertNode(Node expNode, Node actNode) {
-        final String msg = String.format("\n expNode %s, actNode : %s",expNode.print(), actNode.print());
+        final String msg = String.format("\n expNode %s, actNode : %s",expNode.toTreeString(), actNode.toTreeString());
         assertEquals(expNode.getClass(), actNode.getClass(), msg);
         assertNodeSize(expNode.size(),expNode.getDepth(),actNode);
-        assertEquals(expNode.print(),actNode.print(),msg);
+        assertEquals(expNode.toTreeString(),actNode.toTreeString(),msg);
         if (expNode.getClass()== VariableNode.class){
             assertEquals(((VariableNode)expNode).getIndex(),((VariableNode)actNode).getIndex(),msg);
         } else if (expNode.getClass()== TerminalNode.class){
@@ -126,7 +126,7 @@ class TestUtils {
     }
 
     static void assertNodeSize(int expSize, int expDepth, Node actNode){
-        final String msg = String.format("\n expSize %d, expDepth %d actNode : %s",expSize, expDepth, actNode.print());
+        final String msg = String.format("\n expSize %d, expDepth %d actNode : %s",expSize, expDepth, actNode.toTreeString());
         assertEquals(expSize, actNode.size(),msg);
         assertEquals(expDepth, actNode.getDepth(),msg);
     }

@@ -34,11 +34,11 @@ public class Individual implements Node,Comparable{
     }
 
     @Override
-    public String print() {
+    public String toTreeString() {
         if (root.getClass() != FunctionNode.class){
-            return "("+root.print()+")";
+            return "("+root.toTreeString()+")";
         }
-        return root.print();
+        return root.toTreeString();
     }
 
     @Override

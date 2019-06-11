@@ -10,10 +10,10 @@ public interface Node{
     Double calculate(Double[] inputs);
 
     /**
-     * print the the node express in LISP form
+     * toTreeString the the node express in LISP form
      * @return
      */
-    String print();
+    String toTreeString();
 
     /**
      * the size of the tree, which is count of the number of the nodes.
