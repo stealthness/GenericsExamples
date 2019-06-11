@@ -1,12 +1,8 @@
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -66,14 +62,14 @@ class FunctionNodeTest {
         List<String> testCaseStrings = TestUtils.getTestCase(testCase,TESTCASE_FILENAME, Optional.of(3));;
         assertEquals(3,testCaseStrings.size());
         var strings = Arrays.asList(testCaseStrings.get(0).split(","));
-        node = GPUtils.createNodeFromString(strings.get(1));
+        node = NodeUtils.createNodeFromString(strings.get(1));
         if (strings.get(2).equals("all")){
             for (int i = 1; i< node.size();i++){
-                TestUtils.assertNode(GPUtils.createNodeFromString(strings.get(2).split(",")[i]),node.getSubtree(i).get());
+                TestUtils.assertNode(NodeUtils.createNodeFromString(strings.get(2).split(",")[i]),node.getSubtree(i).get());
             }
         } else{
             for (int i = 2; i< strings.get(2).length();i++){
-                TestUtils.assertNode(GPUtils.createNodeFromString(strings.get(2).split(",")[i]),node.getSubtree(i).get());
+                TestUtils.assertNode(NodeUtils.createNodeFromString(strings.get(2).split(",")[i]),node.getSubtree(i).get());
             }
         }
         TestUtils.assertNode(node,node.getSubtree(0).get());

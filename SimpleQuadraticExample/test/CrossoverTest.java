@@ -1,13 +1,9 @@
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -62,8 +58,8 @@ class CrossoverTest {
     private void testCrossOverAt(List<String> expChildrenList, List<String> parentList, Integer[] indexes, BiFunction<List<String>,Integer[], List<Node>> function){
         for (int i = 0; i<parentList.size(); i =+2){
             List<Node> children = function.apply(parentList, indexes);
-            TestUtils.assertNode(GPUtils.createNodeFromString(expChildrenList.get(i)),children.get(0));
-            TestUtils.assertNode(GPUtils.createNodeFromString(expChildrenList.get(i+1)),children.get(1));
+            TestUtils.assertNode(NodeUtils.createNodeFromString(expChildrenList.get(i)),children.get(0));
+            TestUtils.assertNode(NodeUtils.createNodeFromString(expChildrenList.get(i+1)),children.get(1));
         }
     }
 

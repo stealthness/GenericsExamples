@@ -113,7 +113,7 @@ public class Population {
      * @return
      */
     private Node generateRoot() {
-        return Individual.generateNode(terminalNodeList,functionNodeList,generationMethod,getMaxGenerationDepth());
+        return NodeUtils.generateNode(terminalNodeList,functionNodeList,generationMethod,getMaxGenerationDepth());
     }
 
     List<Individual> edit() {

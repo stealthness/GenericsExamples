@@ -105,7 +105,7 @@ class IndividualTest {
 
     public void testIndividualCalculation(String testcase) {
         List<String> strings = TestUtils.getTestCase(testcase, INDIVIDUAL_CALCULATION_FILEPATH, Optional.of(4));
-        individual = Individual.builder().root(GPUtils.createNodeFromString(strings.get(1))).build();
+        individual = Individual.builder().root(NodeUtils.createNodeFromString(strings.get(1))).build();
         List<String> inputsStrings;
         double[] expCalculation;
         inputsStrings = Arrays.asList(strings.get(2).split(","));
@@ -125,15 +125,15 @@ class IndividualTest {
         assertEquals(3,testCaseStrings.size());
         var info = Arrays.asList(testCaseStrings.get(0).split(","));
 
-        Node root = GPUtils.createNodeFromString(info.get(1));
+        Node root = NodeUtils.createNodeFromString(info.get(1));
         individual = Individual.builder().root(root).build();
         if (info.get(2).equals("all")){
             for (int i = 1; i< individual.size();i++){
-                TestUtils.assertNode(GPUtils.createNodeFromString(info.get(2).split(",")[i]),individual.getSubtree(i).get());
+                TestUtils.assertNode(NodeUtils.createNodeFromString(info.get(2).split(",")[i]),individual.getSubtree(i).get());
             }
         } else{
             for (int i = 2; i< info.get(2).length();i++){
-                TestUtils.assertNode(GPUtils.createNodeFromString(info.get(2).split(",")[i]),individual.getSubtree(i).get());
+                TestUtils.assertNode(NodeUtils.createNodeFromString(info.get(2).split(",")[i]),individual.getSubtree(i).get());
             }
         }
         TestUtils.assertNode(root,individual.getSubtree(0).get());
@@ -146,7 +146,7 @@ class IndividualTest {
         testCaseStrings.forEach(System.out::println);
         assertEquals(4,testCaseStrings.size());
         var info = Arrays.asList(testCaseStrings.get(0).split(","));
-            individual = Individual.builder().root(GPUtils.createNodeFromString(testCaseStrings.get(1))).build();
+            individual = Individual.builder().root(NodeUtils.createNodeFromString(testCaseStrings.get(1))).build();
             List<Node> subNode = createNodesFromStrings(testCaseStrings, 2);
             List<Node> expNode = createNodesFromStrings(testCaseStrings, 3);
             for (int i = 0; i < expNode.size(); i++){
@@ -161,7 +161,7 @@ class IndividualTest {
         return Arrays.asList(testCaseStrings.get(i)
                 .split(","))
                 .stream()
-                .map(GPUtils::createNodeFromString)
+                .map(NodeUtils::createNodeFromString)
                 .collect(Collectors.toList());
     }
 

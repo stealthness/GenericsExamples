@@ -44,7 +44,7 @@ public class NodeSetANdGetTest {
         assertEquals(4,testCaseStrings.size());
         var info = Arrays.asList(testCaseStrings.get(0).split(","));
         if (!info.get(2).equals("0")){
-            Node testNode = GPUtils.createNodeFromString(testCaseStrings.get(1));
+            Node testNode = NodeUtils.createNodeFromString(testCaseStrings.get(1));
             List<Node> subNode = createNodesFromStrings(testCaseStrings, 2);
             List<Node> expNode = createNodesFromStrings(testCaseStrings, 3);
             for (int i = 0; i < expNode.size(); i++){
@@ -61,7 +61,7 @@ public class NodeSetANdGetTest {
         return Arrays.asList(testCaseStrings.get(i)
                 .split(","))
                 .stream()
-                .map(GPUtils::createNodeFromString)
+                .map(NodeUtils::createNodeFromString)
                 .collect(Collectors.toList());
     }
 }

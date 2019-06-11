@@ -3,7 +3,6 @@ import lombok.Data;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 
 /**
@@ -13,10 +12,13 @@ import java.util.Random;
 @Builder
 public class Individual implements Node,Comparable{
 
-    private static final String FULL = "full";
-    private static final String GROW = "grow";
-    private static final double FUNCTION_TERMINAL_SELECTION_RATIO = 0.5;
+    /**
+     * root is the tree structure program. It is of type Node, which may contain subNodes
+     */
     Node root;
+    /**
+     * Is the fitness value of the Individual
+     */
     Double fitness;
 
 
@@ -62,6 +64,21 @@ public class Individual implements Node,Comparable{
 
 
     /**
+     * Replaces the subtree at index with newSubtree. If the index is 0 then new subtree will replace the individuals root
+     * @param index position of the root tree
+     * @param newSubtree the new subtree to place subtree at index
+     */
+    void replaceSubtreeAt(int index, Node newSubtree) {
+        if (index == 0){
+            setRoot(newSubtree.clone());
+        } else{
+            ((FunctionNode)root).replaceSubtreeAt(index,newSubtree);
+        }
+    }
+
+    // static methods
+
+    /**
      * Returns a new Individual with randomly selected tree
      * @param terminalList a list of functions that can be selected
      * @param functionList a list of terminal that can be selected
@@ -73,54 +90,11 @@ public class Individual implements Node,Comparable{
 
         Node root;
         if (depth == 0){
-            root = selectTerminalNode(terminalList);
+            root = NodeUtils.selectTerminalNode(terminalList);
         }else{
-            root = generateNode(terminalList,functionList,method,depth);
+            root = NodeUtils.generateNode(terminalList,functionList,method,depth);
         }
         return Individual.builder().root(root).build();
     }
 
-    public static Node generateNode(List<Node> terminalList, List<GPFunction> functionList, String method, int depth){
-        Node node = null;
-        if (depth == 0){
-            node = selectTerminalNode(terminalList);
-        }else if (method.equals(FULL)){
-            node = selectFunctionNode(functionList);
-            for (int i = 0 ; i < Math.min(2, ((FunctionNode)node).getMaxSubNodes()); i++){
-                ((FunctionNode)node).addSubNode(generateNode(terminalList,functionList,method,depth-1));
-            }
-        }else if (method.equals(GROW)){
-            if (Math.random() < FUNCTION_TERMINAL_SELECTION_RATIO){
-                node = selectTerminalNode(terminalList);
-            }else{
-                node = selectFunctionNode(functionList);
-                for (int i = 0 ; i<Math.min(2, ((FunctionNode)node).getMaxSubNodes()); i++){
-                    ((FunctionNode)node).addSubNode(generateNode(terminalList,functionList,method,depth-1));
-                }
-            }
-
-        }
-        return node;
-    }
-
-
-    private static FunctionNode selectFunctionNode(List<GPFunction>functionNodeList) {
-        // standard select equal random bag
-        int selection = new Random().nextInt(functionNodeList.size());
-        return new FunctionNode(functionNodeList.get(selection));
-    }
-
-    private static Node selectTerminalNode(List<Node> terminalNodeList) {
-        // standard select equal random bag
-        int selection = new Random().nextInt(terminalNodeList.size());
-        return terminalNodeList.get(selection).clone();
-    }
-
-    public void replaceSubtreeAt(int index, Node node) {
-        if (index == 0){
-            setRoot(node.clone());
-        } else{
-            ((FunctionNode)root).replaceSubtreeAt(index,node);
-        }
-    }
 }

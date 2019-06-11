@@ -1,7 +1,6 @@
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -55,8 +54,8 @@ public class GPUtils {
     };
 
     static BiFunction<List<String>,Integer[], List<Node>> crossoverAt = (parentList,indexes) -> {
-        var parentNode0 = GPUtils.createNodeFromString(parentList.get(0));
-        var parentNode1 = GPUtils.createNodeFromString(parentList.get(1));
+        var parentNode0 = NodeUtils.createNodeFromString(parentList.get(0));
+        var parentNode1 = NodeUtils.createNodeFromString(parentList.get(1));
         Node child0 = parentNode0.clone();
         ((FunctionNode)child0).replaceSubtreeAt(indexes[0],parentNode1.getSubtree(indexes[1]).get());
         Node child1 = parentNode1.clone();
@@ -67,8 +66,8 @@ public class GPUtils {
 
 
     static BiFunction<List<String>, Double, List<Node>> crossoverAt1 = (parentList,crossoverRate) -> {
-        var parentNode0 = GPUtils.createNodeFromString(parentList.get(0));
-        var parentNode1 = GPUtils.createNodeFromString(parentList.get(1));
+        var parentNode0 = NodeUtils.createNodeFromString(parentList.get(0));
+        var parentNode1 = NodeUtils.createNodeFromString(parentList.get(1));
         Node child0 = parentNode0.clone();
         ((FunctionNode)child0).replaceSubtreeAt(1,parentNode1.getSubtree(1).get());
         Node child1 = parentNode1.clone();
@@ -77,8 +76,8 @@ public class GPUtils {
     };
 
     static BiFunction<List<String>, Double, List<Node>> crossoverAt2 = (parentList,crossoverRate) -> {
-        var parentNode0 = GPUtils.createNodeFromString(parentList.get(0));
-        var parentNode1 = GPUtils.createNodeFromString(parentList.get(1));
+        var parentNode0 = NodeUtils.createNodeFromString(parentList.get(0));
+        var parentNode1 = NodeUtils.createNodeFromString(parentList.get(1));
 
         Node child0 = parentNode0.clone();
         ((FunctionNode)child0).replaceSubtreeAt(2,parentNode1.getSubtree(2).get());
@@ -104,68 +103,6 @@ public class GPUtils {
 
     // static methods
 
-    static Node generateFullTree(List<FunctionNode> functionNodeList, List<Node> leafNodeList, int maxDepth){
-        Node root;
-        if (maxDepth >0){
-            root = functionNodeList.get(new Random().nextInt(functionNodeList.size())).clone();
-            if (root.getClass() == FunctionNode.class){
-                ((FunctionNode)root).addSubNode(generateFullTree(functionNodeList,leafNodeList,maxDepth-1));
-            }
-        }else{
-            root = leafNodeList.get(new Random().nextInt(leafNodeList.size()));
-        }
-        return root;
-    }
-
-
-    static Node createNodeFromString(String string){
-        List<String> strings = Arrays.asList(string.split(" "));
-        if (strings.size()==1){
-            return getTerminalNode(strings.get(0));
-        } else {
-            if (string.chars().filter(ch -> ch == '(').count() >1){
-                List<String> newString = new ArrayList<>();
-                newString.add(strings.get(0));
-                for (int i = 1  ; i < strings.size(); i++){
-                    if (strings.get(i).contains("(")){
-                        String openString = strings.get(i);
-                        while(isStillOpen(openString)){
-                            openString += " "+strings.get(++i);
-                        }
-                        newString.add(openString);
-                    }else {
-                        newString.add(strings.get(i));
-                    }
-                }
-                return createFunctionNodeFromString(newString);
-            } else{
-                return createFunctionNodeFromString(strings);
-            }
-        }
-    }
-
-    private static boolean isStillOpen(String openString) {
-        return openString.chars().filter(ch -> ch =='(').count()> openString.chars().filter(ch -> ch ==')').count();
-
-    }
-
-    private static Node createFunctionNodeFromString(List<String> strings) {
-        List<Node> subNodes = new ArrayList<>();
-        for (int i = 1; i < strings.size() ; i++){
-            subNodes.add(createNodeFromString(strings.get(i)));
-        }
-        String functionString = strings.get(0).replace("(","");
-        return new FunctionNode(getGPFunction(functionString), subNodes);
-    }
-
-    private static Node getTerminalNode(String string) {
-        String strip = string.replace("(", "").replace(")", "");
-        if (strip.startsWith("x")){
-            return new VariableNode(Integer.valueOf(strip.replace("x", "")));
-        }else{
-            return new TerminalNode(Double.valueOf(strip));
-        }
-    }
 
     public static GPFunction getGPFunction(String functionString){
         return switch (functionString) {
