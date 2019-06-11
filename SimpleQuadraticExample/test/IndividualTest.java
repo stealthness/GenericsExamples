@@ -4,17 +4,16 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class IndividualTest {
-
-    private static final Double TOL = 0.000001;
-    private static final int MAX_RUNS = 100;
-    private static final String FULL = "full";
-    public static final String FILEPATH = "testcases//individualCalculationTestCases.txt";
+//
+//    private static final Double TOL = 0.000001;
+//    private static final int MAX_RUNS = 100;
+//    private static final String FULL = "full";
+    private static final String INDIVIDUAL_CALCULATION_FILEPATH = "testcases//individualCalculationTestCases.txt";
+    private static final String GET_SUBTREE_FILEPATH = "testcases//testGetSubtreeAt.txt";
     private Individual individual;
 
     @BeforeEach
@@ -53,131 +52,39 @@ class IndividualTest {
         assertTrue(individual.calculate(input) >= expRange[0], String.format("%s > %f is false",individual.calculate(input),expRange[0]));
     }
 
+    // Test get SubNodes
 
     @Test
-    void testIndividualJustTerminalNodes(){
-        var testList = Arrays.asList(TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode,TestUtils.eNode,TestUtils.xNode);
-        testIndividualFunctionNodes(1,0,testList);
-    }
-
-    @Test
-    void testIndividualJustGPBiFunctionNodes(){
-        var testList = Arrays.asList(TestUtils.addNode,TestUtils.multiplyNode, TestUtils.xPlusOne,TestUtils.xPlusTwo,
-                TestUtils.onePlusX,TestUtils.twoPlusX);
-        testIndividualFunctionNodes(3,1,testList);
+    void test1(){
+        testGetNode("testcase001");
+        testGetNode("testcase002");
     }
 
     @Test
-    void testIndividualJustGPMultiFunctionNodes(){
-        var testList = Arrays.asList(TestUtils.addOneTwoThree);
-        var expCalculation = Arrays.asList(6.0);
-        individual = Individual.builder().root(testList.get(0)).build();
-
-        Double[] inputs = new Double[]{0.0,1.0,-2.0};
-        assertIndividualCalculation(6.0, inputs,individual);
-
-        testIndividualFunctionNodes(4,1,testList);
-        testIndividualCalculations(expCalculation,inputs,testList);
-    }
-
-
-    @Test
-    void testGetNodeAt0(){
-        Node testList = TestUtils.onePlusX;
-        List<Node> expNode = Arrays.asList(TestUtils.oneNode,TestUtils.xNode);
-
-        testGetNode(expNode,testList);
+    void testSingle(){
+        testGetNode("single004");
+        testGetNode("single005");
+        testGetNode("single006");
+        testGetNode("single003");
     }
 
     @Test
-    void testGetNodeAtDepth3(){
-        Node testList = TestUtils.addOneTwoThree;
-        List<Node> expNode = Arrays.asList(TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode);
-        testGetNode(expNode,testList);
+    void testMulti(){
+        testGetNode("multi002");
+        testGetNode("multi001");
     }
+
+
 
     @Test
-    void testGetSubNode1(){
-
-        Node testList = TestUtils.absabsabsOneNode;
-        List<Node> expNode = Arrays.asList(TestUtils.absabsOneNode,TestUtils.absOneNode,TestUtils.oneNode);
-
-        testGetNode(expNode,testList);
+    void testTest(){
+        testIndividualCalculation("testcase001");
+        testIndividualCalculation("testcase002");
+        testIndividualCalculation("testcase003");
+        testIndividualCalculation("testcase004");
     }
 
-    @Test
-    void testGetSubNode2(){
-        Node testList = TestUtils.xPlusOneDivideXSubtructAbsOnePlusX;
-        List<Node> expNode = Arrays.asList(TestUtils.xPlusOneDivideX,TestUtils.xNode,TestUtils.oneDivideX,TestUtils.oneNode,
-                TestUtils.xNode,TestUtils.absAddOneXPlusOneTwoThree,TestUtils.addOneXPlusOneTwoThree,TestUtils.oneNode,TestUtils.xPlusOne,TestUtils.xNode,TestUtils.oneNode,
-                TestUtils.twoNode,TestUtils.threeNode);
-
-        testGetNode(expNode,testList);
-    }
-
-    @Test
-    void testGetSubNode5(){
-        Node testList = TestUtils.absAddOneXPlusOneTwoThree;
-        System.out.println(testList.toClojureString());
-
-        List<Node> expNode = Arrays.asList(TestUtils.addOneXPlusOneTwoThree,TestUtils.oneNode,TestUtils.xPlusOne,TestUtils.xNode,TestUtils.oneNode,
-                TestUtils.twoNode,TestUtils.threeNode);
-
-        testGetNode(expNode,testList);
-    }
-
-    @Test
-    void testGetSubNode3(){
-        Node testList = TestUtils.xPlusOneDivideX;
-        List<Node> expNode = Arrays.asList(TestUtils.xNode,TestUtils.oneDivideX,TestUtils.oneNode,
-                TestUtils.xNode);
-
-        testGetNode(expNode,testList);
-    }
-    @Test
-    void testGetSubNode4(){
-        Node testList = TestUtils.oneDivideX;
-        List<Node> expNode = Arrays.asList(TestUtils.oneNode,
-                TestUtils.xNode);
-
-        IndividualTest.testGetNode(expNode,testList);
-    }
-
-
-    // private helper method
-
-
-    public static void testGetNode(List<Node> expNode, Node testNode){
-        var individual = Individual.builder().root(testNode).build();
-        TestUtils.assertNode(testNode,individual.getRoot());
-        assertEquals(testNode.size(),individual.size(),"Individual's Size not equal to root Node's size");
-
-        IntStream.range(1,individual.size()).forEach(i->{
-            System.out.println(i);
-            TestUtils.assertNode(expNode.get(i-1),individual.getSubtree(i).get());
-        });
-    }
-
-    private void testIndividualFunctionNodes(int expSize, int expDepth, List<Node> testList){
-        testList.stream().forEach(node -> {
-            individual = Individual.builder()
-                    .root(node)
-                    .build();
-            assertIndividualSize(expSize,expDepth,individual);
-        });
-    }
-
-    private void testIndividualCalculations(List<Double> expCalculations, Double[] inputs, List<Node> testList){
-        IntStream.range(0,testList.size()).forEach(i -> {
-            individual = Individual.builder()
-                    .root(testList.get(i))
-                    .build();
-            assertIndividualCalculation(expCalculations.get(i),inputs,individual);
-        });
-    }
-
-
-
+    // private assert Methods
 
     private void assertIndividualCalculation(Double expCalculation, Double[] inputs,Individual individual){
         assertEquals(expCalculation, individual.calculate(inputs),String.format("individual : %s", individual.toClojureString()));
@@ -188,17 +95,10 @@ class IndividualTest {
         assertEquals(expDepth, individual.maxDepth(),String.format("individual : %s", individual.toClojureString()));
     }
 
-    @Test
-    void testTest(){
-        testIndividualCalculation("testcase001");
-        testIndividualCalculation("testcase002");
-        testIndividualCalculation("testcase003");
-        testIndividualCalculation("testcase004");
-    }
+    // test method using testcase
 
-
-    void testIndividualCalculation(String testcase) {
-        List<String> strings = TestUtils.getTestCase(testcase, FILEPATH, Optional.of(4));
+    public void testIndividualCalculation(String testcase) {
+        List<String> strings = TestUtils.getTestCase(testcase, INDIVIDUAL_CALCULATION_FILEPATH, Optional.of(4));
         individual = Individual.builder().root(GPUtils.createNodeFromString(strings.get(1))).build();
         List<String> inputsStrings;
         double[] expCalculation;
@@ -209,8 +109,30 @@ class IndividualTest {
                 .toArray();
 
         for (int i = 0; i < expCalculation.length; i++) {
+            assertIndividualCalculation(expCalculation[i],new Double[]{Double.valueOf(inputsStrings.get(i))},individual);
             assertEquals(expCalculation[i], individual.calculate(new Double[]{Double.valueOf(inputsStrings.get(i))}), String.format("individual : %s", individual.toClojureString()));
         }
+    }
+
+    public void testGetNode(String testcase) {
+        List<String> testCaseStrings = TestUtils.getTestCase(testcase, GET_SUBTREE_FILEPATH, Optional.of(3));;
+        assertEquals(3,testCaseStrings.size());
+        var info = Arrays.asList(testCaseStrings.get(0).split(","));
+
+        Node root = GPUtils.createNodeFromString(info.get(1));
+        individual = Individual.builder().root(root).build();
+        if (info.get(2).equals("all")){
+            for (int i = 1; i< individual.size();i++){
+                TestUtils.assertNode(GPUtils.createNodeFromString(info.get(2).split(",")[i]),individual.getSubtree(i).get());
+            }
+        } else{
+            for (int i = 2; i< info.get(2).length();i++){
+                TestUtils.assertNode(GPUtils.createNodeFromString(info.get(2).split(",")[i]),individual.getSubtree(i).get());
+            }
+        }
+        TestUtils.assertNode(root,individual.getSubtree(0).get());
+        // any index equal or greater should return empty
+        assertTrue(individual.getSubtree(individual.size()).isEmpty());
     }
 
 //    private double[] createRandomInputs(int size, int lowerBound, int upperBound) {
