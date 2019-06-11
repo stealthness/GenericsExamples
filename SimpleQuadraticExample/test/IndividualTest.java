@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,6 +15,7 @@ class IndividualTest {
 //    private static final String FULL = "full";
     private static final String INDIVIDUAL_CALCULATION_FILEPATH = "testcases//individualCalculationTestCases.txt";
     private static final String GET_SUBTREE_FILEPATH = "testcases//testGetSubtreeAt.txt";
+    private static final String TESTCASE_FILENAME = "testcases//nodeReplaceTreeAt.txt";
     private Individual individual;
 
     @BeforeEach
@@ -74,25 +76,29 @@ class IndividualTest {
         testGetNode("multi001");
     }
 
-
-
     @Test
-    void testTest(){
+    void testIndividualCalculation(){
         testIndividualCalculation("testcase001");
         testIndividualCalculation("testcase002");
         testIndividualCalculation("testcase003");
         testIndividualCalculation("testcase004");
     }
 
+    @Test
+    void testReplaceNodeAt(){
+        testTestcase("testcase001");
+        testTestcase("testcase002");
+        testTestcase("testcase003");
+        testTestcase("testcase004");
+        testTestcase("testcase005");
+        testTestcase("testcase006");
+        testTestcase("testcase007");
+    }
+
     // private assert Methods
 
     private void assertIndividualCalculation(Double expCalculation, Double[] inputs,Individual individual){
         assertEquals(expCalculation, individual.calculate(inputs),String.format("individual : %s", individual.toClojureString()));
-    }
-
-    private void assertIndividualSize(int expSize, int expDepth, Individual individual){
-        assertEquals(expSize, individual.size(),String.format("individual : %s", individual.toClojureString()));
-        assertEquals(expDepth, individual.maxDepth(),String.format("individual : %s", individual.toClojureString()));
     }
 
     // test method using testcase
@@ -133,6 +139,30 @@ class IndividualTest {
         TestUtils.assertNode(root,individual.getSubtree(0).get());
         // any index equal or greater should return empty
         assertTrue(individual.getSubtree(individual.size()).isEmpty());
+    }
+
+    void testTestcase(String testCase){
+        List<String> testCaseStrings = TestUtils.getTestCase(testCase,TESTCASE_FILENAME, Optional.of(4));
+        testCaseStrings.forEach(System.out::println);
+        assertEquals(4,testCaseStrings.size());
+        var info = Arrays.asList(testCaseStrings.get(0).split(","));
+            individual = Individual.builder().root(GPUtils.createNodeFromString(testCaseStrings.get(1))).build();
+            List<Node> subNode = createNodesFromStrings(testCaseStrings, 2);
+            List<Node> expNode = createNodesFromStrings(testCaseStrings, 3);
+            for (int i = 0; i < expNode.size(); i++){
+                Individual actIndividual =  Individual.builder().root(individual.clone()).build();
+                actIndividual.replaceSubtreeAt(Integer.valueOf(info.get(2)),subNode.get(i));
+                TestUtils.assertNode(expNode.get(i),actIndividual.getRoot());
+            }
+
+    }
+
+    private List<Node> createNodesFromStrings(List<String> testCaseStrings, int i) {
+        return Arrays.asList(testCaseStrings.get(i)
+                .split(","))
+                .stream()
+                .map(GPUtils::createNodeFromString)
+                .collect(Collectors.toList());
     }
 
 //    private double[] createRandomInputs(int size, int lowerBound, int upperBound) {

@@ -116,4 +116,11 @@ public class Individual implements Node,Comparable{
         return terminalNodeList.get(selection).clone();
     }
 
+    public void replaceSubtreeAt(int index, Node node) {
+        if (index == 0){
+            setRoot(node.clone());
+        } else{
+            ((FunctionNode)root).replaceSubtreeAt(index,node);
+        }
+    }
 }
