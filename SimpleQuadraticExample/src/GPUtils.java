@@ -48,7 +48,7 @@ public class GPUtils {
                 return nodes.get(1).clone();
             }else{
                 Node mutatedNode =  nodes.get(0).clone();
-                ((FunctionNode)mutatedNode).setSubNodeAt(1,nodes.get(1));
+                ((FunctionNode)mutatedNode).replaceSubtreeAt(1,nodes.get(1));
                 return mutatedNode;
             }
         }
@@ -58,9 +58,9 @@ public class GPUtils {
         var parentNode0 = GPUtils.createNodeFromString(parentList.get(0));
         var parentNode1 = GPUtils.createNodeFromString(parentList.get(1));
         Node child0 = parentNode0.clone();
-        ((FunctionNode)child0).setSubNodeAt(indexes[0],parentNode1.getSubtree(indexes[1]).get());
+        ((FunctionNode)child0).replaceSubtreeAt(indexes[0],parentNode1.getSubtree(indexes[1]).get());
         Node child1 = parentNode1.clone();
-        ((FunctionNode)child1).setSubNodeAt(indexes[1],parentNode0.getSubtree(indexes[0]).get());
+        ((FunctionNode)child1).replaceSubtreeAt(indexes[1],parentNode0.getSubtree(indexes[0]).get());
         return Arrays.asList(child0,child1);
     };
 
@@ -70,9 +70,9 @@ public class GPUtils {
         var parentNode0 = GPUtils.createNodeFromString(parentList.get(0));
         var parentNode1 = GPUtils.createNodeFromString(parentList.get(1));
         Node child0 = parentNode0.clone();
-        ((FunctionNode)child0).setSubNodeAt(1,parentNode1.getSubtree(1).get());
+        ((FunctionNode)child0).replaceSubtreeAt(1,parentNode1.getSubtree(1).get());
         Node child1 = parentNode1.clone();
-        ((FunctionNode)child1).setSubNodeAt(1,parentNode0.getSubtree(1).get());
+        ((FunctionNode)child1).replaceSubtreeAt(1,parentNode0.getSubtree(1).get());
         return Arrays.asList(child0,child1);
     };
 
@@ -81,9 +81,9 @@ public class GPUtils {
         var parentNode1 = GPUtils.createNodeFromString(parentList.get(1));
 
         Node child0 = parentNode0.clone();
-        ((FunctionNode)child0).setSubNodeAt(2,parentNode1.getSubtree(2).get());
+        ((FunctionNode)child0).replaceSubtreeAt(2,parentNode1.getSubtree(2).get());
         Node child1 = parentNode1.clone();
-        ((FunctionNode)child1).setSubNodeAt(2,parentNode0.getSubtree(2).get());
+        ((FunctionNode)child1).replaceSubtreeAt(2,parentNode0.getSubtree(2).get());
         return Arrays.asList(child0,child1);
     };
 
@@ -96,7 +96,7 @@ public class GPUtils {
             }else{
                 int randomIndex = new Random().nextInt(nodes.get(0).size());
                 Node mutatedNode =  nodes.get(0).clone();
-                ((FunctionNode)mutatedNode).setSubNodeAt(randomIndex ,nodes.get(1));
+                ((FunctionNode)mutatedNode).replaceSubtreeAt(randomIndex ,nodes.get(1));
                 return mutatedNode;
             }
         }
@@ -109,7 +109,7 @@ public class GPUtils {
         if (maxDepth >0){
             root = functionNodeList.get(new Random().nextInt(functionNodeList.size())).clone();
             if (root.getClass() == FunctionNode.class){
-                ((FunctionNode)root).setSubNode(generateFullTree(functionNodeList,leafNodeList,maxDepth-1));
+                ((FunctionNode)root).addSubNode(generateFullTree(functionNodeList,leafNodeList,maxDepth-1));
             }
         }else{
             root = leafNodeList.get(new Random().nextInt(leafNodeList.size()));

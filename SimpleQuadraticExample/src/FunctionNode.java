@@ -39,7 +39,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
         return Optional.of(subNodes.get(0));
     }
 
-    void setSubNode(Node subNode){
+    void addSubNode(Node subNode){
         if (subNodes == null){
             subNodes = new ArrayList<>();
         }
@@ -84,33 +84,6 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
         return 0;
     }
 
-
-    /**
-     * Set 
-     * @param index
-     * @param subNode
-     */
-    void setSubNodeAt(int index, Node subNode){
-        if (subNodes == null && index == 0){
-            subNodes = new ArrayList<>();
-            subNodes.add(subNode);
-        } else if (size() > index){
-            for (int i = 0 ; i< subNodes.size();i++) {
-                int subNodeIndex = getSubNodeIndex(i);
-                if (index == subNodeIndex){
-                    subNodes.remove(i);
-                    subNodes.add(i,subNode);
-                    break;
-                }else if (index < getSubNodeIndex(i) + subNodes.get(i).size()){
-                    ((FunctionNode)subNodes.get(i)).setSubNodeAt(index - subNodeIndex, subNode);
-                    break;
-                }
-            }
-        } else{
-            throw new IllegalArgumentException("index out of bounds");
-        }
-    }
-
     @Override
     public Optional<Node> getSubtree(int index){
         if (index == 0){
@@ -139,5 +112,32 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
     }
 
 
+
+
+    /**
+     * Replace the subtree at index with new subtree of node
+     * @param index
+     * @param newSubtree
+     */
+    void replaceSubtreeAt(int index, Node newSubtree){
+        if (subNodes == null && index == 0){
+            subNodes = new ArrayList<>();
+            subNodes.add(newSubtree);
+        } else if (size() > index){
+            for (int i = 0 ; i< subNodes.size();i++) {
+                int subNodeIndex = getSubNodeIndex(i);
+                if (index == subNodeIndex){
+                    subNodes.remove(i);
+                    subNodes.add(i,newSubtree);
+                    break;
+                }else if (index < getSubNodeIndex(i) + subNodes.get(i).size()){
+                    ((FunctionNode)subNodes.get(i)).replaceSubtreeAt(index - subNodeIndex, newSubtree);
+                    break;
+                }
+            }
+        } else{
+            throw new IllegalArgumentException("index out of bounds");
+        }
+    }
 
 }

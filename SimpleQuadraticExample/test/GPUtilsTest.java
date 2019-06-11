@@ -21,7 +21,7 @@ class GPUtilsTest {
     @Test
     void testSetUp(){
         node = functionNodes.get(0);
-        ((FunctionNode)node).setSubNode(leafNodes.get(0));
+        ((FunctionNode)node).addSubNode(leafNodes.get(0));
         TestUtils.assertNode(TestUtils.absOneNode,node);
     }
 

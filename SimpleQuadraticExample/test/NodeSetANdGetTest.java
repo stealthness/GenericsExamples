@@ -42,7 +42,7 @@ public class NodeSetANdGetTest {
         for (int i = 0; i < testNode.size()-1;i++){
             System.out.println("i : "+i);
             Node newNode = testNode.clone();
-            ((FunctionNode)newNode).setSubNodeAt(i+1,changeNode);
+            ((FunctionNode)newNode).replaceSubtreeAt(i+1,changeNode);
             TestUtils.assertNode(expChangeNodes.get(i),newNode);
         }
     }
