@@ -3,6 +3,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,6 +14,7 @@ class IndividualTest {
     private static final Double TOL = 0.000001;
     private static final int MAX_RUNS = 100;
     private static final String FULL = "full";
+    public static final String FILEPATH = "testcases//individualCalculationTestCases.txt";
     private Individual individual;
 
     @BeforeEach
@@ -174,6 +177,8 @@ class IndividualTest {
     }
 
 
+
+
     private void assertIndividualCalculation(Double expCalculation, Double[] inputs,Individual individual){
         assertEquals(expCalculation, individual.calculate(inputs),String.format("individual : %s", individual.toClojureString()));
     }
@@ -182,4 +187,37 @@ class IndividualTest {
         assertEquals(expSize, individual.size(),String.format("individual : %s", individual.toClojureString()));
         assertEquals(expDepth, individual.maxDepth(),String.format("individual : %s", individual.toClojureString()));
     }
+
+    @Test
+    void testTest(){
+        testIndividualCalculation("testcase001");
+        testIndividualCalculation("testcase002");
+        testIndividualCalculation("testcase003");
+        testIndividualCalculation("testcase004");
+    }
+
+
+    void testIndividualCalculation(String testcase) {
+        List<String> strings = TestUtils.getTestCase(testcase, FILEPATH, Optional.of(4));
+        individual = Individual.builder().root(GPUtils.createNodeFromString(strings.get(1))).build();
+        List<String> inputsStrings;
+        double[] expCalculation;
+        inputsStrings = Arrays.asList(strings.get(2).split(","));
+        expCalculation = (Arrays.asList(strings.get(3)
+                .split(","))).stream()
+                .mapToDouble(s -> Double.valueOf(s))
+                .toArray();
+
+        for (int i = 0; i < expCalculation.length; i++) {
+            assertEquals(expCalculation[i], individual.calculate(new Double[]{Double.valueOf(inputsStrings.get(i))}), String.format("individual : %s", individual.toClojureString()));
+        }
+    }
+
+//    private double[] createRandomInputs(int size, int lowerBound, int upperBound) {
+//        double[] inputs= new double[size];
+//        for (int i = 0; i< size;i++){
+//            inputs[i] = new Random().nextDouble()*(lowerBound+upperBound)-lowerBound;
+//        }
+//        return inputs;
+//    }
 }
