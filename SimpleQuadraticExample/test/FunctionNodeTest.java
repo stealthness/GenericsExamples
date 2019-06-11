@@ -13,7 +13,7 @@ class FunctionNodeTest {
 
 
     private static final double TOL = 0.000001;
-    private static final String TESTCASE_FILENAME = "D:\\WS\\Java\\GeneticsAlgorithmsExamples\\SimpleQuadraticExample\\testcases\\testGetSubtreeAt.txt";
+    private static final String TESTCASE_FILENAME = "testcases\\testGetSubtreeAt.txt";
     private Node node;
 
 

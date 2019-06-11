@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -13,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CrossoverTest {
 
-    private static final String TESTCASE_FILENAME =  "D:\\WS\\Java\\GeneticsAlgorithmsExamples\\SimpleQuadraticExample\\testcases\\crossoverTestCases.txt";
+    private static final String TESTCASE_FILENAME =  "testcases//crossoverTestCases.txt";
     List<String> expChildrenList;
     List<String> parentList;
 
