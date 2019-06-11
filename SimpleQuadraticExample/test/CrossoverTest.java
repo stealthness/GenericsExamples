@@ -35,42 +35,28 @@ class CrossoverTest {
 
     @Test
     void testSimpleCrossoverATIndex1(){
-        parentList = Arrays.asList("(+ 1.0 2.0)", "(- x0 1.0)");
-
-        expChildrenList = Arrays.asList("(+ x0 2.0)", "(- 1.0 1.0)");
-        testCrossOverAt(expChildrenList,parentList,new Integer[]{1,1},GPUtils.crossoverAt);
-
-        expChildrenList = Arrays.asList("(+ 1.0 1.0))", "(- x0 2.0)");
-        testCrossOverAt(expChildrenList,parentList,new Integer[]{2,2},GPUtils.crossoverAt);
-
-        expChildrenList = Arrays.asList("(+ 1.0 2.0)", "(- x0 1.0)");
-        testCrossOverAt(expChildrenList,parentList,new Integer[]{1,2},GPUtils.crossoverAt);
-
-        expChildrenList = Arrays.asList("(+ 1.0 x0)", "(- 2.0 1.0)");
-        testCrossOverAt(expChildrenList,parentList,new Integer[]{2,1},GPUtils.crossoverAt);
+        // on (+ 1.0 2.0),(- x0 1.0)
+        testTestCase("testCase001"); // 1,1
+        testTestCase("testCase002"); // 2,2
+        testTestCase("testCase003"); // 1,2
+        testTestCase("testCase004"); // 2,1
     }
     @Test
     void testSimpleCrossoverATIndex2(){
-        parentList = Arrays.asList("(* 1.0 (* x0 2.0))", "(+ x0 3.0");
-        expChildrenList = Arrays.asList("(* x0 (* x0 2.0))", "(+ 1.0 3.0");
-        testCrossOverAt(expChildrenList,parentList,new Integer[]{1,1}, GPUtils.crossoverAt);
 
-        expChildrenList = Arrays.asList("(* 1.0 3.0", "(+ x0 (* x0 2.0))");
-        testCrossOverAt(expChildrenList,parentList,new Integer[]{2,2}, GPUtils.crossoverAt);
-
-        expChildrenList = Arrays.asList("(* 1.0 (* x0 2.0))", "(+ x0 3.0");
-        testCrossOverAt(expChildrenList,parentList,new Integer[]{3,1}, GPUtils.crossoverAt);
-
-        expChildrenList = Arrays.asList("(* 1.0 (* 3.0 2.0))", "(+ x0 x0");
-        testCrossOverAt(expChildrenList,parentList,new Integer[]{3,2}, GPUtils.crossoverAt);
+        // on (* 1.0 (* x0 2.0)),(+ x0 3.0)
+        testTestCase("testCase005"); // 1,1
+        testTestCase("testCase006"); // 2,2
+        testTestCase("testCase007"); // 3,1
+        testTestCase("testCase008"); // 3,2
     }
 
     @Test
     void testSimpleCrossoverATIndex3(){
-        List<String> parentList = Arrays.asList("(+ 1.0 (* x0 2.0)", "(- (+ 2.0 (+ x0 1.0)) 1.0)");
-        List<String> expChildrenList = Arrays.asList( "(+ 1.0 (* (+ x0 1.0) 2.0)","(- (+ 2.0 x0) 1.0)");
-        Integer[] indexes = new Integer[]{3,3};
-        testCrossOverAt(expChildrenList,parentList,indexes,GPUtils.crossoverAt);
+        // on (+ 1.0 (* x0 2.0),(- (+ 2.0 (+ x0 1.0)) 1.0)
+        testTestCase("testCase030"); // 3,3
+        testTestCase("testCase031"); // 1,4
+        testTestCase("testCase032"); // 4,1
     }
 
     private void testCrossOverAt(List<String> expChildrenList, List<String> parentList, Integer[] indexes, BiFunction<List<String>,Integer[], List<Node>> function){
@@ -81,21 +67,19 @@ class CrossoverTest {
         }
     }
 
-    @Test
-    void testGetTestCase(){
-        List<String> testCase = getTestCase("testCase001");
-        assertEquals(3,testCase.size());
-        var strings = Arrays.asList(testCase.get(0).split(","));
-        parentList = Arrays.asList(testCase.get(1).split(","));
-        expChildrenList = Arrays.asList(testCase.get(2).split(","));
+    void testTestCase(String testCase){
+
+        List<String> testCaseStrings = getTestCase(testCase);
+        assertEquals(3,testCaseStrings.size());
+        var strings = Arrays.asList(testCaseStrings.get(0).split(","));
+        parentList = Arrays.asList(testCaseStrings.get(1).split(","));
+        expChildrenList = Arrays.asList(testCaseStrings.get(2).split(","));
         testCrossOverAt(expChildrenList,parentList,new Integer[]{Integer.valueOf(strings.get(2)),Integer.valueOf(strings.get(3))},GPUtils.crossoverAt);
     }
 
 
     List<String> getTestCase(String testcase){
         try {
-            Files.lines((Path.of(TESTCASE_FILENAME))).forEach(System.out::println);
-
             String[] testInfo = Files.lines(Path.of(TESTCASE_FILENAME))
                     .filter(line -> line.startsWith(testcase))
                     .findFirst()
