@@ -1,0 +1,24 @@
+testcase001,1,all
+(+ 1.0 x0)
+(1.0),(x0)
+testcase002,4,all
+(+ 1.0 (* x0 2.0)
+(1.0),(* x0 2.0),(x0),(2.0)
+single001,7,all
+(abs 0.0)
+(0.0)
+single002,10,all
+(abs x0)
+(x0)
+single003,13,all
+(abs (+ x0 1.0))
+(+ x0 1.0),(x0),(1.0)
+single004,16,all
+(reciprocal (+ x0 1.0))
+(+ x0 1.0),(x0),(1.0)
+single005,19,2
+(reciprocal (+ x0 1.0))
+(x0)
+single006,22,2,4
+(reciprocal (+ x0 1.0 3.0 4.0))
+(x0),(3.0)
