@@ -84,10 +84,11 @@ class CrossoverTest {
     @Test
     void testGetTestCase(){
         List<String> testCase = getTestCase("testCase001");
-        assertEquals(2,testCase.size());
-        parentList = Arrays.asList(testCase.get(0).split(","));
-        expChildrenList = Arrays.asList(testCase.get(1).split(","));
-        testCrossOverAt(expChildrenList,parentList,new Integer[]{1,1},GPUtils.crossoverAt);
+        assertEquals(3,testCase.size());
+        var strings = Arrays.asList(testCase.get(0).split(","));
+        parentList = Arrays.asList(testCase.get(1).split(","));
+        expChildrenList = Arrays.asList(testCase.get(2).split(","));
+        testCrossOverAt(expChildrenList,parentList,new Integer[]{Integer.valueOf(strings.get(2)),Integer.valueOf(strings.get(3))},GPUtils.crossoverAt);
     }
 
 
@@ -102,8 +103,8 @@ class CrossoverTest {
                     .split(",");
             int testStart = Integer.valueOf(testInfo[1]);
             return Files.lines(Path.of(TESTCASE_FILENAME))
-                    .skip(testStart)
-                    .limit(2)
+                    .skip(testStart-1)
+                    .limit(3)
                     .collect(Collectors.toList());
         } catch (IOException e) {
             e.printStackTrace();

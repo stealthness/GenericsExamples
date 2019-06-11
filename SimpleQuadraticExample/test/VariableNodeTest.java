@@ -35,7 +35,7 @@ class VariableNodeTest {
 
     private void assertVariableNode(Double[] actInputs, Node variableNode){
         assertTrue(((VariableNode)variableNode).getIndex() < actInputs.length,
-                String.format("Index %n < %n is false",((VariableNode)variableNode).getIndex(),actInputs.length));
+                String.format("Index %d < %d is false",((VariableNode)variableNode).getIndex(),actInputs.length));
         assertEquals(actInputs[((VariableNode) variableNode).getIndex()],variableNode.calculate(actInputs));
     }
 
