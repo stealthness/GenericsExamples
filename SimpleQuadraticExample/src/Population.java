@@ -191,7 +191,7 @@ public class Population {
         return individuals.stream().mapToInt(Individual::maxDepth).max().getAsInt();
     }
 
-    public String print() {
+    String print() {
         var sb = new StringBuilder();
         if (individuals.isEmpty()){
             sb.append("Population is Empty");
@@ -201,7 +201,7 @@ public class Population {
         return sb.toString();
     }
 
-    public String printFitness() {
+    String printFitness() {
         var sb = new StringBuilder();
         if (individuals.isEmpty()){
             sb.append("Population is Empty");
@@ -221,8 +221,30 @@ public class Population {
 
     }
 
-    public void setIndividualAt(int index, Individual newIndividual) {
+    /**
+     * Removes and replaces and individual at index
+     * @param index
+     * @param newIndividual
+     */
+    void replaceIndividualAt(int index, Individual newIndividual) {
         individuals.remove(index);
         individuals.add(index,Individual.builder().root(newIndividual.getRoot()).build());
+    }
+
+    /**
+     * Returns the maximum size amongst individuals
+     * @return maximum individual's depth
+     */
+    int getIndividualsMaxDepth() {
+        return individuals.stream().mapToInt(Individual::maxDepth).max().getAsInt();
+    }
+
+    /**
+     * Returns the maximum size amongst individuals
+     * @return maximum individual's size
+     */
+    int getIndividualsMaxSize() {
+        individuals.stream().mapToInt(Individual::size).forEach(System.out::println);
+        return individuals.stream().mapToInt(Individual::size).max().getAsInt();
     }
 }

@@ -6,24 +6,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PopulationTest {
 
-    private static final String TESTCASE_FILENAME = "testcases\\ExpPopulationPrint.txt";
+    private static final String TESTCASE_FILENAME = "testcases\\expPopulationPrint.txt";
     private static final double MAX_RUNS = 10;
     private static final String FULL = "full";
     private List<Node> terminalListE;
-    List<Node> terminalList0;
-    List<Node> terminalList1;
-    List<Node> terminalList0to4;
-    List<GPFunction> functionListAddMulti;
-    List<GPFunction> functionListSingle;
-    Population population;
+    private List<Node> terminalList0to4;
+    private List<GPFunction> functionListAddMulti;
+    private List<GPFunction> functionListSingle;
+    private Population population;
 
 
     @BeforeEach
 
     void setUp(){
-        terminalListE = Arrays.asList(TestUtils.eNode);
-        terminalList0 = Arrays.asList(TestUtils.zeroNode);
-        terminalList1 = Arrays.asList(TestUtils.oneNode);
+        terminalListE = Collections.singletonList(TestUtils.eNode);
         terminalList0to4 = Arrays.asList(TestUtils.zeroNode,TestUtils.oneNode,TestUtils.twoNode,TestUtils.threeNode,TestUtils.fourNode);
         functionListAddMulti = Arrays.asList(new GPBiFunction(GPUtils.add,"+"),new GPBiFunction(GPUtils.multiply,"*"));
         functionListSingle = Arrays.asList(new GPSingleFunction(GPUtils.abs,"abs"),new GPSingleFunction(GPUtils.reciprocal,"1/x"));
@@ -104,11 +100,14 @@ class PopulationTest {
         int expMaxSize = 1;
         assertEquals(expMaxDepth,population.getMaxDepth());
         assertEquals(expMaxSize,population.getMaxSize());
-        population.setIndividualAt(0,Individual.builder().root(NodeUtils.createNodeFromString("(+ 1.0 x0)")).build() );
-
+        population.replaceIndividualAt(1,Individual.builder().root(NodeUtils.createNodeFromString("(+ 1.0 x0)")).build() );
+        assertEquals("(1.0)\n(+ 1.0 x0)\n(1.0)\n(1.0)\n(1.0)\n",getTestCase("test004"));
         // check largest depth
-        assertEquals(expMaxDepth+1,population.getMaxDepth());
-        assertEquals(expMaxSize+2,population.getMaxSize());
+        population.replaceIndividualAt(3,Individual.builder().root(NodeUtils.createNodeFromString("(abs (+ 2.0 1.0 0.0))")).build() );
+        assertEquals(expMaxDepth+2,population.getIndividualsMaxDepth());
+        System.out.println(population.print());
+        assertEquals(expMaxSize+4,population.getIndividualsMaxSize());
+        assertEquals("(1.0)\n(+ 1.0 x0)\n(1.0)\n(abs (+ 2.0 1.0 0.0))\n(1.0)\n",getTestCase("test005"));
 
     }
 
@@ -150,7 +149,7 @@ class PopulationTest {
         List<Node> terminalList = Arrays.asList(TestUtils.oneNode);
         population = Population.builder()
                 .maxGenerationDepth(0)
-                .generationMethod("full")
+                .generationMethod(FULL)
                 .maxPopulation(10)
                 .terminalNodeList(terminalList)
                 .build();
@@ -162,7 +161,7 @@ class PopulationTest {
 
     @Test
     void testPopulationPrintReadFile(){
-        assertEquals("(1.0)\n(1.0)\n(1.0)\n(1.0)\n",getTestCase("test001"));
+        assertEquals("(1.0)\n(1.0)\n(1.0)\n(1.0)\n(1.0)\n",getTestCase("test001"));
         assertEquals("(2.0)\n(2.0)\n(2.0)\n(2.0)\n",getTestCase("test002"));
     }
 
