@@ -1,16 +1,12 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PopulationTest {
 
-    private static final String TESTCASE_FILENAME = "D:\\WS\\Java\\GeneticsAlgorithmsExamples\\SimpleQuadraticExample\\testcases\\ExpPopulationPrint.txt";
+    private static final String TESTCASE_FILENAME = "testcases\\ExpPopulationPrint.txt";
     private static final double MAX_RUNS = 10;
     private static final String FULL = "full";
     private List<Node> terminalListE;
