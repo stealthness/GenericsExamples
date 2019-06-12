@@ -76,6 +76,14 @@ public class Individual implements Node,Comparable{
         }
     }
 
+    /**
+     * eEvaluates the fitness of the individual
+     * @return
+     */
+    double evaluate(){
+        return -1.0;
+    }
+
     // static methods
 
     /**

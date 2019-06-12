@@ -140,4 +140,17 @@ public class GPUtils {
     }
 
 
+    public static double evaluateFitness(List<Node> nodes, double[] doubles) {
+        double sum = 0;
+        for (double point = doubles[0]; point <= doubles[1]; point = point + doubles[2]){
+            var inputs = new Double[]{point};
+            System.out.println(point);
+            System.out.println(String.format("node : ,%s   calulation : %f",nodes.get(0).toClojureString(),nodes.get(0).calculate(inputs)));
+            System.out.println(String.format("node : ,%s   calulation : %f",nodes.get(1).toClojureString(),nodes.get(1).calculate(inputs)));
+            System.out.println(String.format("sum : %f",sum));
+            sum += Math.abs(nodes.get(0).calculate(inputs) -nodes.get(1).calculate(inputs));
+        }
+        // return normalised fitness  1 - 1/(raw fitness)
+        return 1 - 1/sum;
+    }
 }

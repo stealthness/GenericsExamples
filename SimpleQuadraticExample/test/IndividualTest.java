@@ -2,6 +2,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,6 +17,8 @@ class IndividualTest {
     private static final String INDIVIDUAL_CALCULATION_FILEPATH = "testcases//individualCalculationTestCases.txt";
     private static final String GET_SUBTREE_FILEPATH = "testcases//testGetSubtreeAt.txt";
     private static final String TESTCASE_FILENAME = "testcases//nodeReplaceTreeAt.txt";
+    private static final String GET_FITNESS_FILENAME = "testcases//individualGetFitnessTestcases.txt";
+    private static final double TOL = 0.0001;
     private Individual individual;
 
     @BeforeEach
@@ -57,7 +60,7 @@ class IndividualTest {
     // Test get SubNodes
 
     @Test
-    void test1(){
+    void testGetNode1(){
         testGetNode("testcase001");
         testGetNode("testcase002");
     }
@@ -86,13 +89,13 @@ class IndividualTest {
 
     @Test
     void testReplaceNodeAt(){
-        testTestcase("testcase001");
-        testTestcase("testcase002");
-        testTestcase("testcase003");
-        testTestcase("testcase004");
-        testTestcase("testcase005");
-        testTestcase("testcase006");
-        testTestcase("testcase007");
+        testReplaceSubNodeAt("testcase001");
+        testReplaceSubNodeAt("testcase002");
+        testReplaceSubNodeAt("testcase003");
+        testReplaceSubNodeAt("testcase004");
+        testReplaceSubNodeAt("testcase005");
+        testReplaceSubNodeAt("testcase006");
+        testReplaceSubNodeAt("testcase007");
     }
 
     // private assert Methods
@@ -141,7 +144,7 @@ class IndividualTest {
         assertTrue(individual.getSubtree(individual.size()).isEmpty());
     }
 
-    void testTestcase(String testCase){
+    void testReplaceSubNodeAt(String testCase){
         List<String> testCaseStrings = TestUtils.getTestCase(testCase,TESTCASE_FILENAME, Optional.of(4));
         testCaseStrings.forEach(System.out::println);
         assertEquals(4,testCaseStrings.size());
@@ -154,7 +157,35 @@ class IndividualTest {
                 actIndividual.replaceSubtreeAt(Integer.valueOf(info.get(2)),subNode.get(i));
                 TestUtils.assertNode(expNode.get(i),actIndividual.getRoot());
             }
+    }
 
+    @Test
+    void test1(){
+        testEvaluate("testcase001");
+    }
+
+    @Test
+    void test2(){
+        testEvaluate("testcase002");
+    }
+
+    void testEvaluate(String testCase){
+        List<String> testCaseStrings = TestUtils.getTestCase(testCase,GET_FITNESS_FILENAME, Optional.of(4));
+        testCaseStrings.forEach(System.out::println);
+        assertEquals(4,testCaseStrings.size());
+        var info = Arrays.asList(testCaseStrings.get(0).split(","));
+        individual = Individual.builder().root(NodeUtils.createNodeFromString(testCaseStrings.get(1))).build();
+        List<Node> testNodes = createNodesFromStrings(testCaseStrings, 2);
+        List<Double> expFitness = Arrays.stream(testCaseStrings.get(3).split(","))
+                .map(Double::valueOf)
+                .collect(Collectors.toList());
+        for (int i = 0; i < expFitness.size(); i++){
+            System.out.println(String.format("expFitness %f",expFitness.get(i)));
+            System.out.println(String.format("testNode %s",testNodes.get(i)));
+            System.out.println(String.format("individual %s",individual.toClojureString()));
+            var nodes = Arrays.asList(individual.getRoot(),testNodes.get(0));
+            assertEquals(expFitness.get(0),GPUtils.evaluateFitness(nodes,new double[]{-1,1,1}),TOL);
+        }
     }
 
     private List<Node> createNodesFromStrings(List<String> testCaseStrings, int i) {
