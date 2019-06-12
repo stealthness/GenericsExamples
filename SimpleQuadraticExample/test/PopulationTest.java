@@ -4,10 +4,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -91,6 +88,32 @@ class PopulationTest {
         System.out.println(individual.getRoot().toClojureString());
 
         generateTreeAndTest(functionListSingle,terminalListE,FULL,0,Optional.of(1),Optional.of(0));
+    }
+
+    @Test
+    void testGetMaxDepthOfPopulation(){
+        final int maxPopulation = 5;
+        population = Population.builder()
+                .maxGenerationDepth(0)
+                .maxPopulation(maxPopulation)
+                .build();
+        List<Individual> newIndividuals = new ArrayList<>();
+        for (int i = 0; i < maxPopulation; i++){
+            newIndividuals.add(Individual.builder().root(new TerminalNode(1.0)).build());
+        }
+        population.setIndividuals(newIndividuals);
+        assertEquals(maxPopulation,population.size());
+        // check largest depth
+        int expMaxDepth = 0;
+        int expMaxSize = 1;
+        assertEquals(expMaxDepth,population.getMaxDepth());
+        assertEquals(expMaxSize,population.getMaxSize());
+        population.setIndividualAt(0,Individual.builder().root(NodeUtils.createNodeFromString("(+ 1.0 x0)")).build() );
+
+        // check largest depth
+        assertEquals(expMaxDepth+1,population.getMaxDepth());
+        assertEquals(expMaxSize+2,population.getMaxSize());
+
     }
 
 

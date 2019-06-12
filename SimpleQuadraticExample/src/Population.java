@@ -81,14 +81,25 @@ public class Population {
     List<Individual> getReproductionSelection() {
         List<Individual> selected = new ArrayList<>();
 
+        selected.add(getFittest(0).get());
+        selected.add(getSelection());
+
         if (this.logging){
             System.out.println(String.format("Selected.size() = %d", selected.size()));
         }
         return selected;
     }
 
+    private Individual getSelection() {
+        int r = new Random().nextInt(size());
+        return individuals.get(r);
+    }
+
     List<Individual> getCrossoverSelection() {
         List<Individual> selected = new ArrayList<>();
+        selected.addAll(getIndividualCrossover(selected, 1, 1.0));
+        selected.addAll(getIndividualCrossover(selected, 2, 1.0));
+
 
         if (this.logging){
             System.out.println(String.format("Crossover.size() = %d", selected.size()));
@@ -96,11 +107,32 @@ public class Population {
         return selected;
     }
 
+    private List<Individual> getIndividualCrossover(List<Individual> selected, int index, double rate) {
+        Individual parent0 = getFittest(index).get();
+        Individual parent1 = getSelection();
+        return Individual.crossoverIndividuals(Arrays.asList(parent0,parent1), rate);
+    }
+
     List<Individual> mutate() {
 
         List<Individual> selected = new ArrayList<>();
         for (Individual individual: individuals){
-            selected.add(Individual.builder().root(mutateFunction.apply(Arrays.asList(individual.getRoot(),generateRoot()),mutateRate)).build());
+            if (Math.random()<mutateRate){
+                int r = new Random().nextInt(individual.size());
+                if (r == 0){
+                    selected.add(Individual.generate(terminalNodeList,functionNodeList,"grow",maxGenerationDepth));
+                } else{
+                    Node root = individual.getRoot().clone();
+                    if (root.size()==0){
+                        selected.add(Individual.generate(terminalNodeList,functionNodeList,"grow",maxGenerationDepth));
+                    } else{
+                        ((FunctionNode)root).replaceSubtreeAt(r,NodeUtils.generateNode(terminalNodeList,functionNodeList,"grow",maxGenerationDepth));
+                        selected.add(Individual.builder().root(root).build());
+                    }
+                }
+            }else{
+                selected.add(individual);
+            }
         }
 
         if (this.logging){
@@ -131,7 +163,11 @@ public class Population {
      * @return true if terminal condition is met
      */
     boolean isTerminalConditionMet(){
-        return size() != 0 || getFittest(0).get().getFitness() < TOL;
+        if (size() != 0){
+            return false;
+        }else {
+            return getFittest(0).get().getFitness() < TOL;
+        }
     }
 
     Optional<Individual> getFittest(int index) {
@@ -183,5 +219,10 @@ public class Population {
             individual.setFitness(GPUtils.evaluateFitness(nodes, new double[]{-1.0,1.0,0.1}));
         });
 
+    }
+
+    public void setIndividualAt(int index, Individual newIndividual) {
+        individuals.remove(index);
+        individuals.add(index,Individual.builder().root(newIndividual.getRoot()).build());
     }
 }

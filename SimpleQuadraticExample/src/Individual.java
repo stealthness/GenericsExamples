@@ -1,6 +1,7 @@
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,6 +104,15 @@ public class Individual implements Node,Comparable{
             root = NodeUtils.generateNode(terminalList,functionList,method,depth);
         }
         return Individual.builder().root(root).build();
+    }
+
+    static List<Individual> crossoverIndividuals(List<Individual> parents,double rate){
+        List<Node> parentNodes = Arrays.asList(parents.get(0).getRoot(),parents.get(1).getRoot());
+        if (Math.random()<rate){
+            var children = NodeUtils.crossoverNodes(parentNodes);
+            return Arrays.asList(Individual.builder().root(children.get(0)).build(),Individual.builder().root(children.get(1)).build());
+        }
+        return parents;
     }
 
 }

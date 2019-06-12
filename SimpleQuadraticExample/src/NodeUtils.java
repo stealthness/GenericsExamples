@@ -96,11 +96,19 @@ public class NodeUtils {
     }
 
     public static List<Node> crossoverNodes(List<Node> parentList, double rate){
+        if (Math.random()<rate){
+            return crossoverNodes(parentList);
+        }
+        return parentList;
+    }
+
+
+    public static List<Node> crossoverNodes(List<Node> parentList){
         var parentNode0 = parentList.get(0).clone();
         var parentNode1 = parentList.get(1).clone();
 
         int randomIndex0 = selectRandomIndex(parentNode0.size());
-        int randomIndex1 = selectRandomIndex(parentNode0.size());
+        int randomIndex1 = selectRandomIndex(parentNode1.size());
         Node childNode0;
         Node childNode1;
         System.out.println(randomIndex0);
