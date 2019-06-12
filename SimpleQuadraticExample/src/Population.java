@@ -13,6 +13,7 @@ import java.util.function.BiFunction;
 @Builder
 public class Population {
 
+    private static final double TOL = 0.000001;
     /**
      * the maximum number of individuals that a population can contain
      */
@@ -130,7 +131,7 @@ public class Population {
      * @return true if terminal condition is met
      */
     boolean isTerminalConditionMet(){
-        return false;
+        return size() != 0 || getFittest(0).get().getFitness() < TOL;
     }
 
     Optional<Individual> getFittest(int index) {
@@ -162,5 +163,25 @@ public class Population {
             individuals.forEach(individual -> sb.append(individual.toClojureString()).append("\n"));
         }
         return sb.toString();
+    }
+
+    public String printFitness() {
+        var sb = new StringBuilder();
+        if (individuals.isEmpty()){
+            sb.append("Population is Empty");
+        }else{
+            individuals.forEach(individual -> sb.append(String.format("Fitness %f   for %s \n",individual.getFitness(),individual.toClojureString())));
+        }
+        return sb.toString();
+    }
+
+    // evaluation
+
+    void evaluate(Node expNode){
+        individuals.stream().forEach(individual -> {
+            List nodes = Arrays.asList(individual.getRoot(),expNode);
+            individual.setFitness(GPUtils.evaluateFitness(nodes, new double[]{-1.0,1.0,0.1}));
+        });
+
     }
 }

@@ -144,13 +144,12 @@ public class GPUtils {
         double sum = 0;
         for (double point = doubles[0]; point <= doubles[1]; point = point + doubles[2]){
             var inputs = new Double[]{point};
-            System.out.println(point);
-            System.out.println(String.format("node : ,%s   calulation : %f",nodes.get(0).toClojureString(),nodes.get(0).calculate(inputs)));
-            System.out.println(String.format("node : ,%s   calulation : %f",nodes.get(1).toClojureString(),nodes.get(1).calculate(inputs)));
-            System.out.println(String.format("sum : %f",sum));
+//            System.out.println(String.format("node : ,%s   calulation : %f",nodes.get(0).toClojureString(),nodes.get(0).calculate(inputs)));
+//            System.out.println(String.format("node : ,%s   calulation : %f",nodes.get(1).toClojureString(),nodes.get(1).calculate(inputs)));
             sum += Math.abs(nodes.get(0).calculate(inputs) -nodes.get(1).calculate(inputs));
+//            System.out.println(String.format("point: %f  sum : %f",point,sum));
         }
         // return normalised fitness  1 - 1/(raw fitness)
-        return 1 - 1/sum;
+        return (sum==0.0)?0.0:1 - 1/sum;
     }
 }

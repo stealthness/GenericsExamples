@@ -95,6 +95,43 @@ public class NodeUtils {
         return node;
     }
 
+    public static List<Node> crossoverNodes(List<Node> parentList, double rate){
+        var parentNode0 = parentList.get(0).clone();
+        var parentNode1 = parentList.get(1).clone();
+
+        int randomIndex0 = selectRandomIndex(parentNode0.size());
+        int randomIndex1 = selectRandomIndex(parentNode0.size());
+        Node childNode0;
+        Node childNode1;
+        System.out.println(randomIndex0);
+        System.out.println(randomIndex1);
+        if (randomIndex0 == 0 && randomIndex1==0){
+            return Arrays.asList(parentNode1.clone(),parentNode0.clone());
+        }else if (randomIndex0 == 0){
+            childNode1 = parentNode1.clone();
+            ((FunctionNode)childNode1).replaceSubtreeAt(randomIndex1,parentNode0.getSubtree(randomIndex0).get());
+
+            return Arrays.asList(parentNode1.clone(),childNode1);
+        }else if (randomIndex1 == 0){
+            childNode0 = parentNode0.clone();
+            ((FunctionNode)childNode0).replaceSubtreeAt(randomIndex0,parentNode1.getSubtree(randomIndex1).get());
+            return Arrays.asList(childNode0,parentNode0.clone());
+        }else{
+
+        }
+
+        childNode0 = parentNode0.clone();
+        ((FunctionNode)childNode0).replaceSubtreeAt(randomIndex0,parentNode1.getSubtree(randomIndex1).get());
+        childNode1 = parentNode1.clone();
+        ((FunctionNode)childNode1).replaceSubtreeAt(randomIndex1,parentNode0.getSubtree(randomIndex0).get());
+
+        return Arrays.asList(childNode0,childNode1);
+    }
+
+    private static int selectRandomIndex(int size) {
+        return new Random().nextInt(size);
+    }
+
     private static FunctionNode selectFunctionNode(List<GPFunction>functionNodeList) {
         // standard select equal random bag
         int selection = new Random().nextInt(functionNodeList.size());

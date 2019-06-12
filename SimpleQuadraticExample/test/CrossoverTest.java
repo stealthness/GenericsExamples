@@ -3,7 +3,9 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.BiFunction;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -55,6 +57,19 @@ class CrossoverTest {
         testTestCase("testCase032"); // 4,1
     }
 
+    @Test
+    void testGenerateCrossover(){
+        IntStream.range(0,100).forEach(i ->{
+            System.out.println("\n\n");
+            var parents = Arrays.asList(TestUtils.generateNodeAtDepth(new Random().nextInt(3)),TestUtils.generateNodeAtDepth(new Random().nextInt(3)));
+            parents.forEach(p -> System.out.println(p.toClojureString()));
+            var children = NodeUtils.crossoverNodes(parents,-1.0);
+            children.forEach(c -> System.out.println(c.toClojureString()));
+        });
+
+    }
+
+
     private void testCrossOverAt(List<String> expChildrenList, List<String> parentList, Integer[] indexes, BiFunction<List<String>,Integer[], List<Node>> function){
         for (int i = 0; i<parentList.size(); i =+2){
             List<Node> children = function.apply(parentList, indexes);
@@ -64,7 +79,6 @@ class CrossoverTest {
     }
 
     void testTestCase(String testCase){
-
         List<String> testCaseStrings = TestUtils.getTestCase(testCase,TESTCASE_FILENAME, Optional.of(3));
         assertEquals(3,testCaseStrings.size());
         var strings = Arrays.asList(testCaseStrings.get(0).split(","));

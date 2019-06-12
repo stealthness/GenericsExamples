@@ -161,31 +161,42 @@ class IndividualTest {
 
     @Test
     void test1(){
-        testEvaluate("testcase001");
     }
 
     @Test
-    void test2(){
+    void testEvaluateDepth0(){
+        testEvaluate("testcase001");
         testEvaluate("testcase002");
+    }
+
+    @Test
+    void testEvaluateDepth1(){
+        testEvaluate("testcase003");
+        testEvaluate("testcase004");
     }
 
     void testEvaluate(String testCase){
         List<String> testCaseStrings = TestUtils.getTestCase(testCase,GET_FITNESS_FILENAME, Optional.of(4));
-        testCaseStrings.forEach(System.out::println);
         assertEquals(4,testCaseStrings.size());
-        var info = Arrays.asList(testCaseStrings.get(0).split(","));
         individual = Individual.builder().root(NodeUtils.createNodeFromString(testCaseStrings.get(1))).build();
         List<Node> testNodes = createNodesFromStrings(testCaseStrings, 2);
-        List<Double> expFitness = Arrays.stream(testCaseStrings.get(3).split(","))
+        List<Double> expFitness = getExpFitnessValues(testCaseStrings);
+        for (int i = 0; i < expFitness.size(); i++){
+            var nodes = Arrays.asList(individual.getRoot(),testNodes.get(i));
+            double[] testRange = getTestRange(testCaseStrings.get(0));
+            assertEquals(expFitness.get(i),GPUtils.evaluateFitness(nodes,testRange),TOL);
+        }
+    }
+
+    private List<Double> getExpFitnessValues(List<String> testCaseStrings) {
+        return Arrays.stream(testCaseStrings.get(3).split(","))
                 .map(Double::valueOf)
                 .collect(Collectors.toList());
-        for (int i = 0; i < expFitness.size(); i++){
-            System.out.println(String.format("expFitness %f",expFitness.get(i)));
-            System.out.println(String.format("testNode %s",testNodes.get(i)));
-            System.out.println(String.format("individual %s",individual.toClojureString()));
-            var nodes = Arrays.asList(individual.getRoot(),testNodes.get(0));
-            assertEquals(expFitness.get(0),GPUtils.evaluateFitness(nodes,new double[]{-1,1,1}),TOL);
-        }
+    }
+
+    private double[] getTestRange(String string) {
+        List<String> info = Arrays.asList(string.split(","));
+        return new double[]{Double.valueOf(info.get(2)),Double.valueOf(info.get(3)),Double.valueOf(info.get(4))};
     }
 
     private List<Node> createNodesFromStrings(List<String> testCaseStrings, int i) {

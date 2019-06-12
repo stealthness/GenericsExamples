@@ -10,9 +10,10 @@ import java.util.Optional;
 @Builder
 public class GP {
 
-    private static final int MAX_RUN = 2;
+    private static final int MAX_RUN = 10;
     private static final int MAX_SIZE = 10;
     private static final String FULL = "full";
+    Node expFunction;
     Population population;
 
     public static void main(String[] args) {
@@ -23,8 +24,8 @@ public class GP {
 
 
     void run(){
-
-        Optional<Individual> solution = findSolution();
+        expFunction = NodeUtils.createNodeFromString("(+ (* x0 x0) (+ 1.0 x0))");
+        Optional<Individual> solution = findSolution(expFunction);
         if (solution.isEmpty()){
             System.out.println("no Solution found");
         }else{
@@ -33,13 +34,15 @@ public class GP {
 
     }
 
-    private Optional<Individual> findSolution(){
+    private Optional<Individual> findSolution(Node expSolution){
 
         List<Node> terminalList = Arrays.asList(new TerminalNode(1.0),new TerminalNode(0.0),new TerminalNode(2.0));
-        List<GPFunction> functionList = Arrays.asList(new GPBiFunction(GPUtils.add,"+"),new GPBiFunction(GPUtils.multiply,"*"));
+        List<GPFunction> functionList = Arrays.asList(new GPBiFunction(GPUtils.add,"+"),
+                new GPBiFunction(GPUtils.multiply,"*"),//new GPBiFunction(GPUtils.abs,"abs"),
+                new GPBiFunction(GPUtils.subtract,"-"),new GPBiFunction(GPUtils.divide,"/"));
 
         population = Population.builder()
-                .maxPopulation(4)
+                .maxPopulation(MAX_SIZE)
                 .maxGenerationDepth(1)
                 .generationMethod("grow")
                 .terminalNodeList(terminalList)
@@ -83,7 +86,8 @@ public class GP {
             terminationCondition = count > MAX_RUN || population.isTerminalConditionMet();
 
             // toClojureString result
-            System.out.println(population.print());
+            population.evaluate(expSolution);
+            System.out.println(population.printFitness());
 
         }
         return population.getFittest(0);
