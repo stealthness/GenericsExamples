@@ -138,7 +138,7 @@ class PopulationTest {
 
         assertEquals(fitnesses[2],actIndividuals.get(0).getFitness());
         assertEquals(fitnesses[4],actIndividuals.get(1).getFitness());
-        assertEquals(fitnesses[1],actIndividuals.get(2).getFitness());
+        assertEquals(fitnesses[0],actIndividuals.get(2).getFitness());
     }
 
 
