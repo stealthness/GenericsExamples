@@ -62,29 +62,7 @@ public class GPUtils {
         ((FunctionNode)child1).replaceSubtreeAt(indexes[1],parentNode0.getSubtree(indexes[0]).get());
         return Arrays.asList(child0,child1);
     };
-
-
-
-    static BiFunction<List<String>, Double, List<Node>> crossoverAt1 = (parentList,crossoverRate) -> {
-        var parentNode0 = NodeUtils.createNodeFromString(parentList.get(0));
-        var parentNode1 = NodeUtils.createNodeFromString(parentList.get(1));
-        Node child0 = parentNode0.clone();
-        ((FunctionNode)child0).replaceSubtreeAt(1,parentNode1.getSubtree(1).get());
-        Node child1 = parentNode1.clone();
-        ((FunctionNode)child1).replaceSubtreeAt(1,parentNode0.getSubtree(1).get());
-        return Arrays.asList(child0,child1);
-    };
-
-    static BiFunction<List<String>, Double, List<Node>> crossoverAt2 = (parentList,crossoverRate) -> {
-        var parentNode0 = NodeUtils.createNodeFromString(parentList.get(0));
-        var parentNode1 = NodeUtils.createNodeFromString(parentList.get(1));
-
-        Node child0 = parentNode0.clone();
-        ((FunctionNode)child0).replaceSubtreeAt(2,parentNode1.getSubtree(2).get());
-        Node child1 = parentNode1.clone();
-        ((FunctionNode)child1).replaceSubtreeAt(2,parentNode0.getSubtree(2).get());
-        return Arrays.asList(child0,child1);
-    };
+    
 
     static BiFunction<List<Node>, Double, Node> mutateRandomIndex = (nodes,mutateRate) -> {
         if (Math.random() > mutateRate){
@@ -142,14 +120,17 @@ public class GPUtils {
 
     public static double evaluateFitness(List<Node> nodes, double[] doubles) {
         double sum = 0;
+        int count = 0;
         for (double point = doubles[0]; point <= doubles[1]; point = point + doubles[2]){
             var inputs = new Double[]{point};
-//            System.out.println(String.format("node : ,%s   calulation : %f",nodes.get(0).toClojureString(),nodes.get(0).calculate(inputs)));
-//            System.out.println(String.format("node : ,%s   calulation : %f",nodes.get(1).toClojureString(),nodes.get(1).calculate(inputs)));
+//            System.out.println(String.format("node : ,%s   calculation : %f",nodes.get(0).toClojureString(),nodes.get(0).calculate(inputs)));
+ //           System.out.println(String.format("node : ,%s   calculation : %f",nodes.get(1).toClojureString(),nodes.get(1).calculate(inputs)));
+//            System.out.println();
             sum += Math.abs(nodes.get(0).calculate(inputs) - nodes.get(1).calculate(inputs));
+            count++;
 //            System.out.println(String.format("point: %f  sum : %f",point,sum));
         }
         // return adjusted fitness  1 / 1+(raw fitness)
-        return 1 / (1+sum);
+        return 1 / (1+(sum/count));
     }
 }
