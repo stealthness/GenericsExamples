@@ -57,7 +57,10 @@ public class GP {
         population.evaluate(expSolution);
         System.out.println(population.printFitness());
 
-        int count = 0;
+        // popSize,maxDepth,MaxSize,BestFitness
+        double[][] details = new double[MAX_RUN][4];
+
+        int generation = 0;
         boolean terminationCondition = false;
         while (!terminationCondition){
 
@@ -71,12 +74,17 @@ public class GP {
             /************** CROSSING ********************/
             System.out.println("\n PART 2 - Crossing");
             newIndividuals.addAll(population.getCrossoverSelection());
-            System.out.println(population.printFitness()+"\n");
+
+
+            population.setIndividuals(newIndividuals);
+            population.evaluate(expSolution);
+            System.out.println(population.print());
+
 
             //
             System.out.println("BEFORE mutation " +population.size());
             if (newIndividuals.size()< population.getMaxSize()){
-                for (int i = 0 ; i < population.getMaxSize() -newIndividuals.size(); i++){
+                for (int i = 0 ; i < population.getMaxSize() - newIndividuals.size(); i++){
                     newIndividuals.add(Individual.generate(terminalList,functionList,"grow",2));
                 }
             }else if (newIndividuals.size()>population.getMaxSize()){
@@ -101,19 +109,34 @@ public class GP {
 //            newIndividuals.addAll(population.edit());
 
 
-            /************** TERMINATION ********************/
-            System.out.println(String.format("newIndividuals size %d",newIndividuals.size()));
-            System.out.println(String.format("pop size %d",population.size()));
-            System.out.println("\n PART 5 - Check termination : generation : " + count++);
-            System.out.println("\n\n");
-
-            terminationCondition = count > MAX_RUN || population.isTerminalConditionMet();
 
             // toClojureString result
             population.evaluate(expSolution);
             System.out.println(population.printFitness());
+            details[generation][0]=population.size();
+            details[generation][1]=population.getMaxSize();
+            details[generation][2]=population.getMaxDepth();
+            details[generation][3]=population.getFittest(0).get().getFitness();
+
+            /************** TERMINATION ********************/
+            System.out.println(String.format("newIndividuals size %d",newIndividuals.size()));
+            printDetail(details[generation]);
+            System.out.println("\n PART 5 - Check termination : generation : " + generation);
+            System.out.println("\n\n");
+
+            terminationCondition = generation++ > MAX_RUN-5 || population.isTerminalConditionMet();
 
         }
+        printDetails(details);
         return population.getFittest(0);
+    }
+
+    private void printDetails(double[][] details) {
+        Arrays.stream(details).forEach(detail -> printDetail(detail));
+    }
+
+    private void printDetail(double[] detail) {
+        System.out.println(String.format("Population Size %2d :  MaxSize %2d  :  MaxDepth  %2d  :  Best Fitness %4f",
+                (int) detail[0], (int) detail[1], (int) detail[2], detail[3]));
     }
 }

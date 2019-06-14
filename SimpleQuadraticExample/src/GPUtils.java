@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public class GPUtils {
 
@@ -62,7 +63,7 @@ public class GPUtils {
         ((FunctionNode)child1).replaceSubtreeAt(indexes[1],parentNode0.getSubtree(indexes[0]).get());
         return Arrays.asList(child0,child1);
     };
-    
+
 
     static BiFunction<List<Node>, Double, Node> mutateRandomIndex = (nodes,mutateRate) -> {
         if (Math.random() > mutateRate){
@@ -116,6 +117,29 @@ public class GPUtils {
             }
         };
     }
+
+    static Function<Population, Individual> selectUniformRandomIndividual = population ->{
+        int r = new Random().nextInt(population.size());
+        return population.getIndividuals().get(r);
+    };
+
+    static Function<Population,Individual> selectWeightedParent = population -> {
+        // Get individuals
+        final var individuals = population.getIndividuals();
+
+        // Spin roulette wheel
+        final var rouletteWheelPosition = Math.random() * population.getSumOfFitness();
+
+        // Find parent
+        var spinWheel = 0.0;
+        for (Individual individual : individuals) {
+            spinWheel += individual.getFitness();
+            if (spinWheel >= rouletteWheelPosition) {
+                return individual;
+            }
+        }
+        return individuals.get(individuals.size()-1);
+    };
 
 
     public static double evaluateFitness(List<Node> nodes, double[] doubles) {

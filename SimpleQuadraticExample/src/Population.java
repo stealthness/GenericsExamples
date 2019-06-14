@@ -3,6 +3,8 @@ import lombok.Data;
 
 import java.util.*;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Populations contains a list of individuals, how the initial population is constructed
@@ -30,7 +32,8 @@ public class Population {
     /**
      * Stores a list of allowable terminal nodes to generate trees from
      */
-    private List<Node> terminalNodeList;
+    @Builder.Default
+    private List<Node> terminalNodeList = Arrays.asList(new TerminalNode(0.0));
 
     private List<GPFunction> functionNodeList;
 
@@ -49,6 +52,8 @@ public class Population {
 
     @Builder.Default
     private BiFunction<List<Node>, Double, Node>  mutateFunction = GPUtils.mutateRandomIndex;
+    @Builder.Default
+    private Function<Population,Individual> selectionMethod = GPUtils.selectWeightedParent;
 
 
     private List<Individual> generate(String generationMethod, int size){
@@ -78,6 +83,13 @@ public class Population {
 
     // Methods
 
+    /**
+     * Returns a List of the fittest individual up to index of sorted list of individuals
+     */
+    List<Individual> getFittestList(int index){
+        return individuals.stream().sorted(Individual::compareTo).limit(index).collect(Collectors.toList());
+    }
+
     List<Individual> getReproductionSelection() {
         List<Individual> selected = new ArrayList<>();
 
@@ -91,8 +103,7 @@ public class Population {
     }
 
     private Individual getSelection() {
-        int r = new Random().nextInt(size());
-        return individuals.get(r);
+        return selectionMethod.apply(this);
     }
 
     List<Individual> getCrossoverSelection() {
@@ -244,5 +255,9 @@ public class Population {
     int getIndividualsMaxSize() {
         individuals.stream().mapToInt(Individual::size).forEach(System.out::println);
         return individuals.stream().mapToInt(Individual::size).max().getAsInt();
+    }
+
+    public double getSumOfFitness() {
+        return individuals.stream().mapToDouble(Individual::getFitness).sum();
     }
 }

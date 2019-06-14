@@ -9,6 +9,7 @@ class PopulationTest {
     private static final String TESTCASE_FILENAME = "testcases\\expPopulationPrint.txt";
     private static final double MAX_RUNS = 10;
     private static final String FULL = "full";
+    private static final double TOL = 0.00001;
     private List<Node> terminalListE;
     private List<Node> terminalList0to4;
     private List<GPFunction> functionListAddMulti;
@@ -111,6 +112,16 @@ class PopulationTest {
 
     }
 
+
+    @Test
+    void testSumOfFitness(){
+        population = Population.builder().maxPopulation(5).build();
+        population.initialise();
+        population.getIndividuals().stream().forEach(individual -> {
+            individual.setFitness(0.4);
+        });
+        assertEquals(2.0, population.getSumOfFitness(),TOL);
+    }
 
 
     private void generateTreeAndTest(List<GPFunction> functionList, List<Node> terminalList, String generationMethod,
