@@ -160,7 +160,6 @@ class IndividualTest {
 
     void testReplaceSubNodeAt(String testCase){
         List<String> testCaseStrings = TestUtils.getTestCase(testCase,TESTCASE_FILENAME, Optional.of(4));
-        testCaseStrings.forEach(System.out::println);
         assertEquals(4,testCaseStrings.size());
         var info = Arrays.asList(testCaseStrings.get(0).split(","));
             individual = Individual.builder().root(NodeUtils.createNodeFromString(testCaseStrings.get(1))).build();
@@ -182,9 +181,6 @@ class IndividualTest {
         for (int i = 0; i < expFitness.size(); i++){
             var nodes = Arrays.asList(expSolutionNode,testNodes.get(i));
             double[] testRange = getTestRange(testCaseStrings.get(0));
-            System.out.println(expSolutionNode.toClojureString());
-            System.out.println(testNodes.get(i).toClojureString());
-            System.out.println(GPUtils.evaluateFitness(nodes,testRange)+ "\n");
             assertEquals(expFitness.get(i),GPUtils.evaluateFitness(nodes,testRange),TOL);
         }
     }

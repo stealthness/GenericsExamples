@@ -76,9 +76,6 @@ class PopulationTest {
     @Test
     void generateTreesOfDepth0WithEphemeral(){
         Individual individual = Individual.builder().root(terminalListE.get(0)).build();
-        System.out.println(individual.toClojureString());
-        System.out.println(individual.calculate(new Double[]{2.2}));
-        System.out.println(individual.getRoot().toClojureString());
 
         generateTreeAndTest(functionListSingle,terminalListE,FULL,0,Optional.of(1),Optional.of(0));
     }
@@ -106,7 +103,6 @@ class PopulationTest {
         // check largest depth
         population.replaceIndividualAt(3,Individual.builder().root(NodeUtils.createNodeFromString("(abs (+ 2.0 1.0 0.0))")).build() );
         assertEquals(expMaxDepth+2,population.getIndividualsMaxDepth());
-        System.out.println(population.print());
         assertEquals(expMaxSize+4,population.getIndividualsMaxSize());
         assertEquals("(1.0)\n(+ 1.0 x0)\n(1.0)\n(abs (+ 2.0 1.0 0.0))\n(1.0)\n",getTestCase("test005"));
 
@@ -134,8 +130,6 @@ class PopulationTest {
         assertEquals(5,population.size());
        // assertEquals(2.0, population.getSumOfFitness(),TOL);
         var actIndividuals = population.getFittestList(3);
-        actIndividuals.stream().forEach(individual -> System.out.println(individual.getFitness()));
-
         assertEquals(fitnesses[2],actIndividuals.get(0).getFitness());
         assertEquals(fitnesses[4],actIndividuals.get(1).getFitness());
         assertEquals(fitnesses[0],actIndividuals.get(2).getFitness());
@@ -154,7 +148,6 @@ class PopulationTest {
                     .terminalNodeList(terminalList)
                     .build();
             population.initialise();
-            System.out.println(population.print());
             assertPopulation(expSize,expDepth, Optional.of(maxPopulationSize),population);
         }
     }

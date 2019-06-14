@@ -51,6 +51,12 @@ public class Population {
     private Double mutateRate = 0.25;
 
     @Builder.Default
+    private Double reproductionRate = 0.3;
+
+    @Builder.Default
+    private double crossoverRate = 0.5;
+
+    @Builder.Default
     private BiFunction<List<Node>, Double, Node>  mutateFunction = GPUtils.mutateRandomIndex;
     @Builder.Default
     private Function<Population,Individual> selectionMethod = GPUtils.selectWeightedParent;
@@ -93,11 +99,12 @@ public class Population {
     List<Individual> getReproductionSelection() {
         List<Individual> selected = new ArrayList<>();
 
-        selected.add(getFittest(0).get());
-        selected.add(getSelection());
+        int limit = (int)(size()*reproductionRate);
+
+        selected.addAll(getFittestList(limit));
 
         if (this.logging){
-            System.out.println(String.format("Selected.size() = %d", selected.size()));
+            System.out.println(String.format("Selected.size() = %2d   : limit = %2d", selected.size(),limit));
         }
         return selected;
     }
@@ -107,15 +114,17 @@ public class Population {
     }
 
     List<Individual> getCrossoverSelection() {
-        List<Individual> selected = new ArrayList<>();
-        selected.addAll(getIndividualCrossover(selected, 1, 1.0));
-        selected.addAll(getIndividualCrossover(selected, 2, 1.0));
+        List<Individual> children = new ArrayList<>();
+        individuals.stream().sorted().skip((int)(size()*reproductionRate)).forEach(individual -> {
+            List<Individual> parentList = Arrays.asList(individual, selectionMethod.apply(this));
+            children.addAll(Individual.crossoverIndividuals(parentList,crossoverRate));
+        });
 
 
         if (this.logging){
-            System.out.println(String.format("Crossover.size() = %d", selected.size()));
+            System.out.println(String.format("Crossover.size() = %d", children.size()));
         }
-        return selected;
+        return children;
     }
 
     private List<Individual> getIndividualCrossover(List<Individual> selected, int index, double rate) {
@@ -253,7 +262,6 @@ public class Population {
      * @return maximum individual's size
      */
     int getIndividualsMaxSize() {
-        individuals.stream().mapToInt(Individual::size).forEach(System.out::println);
         return individuals.stream().mapToInt(Individual::size).max().getAsInt();
     }
 

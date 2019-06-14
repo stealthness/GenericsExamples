@@ -111,8 +111,6 @@ public class NodeUtils {
         int randomIndex1 = selectRandomIndex(parentNode1.size());
         Node childNode0;
         Node childNode1;
-        System.out.println(randomIndex0);
-        System.out.println(randomIndex1);
         if (randomIndex0 == 0 && randomIndex1==0){
             return Arrays.asList(parentNode1.clone(),parentNode0.clone());
         }else if (randomIndex0 == 0){

@@ -40,7 +40,6 @@ public class NodeSetANdGetTest {
 
     void testTestcase(String testCase){
         List<String> testCaseStrings = TestUtils.getTestCase(testCase,TESTCASE_FILENAME, Optional.of(4));
-        testCaseStrings.forEach(System.out::println);
         assertEquals(4,testCaseStrings.size());
         var info = Arrays.asList(testCaseStrings.get(0).split(","));
         if (!info.get(2).equals("0")){
