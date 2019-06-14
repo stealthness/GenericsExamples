@@ -223,8 +223,6 @@ public class Population {
 
     /**
      * Removes and replaces and individual at index
-     * @param index
-     * @param newIndividual
      */
     void replaceIndividualAt(int index, Individual newIndividual) {
         individuals.remove(index);

@@ -57,7 +57,7 @@ class IndividualTest {
         assertTrue(individual.calculate(input) >= expRange[0], String.format("%s > %f is false",individual.calculate(input),expRange[0]));
     }
 
-    // Test get SubNodes
+    // Test get SubNodes GET_SUBTREE_FILEPATH = "testcases//testGetSubtreeAt.txt";
 
     @Test
     void testGetNode1(){
@@ -96,6 +96,20 @@ class IndividualTest {
         testReplaceSubNodeAt("testcase005");
         testReplaceSubNodeAt("testcase006");
         testReplaceSubNodeAt("testcase007");
+    }
+
+    // GET_FITNESS_FILENAME = "testcases//individualCalculationTestCases.txt";
+
+    @Test
+    void testEvaluateDepth0(){
+        testEvaluate("testcase001");
+        testEvaluate("testcase002");
+    }
+
+    @Test
+    void testEvaluateDepth1(){
+        testEvaluate("testcase003");
+        testEvaluate("testcase004");
     }
 
     // private assert Methods
@@ -159,31 +173,18 @@ class IndividualTest {
             }
     }
 
-    @Test
-    void test1(){
-    }
-
-    @Test
-    void testEvaluateDepth0(){
-        testEvaluate("testcase001");
-        testEvaluate("testcase002");
-    }
-
-    @Test
-    void testEvaluateDepth1(){
-        testEvaluate("testcase003");
-        testEvaluate("testcase004");
-    }
-
     void testEvaluate(String testCase){
         List<String> testCaseStrings = TestUtils.getTestCase(testCase,GET_FITNESS_FILENAME, Optional.of(4));
         assertEquals(4,testCaseStrings.size());
-        individual = Individual.builder().root(NodeUtils.createNodeFromString(testCaseStrings.get(1))).build();
+        Node expSolutionNode = NodeUtils.createNodeFromString(testCaseStrings.get(1));
         List<Node> testNodes = createNodesFromStrings(testCaseStrings, 2);
         List<Double> expFitness = getExpFitnessValues(testCaseStrings);
         for (int i = 0; i < expFitness.size(); i++){
-            var nodes = Arrays.asList(individual.getRoot(),testNodes.get(i));
+            var nodes = Arrays.asList(expSolutionNode,testNodes.get(i));
             double[] testRange = getTestRange(testCaseStrings.get(0));
+            System.out.println(expSolutionNode.toClojureString());
+            System.out.println(testNodes.get(i).toClojureString());
+            System.out.println(GPUtils.evaluateFitness(nodes,testRange)+ "\n");
             assertEquals(expFitness.get(i),GPUtils.evaluateFitness(nodes,testRange),TOL);
         }
     }
