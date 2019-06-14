@@ -51,7 +51,8 @@ public class Individual implements Node,Comparable{
 
     @Override
     public int compareTo(Object o) {
-        return 0;
+        // fitness is measured from 1 to 0. therefore reverse
+        return  -getFitness().compareTo(((Individual)o).getFitness());
     }
 
     int maxDepth() {

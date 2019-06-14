@@ -87,7 +87,9 @@ public class Population {
      * Returns a List of the fittest individual up to index of sorted list of individuals
      */
     List<Individual> getFittestList(int index){
-        return individuals.stream().sorted(Individual::compareTo).limit(index).collect(Collectors.toList());
+        List<Individual> sortedIndividuals = individuals.stream().sorted(Individual::compareTo).collect(Collectors.toList());
+        sortedIndividuals.stream().forEach(System.out::println);
+        return sortedIndividuals.stream().limit(index).collect(Collectors.toList());
     }
 
     List<Individual> getReproductionSelection() {

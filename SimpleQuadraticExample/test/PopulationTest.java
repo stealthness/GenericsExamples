@@ -123,6 +123,24 @@ class PopulationTest {
         assertEquals(2.0, population.getSumOfFitness(),TOL);
     }
 
+    @Test
+    void testGetFitnessList(){
+        population = Population.builder().maxPopulation(5).build();
+        population.initialise();
+        double[] fitnesses= new double[]{0.4,0.3,0.6,0.2,0.5};
+        for (int i = 0; i < population.size();i++){
+            population.getIndividuals().get(i).setFitness(fitnesses[i]);
+        }
+        assertEquals(5,population.size());
+       // assertEquals(2.0, population.getSumOfFitness(),TOL);
+        var actIndividuals = population.getFittestList(3);
+        actIndividuals.stream().forEach(individual -> System.out.println(individual.getFitness()));
+
+        assertEquals(fitnesses[2],actIndividuals.get(0).getFitness());
+        assertEquals(fitnesses[4],actIndividuals.get(1).getFitness());
+        assertEquals(fitnesses[1],actIndividuals.get(2).getFitness());
+    }
+
 
     private void generateTreeAndTest(List<GPFunction> functionList, List<Node> terminalList, String generationMethod,
                                      int maxGenerationDepth, Optional<Integer> expSize, Optional<Integer> expDepth){
