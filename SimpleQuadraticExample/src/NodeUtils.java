@@ -141,7 +141,7 @@ public class NodeUtils {
     private static FunctionNode selectFunctionNode(List<GPFunction>functionNodeList) {
         // standard select equal random bag
         int selection = new Random().nextInt(functionNodeList.size());
-        return new FunctionNode(functionNodeList.get(selection));
+        return new FunctionNode(functionNodeList.get(selection),null);
     }
 
     static Node selectTerminalNode(List<Node> terminalNodeList) {

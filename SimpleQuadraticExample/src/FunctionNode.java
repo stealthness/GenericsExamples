@@ -14,8 +14,11 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
     FunctionNode(GPFunction function, List<Node> nodes){
         setFunction(function);
         subNodes = new ArrayList<>();
-        nodes.forEach(subNode -> subNodes.add(subNode.clone()));
-        setMaxSubNodes(function.getMaxSubNodes());
+        if (nodes == null || nodes.isEmpty()){
+            nodes.forEach(subNode -> subNodes.add(subNode.clone()));
+            setMaxSubNodes(function.getMaxSubNodes());
+        }
+
 
     }
 
