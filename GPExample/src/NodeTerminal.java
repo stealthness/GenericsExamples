@@ -5,7 +5,7 @@ import lombok.Data;
  * value create at initialisation.
  */
 @Data
-public class NodeTerminal implements Node<Double[]> {
+public class NodeTerminal implements Node<Double[],Double> {
 
     final Double value;
 
