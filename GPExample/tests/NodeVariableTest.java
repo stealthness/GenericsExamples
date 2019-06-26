@@ -11,13 +11,13 @@ class NodeVariableTest {
 
     @Test
     void testVariableCreate(){
-        Node NodeVariable = new NodeVariable(0);
+        Node<Double[], Double> NodeVariable = new NodeVariable(0);
         assertEquals(NodeVariable.class, NodeVariable.getClass());
     }
 
     @Test
     void testSingleVariableApply(){
-        Node NodeVariable = new NodeVariable(0);
+        Node<Double[], Double> NodeVariable = new NodeVariable(0);
         Double[] input = new Double[]{Math.random()};
         assertEquals(input[0],NodeVariable.calculate(input));
     }
@@ -32,7 +32,7 @@ class NodeVariableTest {
         });
     }
 
-    private void assertNodeVariable(Double[] actInputs, Node NodeVariable){
+    private void assertNodeVariable(Double[] actInputs, Node<Double[], Double> NodeVariable){
         assertTrue(((NodeVariable)NodeVariable).getIndex() < actInputs.length,
                 String.format("Index %d < %d is false",((NodeVariable)NodeVariable).getIndex(),actInputs.length));
         assertEquals(actInputs[((NodeVariable) NodeVariable).getIndex()],NodeVariable.calculate(actInputs));
@@ -46,7 +46,7 @@ class NodeVariableTest {
 
     @Test
     void testPrintNodeVariable(){
-        Node NodeVariable = new NodeVariable(0);
+        Node<Double[], Double> NodeVariable = new NodeVariable(0);
         assertEquals("x0",NodeVariable.toClojureString());
         IntStream.range(0,10).forEach(this::assertPrintNodeVariable);
 

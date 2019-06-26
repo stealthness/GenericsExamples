@@ -12,8 +12,8 @@ class NodeTerminalTest {
     private double v0;
     private double v1;
 
-    private Node t0;
-    private Node t1;
+    private Node<Double[], Double> t0;
+    private Node<Double[], Double> t1;
 
     @BeforeEach
     void SetUp(){
@@ -26,8 +26,8 @@ class NodeTerminalTest {
 
     @Test
     void getValueIfTerminal() {
-        assertEquals(v0, (double)t0.calculate(null),TOL);
-        assertEquals(v1, (double)t1.calculate(null),TOL);
+        assertEquals(v0, t0.calculate(null),TOL);
+        assertEquals(v1, t1.calculate(null),TOL);
     }
 
     @Test
@@ -50,12 +50,12 @@ class NodeTerminalTest {
     @Test
     void testSizeAndDepth(){
         List<Node> testList = List.of(t0,t1,TestUtils.oneNode,TestUtils.twoNode);
-        testList.forEach(node -> assertNodeDimension(1,0,node));
+        testList.forEach(this::assertNodeDimension);
     }
 
-    private void assertNodeDimension(int expSize, int expDepth, Node actNode) {
-        assertEquals(expDepth,actNode.getDepth());
-        assertEquals(expSize,actNode.size());
+    private void assertNodeDimension(Node<Double[], Double> actNode) {
+        assertEquals(0,actNode.getDepth());
+        assertEquals(1,actNode.size());
     }
 
 }
