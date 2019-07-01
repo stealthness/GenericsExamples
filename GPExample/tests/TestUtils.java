@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 public class TestUtils {
 
+    static Node<Double[],Double> negOneNode = new NodeTerminal(-1.0);
     static Node<Double[],Double> zeroNode = new NodeTerminal(0.0);
     static Node<Double[],Double> oneNode = new NodeTerminal(1.0);
     static Node<Double[],Double> twoNode = new NodeTerminal(2.0);
