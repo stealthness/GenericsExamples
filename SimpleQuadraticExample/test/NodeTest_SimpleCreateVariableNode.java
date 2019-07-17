@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class VariableNodeTest {
+class NodeTest_SimpleCreateVariableNode {
 
     private static final int MAX_RUNS = 100;
 

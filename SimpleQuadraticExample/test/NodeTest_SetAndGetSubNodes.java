@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class NodeSetANdGetTest {
+public class NodeTest_SetAndGetSubNodes {
 
     private static final String TESTCASE_FILENAME = "testcases//nodeReplaceTreeAt.txt";
 

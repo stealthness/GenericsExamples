@@ -28,8 +28,30 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
         if (subNodes == null){
             subNodes = new ArrayList<>();
         }
+        if (function.getMinSubNodes() > nodes.size()){
+            System.out.println(String.format("HELP --function.getMiNSubnode %d  node.size %d",function.getMinSubNodes(), nodes.size()));
+        }
+
+
         nodes.forEach(subNode -> subNodes.add(subNode.clone()));
         setMaxSubNodes(function.getMaxSubNodes());
+
+//        if (function.getMaxSubNodes() == 1){
+//            if (nodes.size() == 1){
+//                nodes.add(nodes.get(0));
+//            }else{
+//                throw new IllegalArgumentException("number of sub-nodes equal to 1");
+//            }
+//        } else {
+//            if (function.getMinSubNodes() > nodes.size()){
+//                throw new IllegalArgumentException("not enough nodes");
+//            }else if (function.getMaxSubNodes() != -1 && function.getMaxSubNodes() < nodes.size()){
+//                throw new IllegalArgumentException("too many nodes");
+//            }else{
+//                nodes.forEach(subNode -> subNodes.add(subNode.clone()));
+//                setMaxSubNodes(function.getMaxSubNodes());
+//            }
+//        }
 
     }
 

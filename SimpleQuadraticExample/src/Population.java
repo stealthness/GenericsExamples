@@ -41,6 +41,7 @@ public class Population {
      * Contains a List of the individuals. Each individual contains a Node, fitness
      */
     private List<Individual> individuals;
+
     /**
      * if true prints out logging information
      */

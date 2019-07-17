@@ -5,7 +5,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TerminalNodeTest {
+class NodeTest_SimpleCreateTerminalNode {
 
     private static final double TOL = 0.000001;
     private double v0;

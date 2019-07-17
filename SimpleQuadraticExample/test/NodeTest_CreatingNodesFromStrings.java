@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Purpose of this class is to test creating Nodes from strings
  */
-public class CreatingNodesFromStringTest {
+public class NodeTest_CreatingNodesFromStrings {
 
 
     @Test
