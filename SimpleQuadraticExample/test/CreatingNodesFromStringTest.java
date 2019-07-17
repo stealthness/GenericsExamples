@@ -74,6 +74,7 @@ public class CreatingNodesFromStringTest {
 
     private void assertNodesFromStrings(List<String> actStrings, List<Node> expNodes) {
         for (int i = 0 ; i< actStrings.size() ; i++){
+            System.out.println(String.format("From String : %s    expNode : %s",actStrings.get(i), expNodes.get(i).toClojureString()));
             if (expNodes.get(0).size() == 1){ // is TerminalNode or VariableNode
                 assertEquals(expNodes.get(i).toClojureString(),actStrings.get(i).replace("("," ").replace(")"," ").strip());
             }else{  // Node is FunctionNode
@@ -82,7 +83,7 @@ public class CreatingNodesFromStringTest {
         }
         for (int i = 0 ; i< actStrings.size() ; i++){
             Node actNode = NodeUtils.createNodeFromString(actStrings.get(i));
-            //System.out.println(String.format("From String : %s  ActNode : %s    expNode : %s",actStrings.get(i),(actNode==null)?"null":actNode.toClojureString(), expNodes.get(i).toClojureString()));
+            System.out.println(String.format("From String : %s  ActNode : %s    expNode : %s",actStrings.get(i),(actNode==null)?"null":actNode.toClojureString(), expNodes.get(i).toClojureString()));
             TestUtils.assertNode(expNodes.get(i),actNode);
             assertEquals(expNodes.get(i).toClojureString(),actNode.toClojureString());
         }

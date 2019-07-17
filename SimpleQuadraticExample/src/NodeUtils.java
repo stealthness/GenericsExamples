@@ -24,11 +24,16 @@ public class NodeUtils {
     }
 
     static Node createNodeFromString(String string){
+        System.out.println(string);
         List<String> strings = Arrays.asList(string.split(" "));
         if (strings.size()==1){
+            System.out.println("<1>");
             return getTerminalNode(strings.get(0));
         } else {
+
+            System.out.println("<2+>");
             if (string.chars().filter(ch -> ch == '(').count() >1){
+                System.out.println("<open>");
                 List<String> newString = new ArrayList<>();
                 newString.add(strings.get(0));
                 for (int i = 1  ; i < strings.size(); i++){
@@ -37,6 +42,7 @@ public class NodeUtils {
                         while(isStillOpen(openString)){
                             openString += " "+strings.get(++i);
                         }
+                        System.out.println("<close>");
                         newString.add(openString);
                     }else {
                         newString.add(strings.get(i));

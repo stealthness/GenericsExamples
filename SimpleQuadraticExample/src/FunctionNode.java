@@ -50,6 +50,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
      * @param newSubtree the new tree to be inserted.
      */
     void replaceSubtreeAt(int index, Node newSubtree){
+        System.out.println(String.format("index: %d  newSubnode: %s",index,subNodes.toString()));
         if (subNodes == null && index == 0){
             subNodes = new ArrayList<>();
             subNodes.add(newSubtree);
