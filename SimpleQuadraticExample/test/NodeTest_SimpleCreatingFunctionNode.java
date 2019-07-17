@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FunctionNodeTest {
+class NodeTest_SimpleCreatingFunctionNode {
 
 
     private static final double TOL = 0.000001;

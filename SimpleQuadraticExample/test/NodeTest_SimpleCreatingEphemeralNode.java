@@ -4,7 +4,7 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EphemeralNodeTest {
+class NodeTest_SimpleCreatingEphemeralNode {
 
     private static final int MAX_RUNS = 100;
     private static final Double TOL = 0.000001;
