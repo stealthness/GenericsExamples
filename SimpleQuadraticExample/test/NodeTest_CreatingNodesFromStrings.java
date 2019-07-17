@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * Purpose of this class is to test creating Nodes from strings
  */
-public class NodeTest_CreatingNodesFromStrings {
+class NodeTest_CreatingNodesFromStrings {
 
 
     @Test
@@ -65,8 +66,8 @@ public class NodeTest_CreatingNodesFromStrings {
 
     @Test
     void testHardCase(){
-        var actStrings = Arrays.asList("(- (+ x0 (/ 1.0 x0)) (abs (+ 1.0 (+ x0 1.0) 2.0 3.0)))");
-        var expNodes = Arrays.asList(TestUtils.xPlusOneDivideXSubtructAbsOnePlusX);
+        var actStrings = Collections.singletonList("(- (+ x0 (/ 1.0 x0)) (abs (+ 1.0 (+ x0 1.0) 2.0 3.0)))");
+        var expNodes = Collections.singletonList(TestUtils.xPlusOneDivideXSubtructAbsOnePlusX);
         assertNodesFromStrings(actStrings, expNodes);
     }
 
