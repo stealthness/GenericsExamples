@@ -16,6 +16,7 @@ public class Individual implements Node,Comparable{
     /**
      * root is the tree structure program. It is of type Node, which may contain subNodes
      */
+    @lombok.NonNull
     Node root;
     /**
      * Is the fitness value of the Individual

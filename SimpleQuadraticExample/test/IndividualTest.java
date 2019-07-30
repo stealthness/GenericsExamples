@@ -21,46 +21,14 @@ class IndividualTest {
     private static final double TOL = 0.0001;
     private Individual individual;
 
-    @BeforeEach
-    void setUP(){
 
-    }
-
-    @Test
-    void testCreateIndividualWitTerminalNode(){
-        individual = Individual.builder().root(TestUtils.oneNode).build();
-        assertEquals(TerminalNode.class, individual.getRoot().getClass());
-        assertEquals(1.0, individual.calculate(TestUtils.createRandomInput(1)));
-
-        individual = Individual.builder().root(new TerminalNode(1.0)).build();
-        assertEquals(TerminalNode.class, individual.getRoot().getClass());
-        assertEquals(1.0, individual.calculate(TestUtils.createRandomInput(1)));
-        assertEquals("(1.0)",individual.toClojureString());
-    }
-
-
-    @Test
-    void testCreateIndividualWitVariableNode(){
-        individual = Individual.builder().root(TestUtils.xNode).build();
-        assertEquals(VariableNode.class, individual.getRoot().getClass());
-        Double[] input= TestUtils.createRandomInput(1);
-        assertEquals(input[0], individual.calculate(input));
-    }
-
-    @Test
-    void testCreateIndividualWitEphemeralNode(){
-        individual = Individual.generate(Arrays.asList(TestUtils.eNode),null,"grow",0);
-        assertEquals(TerminalNode.class, individual.getRoot().getClass());
-        Double[] input= TestUtils.createRandomInput(1);
-        Double[] expRange = TestUtils.range1to1;
-        assertTrue(individual.calculate(input) <= expRange[1], String.format("%s < %f is false",individual.calculate(input),expRange[1]));
-        assertTrue(individual.calculate(input) >= expRange[0], String.format("%s > %f is false",individual.calculate(input),expRange[0]));
-    }
 
     // Test get SubNodes GET_SUBTREE_FILEPATH = "testcases//testGetSubtreeAt.txt";
 
     @Test
     void testGetNode1(){
+        String[] tests = new String[]{"testcase001","testcase002"};
+        
         testGetNode("testcase001");
         testGetNode("testcase002");
     }
@@ -204,11 +172,4 @@ class IndividualTest {
                 .collect(Collectors.toList());
     }
 
-//    private double[] createRandomInputs(int size, int lowerBound, int upperBound) {
-//        double[] inputs= new double[size];
-//        for (int i = 0; i< size;i++){
-//            inputs[i] = new Random().nextDouble()*(lowerBound+upperBound)-lowerBound;
-//        }
-//        return inputs;
-//    }
 }
