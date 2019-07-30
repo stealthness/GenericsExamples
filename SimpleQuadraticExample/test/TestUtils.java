@@ -118,8 +118,8 @@ class TestUtils {
                 actNode.toClojureString()));
     }
 
-    static void assertNode(Node expNode, Node actNode) {
-        final String msg = String.format("\n expNode %s, actNode : %s",expNode.toClojureString(), actNode.toClojureString());
+    static void assertNode(Node expNode, Node actNode,String testcase) {
+        final String msg = String.format("\n%s:: expNode %s, actNode : %s",testcase, expNode.toClojureString(), actNode.toClojureString());
         assertEquals(expNode.getClass(), actNode.getClass(), msg);
         assertNodeSize(expNode.size(),expNode.getDepth(),actNode);
         assertEquals(expNode.toClojureString(),actNode.toClojureString(),msg);
@@ -128,6 +128,10 @@ class TestUtils {
         } else if (expNode.getClass()== TerminalNode.class){
             assertEquals(((TerminalNode)expNode).getValue(),((TerminalNode)actNode).getValue(),msg);
         }
+    }
+
+    static void assertNode(Node expNode, Node actNode) {
+        assertNode(expNode,actNode,"");
     }
 
     static void assertNodeSize(int expSize, int expDepth, Node actNode){

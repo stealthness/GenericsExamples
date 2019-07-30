@@ -28,17 +28,14 @@ class IndividualTest {
     @Test
     void testGetNode1(){
         String[] tests = new String[]{"testcase001","testcase002"};
-        
-        testGetNode("testcase001");
-        testGetNode("testcase002");
+        Arrays.stream(tests).forEach(this::testGetNode);
     }
 
     @Test
     void testSingle(){
-        testGetNode("single004");
-        testGetNode("single005");
-        testGetNode("single006");
-        testGetNode("single003");
+
+        String[] tests = new String[]{"single003","single004","single005","single006"};
+        Arrays.stream(tests).forEach(this::testGetNode);
     }
 
     @Test
@@ -49,35 +46,28 @@ class IndividualTest {
 
     @Test
     void testIndividualCalculation(){
-        testIndividualCalculation("testcase001");
-        testIndividualCalculation("testcase002");
-        testIndividualCalculation("testcase003");
-        testIndividualCalculation("testcase004");
+        String[] tests = new String[]{"testcase001","testcase002","testcase003","testcase004"};
+        Arrays.stream(tests).forEach(this::testIndividualCalculation);
     }
 
     @Test
     void testReplaceNodeAt(){
-        testReplaceSubNodeAt("testcase001");
-        testReplaceSubNodeAt("testcase002");
-        testReplaceSubNodeAt("testcase003");
-        testReplaceSubNodeAt("testcase004");
-        testReplaceSubNodeAt("testcase005");
-        testReplaceSubNodeAt("testcase006");
-        testReplaceSubNodeAt("testcase007");
+        String[] tests = new String[]{"testcase001","testcase002","testcase003","testcase004","testcase005","testcase006","testcase007"};
+        Arrays.stream(tests).forEach(this::testReplaceSubNodeAt);
     }
 
     // GET_FITNESS_FILENAME = "testcases//individualCalculationTestCases.txt";
 
     @Test
     void testEvaluateDepth0(){
-        testEvaluate("testcase001");
-        testEvaluate("testcase002");
+        String[] tests = new String[]{"testcase001","testcase002"};
+        Arrays.stream(tests).forEach(this::testEvaluate);
     }
 
     @Test
     void testEvaluateDepth1(){
-        testEvaluate("testcase003");
-        testEvaluate("testcase004");
+        String[] tests = new String[]{"testcase003","testcase004"};
+        Arrays.stream(tests).forEach(this::testEvaluate);
     }
 
     // private assert Methods
@@ -107,18 +97,18 @@ class IndividualTest {
 
     public void testGetNode(String testcase) {
         List<String> testCaseStrings = TestUtils.getTestCase(testcase, GET_SUBTREE_FILEPATH, Optional.of(3));;
-        assertEquals(3,testCaseStrings.size());
+        assertEquals(3,testCaseStrings.size(),testcase);
         var info = Arrays.asList(testCaseStrings.get(0).split(","));
 
         Node root = NodeUtils.createNodeFromString(info.get(1));
         individual = Individual.builder().root(root).build();
         if (info.get(2).equals("all")){
             for (int i = 1; i< individual.size();i++){
-                TestUtils.assertNode(NodeUtils.createNodeFromString(info.get(2).split(",")[i]),individual.getSubtree(i).get());
+                TestUtils.assertNode(NodeUtils.createNodeFromString(info.get(2).split(",")[i]),individual.getSubtree(i).get(),testcase);
             }
         } else{
             for (int i = 2; i< info.get(2).length();i++){
-                TestUtils.assertNode(NodeUtils.createNodeFromString(info.get(2).split(",")[i]),individual.getSubtree(i).get());
+                TestUtils.assertNode(NodeUtils.createNodeFromString(info.get(2).split(",")[i]),individual.getSubtree(i).get(),testcase);
             }
         }
         TestUtils.assertNode(root,individual.getSubtree(0).get());
