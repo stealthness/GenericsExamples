@@ -11,10 +11,6 @@ public class IndividualTest_GeneratingTrees {
 
     private static final String GROW = "GROW";
     Individual actIndividual;
-    Individual expIndividual;
-    String expClojureString;
-    int expDepth;
-    int expSize;
     List<Node> nodeList;
     List<GPFunction> functionList;
 
@@ -22,15 +18,9 @@ public class IndividualTest_GeneratingTrees {
     void testGeneratingTreeWithTerminalNodesOnly(){
 
         nodeList = Arrays.asList(TestUtils.oneNode);
-        functionList = null;
-
         actIndividual = Individual.generate(nodeList, null, GROW,0);
-        expClojureString = "(1.0)";
-        expDepth = 0;
-        expSize = 1;
 
-
-        assertIndividual(Optional.empty(),Optional.of(expClojureString), Optional.of(expDepth), Optional.of(expSize),actIndividual);
+        assertIndividual(Optional.empty(),Optional.of("(1.0)"), Optional.of(0), Optional.of(1),actIndividual);
 
     }
 
