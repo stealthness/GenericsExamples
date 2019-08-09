@@ -92,6 +92,9 @@ public class NodeUtils {
             }
 
         }
+        if (node == null){
+            System.out.println("ERROR");
+        }
         return node;
     }
 
