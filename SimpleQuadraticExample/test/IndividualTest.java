@@ -1,8 +1,6 @@
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -132,14 +130,15 @@ class IndividualTest {
 
     void testEvaluate(String testCase){
         List<String> testCaseStrings = TestUtils.getTestCase(testCase,GET_FITNESS_FILENAME, Optional.of(4));
-        assertEquals(4,testCaseStrings.size());
+        String msg = testCase;
+        assertEquals(4,testCaseStrings.size(),msg + " - Testcase invalid");
         Node expSolutionNode = NodeUtils.createNodeFromString(testCaseStrings.get(1));
         List<Node> testNodes = createNodesFromStrings(testCaseStrings, 2);
-        List<Double> expFitness = getExpFitnessValues(testCaseStrings);
-        for (int i = 0; i < expFitness.size(); i++){
+        List<Double> expValue = getExpFitnessValues(testCaseStrings);
+        for (int i = 0; i < expValue.size(); i++){
             var nodes = Arrays.asList(expSolutionNode,testNodes.get(i));
             double[] testRange = getTestRange(testCaseStrings.get(0));
-            assertEquals(expFitness.get(i),GPUtils.evaluateFitness(nodes,testRange),TOL);
+            assertEquals(expValue.get(i),GPUtils.evaluateFitness(nodes,testRange),TOL,msg+" - input test:" + i);
         }
     }
 

@@ -1,16 +1,20 @@
-testcase001,1
+## <testcase name> <starts at line no>
+## <expression statement>
+## <input values>
+## <expected calculation>
+testcase001,5
 (1.0)
 1.0,2.0,3.0
 1.0,1.0,1.0
-testcase002,5
+testcase002,9
 (-1.0)
 1.0,2.0,3.0
 -1.0,-1.0,-1.0
-testcase003,9
+testcase003,13
 (+ 2.0 1.0 3.0)
 1.0,2.0,3.0
 6.0,6.0,6.0
-testcase004,13
+testcase004,17
 (x0)
 1.0,2.0,3.0
 1.0,2.0,3.0

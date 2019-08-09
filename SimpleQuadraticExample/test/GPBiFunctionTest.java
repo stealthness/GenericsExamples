@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -43,9 +44,11 @@ class GPBiFunctionTest {
 
     private void assertFunctionNode(Optional<Double> expValue, Optional<Integer> expSize, Optional<Integer>  expDepth, Optional<String>  expClojureString, Optional<Double[]> inputs, Node actNode){
         assertEquals(FunctionNode.class,actNode.getClass());
-        assertEquals(expSize.get(), actNode.size());
-        assertEquals(expDepth.get(),actNode.getDepth());
+        expSize.ifPresent(it -> assertEquals(it, actNode.size()));
+        expDepth.ifPresent(it -> assertEquals(it,actNode.getDepth()));
+        expClojureString.ifPresent(it -> assertEquals(it,actNode.toClojureString()));
         assertEquals(expClojureString.get(),actNode.toClojureString());
+        expValue.ifPresent(it -> assertEquals(it,actNode.calculate(inputs.orElse(null))));
         assertEquals(expValue.get(),actNode.calculate(inputs.orElse(null)));
     }
 
