@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class NodeUtils {
 
@@ -24,29 +21,48 @@ public class NodeUtils {
     }
 
     static Node createNodeFromString(String string){
-        List<String> strings = Arrays.asList(string.split(" "));
-        if (strings.size()==1){
+        List<String> strings = Arrays.asList(removeOutsideBrackets(string).split(" "));
+        if (!checkBracketValidation(string)){
+            throw new IllegalArgumentException("Number of matching brackets not equal");
+        }else if (strings.size() == 0){
+            throw new IllegalArgumentException("No valid arguments");
+        } else if (strings.size()==1){
             return getTerminalNode(strings.get(0));
         } else {
-            if (string.chars().filter(ch -> ch == '(').count() >1){
-                List<String> newString = new ArrayList<>();
-                newString.add(strings.get(0));
+            if (string.chars().filter(ch -> ch == '(').count() > 1){
+                // string contains subNodes that includes at least one FunctionNodes
+                System.out.println("NESTED");
+
+                List<String> newStrings = new ArrayList<>();
+                newStrings.add(strings.get(0));
                 for (int i = 1  ; i < strings.size(); i++){
                     if (strings.get(i).contains("(")){
                         String openString = strings.get(i);
                         while(isStillOpen(openString)){
                             openString += " "+strings.get(++i);
                         }
-                        newString.add(openString);
+                        newStrings.add(openString);
                     }else {
-                        newString.add(strings.get(i));
+                        newStrings.add(strings.get(i));
                     }
                 }
-                return createFunctionNodeFromString(newString);
+                return createFunctionNodeFromString(newStrings);
             } else{
+                // string contains subNodes
                 return createFunctionNodeFromString(strings);
             }
         }
+    }
+
+    private static String removeOutsideBrackets(String string){
+        if (string.startsWith("(") && string.endsWith(")")){
+            return string.substring(1, string.length() - 1);
+        }
+        return string;
+    }
+
+    private static boolean checkBracketValidation(String string) {
+        return string.chars().filter(ch -> ch == '(').count() == string.chars().filter(ch -> ch == ')').count();
     }
 
     private static boolean isStillOpen(String openString) {
@@ -59,8 +75,8 @@ public class NodeUtils {
         for (int i = 1; i < strings.size() ; i++){
             subNodes.add(createNodeFromString(strings.get(i)));
         }
-        String functionString = strings.get(0).replace("(","");
-        return new FunctionNode(GPUtils.getGPFunction(functionString), subNodes);
+        String functionString = strings.get(0);
+        return new FunctionNode(GPUtils.getGPFunction(functionString, Optional.of(strings.size()-1)), subNodes);
     }
 
     private static Node getTerminalNode(String string) {
@@ -74,14 +90,19 @@ public class NodeUtils {
 
     static Node generateNode(List<Node> terminalList, List<GPFunction> functionList, String method, int depth){
         Node node = null;
+        System.out.println(method);
         if (depth == 0){
+            System.out.println("<0>");
             node = selectTerminalNode(terminalList);
         }else if (method.equals(FULL)){
+            System.out.println("<FULL>");
             node = selectFunctionNode(functionList);
             for (int i = 0 ; i < Math.min(2, ((FunctionNode)node).getMaxSubNodes()); i++){
                 ((FunctionNode)node).addSubNode(generateNode(terminalList,functionList,method,depth-1));
             }
         }else if (method.equals(GROW)){
+
+            System.out.println("<GROW>");
             if (Math.random() < FUNCTION_TERMINAL_SELECTION_RATIO){
                 node = selectTerminalNode(terminalList);
             }else{

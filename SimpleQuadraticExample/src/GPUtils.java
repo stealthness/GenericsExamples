@@ -3,6 +3,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -81,9 +82,15 @@ public class GPUtils {
     };
 
     // static methods
-
-
     public static GPFunction getGPFunction(String functionString){
+        return getGPFunction(functionString,Optional.empty());
+    }
+
+
+
+    public static GPFunction getGPFunction(String functionString, Optional<Integer> numberOfSubNodes){
+
+
         return switch (functionString) {
             case "+" -> new GPMultiFunction(add, functionString);
             case "/" -> new GPBiFunction(divide, functionString);
@@ -97,6 +104,9 @@ public class GPUtils {
                         try {
                             switch (functionString) {
                                 case "abs", "reciprocal", "identity" -> {
+                                    if (numberOfSubNodes.isPresent() && numberOfSubNodes.get() != 1){
+                                        throw new IllegalArgumentException("Number of Arguments not equal to one");
+                                    }
                                     Class<?> functionClass = Class.forName(GPSingleFunction.class.getName());
                                     Constructor<?> functionConstructor = functionClass.getDeclaredConstructors()[0];
                                     function = (GPFunction) functionConstructor.newInstance(GPUtils.class.getDeclaredField(functionString).get(null), functionString);
