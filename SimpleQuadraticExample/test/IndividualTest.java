@@ -77,6 +77,7 @@ class IndividualTest {
     // test method using testcase
 
     public void testIndividualCalculation(String testcase) {
+        System.out.println(testcase);
         List<String> strings = TestUtils.getTestCase(testcase, INDIVIDUAL_CALCULATION_FILEPATH, Optional.of(4));
         individual = Individual.builder().root(NodeUtils.createNodeFromString(strings.get(1))).build();
         List<String> inputsStrings;

@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class IndividualTest_GeneratingTrees {
 
-    private static final String GROW = "GROW";
+    private static final String GROW = "grow";
     Individual actIndividual;
     List<Node> nodeList;
     List<GPFunction> functionList;
@@ -47,7 +47,7 @@ public class IndividualTest_GeneratingTrees {
         nodeList = List.of(TestUtils.oneNode,TestUtils.twoNode);
         functionList = List.of(GPUtils.getGPFunction("abs"));
         actIndividual = Individual.generate(nodeList, functionList, GROW,1);
-        assertIndividual(Optional.empty(),Optional.of(List.of("(abs 1.0)", "(abs 2.0)")), Optional.of(0), Optional.of(1),actIndividual);
+        assertIndividual(Optional.empty(),Optional.of(List.of("(abs 1.0)", "(abs 2.0)", "(1.0)", "(2.0)")), Optional.of(0), Optional.of(1),actIndividual);
     }
 
 
@@ -76,6 +76,7 @@ public class IndividualTest_GeneratingTrees {
 
             assertTrue(expClojureStrings.get().stream().anyMatch(strings -> {
                 System.out.println(strings);
+                System.out.println(actIndividual.toClojureString());
                 return strings.contains(actIndividual.toClojureString());
             }), "no matches found");
            //assertEquals(expClojureString.get(),actIndividual.toClojureString(),"ClojureStrings not equal");

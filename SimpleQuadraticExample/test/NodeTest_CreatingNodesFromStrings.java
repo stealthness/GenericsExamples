@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -24,16 +25,25 @@ class NodeTest_CreatingNodesFromStrings {
     @Test
     void testTreesOfSize2(){
         var actStrings = Arrays.asList("(abs 0.0)","(abs 1.0)","(abs 2.0)","(abs 3.0)","(abs 4.0)","(abs x0)","(abs x1)");
-        var expNodes = Arrays.asList(TestUtils.absZeronNode,TestUtils.absOneNode,TestUtils.absTwoNode,TestUtils.absThreeNode,
+        var expNodes = Arrays.asList(TestUtils.absZeroNode,TestUtils.absOneNode,TestUtils.absTwoNode,TestUtils.absThreeNode,
                 TestUtils.absFourNode,TestUtils.absX0Node,TestUtils.absX1Node);
         assertNodesFromStrings(actStrings, expNodes);
     }
 
     @Test
     void testTreesOfSize3Depth1(){
-        var actStrings = Arrays.asList("(abs 0.0 1.0)","(abs 1.0 2.0)","(abs x0 1.0)","(abs 2.0 x1)");
-        var expNodes = Arrays.asList(TestUtils.absZeroOneNode,TestUtils.absOneTwoNode,TestUtils.absX0OneNode,TestUtils.absTwoX1Node);
+        var actStrings = Arrays.asList("(+ 0.0 1.0)","(+ 1.0 2.0)","(+ x0 1.0)","(+ 2.0 x1)");
+        var expNodes = Arrays.asList(TestUtils.addZeroOneNode,TestUtils.addOneTwoNode,TestUtils.addX0OneNode,TestUtils.addTwoX1Node);
         assertNodesFromStrings(actStrings, expNodes);
+    }
+
+    @Test
+    void testThatCreatingABSFunctionWithMoreThan2NodesCreatesException(){
+        var actString = "(abs 0.0 1.0)";
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            var  expNode = NodeUtils.createNodeFromString(actString);
+        });
+
     }
 
     @Test
