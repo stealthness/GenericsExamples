@@ -47,7 +47,7 @@ public class IndividualTest_GeneratingTrees {
         nodeList = List.of(TestUtils.oneNode,TestUtils.twoNode);
         functionList = List.of(GPUtils.getGPFunction("abs"));
         actIndividual = Individual.generate(nodeList, functionList, GROW,1);
-        assertIndividual(Optional.empty(),Optional.of(List.of("(abs 1.0)", "(abs 2.0)", "(1.0)", "(2.0)")), Optional.of(0), Optional.of(1),actIndividual);
+        assertIndividual(Optional.empty(),Optional.of(List.of("(abs 1.0)", "(abs 2.0)", "(1.0)", "(2.0)")), Optional.empty(), Optional.empty(),actIndividual);
     }
 
 
