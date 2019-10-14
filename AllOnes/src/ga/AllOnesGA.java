@@ -54,7 +54,7 @@ public class AllOnesGA implements Runnable{
                 .build();
 
 
-        int MAX_RUNS = 1000;
+        int MAX_RUNS = 100;
         int[] generations = new int[MAX_RUNS];
         IntStream.range(0,MAX_RUNS).forEach(i -> {
             System.out.println(i);
