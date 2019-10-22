@@ -57,12 +57,11 @@ public class AllOnesGA implements Runnable{
         int MAX_RUNS = 100;
         int[] generations = new int[MAX_RUNS];
         IntStream.range(0,MAX_RUNS).forEach(i -> {
-            System.out.println(i);
             generations[i] = runGA(ga);
-            System.out.println("solved in "+generations[i]+" generations");
+            System.out.println(String.format("Attemp %d solved in %d generations",i,generations[i]));
         });
         var average = (double)Arrays.stream(generations).sum() / (double)MAX_RUNS;
-        System.out.println("Avergae generation : " + average);
+        System.out.println(String.format("Avergae generation : %d", average));
     }
 
     public int runGA(GeneticAlgorithm ga){
