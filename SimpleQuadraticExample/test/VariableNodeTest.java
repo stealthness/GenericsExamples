@@ -11,20 +11,20 @@ class VariableNodeTest {
 
 
     @Test
-    void testVariableCreate(){
+    void testCreateVariableNode(){
         Node variableNode = new VariableNode(0);
         assertEquals(VariableNode.class, variableNode.getClass());
     }
 
     @Test
-    void testSingleVariableApply(){
+    void testVariableNodeApplyForIndexZero(){
         Node variableNode = new VariableNode(0);
         Double[] input = new Double[]{Math.random()};
         assertEquals(input[0],variableNode.calculate(input));
     }
 
     @Test
-    void testMultiVariableApply(){
+    void testVariableNodeApplyForInputDimensionOfSize3(){
         int maxSize = 4;
         Double[] variableRange = new Double[]{-1.0,2.0};
         IntStream.range(0,MAX_RUNS).forEach(runs ->{
@@ -39,6 +39,12 @@ class VariableNodeTest {
         assertEquals(actInputs[((VariableNode) variableNode).getIndex()],variableNode.calculate(actInputs));
     }
 
+    /**
+     * Creates a array of Doubles with random values with the given range
+     * @param size the size of the array
+     * @param range a pair of values which the random values will be between
+     * @return
+     */
     private Double[] createRandomInput(int size, Double[] range){
         Double[] inputs = new Double[size];
         IntStream.range(0,size).forEach(i -> inputs[i] = Math.random()*(range[0]+range[1])-range[0]);
