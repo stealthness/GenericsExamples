@@ -7,20 +7,30 @@ import java.util.List;
 class GPUtilsTest {
 
     Node node;
+    /**
+     * list of Function Nodes that will drawn from in generating trees
+     */
     private List<FunctionNode> functionNodes;
+    /**
+     * The list of terminal Nodes that will drawn from in generating trees
+     */
     private List<Node> leafNodes;
 
     @BeforeEach
 
     void setUp(){
-        functionNodes = Arrays.asList(new FunctionNode(new GPSingleFunction(GPUtils.abs, "abs"),Arrays.asList()),
-                                        new FunctionNode(new GPSingleFunction(GPUtils.reciprocal, "recip"),Arrays.asList()));
-        leafNodes = Arrays.asList(TestUtils.oneNode, TestUtils.twoNode,TestUtils.xNode);
+
+        var absFunction = new FunctionNode(new GPSingleFunction(GPUtils.abs, "abs"),Arrays.asList());
+        var reciprocalFunction =new FunctionNode(new GPSingleFunction(GPUtils.reciprocal, "recip"),Arrays.asList());
+
+        functionNodes = Arrays.asList(absFunction, reciprocalFunction);
+        leafNodes = Arrays.asList(TestUtils.oneNode, TestUtils.twoNode, TestUtils.xNode);
     }
 
     @Test
     void testSetUp(){
         node = functionNodes.get(0);
+        System.out.println(node.toClojureString());
         ((FunctionNode)node).addSubNode(leafNodes.get(0));
         TestUtils.assertNode(TestUtils.absOneNode,node);
     }

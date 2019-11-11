@@ -33,10 +33,15 @@ class VariableNodeTest {
         });
     }
 
-    private void assertVariableNode(Double[] actInputs, Node variableNode){
-        assertTrue(((VariableNode)variableNode).getIndex() < actInputs.length,
-                String.format("Index %d < %d is false",((VariableNode)variableNode).getIndex(),actInputs.length));
-        assertEquals(actInputs[((VariableNode) variableNode).getIndex()],variableNode.calculate(actInputs));
+    /**
+     * Asserts a Variable Node given an input
+     * @param expInputs
+     * @param actVariableNode
+     */
+    private void assertVariableNode(Double[] expInputs, Node actVariableNode){
+        assertTrue(((VariableNode)actVariableNode).getIndex() < expInputs.length,
+                String.format("Index %d < %d is false",((VariableNode)actVariableNode).getIndex(),expInputs.length));
+        assertEquals(expInputs[((VariableNode) actVariableNode).getIndex()],actVariableNode.calculate(expInputs));
     }
 
     /**

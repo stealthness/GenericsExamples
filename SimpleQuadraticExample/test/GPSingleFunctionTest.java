@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -6,13 +7,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GPSingleFunctionTest {
 
-    @Test
-    void apply() {
+    @BeforeEach
+    void setUp(){
+        var list1 = Collections.singletonList(new TerminalNode(1.0));
     }
+
 
     @Test
     void testApplyAndGetIdentityOnOneNode() {
         Node identity = new FunctionNode(new GPSingleFunction(GPUtils.identity,"ID"), Collections.singletonList(new TerminalNode(1.0)));
+        assertEquals(1.0, ((FunctionNode)identity).calculate(new Double[]{0.0}));
         assertEquals(1.0, ((FunctionNode)identity).calculate(TestUtils.createRandomInput(1)));
     }
 
