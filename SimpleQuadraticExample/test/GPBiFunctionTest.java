@@ -41,6 +41,15 @@ class GPBiFunctionTest {
 
     // helper method
 
+    /**
+     * Test a function node
+     * @param expValue the expected value of the calulation
+     * @param expSize the expected size of the function node
+     * @param expDepth the expected depth of the function node
+     * @param expClojureString the expected clojure string
+     * @param inputs input values
+     * @param actNode the node being tested
+     */
     private void assertFunctionNode(Optional<Double> expValue, Optional<Integer> expSize, Optional<Integer>  expDepth, Optional<String>  expClojureString, Optional<Double[]> inputs, Node actNode){
         assertEquals(FunctionNode.class,actNode.getClass());
         assertEquals(expSize.get(), actNode.size());
