@@ -21,12 +21,7 @@ class FunctionNodeTest {
         assertEquals(FunctionNode.class,functionNode.getClass());
     }
 
-    @Test
-    void testCreateFunctionNodeWithENode(){
-        Node functionNode = new FunctionNode(new GPSingleFunction(GPUtils.identity,"ID"), Collections.singletonList(TestUtils.eNode));
-        assertEquals(FunctionNode.class,functionNode.getClass());
-        assertEquals(TerminalNode.class,((FunctionNode)functionNode).getSubNode(0).get().getClass());
-    }
+
 
     @Test
     void testGetSubtreeAt0(){

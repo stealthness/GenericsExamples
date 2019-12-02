@@ -113,10 +113,13 @@ class TestUtils {
     }
 
     static void assertNode(Double expResult, Node actNode) {
+        var test = createRandomInput(1);
+        System.out.println(String.format("%d %s",test.length, Double.toString(test[0])));
         Double actResult = actNode.calculate(createRandomInput(1));
         assertEquals(expResult, actResult, TOL, String.format("\nfunction : %s",
                 actNode.toClojureString()));
     }
+
 
     static void assertNode(Node expNode, Node actNode) {
         final String msg = String.format("\n expNode %s, actNode : %s",expNode.toClojureString(), actNode.toClojureString());

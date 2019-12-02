@@ -1,10 +1,13 @@
-
 import lombok.Data;
-
 import java.util.List;
 import java.util.function.BiFunction;
 
 @Data
+/**
+ * The class GPSingleFunction is used for GPFunctions that allow a maximum of one node
+ *
+ * example of single functions are : identity, abs, cos, sin,...
+ */
 public class GPSingleFunction implements GPFunction{
 
     private static final int MAX_NUMBER_SUB_NODES = 1;

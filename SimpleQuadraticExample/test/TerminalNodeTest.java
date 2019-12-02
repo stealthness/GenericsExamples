@@ -24,13 +24,13 @@ class TerminalNodeTest {
     }
 
     @Test
-    void getValueIfTerminal() {
+    void testTerminalNodeCalculate() {
         assertEquals(v0, t0.calculate(null),TOL);
         assertEquals(v1, t1.calculate(null),TOL);
     }
 
     @Test
-    void printTerminal() {
+    void testTerminalToClojureString() {
         assertEquals(String.valueOf(v0), t0.toClojureString());
         assertEquals(String.valueOf(v1), t1.toClojureString());
         assertEquals("1.0",TestUtils.oneNode.toClojureString());
@@ -41,8 +41,9 @@ class TerminalNodeTest {
     // test Equality
 
     @Test
-    void testEquality(){
+    void testTerminalNodeIsEqual(){
         assertEquals(TestUtils.oneNode, new TerminalNode(1.0));
+        assertEquals(TestUtils.twoNode, new TerminalNode(2.0));
         assertNotEquals(TestUtils.twoNode, TestUtils.oneNode);
         assertNotEquals(TestUtils.oneNode, TestUtils.xNode);
     }
@@ -53,6 +54,12 @@ class TerminalNodeTest {
         testList.forEach(node -> assertNodeDimension(1,0,node));
     }
 
+    /**
+     * Asserts the Nodes depth and size
+     * @param expSize expected Nodes size
+     * @param expDepth expected Nodes depth
+     * @param actNode the actual Node to be tested
+     */
     private void assertNodeDimension(int expSize, int expDepth, Node actNode) {
         assertEquals(expDepth,actNode.getDepth());
         assertEquals(expSize,actNode.size());

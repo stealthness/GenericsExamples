@@ -80,6 +80,11 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     @Override
     public int getDepth(){
+
+        if (subNodes.size()==0){
+            System.out.println(subNodes.toString());
+            return 1;
+        }
         return 1 + subNodes.stream().mapToInt(Node::getDepth).max().getAsInt() ;
     }
 
