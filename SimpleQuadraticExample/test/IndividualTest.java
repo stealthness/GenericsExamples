@@ -138,7 +138,7 @@ class IndividualTest {
     }
 
     public void testGetNode(String testcase) {
-        List<String> testCaseStrings = TestUtils.getTestCase(testcase, GET_SUBTREE_FILEPATH, Optional.of(3));;
+        List<String> testCaseStrings = TestUtils.getTestCase(testcase, GET_SUBTREE_FILEPATH, Optional.of(3));
         assertEquals(3,testCaseStrings.size());
         var info = Arrays.asList(testCaseStrings.get(0).split(","));
 

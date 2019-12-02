@@ -6,6 +6,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.util.Arrays.asList;
+
 /**
  * Populations contains a list of individuals, how the initial population is constructed
  * The rates at which population is mutated, breed and crossed with. Also contains the
@@ -33,7 +35,7 @@ public class Population {
      * Stores a list of allowable terminal nodes to generate trees from
      */
     @Builder.Default
-    private List<Node> terminalNodeList = Arrays.asList(new TerminalNode(0.0));
+    private List<Node> terminalNodeList = asList(new TerminalNode(0.0));
 
     private List<GPFunction> functionNodeList;
 
@@ -74,8 +76,7 @@ public class Population {
 
         // standard select equal random bag
         int selection = new Random().nextInt(terminalNodeList.size());
-        Node node = terminalNodeList.get(selection);
-        return node;
+        return terminalNodeList.get(selection);
     }
 
     List<Individual> generate( int size){
@@ -116,7 +117,7 @@ public class Population {
     List<Individual> getCrossoverSelection() {
         List<Individual> children = new ArrayList<>();
         individuals.stream().sorted().skip((int)(size()*reproductionRate)).forEach(individual -> {
-            List<Individual> parentList = Arrays.asList(individual, selectionMethod.apply(this));
+            List<Individual> parentList = asList(individual, selectionMethod.apply(this));
             children.addAll(Individual.crossoverIndividuals(parentList,crossoverRate));
         });
 
@@ -130,7 +131,7 @@ public class Population {
     private List<Individual> getIndividualCrossover(List<Individual> selected, int index, double rate) {
         Individual parent0 = getFittest(index).get();
         Individual parent1 = getSelection();
-        return Individual.crossoverIndividuals(Arrays.asList(parent0,parent1), rate);
+        return Individual.crossoverIndividuals(asList(parent0,parent1), rate);
     }
 
     List<Individual> mutate() {
@@ -235,7 +236,7 @@ public class Population {
 
     void evaluate(Node expNode){
         individuals.stream().forEach(individual -> {
-            List nodes = Arrays.asList(individual.getRoot(),expNode);
+            List nodes = asList(individual.getRoot(),expNode);
             individual.setFitness(GPUtils.evaluateFitness(nodes, new double[]{-1.0,1.0,0.1}));
         });
 

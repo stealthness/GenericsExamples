@@ -55,7 +55,7 @@ class FunctionNodeTest {
 
     void testTestCase(String testCase){
 
-        List<String> testCaseStrings = TestUtils.getTestCase(testCase,TESTCASE_FILENAME, Optional.of(3));;
+        List<String> testCaseStrings = TestUtils.getTestCase(testCase,TESTCASE_FILENAME, Optional.of(3));
         assertEquals(3,testCaseStrings.size());
         var strings = Arrays.asList(testCaseStrings.get(0).split(","));
         node = NodeUtils.createNodeFromString(strings.get(1));

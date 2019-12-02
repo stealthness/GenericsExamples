@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 @Getter
 @Setter
 public class Population {
-	private Individual individuals[];
+	private Individual[] individuals;
 	private double populationFitness = -1;
 
 	/**
