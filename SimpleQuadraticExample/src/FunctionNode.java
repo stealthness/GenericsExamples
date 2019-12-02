@@ -2,6 +2,17 @@ import lombok.Data;
 
 import java.util.*;
 
+/**
+ * The class FunctionNode represents Function Node that are used to form expression trees used in Genetic Programming
+ *
+ * attributes are;
+ *
+ * function, [to do]
+ * subnode, a list of the subnodes
+ * maxSubNode, the maximium number of subNodes that can be in the list of subnodes, default of -1 means no limit
+ *
+ * @author Stephen West
+ */
 @Data
 public class FunctionNode implements Node,Comparable<FunctionNode>{
 
@@ -18,8 +29,6 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
             nodes.forEach(subNode -> subNodes.add(subNode.clone()));
             setMaxSubNodes(function.getMaxSubNodes());
         }
-
-
     }
 
     // methods
@@ -73,6 +82,7 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
 
     // Override Methods
 
+
     @Override
     public int size(){
         return 1 + subNodes.stream().mapToInt(Node::size).sum();
@@ -114,6 +124,11 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
         return 0;
     }
 
+    /**
+     *
+     * @param index
+     * @return
+     */
     @Override
     public Optional<Node> getSubtree(int index){
         if (index == 0){
