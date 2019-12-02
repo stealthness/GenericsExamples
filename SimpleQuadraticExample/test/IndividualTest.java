@@ -128,7 +128,7 @@ class IndividualTest {
         inputsStrings = Arrays.asList(strings.get(2).split(","));
         expCalculation = (Arrays.asList(strings.get(3)
                 .split(","))).stream()
-                .mapToDouble(s -> Double.valueOf(s))
+                .mapToDouble(Double::valueOf)
                 .toArray();
 
         for (int i = 0; i < expCalculation.length; i++) {

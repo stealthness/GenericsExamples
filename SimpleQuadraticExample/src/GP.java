@@ -132,7 +132,7 @@ public class GP {
     }
 
     private void printDetails(double[][] details) {
-        Arrays.stream(details).forEach(detail -> printDetail(detail));
+        Arrays.stream(details).forEach(this::printDetail);
     }
 
     private void printDetail(double[] detail) {
