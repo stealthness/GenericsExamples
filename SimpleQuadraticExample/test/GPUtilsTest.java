@@ -3,6 +3,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class GPUtilsTest {
 
@@ -15,6 +18,7 @@ class GPUtilsTest {
      * The list of terminal Nodes that will drawn from in generating trees
      */
     private List<Node> leafNodes;
+    private List<GPFunction> functionList;
 
     @BeforeEach
 
@@ -22,7 +26,7 @@ class GPUtilsTest {
 
         var absFunction = new FunctionNode(new GPSingleFunction(GPUtils.abs, "abs"),Arrays.asList());
         var reciprocalFunction =new FunctionNode(new GPSingleFunction(GPUtils.reciprocal, "recip"),Arrays.asList());
-
+        functionList = Arrays.asList(new GPSingleFunction(GPUtils.abs, "abs"),new GPSingleFunction(GPUtils.reciprocal, "recip"));
         functionNodes = Arrays.asList(absFunction, reciprocalFunction);
         leafNodes = Arrays.asList(TestUtils.oneNode, TestUtils.twoNode, TestUtils.xNode);
     }
@@ -55,6 +59,24 @@ class GPUtilsTest {
     @Test
     void generateFullTreeOfDepth3() {
         node = NodeUtils.generateFullTree(functionNodes.subList(0,1),leafNodes.subList(0,1),3);
+        TestUtils.assertNodeSize(4,3,node);
+        TestUtils.assertNode(TestUtils.absabsabsOneNode,node);
+    }
+
+
+    @Test
+    void generateFullTreeOfDepth3ver2() {
+        node = NodeUtils.generateNode(leafNodes.subList(0,1),functionList.subList(0,1),"full",3);
+        TestUtils.assertNodeSize(4,3,node);
+        TestUtils.assertNode(TestUtils.absabsabsOneNode,node);
+    }
+
+    @Test
+    void generateGrowTreeOfDepth2(){
+
+        Random r = new Random();
+        r.setSeed(100);
+        node = NodeUtils.generateFullTree(functionNodes,leafNodes,3);
         TestUtils.assertNodeSize(4,3,node);
         TestUtils.assertNode(TestUtils.absabsabsOneNode,node);
     }

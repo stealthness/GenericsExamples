@@ -77,8 +77,12 @@ public class NodeUtils {
         if (depth == 0){
             node = selectTerminalNode(terminalList);
         }else if (method.equals(FULL)){
+            System.out.println("<3>");
             node = selectFunctionNode(functionList);
-            for (int i = 0 ; i < Math.min(2, ((FunctionNode)node).getMaxSubNodes()); i++){
+            System.out.println((node.toClojureString()));
+            System.out.println(Math.min(2, ((FunctionNode)node).getMaxSubNodes()));
+            for (int i = 0 ; i < Math.min(2, (((FunctionNode)node).getMaxSubNodes()==-1?2:((FunctionNode)node).getMaxSubNodes())); i++){
+                System.out.println("<4>");
                 ((FunctionNode)node).addSubNode(generateNode(terminalList,functionList,method,depth-1));
             }
         }else if (method.equals(GROW)){

@@ -60,11 +60,21 @@ class CrossoverTest {
 
     @Test
     void testGenerateCrossover(){
-        IntStream.range(0,100).forEach(i ->{
-            System.out.println("\n\n");
-            var parents = Arrays.asList(TestUtils.generateNodeAtDepth(new Random().nextInt(3)),TestUtils.generateNodeAtDepth(new Random().nextInt(3)));
+        IntStream.range(0,5).forEach(i ->{
+
+            List<Node> terminalList = Arrays.asList(new TerminalNode(1.0),new TerminalNode(0.0),new TerminalNode(2.0));
+            List<GPFunction> functionList = Arrays.asList(new GPBiFunction(GPUtils.add,"+"),
+                    new GPBiFunction(GPUtils.multiply,"*"),//new GPBiFunction(GPUtils.abs,"abs"),
+                    new GPBiFunction(GPUtils.subtract,"-"),new GPBiFunction(GPUtils.divide,"/"));
+
+            Node parent1 = TestUtils.generateNodeAtDepth(3,terminalList,functionList);//new Random().nextInt(3)
+            Node parent2 = TestUtils.generateNodeAtDepth(new Random().nextInt(3),terminalList,functionList);
+
+            List<Node> parents = Arrays.asList(parent1,parent2);
+            System.out.println("parents");
             parents.forEach(p -> System.out.println(p.toClojureString()));
-            var children = NodeUtils.crossoverNodes(parents,-1.0);
+            System.out.println("children");
+            List<Node> children = NodeUtils.crossoverNodes(parents,1.0);
             children.forEach(c -> System.out.println(c.toClojureString()));
         });
 

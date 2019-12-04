@@ -162,13 +162,9 @@ class TestUtils {
         return null;
     }
 
-    public static Node generateNodeAtDepth(int maxDepth){
-        List<Node> terminalList = Arrays.asList(new TerminalNode(1.0),new TerminalNode(0.0),new TerminalNode(2.0));
-        List<GPFunction> functionList = Arrays.asList(new GPBiFunction(GPUtils.add,"+"),
-                new GPBiFunction(GPUtils.multiply,"*"),//new GPBiFunction(GPUtils.abs,"abs"),
-                new GPBiFunction(GPUtils.subtract,"-"),new GPBiFunction(GPUtils.divide,"/"));
-        return NodeUtils.generateNode(terminalList,functionList,"full",maxDepth);
 
+    public static Node generateNodeAtDepth(int maxDepth, List<Node> terminalList, List<GPFunction> functionList){
+        return NodeUtils.generateNode(terminalList,functionList,"full",maxDepth);
     }
 
 
