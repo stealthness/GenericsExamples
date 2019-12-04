@@ -172,16 +172,30 @@ class IndividualTest {
             }
     }
 
+    /**
+     * Test evaluation
+     *
+     * @param testCase
+     */
     void testEvaluate(String testCase){
         List<String> testCaseStrings = TestUtils.getTestCase(testCase,GET_FITNESS_FILENAME, Optional.of(4));
-        assertEquals(4,testCaseStrings.size());
+        String[] line1 = testCaseStrings.get(0).split(",");
+        String msg = line1[0];
+        // check that we have 4 strings
+        assertEquals(4,testCaseStrings.size(),msg);
         Node expSolutionNode = NodeUtils.createNodeFromString(testCaseStrings.get(1));
         List<Node> testNodes = createNodesFromStrings(testCaseStrings, 2);
         List<Double> expFitness = getExpFitnessValues(testCaseStrings);
         for (int i = 0; i < expFitness.size(); i++){
+            msg += "\n expected expression : " + expSolutionNode.toClojureString() +
+                        "\n test expression : " + testNodes.get(i).toClojureString() +
+                        "\n range : " + line1[2] +" to "
+                             + line1[3] + " skip "
+                             + line1[4];
             var nodes = Arrays.asList(expSolutionNode,testNodes.get(i));
             double[] testRange = getTestRange(testCaseStrings.get(0));
-            assertEquals(expFitness.get(i),GPUtils.evaluateFitness(nodes,testRange),TOL);
+            assertEquals(expFitness.get(i),GPUtils.evaluateFitness(nodes,testRange),TOL, msg);
+            msg = line1[0];
         }
     }
 

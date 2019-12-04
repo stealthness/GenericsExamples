@@ -107,6 +107,12 @@ public class Individual implements Node,Comparable{
         return Individual.builder().root(root).build();
     }
 
+    /**
+     * Returns a pair of individual that have been cross-bread with each other
+     * @param parents
+     * @param rate
+     * @return
+     */
     static List<Individual> crossoverIndividuals(List<Individual> parents,double rate){
         List<Node> parentNodes = Arrays.asList(parents.get(0).getRoot(),parents.get(1).getRoot());
         if (Math.random()<rate){

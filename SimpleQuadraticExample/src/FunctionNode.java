@@ -59,7 +59,6 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
      * @param newSubtree the new tree to be inserted.
      */
     void replaceSubtreeAt(int index, Node newSubtree){
-        System.out.println(String.format("index: %d  newSubnode: %s",index,subNodes.toString()));
         if (subNodes == null && index == 0){
             subNodes = new ArrayList<>();
             subNodes.add(newSubtree);
@@ -92,7 +91,6 @@ public class FunctionNode implements Node,Comparable<FunctionNode>{
     public int getDepth(){
 
         if (subNodes.size()==0){
-            System.out.println(subNodes.toString());
             return 1;
         }
         return 1 + subNodes.stream().mapToInt(Node::getDepth).max().getAsInt() ;
