@@ -84,16 +84,20 @@ public class GPUtils {
 
 
     public static GPFunction getGPFunction(String functionString){
-        return switch (functionString) {
-            case "+" -> new GPMultiFunction(add, functionString);
-            case "/" -> new GPBiFunction(divide, functionString);
-            case "*" -> new GPMultiFunction(multiply, functionString);
-            case "-" -> new GPBiFunction(subtract, functionString);
-            default -> {
+        switch (functionString) {
+            case "+":
+                return new GPMultiFunction(add, functionString);
+            case "/":
+                return new GPBiFunction(divide, functionString);
+            case "*":
+                return new GPMultiFunction(multiply, functionString);
+            case "-":
+                return new GPBiFunction(subtract, functionString);
+            default:
                 GPFunction function = null;
                 for (Field field : GPUtils.class.getDeclaredFields()) {
 
-                    if (functionString.equals(field.getName())){
+                    if (functionString.equals(field.getName())) {
                         try {
                             switch (functionString) {
                                 case "abs", "reciprocal", "identity" -> {
@@ -113,9 +117,8 @@ public class GPUtils {
                         break;
                     }
                 }
-                break function;
-            }
-        };
+                return function;
+        }
     }
 
     static Function<Population, Individual> selectUniformRandomIndividual = population ->{
