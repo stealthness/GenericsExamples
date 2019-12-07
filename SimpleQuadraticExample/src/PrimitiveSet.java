@@ -1,13 +1,17 @@
+import org.w3c.dom.ls.LSOutput;
+
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 /**
  * The Primitive class contains list of function and terminal nodes.
  */
 public class PrimitiveSet implements PrimitiveSetInterface{
-
+    String NEWLINE = "\n";
     List<Node> terminalNodes;
-    List<Node> functionNodes;
+    List<GPFunction>  functionNodes;
 
     public PrimitiveSet() {
         terminalNodes = new ArrayList<>();
@@ -16,11 +20,12 @@ public class PrimitiveSet implements PrimitiveSetInterface{
 
     @Override
     public void add(Node node) {
-        if (node.getClass() == TerminalNode.class){
             terminalNodes.add(node);
-        }else{
-            functionNodes.add(node);
-        }
+    }
+
+    @Override
+    public void add(GPFunction function) {
+        functionNodes.add(function);
     }
 
     @Override
@@ -31,8 +36,8 @@ public class PrimitiveSet implements PrimitiveSetInterface{
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        terminalNodes.stream().forEach(node -> sb.append(node));
-        functionNodes.stream().forEach(node -> sb.append(node));
+        terminalNodes.stream().forEach(node -> sb.append(node + NEWLINE));
+        functionNodes.stream().forEach(node -> sb.append(node + NEWLINE));
 
         return sb.toString();
     }

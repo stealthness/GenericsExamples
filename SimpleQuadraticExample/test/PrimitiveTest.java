@@ -30,14 +30,52 @@ class PrimitiveSetTest {
     @Test
     void testAddOneToString(){
         pset.add((TestUtils.oneNode));
-        assertEquals("TerminalNode(value=1.0)",pset.toString());
+        assertEquals("TerminalNode(value=1.0)\n",pset.toString());
     }
 
     @Test
     void testAddX0ToString(){
         pset.add((TestUtils.x0Node));
-        assertEquals("VariableNode(index=0)",pset.toString());
+        assertEquals("VariableNode(index=0)\n",pset.toString());
     }
+
+    @Test
+    void testAddingMultipleTerminalNodes(){
+        String expString = "TerminalNode(value=1.0)\nTerminalNode(value=1.0)\nVariableNode(index=0)\n";
+        pset.add(TestUtils.oneNode);
+        pset.add(TestUtils.oneNode);
+        pset.add(TestUtils.x0Node);
+        assertSetCount(3,pset, Optional.of("1, 1, x0"));
+        assertEquals(expString,pset.toString());
+    }
+
+
+    @Test
+    void testAddFunctionNode(){
+        pset.add(GPUtils.getGPFunction("add"));
+        assertSetCount(1,pset, Optional.of("Add node"));
+        assertEquals("GPMultiFunction(add)\n",pset.toString());
+    }
+
+    @Test
+    void testABSFunctionNode(){
+        pset.add(GPUtils.getGPFunction("abs"));
+        assertSetCount(1,pset, Optional.of("abs node"));
+        assertEquals("GPSingleFunction(abs)\n",pset.toString());
+    }
+
+
+
+    @Test
+    void testAddingMultipleFunctionNodes(){
+        String expString = "GPMultiFunction(add)\nGPMultiFunction(add)\nGPSingleFunction(abs)\n";
+        pset.add(GPUtils.getGPFunction("add"));
+        pset.add(GPUtils.getGPFunction("add"));
+        pset.add(GPUtils.getGPFunction("abs"));
+        assertSetCount(3,pset, Optional.of("add, add, abs"));
+        assertEquals(expString,pset.toString());
+    }
+
 
     // Static Assert Methods
 

@@ -20,6 +20,12 @@ public class GPMultiFunction implements GPFunction{
         return function.apply(inputs,nodes);
     }
 
+
+    @Override
+    public String toString(){
+        return String.format("GPMultiFunction(%s)",this.clojureString);
+    }
+
     @Override
     public String toClojureString() {
         return clojureString;

@@ -40,6 +40,11 @@ public class GPBiFunction implements GPFunction{
     }
 
     @Override
+    public String toString(){
+        return String.format("GPBiFunction(%s)",this.clojureString);
+    }
+
+    @Override
     public String toClojureString() {
         return clojureString;
     }

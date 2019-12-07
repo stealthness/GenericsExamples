@@ -27,6 +27,11 @@ public class GPSingleFunction implements GPFunction{
     }
 
     @Override
+    public String toString(){
+        return String.format("GPSingleFunction(%s)",this.clojureString);
+    }
+
+    @Override
     public String toClojureString() {
         return clojureString;
     }
