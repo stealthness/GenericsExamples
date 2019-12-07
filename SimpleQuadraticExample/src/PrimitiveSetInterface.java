@@ -1,6 +1,6 @@
 import lombok.Builder;
 
-public interface PrimitiveInterface {
+public interface PrimitiveSetInterface {
 
     /**
      * Adds terminal or function Node to the Primitive Set

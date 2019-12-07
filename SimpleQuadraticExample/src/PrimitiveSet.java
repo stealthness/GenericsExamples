@@ -4,12 +4,12 @@ import java.util.List;
 /**
  * The Primitive class contains list of function and terminal nodes.
  */
-public class Primitive implements PrimitiveInterface{
+public class PrimitiveSet implements PrimitiveSetInterface{
 
     List<Node> terminalNodes;
     List<Node> functionNodes;
 
-    public Primitive() {
+    public PrimitiveSet() {
         terminalNodes = new ArrayList<>();
         functionNodes = new ArrayList<>();
     }
@@ -26,5 +26,14 @@ public class Primitive implements PrimitiveInterface{
     @Override
     public int size() {
         return terminalNodes.size() + functionNodes.size();
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        terminalNodes.stream().forEach(node -> sb.append(node));
+        functionNodes.stream().forEach(node -> sb.append(node));
+
+        return sb.toString();
     }
 }
