@@ -68,7 +68,8 @@ class PrimitiveSetTest {
 
     @Test
     void testAddingMultipleFunctionNodes(){
-        String expString = "TerminalNode(value=1.0)\nTerminalNode(value=1.0)\nVariableNode(index=0)\nGPMultiFunction(add)\nGPMultiFunction(add)\nGPSingleFunction(abs)\n";
+        String expString = "TerminalNode(value=1.0)\nTerminalNode(value=1.0)\nVariableNode(index=0)\nGPMultiFunction(add)" +
+                            "\nGPMultiFunction(add)\nGPSingleFunction(abs)\n";
         pset.add(TestUtils.oneNode);
         pset.add(TestUtils.oneNode);
         pset.add(GPUtils.getGPFunction("add"));
@@ -87,6 +88,34 @@ class PrimitiveSetTest {
         pset.add(GPUtils.getGPFunction("abs"));
         assertSetCount(3,pset, Optional.of("add, add, abs"));
         assertEquals(expString,pset.toString());
+    }
+
+
+    // getting a random choice
+
+    @Test
+    void testGettingOneNodeFromSetWithJustOneNode(){
+        pset.add(TestUtils.oneNode);
+        Node actNode = pset.getNode();
+        assertEquals(TerminalNode.class, actNode.getClass());
+        TestUtils.assertNode(TestUtils.oneNode, actNode);
+    }
+
+    @Test
+    void testGettingX0NodeFromSetWithJustX0Node(){
+        pset.add(TestUtils.x0Node);
+        Node actNode = pset.getNode();
+        assertEquals(VariableNode.class, actNode.getClass());
+        TestUtils.assertNode(TestUtils.x0Node, actNode);
+    }
+
+    @Test
+    void testGettingAddNodeFromSetWithJustAddNode(){
+        pset.add(GPUtils.getGPFunction("add"));
+        Node actNode = pset.getNode();
+        assertEquals(FunctionNode.class, actNode.getClass());
+        Node expNode = new FunctionNode(GPUtils.getGPFunction("add"),null);
+        TestUtils.assertNode(expNode, actNode);
     }
 
 

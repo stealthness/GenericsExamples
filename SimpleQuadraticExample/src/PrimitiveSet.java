@@ -34,6 +34,26 @@ public class PrimitiveSet implements PrimitiveSetInterface{
     }
 
     @Override
+    public Node getNode() {
+        if (this.isEmpty()){
+            return null;
+        }else{
+            int pick = 0;
+            if (terminalNodes.size() > 0 ) {
+                return terminalNodes.get(0);
+            }else{
+                return new FunctionNode(functionNodes.get(pick - terminalNodes.size()),null);
+            }
+
+        }
+
+    }
+
+    private boolean isEmpty() {
+        return terminalNodes.isEmpty() && functionNodes.isEmpty();
+    }
+
+    @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
         terminalNodes.stream().forEach(node -> sb.append(node + NEWLINE));

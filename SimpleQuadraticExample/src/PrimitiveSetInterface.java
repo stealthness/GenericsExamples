@@ -19,4 +19,10 @@ public interface PrimitiveSetInterface {
      * @return the size of the set
      */
     int size();
+
+    /**
+     * Returns a node from the set of primitive that will be a terminal or function node
+     * @return a node from the set of primitives
+     */
+    Node getNode();
 }
