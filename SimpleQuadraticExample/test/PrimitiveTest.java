@@ -68,6 +68,19 @@ class PrimitiveSetTest {
 
     @Test
     void testAddingMultipleFunctionNodes(){
+        String expString = "TerminalNode(value=1.0)\nTerminalNode(value=1.0)\nVariableNode(index=0)\nGPMultiFunction(add)\nGPMultiFunction(add)\nGPSingleFunction(abs)\n";
+        pset.add(TestUtils.oneNode);
+        pset.add(TestUtils.oneNode);
+        pset.add(GPUtils.getGPFunction("add"));
+        pset.add(GPUtils.getGPFunction("add"));
+        pset.add(TestUtils.x0Node);
+        pset.add(GPUtils.getGPFunction("abs"));
+        assertSetCount(6,pset, Optional.of("add, add, 1, 1 abs, 0"));
+        assertEquals(expString,pset.toString());
+    }
+
+    @Test
+    void testAddingMultipleNodes(){
         String expString = "GPMultiFunction(add)\nGPMultiFunction(add)\nGPSingleFunction(abs)\n";
         pset.add(GPUtils.getGPFunction("add"));
         pset.add(GPUtils.getGPFunction("add"));
