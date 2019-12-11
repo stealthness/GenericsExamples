@@ -81,9 +81,11 @@ class GPUtilsTest {
                 "(recip (abs (recip x)))","(abs (recip (recip x)))","(recip (abs (abs x)))",
                 "(abs (recip (abs x)))","(abs (abs (recip x)))","(abs (abs (abs x)))");
         System.out.println(node.toClojureString());
-        assertTrue(possibleSolutions.stream().anyMatch(possibleSolution ->
-                possibleSolution.replace("x","1.0").equals(node.toClojureString()) ||
-                possibleSolution.replace("x","2.0").equals(node.toClojureString()) ||
-                possibleSolution.replace("x","x0").equals(node.toClojureString())));
+        assertTrue(possibleSolutions.stream().anyMatch(possibleSolution -> {
+            return Arrays.asList("1.0", "2.0", "x0").stream().anyMatch(terminal -> {
+                return possibleSolution.replace("x",terminal).equals(node.toClojureString());
+            });
+        }));
+
     }
 }
