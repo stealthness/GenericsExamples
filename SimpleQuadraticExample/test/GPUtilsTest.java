@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GPUtilsTest {
 
@@ -74,10 +75,15 @@ class GPUtilsTest {
     @Test
     void generateGrowTreeOfDepth2(){
 
-        Random r = new Random();
-        r.setSeed(100);
         node = NodeUtils.generateFullTree(functionNodes,leafNodes,3);
         TestUtils.assertNodeSize(4,3,node);
-        TestUtils.assertNode(TestUtils.absabsabsOneNode,node);
+        List<String> possibleSolutions = Arrays.asList("(recip (recip (recip x)))","(recip (recip (abs x)))",
+                "(recip (abs (recip x)))","(abs (recip (recip x)))","(recip (abs (abs x)))",
+                "(abs (recip (abs x)))","(abs (abs (recip x)))","(abs (abs (abs x)))");
+        System.out.println(node.toClojureString());
+        assertTrue(possibleSolutions.stream().anyMatch(possibleSolution ->
+                possibleSolution.replace("x","1.0").equals(node.toClojureString()) ||
+                possibleSolution.replace("x","2.0").equals(node.toClojureString()) ||
+                possibleSolution.replace("x","x0").equals(node.toClojureString())));
     }
 }

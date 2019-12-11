@@ -118,6 +118,17 @@ class PrimitiveSetTest {
         TestUtils.assertNode(expNode, actNode);
     }
 
+    @Test
+    void testWithTwoItemsInTheSet(){
+        pset.add(TestUtils.x0Node);
+        pset.add(GPUtils.getGPFunction("add"));
+        Node actNode = pset.getNode();
+        assertEquals(FunctionNode.class, actNode.getClass());
+        Node expNode_choice1 = new FunctionNode(GPUtils.getGPFunction("add"),null);
+        Node expNode_choice2 = TestUtils.oneNode;
+        
+    }
+
 
     // Static Assert Methods
 
