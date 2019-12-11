@@ -77,15 +77,15 @@ class GPUtilsTest {
 
         node = NodeUtils.generateFullTree(functionNodes,leafNodes,3);
         TestUtils.assertNodeSize(4,3,node);
-        List<String> possibleSolutions = Arrays.asList("(recip (recip (recip x)))","(recip (recip (abs x)))",
-                "(recip (abs (recip x)))","(abs (recip (recip x)))","(recip (abs (abs x)))",
-                "(abs (recip (abs x)))","(abs (abs (recip x)))","(abs (abs (abs x)))");
+        List<String> possibleSolutions = Arrays.asList(
+                "(recip (recip (recip x)))","(recip (recip (abs x)))", "(recip (abs (recip x)))","(abs (recip (recip x)))",
+                "(recip (abs (abs x)))", "(abs (recip (abs x)))","(abs (abs (recip x)))","(abs (abs (abs x)))"
+        );
+
         System.out.println(node.toClojureString());
-        assertTrue(possibleSolutions.stream().anyMatch(possibleSolution -> {
-            return Arrays.asList("1.0", "2.0", "x0").stream().anyMatch(terminal -> {
-                return possibleSolution.replace("x",terminal).equals(node.toClojureString());
-            });
-        }));
+        assertTrue(possibleSolutions.stream()
+                .anyMatch(possibleSolution -> Arrays.asList("1.0", "2.0", "x0").stream()
+                        .anyMatch(terminal -> possibleSolution.replace("x",terminal).equals(node.toClojureString()))));
 
     }
 }
