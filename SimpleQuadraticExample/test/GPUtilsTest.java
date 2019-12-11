@@ -73,7 +73,7 @@ class GPUtilsTest {
     }
 
     @Test
-    void generateGrowTreeOfDepth2(){
+    void generateGrowTreeOfDepth2UsingFunctionWithSingleBranch(){
 
         node = NodeUtils.generateFullTree(functionNodes,leafNodes,3);
         TestUtils.assertNodeSize(4,3,node);
@@ -88,4 +88,39 @@ class GPUtilsTest {
                         .anyMatch(terminal -> possibleSolution.replace("x",terminal).equals(node.toClojureString()))));
 
     }
+
+    @Test
+    void generateGrowTreeOfDepth1UsingFunctionOfBranch2(){
+        var addFunction = new FunctionNode(new GPBiFunction(GPUtils.add, "+"),Arrays.asList());
+        var multiFunction =new FunctionNode(new GPSingleFunction(GPUtils.multiply, "*"),Arrays.asList());
+        functionNodes = Arrays.asList(addFunction, multiFunction);
+        node = NodeUtils.generateFullTree(functionNodes,leafNodes,1);
+        TestUtils.assertNodeSize(4,3,node);
+        List<String> possibleSolutions = Arrays.asList("x");
+
+        System.out.println(node.toClojureString());
+        assertTrue(possibleSolutions.stream()
+                .anyMatch(possibleSolution -> Arrays.asList("1.0", "2.0", "x0").stream()
+                        .anyMatch(terminal -> possibleSolution.replace("x",terminal).equals(node.toClojureString()))));
+
+    }
+
+    @Test
+    void generateGrowTreeOfDepth2UsingFunctionOfBranch2(){
+        var addFunction = new FunctionNode(new GPBiFunction(GPUtils.add, "+"),Arrays.asList());
+        var multiFunction =new FunctionNode(new GPBiFunction(GPUtils.multiply, "*"),Arrays.asList());
+        functionNodes = Arrays.asList(addFunction, multiFunction);
+        node = NodeUtils.generateFullTree(functionNodes,leafNodes,1);
+        TestUtils.assertNodeSize(4,3,node);
+        List<String> possibleSolutions = Arrays.asList(
+                "(x (1.0 1.0))", "(x (2.0 1.0))", "(x (1.0 2.0))", "(x (2.0 2.0))", "(x (1.0 x0))", "(x (x0 1.0))",
+                "(x (x0 2.0))", "(x (2.0 x0))", "(x (x0 x0))");
+
+        System.out.println(node.toClojureString());
+        assertTrue(possibleSolutions.stream()
+                .anyMatch(possibleSolution -> Arrays.asList("+", "*").stream()
+                        .anyMatch(terminal -> possibleSolution.replace("x",terminal).equals(node.toClojureString()))));
+
+    }
+    
 }
