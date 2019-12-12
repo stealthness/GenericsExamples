@@ -1,31 +1,22 @@
 import java.util.List;
 
-/**
- *
- * @param <T> inputs
- * @param <N> nodes
- * @param <S> returned value
- */
-interface GPFunction<T, N, S> {
+public class GPFunction implements GPFunctionInterface<Double, Double[], List<Node<Double, Double[]>>> {
 
-    /**
-     * Applies the inputs on the given nodes and returns a value
-     * @param inputs the input values to be calculated against
-     * @param nodes list of the nodes to used in the calculation
-     * @return the calculated value
-     */
-    S apply(T[] inputs, List<N> nodes);
 
-    /**
-     * Constructs a string representation of the function
-     * @return a clojure representation of the function
-     */
-    String toClojureString();
+    Node root;
 
-    /**
-     * Returns the maximum number of nodes that GPFunction may use
-     * @return the maximum number of nodes the function may use in calculation
-     */
-    int getMaxSubNodes();
+    @Override
+    public List<Node<Double, Double[]>> apply(Double[] inputs, List<Double[]> nodes) {
+        return root.calculate(inputs);
+    }
 
+    @Override
+    public String toClojureString() {
+        return "(to do)";
+    }
+
+    @Override
+    public int getMaxSubNodes() {
+        return -1;
+    }
 }

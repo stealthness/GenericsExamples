@@ -12,11 +12,11 @@ public class GPUtilsFunctionAddTest {
 
     @BeforeEach
     void setUp(){
-        //function = GPUtils.add;
+        function = (GPFunction)GPUtils.add;
     }
 
     @Test
     void getClojureStringRepresentation(){
-        assertEquals("+",function);
+        assertEquals("+", function);
     }
 }
