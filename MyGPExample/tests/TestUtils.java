@@ -22,6 +22,10 @@ public class TestUtils {
     }
 
     static BiFunction<Double[], List<Node>, Double> getFunction(String functionString){
-        return GPUtils.add;
+        return switch (functionString){
+            case "+" -> GPUtils.add;
+            case "-" -> GPUtils.subtract;
+            default -> GPUtils.identity;
+        };
     }
 }

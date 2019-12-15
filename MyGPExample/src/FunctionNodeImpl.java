@@ -95,4 +95,18 @@ public class FunctionNodeImpl implements Node {
             return sum;
         }
     }
+
+    @Override
+    public int getDepth(){
+        if (nodes.size()==0){
+            return 1;
+        }
+        return 1 + nodes.stream().mapToInt(Node::getDepth).max().getAsInt() ;
+
+    }
+
+    @Override
+    public int size(){
+        return 1 + nodes.stream().mapToInt(Node::size).sum();
+    }
 }

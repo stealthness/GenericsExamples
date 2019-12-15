@@ -39,7 +39,7 @@ public interface Node {
      * @return
      */
     default int getDepth(){
-        return 0;
+        return 1;
     }
 
     Node clone();
