@@ -25,16 +25,21 @@ public class TerminalNodeImpl implements Node {
 
     @Override
     public String toClojureString() {
-        return null;
+        return String.format("(%.2f)",constant);
     }
 
     @Override
     public Node clone() {
-        return null;
+        return new TerminalNodeImpl(constant);
     }
 
     @Override
     public Node getSubtree(int index) {
-        return null;
+        if (index == 0){
+            return this;
+        }else{
+            throw new IndexOutOfBoundsException("Terminal Node index : " + index + " > 0");
+        }
     }
+
 }
