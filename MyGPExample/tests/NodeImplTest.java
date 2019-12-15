@@ -8,20 +8,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NodeImplTest {
 
+    private static final double TOL = 0.000000001;
     Node node;
     Node oneNode, twoNode;
 
     @BeforeEach
     void setUp(){
         node = new NodeImpl();
-        oneNode = new NodeImpl(true);
-        twoNode = new NodeImpl(true);
+        oneNode = new TerminalNodeImpl(1.0);
+        twoNode = new TerminalNodeImpl(2.0);
     }
 
     @Test
     void testCreate(){
         assertEquals(NodeImpl.class, node.getClass());
-        assertEquals(NodeImpl.class, oneNode.getClass());
+        assertEquals(TerminalNodeImpl.class, oneNode.getClass());
     }
 
     @Test
@@ -31,10 +32,11 @@ class NodeImplTest {
         assertTrue(twoNode.isTerminalNode());
     }
 
-    @Disabled
+
     @Test
-    void calculate() {
-        fail();
+    void calculateAConstant() {
+        assertEquals(1.0, oneNode.calculate(null), TOL);
+        assertEquals(2.0, twoNode.calculate(null), TOL);
     }
 
     @Disabled

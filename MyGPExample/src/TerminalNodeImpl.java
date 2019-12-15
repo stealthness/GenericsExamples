@@ -1,43 +1,26 @@
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
-@Data
-public class NodeImpl implements Node {
+public class TerminalNodeImpl implements Node {
 
 
-    List<Node> nodes;
-    BiFunction<Double[], List<Node>, Double> function;
     Double constant;
 
-    boolean isTerminal = false;
-
-
-    public NodeImpl(){
-        nodes = new ArrayList<>();
-    }
-
-    public NodeImpl(boolean isTerminal,double constant){
+    public TerminalNodeImpl( double constant){
         super();
         this.constant = constant;
-        this.isTerminal = isTerminal;
     }
 
 
     @Override
     public boolean isTerminalNode() {
-        return  isTerminal;
+        return  true;
     }
 
     @Override
     public Double calculate(Double[] inputs) {
-        if (isTerminal){
-            return constant;
-        }
-        return null;
+        return constant;
     }
 
     @Override
