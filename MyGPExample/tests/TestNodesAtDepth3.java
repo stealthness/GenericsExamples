@@ -45,7 +45,10 @@ public class TestNodesAtDepth3 {
 
     void assertNode(String testcase, Node actNode) {
         String[] parts = testcase.split(",");
-        Double[] inputs = Arrays.stream(parts[4].replaceAll("[\\[\\]]", "").split(";")).map(s -> Double.parseDouble(s)).toArray(Double[]::new);
+        Double[] inputs = Arrays.stream(parts[4]
+                .replaceAll("[\\[\\]]", "").split(";"))
+                .map(s -> Double.parseDouble(s))
+                .toArray(Double[]::new);
         TestUtils.assertNode(Optional.of(parts[0]),Optional.of(Integer.parseInt(parts[1])),
                 Optional.of(Integer.parseInt(parts[2])), Optional.of(Double.parseDouble(parts[3])),
                 Optional.of(inputs),actNode);
