@@ -1,5 +1,6 @@
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiFunction;
 
 public class TestUtils {
 
@@ -17,6 +18,10 @@ public class TestUtils {
     }
 
     public static Node getFunctionNode(String functionString, List<Node> nodes) {
-        return new FunctionNodeImpl(GPUtils.add, functionString, nodes);
+        return new FunctionNodeImpl(getFunction(functionString), functionString, nodes);
+    }
+
+    static BiFunction<Double[], List<Node>, Double> getFunction(String functionString){
+        return GPUtils.add;
     }
 }
