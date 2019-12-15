@@ -7,19 +7,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FunctionNodeImplTest {
 
-    private static final double TOL = 0.0000001;
-    FunctionNodeImpl addNode;
-    TerminalNodeImpl oneNode = TestUtils.oneNode;
-    TerminalNodeImpl twoNode = TestUtils.twoNode;
+    private static final double TOL = TestUtils.TOL;
+    Node addNode;
+    final Node oneNode = TestUtils.getConstantNode(1.0);
+    final Node twoNode = TestUtils.getConstantNode(2.0);
 
     @BeforeEach
     void setUp(){
-        addNode = TestUtils.addNode1Plu2;
+        addNode = TestUtils.getFunctionNode("+", Arrays.asList(oneNode,twoNode));
+    }
+
+    @Test
+    void testCreate(){
+        assertEquals(FunctionNodeImpl.class, addNode.getClass());
     }
 
     @Test
     void isTerminalNode() {
-        assertFalse(addNode.isTerminal());
+        assertFalse(addNode.isTerminalNode());
     }
 
     @Test

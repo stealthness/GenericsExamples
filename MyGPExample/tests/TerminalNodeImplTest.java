@@ -3,34 +3,33 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TerminalNodeImplTest {
 
-    private static final double TOL = 0.000000001;
+    private static final double TOL = TestUtils.TOL;
     Node addNode;
     Node oneNode, twoNode;
     Node x0Node,x1Node;
 
     @BeforeEach
     void setUp(){
-        addNode = new FunctionNodeImpl();
         oneNode = TestUtils.getConstantNode(1.0);
         twoNode = TestUtils.getConstantNode(2.0);
-        x0Node = new VariableNodeImpl("x0",0);
-        x1Node = new VariableNodeImpl("x1",1);
+        x0Node = TestUtils.getVariableNode("x0",0);
+        x1Node = TestUtils.getVariableNode("x1",1);
     }
 
     @Test
     void testCreate(){
-        assertEquals(FunctionNodeImpl.class, addNode.getClass());
         assertEquals(TerminalNodeImpl.class, oneNode.getClass());
         assertEquals(VariableNodeImpl.class, x0Node.getClass());
     }
 
     @Test
     void isConstantNodeIsATerminalNode() {
-        assertFalse(addNode.isTerminalNode());
         assertTrue(oneNode.isTerminalNode());
         assertTrue(x0Node.isTerminalNode());
     }
