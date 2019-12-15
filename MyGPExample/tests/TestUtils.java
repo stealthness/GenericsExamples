@@ -1,6 +1,9 @@
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestUtils {
 
@@ -25,7 +28,27 @@ public class TestUtils {
         return switch (functionString){
             case "+" -> GPUtils.add;
             case "-" -> GPUtils.subtract;
+            case "*" -> GPUtils.multiply;
+            case "/" -> GPUtils.divide;
             default -> GPUtils.identity;
         };
+    }
+
+
+    static void assertNode(Optional<String> expString, Optional<Integer> expDepth,Optional<Integer> expSize,
+                           Optional<Double> expResult, Optional<Double[]> inputs, Node actNode){
+        if (expString.isPresent()){
+            assertEquals(expString.get(), actNode.toClojureString());
+        }
+        if (expDepth.isPresent()){
+            assertEquals(expDepth.get(), actNode.getDepth());
+        }
+        if (expSize.isPresent()){
+            assertEquals(expSize.get(), actNode.size());
+        }
+        if (expResult.isPresent() && inputs.isPresent()){
+            assertEquals(expResult.get(), actNode.calculate(inputs.get()));
+        }
+
     }
 }
