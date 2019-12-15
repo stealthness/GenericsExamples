@@ -9,12 +9,12 @@ class FunctionNodeImplTest {
 
     private static final double TOL = 0.0000001;
     FunctionNodeImpl addNode;
-    TerminalNodeImpl oneNode = new TerminalNodeImpl(1.0);
-    TerminalNodeImpl twoNode = new TerminalNodeImpl(2.0);
+    TerminalNodeImpl oneNode = TestUtils.oneNode;
+    TerminalNodeImpl twoNode = TestUtils.twoNode;
 
     @BeforeEach
     void setUp(){
-        addNode = new FunctionNodeImpl(GPUtils.add, "+", Arrays.asList(oneNode,twoNode));
+        addNode = TestUtils.addNode1Plu2;
     }
 
     @Test
