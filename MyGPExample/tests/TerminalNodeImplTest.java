@@ -15,8 +15,8 @@ class TerminalNodeImplTest {
     @BeforeEach
     void setUp(){
         addNode = new FunctionNodeImpl();
-        oneNode = new TerminalNodeImpl(1.0);
-        twoNode = new TerminalNodeImpl(2.0);
+        oneNode = TestUtils.getConstantNode(1.0);
+        twoNode = TestUtils.getConstantNode(2.0);
         x0Node = new VariableNodeImpl("x0",0);
         x1Node = new VariableNodeImpl("x1",1);
     }
