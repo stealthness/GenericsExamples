@@ -32,4 +32,8 @@ public class GPUtils {
                 Double numerator = nodes.get(0).calculate(inputs);
                 return numerator/(( divisor== 0.0)?1.0:divisor);
             });
+
+    static Node createNode(String clojureString){
+        return new TerminalNodeImpl(1.0);
+    }
 }
