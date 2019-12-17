@@ -39,17 +39,13 @@ public class GPUtils {
 
         List<String> strings = Arrays.asList(clojureString.split(" "));
         if (strings.size() == 1){
-            System.out.println(strings.get(0).subSequence(1,2));
-            if (strings.get(0).substring(1,2).matches("[0-9]")){
-                String variableString = strings.get(0).replaceAll("[()]","");
-                System.out.println(variableString);
-                return new VariableNodeImpl(variableString,Integer.parseInt(variableString.substring(variableString.length())));
+            String string = strings.get(0).replaceAll("[()]","");
+            if (string.substring(0,1).matches("[0-9]|-")){
+                return new TerminalNodeImpl(Double.parseDouble(string));
             }else{
-                return new TerminalNodeImpl(Double.parseDouble(strings.get(0).replaceAll("[()]","")));
+                return new VariableNodeImpl(string,Integer.parseInt(string.substring(string.length()-1)));
             }
         }
-
-
         return new TerminalNodeImpl(1.0);
     }
 
