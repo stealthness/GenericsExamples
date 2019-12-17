@@ -48,10 +48,10 @@ public class GPUtils {
             }
         }else { // Function Node
             if (clojureString.chars().filter(ch -> ch == '(').count() >1){ // nested Functions
+                strings = Arrays.asList(clojureString.substring(1,clojureString.length()-1).split(" "));
                 List<String> newString = new ArrayList<>();
                 newString.add(strings.get(0));
                 for (int i = 1  ; i < strings.size(); i++){
-                    System.out.println("nested "+clojureString);
                     if (strings.get(i).contains("(")){
                         String openString = strings.get(i);
                         while(isStillOpen(openString)){
@@ -62,8 +62,9 @@ public class GPUtils {
                         newString.add(strings.get(i));
                     }
                 }
-
-                return new TerminalNodeImpl(-1.0); //createNode(newString);
+                List<Node> terminalList = newString.stream().skip(1).map(GPUtils::createNode).collect(Collectors.toList());
+                String functionString = newString.get(0);
+                return new FunctionNodeImpl(getFunction(functionString),functionString,terminalList);
             } else{ // single function Node
                 strings = Arrays.asList(clojureString.replaceAll("[()]","").split(" "));
                 List<Node> terminalList = strings.stream().skip(1).map(string -> createNode(string)).collect(Collectors.toList());
