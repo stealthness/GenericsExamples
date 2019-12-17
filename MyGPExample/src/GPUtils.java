@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 public class GPUtils {
 
@@ -38,40 +39,50 @@ public class GPUtils {
     static Node createNode(String clojureString){
 
         List<String> strings = Arrays.asList(clojureString.split(" "));
-        if (strings.size() == 1){
+        if (strings.size() == 1){ // Terminal or Variable Node
             String string = strings.get(0).replaceAll("[()]","");
             if (string.substring(0,1).matches("[0-9]|-")){
                 return new TerminalNodeImpl(Double.parseDouble(string));
             }else{
                 return new VariableNodeImpl(string,Integer.parseInt(string.substring(string.length()-1)));
             }
+        }else { // Function Node
+            if (clojureString.chars().filter(ch -> ch == '(').count() >1){ // nested Functions
+                List<String> newString = new ArrayList<>();
+                newString.add(strings.get(0));
+                for (int i = 1  ; i < strings.size(); i++){
+                    System.out.println("nested "+clojureString);
+                    if (strings.get(i).contains("(")){
+                        String openString = strings.get(i);
+                        while(isStillOpen(openString)){
+                            openString += " "+strings.get(++i);
+                        }
+                        newString.add(openString);
+                    }else {
+                        newString.add(strings.get(i));
+                    }
+                }
+
+                return new TerminalNodeImpl(-1.0); //createNode(newString);
+            } else{ // single function Node
+                strings = Arrays.asList(clojureString.replaceAll("[()]","").split(" "));
+                List<Node> terminalList = strings.stream().skip(1).map(string -> createNode(string)).collect(Collectors.toList());
+                return new FunctionNodeImpl(getFunction(strings.get(0)),strings.get(0),terminalList);
+            }
         }
-        return new TerminalNodeImpl(1.0);
     }
 
-//    static Node createNodeFromString(String string){
-//        List<String> strings = Arrays.asList(string.split(" "));
-//        if (strings.size()==1){
-//            return getTerminalNode(strings.get(0));
-//        } else {
-//            if (string.chars().filter(ch -> ch == '(').count() >1){
-//                List<String> newString = new ArrayList<>();
-//                newString.add(strings.get(0));
-//                for (int i = 1  ; i < strings.size(); i++){
-//                    if (strings.get(i).contains("(")){
-//                        String openString = strings.get(i);
-//                        while(isStillOpen(openString)){
-//                            openString += " "+strings.get(++i);
-//                        }
-//                        newString.add(openString);
-//                    }else {
-//                        newString.add(strings.get(i));
-//                    }
-//                }
-//                return createFunctionNodeFromString(newString);
-//            } else{
-//                return createFunctionNodeFromString(strings);
-//            }
-//        }
-//    }
+    private static boolean isStillOpen(String openString) {
+        return openString.chars().filter(ch -> ch =='(').count()> openString.chars().filter(ch -> ch ==')').count();
+    }
+
+    static BiFunction<Double[], List<Node>, Double> getFunction(String functionString){
+        return switch (functionString){
+            case "+" -> GPUtils.add;
+            case "-" -> GPUtils.subtract;
+            case "*" -> GPUtils.multiply;
+            case "/" -> GPUtils.divide;
+            default -> GPUtils.identity;
+        };
+    }
 }
