@@ -2,7 +2,6 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.BiFunction;
 
 @Data
@@ -51,10 +50,10 @@ public class FunctionNodeImpl implements Node {
         sb.append(functionString);
         for (Node node : nodes){
             if (node.isTerminalNode()){
-                sb.append(" " + node.toClojureString().replaceAll("[()]",""));
+                sb.append(" ").append(node.toClojureString().replaceAll("[()]", ""));
             }else{
 
-                sb.append(" " + node.toClojureString());
+                sb.append(" ").append(node.toClojureString());
             }
         }
         sb.append(")");
@@ -73,7 +72,7 @@ public class FunctionNodeImpl implements Node {
         }else if(index == 0){
             return this;
         }else{
-                for (int i = 0 ; i < nodes.size();i++) {
+                for (int i = 0; i < (nodes != null ? nodes.size() : 0); i++) {
                     int subNodeIndex = getSubNodeIndex(i);
                     if (index < subNodeIndex + nodes.get(i).size()) {
                         return nodes.get(i).getSubtree(index - subNodeIndex);

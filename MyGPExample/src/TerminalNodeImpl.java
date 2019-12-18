@@ -1,5 +1,5 @@
 /**
- * Terminal Node impliments Node interface for a constant node
+ * Terminal Node implements Node interface for a constant node
  */
 public class TerminalNodeImpl implements Node {
 

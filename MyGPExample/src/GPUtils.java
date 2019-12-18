@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public class GPUtils {
 
-    final static BiFunction<Double[], List<Node>, Double> constant = ((inputs, nodes) -> 1.0);
+//    final static BiFunction<Double[], List<Node>, Double> constant = ((inputs, nodes) -> 1.0);
 
     final static BiFunction<Double[], List<Node>, Double> identity = ((inputs, nodes) -> nodes.get(0).calculate(inputs));
 //    static BiFunction<Double[], List<Node>, Double> abs = ((inputs, nodes) -> -nodes.get(0).calculate(inputs));
@@ -19,9 +19,9 @@ public class GPUtils {
                     .mapToDouble(node -> node.calculate(inputs))
                     .reduce(0.0, Double::sum));
 
-    final static BiFunction<Double[], List<Node>, Double> min =
-            ((inputs,nodes) -> nodes.stream()
-                    .mapToDouble(node -> node.calculate(inputs)).min().getAsDouble());
+//    final static BiFunction<Double[], List<Node>, Double> min =
+//            ((inputs,nodes) -> nodes.stream()
+//                    .mapToDouble(node -> node.calculate(inputs)).min().getAsDouble());
 
     final static BiFunction<Double[], List<Node>, Double> multiply =
             ((inputs, nodes) -> nodes.get(0).calculate(inputs)*nodes.get(1).calculate(inputs));

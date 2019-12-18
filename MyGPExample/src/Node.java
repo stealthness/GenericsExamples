@@ -1,6 +1,3 @@
-import java.util.List;
-import java.util.Optional;
-
 /**
  * Interface Node provide the...
  */
@@ -14,21 +11,21 @@ public interface Node {
 
     /**
      * values of the inputs to evaluate any express
-     * @param inputs
-     * @return
+     * @param inputs values of any variables
+     * @return the calculated value
      */
     Double calculate(Double[] inputs);
 
     /**
      * toClojureString the the node express in LISP form
-     * @return
+     * @return node clojure string form
      */
     String toClojureString();
 
     /**
      * the size of the tree, which is count of the number of the nodes.
      *
-     * @return
+     * @return tree size
      */
     default int size() {
         return 1;
@@ -36,7 +33,7 @@ public interface Node {
 
     /**
      * Returns the depth of the tree
-     * @return
+     * @return tree depth
      */
     default int getDepth(){
         return 1;
@@ -46,7 +43,7 @@ public interface Node {
 
     /**
      * returns the subtree at index
-     * @param index
+     * @param index of the sub node tree to return
      * @return subtree node at index
      */
     Node getSubtree(int index);
