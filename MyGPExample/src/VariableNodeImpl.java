@@ -1,8 +1,8 @@
 public class VariableNodeImpl implements Node {
 
 
-    String variableString;
-    int variableIndex;
+    final String variableString;
+    final int variableIndex;
 
     public VariableNodeImpl(String variableString, int variableIndex){
         super();
@@ -38,6 +38,7 @@ public class VariableNodeImpl implements Node {
         }else{
             throw new IndexOutOfBoundsException("Variable Node index : " + index + " > 0");
         }
+
     }
 
 }

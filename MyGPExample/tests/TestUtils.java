@@ -8,9 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TestUtils {
 
     public static final double TOL = 0.0000001;
-    static TerminalNodeImpl oneNode = new TerminalNodeImpl(1.0);
-    static TerminalNodeImpl twoNode = new TerminalNodeImpl(2.0);
-    static FunctionNodeImpl addNode1Plu2 =  new FunctionNodeImpl(GPUtils.add, "+",Arrays.asList(oneNode, twoNode));
 
     static Node getConstantNode(double constant){
         return new TerminalNodeImpl(constant);
@@ -37,15 +34,9 @@ public class TestUtils {
 
     static void assertNode(Optional<String> expString, Optional<Integer> expDepth,Optional<Integer> expSize,
                            Optional<Double> expResult, Optional<Double[]> inputs, Node actNode){
-        if (expString.isPresent()){
-            assertEquals(expString.get(), actNode.toClojureString());
-        }
-        if (expDepth.isPresent()){
-            assertEquals(expDepth.get(), actNode.getDepth());
-        }
-        if (expSize.isPresent()){
-            assertEquals(expSize.get(), actNode.size());
-        }
+        expString.ifPresent(string -> assertEquals(string, actNode.toClojureString()));
+        expDepth.ifPresent(integer -> assertEquals(integer, actNode.getDepth()));
+        expSize.ifPresent(integer -> assertEquals(integer, actNode.size()));
         if (expResult.isPresent() && inputs.isPresent()){
             assertEquals(expResult.get(), actNode.calculate(inputs.get()));
         }

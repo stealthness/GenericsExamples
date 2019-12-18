@@ -1,13 +1,11 @@
 import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestNodesAtDepth3 {
 
-    Double[] inputs = new Double[]{1.0,2.0, -1.5};
+    //Double[] inputs = new Double[]{1.0,2.0, -1.5};
 
     @Test
     void testMulti2and3(){
@@ -47,7 +45,7 @@ public class TestNodesAtDepth3 {
         String[] parts = testcase.split(",");
         Double[] inputs = Arrays.stream(parts[4]
                 .replaceAll("[\\[\\]]", "").split(";"))
-                .map(s -> Double.parseDouble(s))
+                .map(Double::parseDouble)
                 .toArray(Double[]::new);
         TestUtils.assertNode(Optional.of(parts[0]),Optional.of(Integer.parseInt(parts[1])),
                 Optional.of(Integer.parseInt(parts[2])), Optional.of(Double.parseDouble(parts[3])),

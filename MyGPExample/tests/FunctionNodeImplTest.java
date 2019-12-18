@@ -1,3 +1,4 @@
+import lombok.NonNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -72,7 +73,8 @@ class FunctionNodeImplTest {
         testCalculationStrings(TEST_CASE_MULTI_DEPTH_4.split("\n"));
     }
 
-    private void testCalculationStrings(String[] strings) {
+    @NonNull
+    protected void testCalculationStrings(String[] strings) {
         for (String string : strings) {
             String[] stringParts = string.split(";");
             if (!stringParts[2].equals("none")){

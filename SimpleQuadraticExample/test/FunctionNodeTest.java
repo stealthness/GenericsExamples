@@ -14,6 +14,10 @@ class FunctionNodeTest {
     private static final String TESTCASE_FILENAME = "testcases\\testGetSubtreeAt.txt";
     private Node node;
 
+    private static void accept(Node node) {
+        assertTrue(node.getSubtree(1).isEmpty());
+    }
+
 
     @Test
     void testCreateFunctionNodeWithOneNode(){
@@ -26,8 +30,10 @@ class FunctionNodeTest {
     @Test
     void testGetSubtreeAt0(){
         var testList = Arrays.asList(TestUtils.oneNode, TestUtils.twoNode, TestUtils.threeNode, TestUtils.xNode);
-        testList.stream().forEach(node -> TestUtils.assertNode(node,node.getSubtree(0).get()));
-        testList.stream().forEach(node -> assertTrue(node.getSubtree(1).isEmpty()));
+        for (Node node1 : testList) {
+            TestUtils.assertNode(node1, node1.getSubtree(0).get());
+        }
+        testList.forEach(FunctionNodeTest::accept);
     }
 
 

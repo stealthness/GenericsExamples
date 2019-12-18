@@ -1,16 +1,12 @@
-
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TerminalNodeImplTest {
 
     private static final double TOL = TestUtils.TOL;
-    Node addNode;
     Node oneNode, twoNode;
     Node x0Node,x1Node;
 

@@ -1,11 +1,10 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiFunction;
-
+/**
+ * Terminal Node impliments Node interface for a constant node
+ */
 public class TerminalNodeImpl implements Node {
 
 
-    Double constant;
+    final Double constant;
 
     public TerminalNodeImpl( double constant){
         super();
