@@ -67,7 +67,7 @@ public class GPUtils {
                 return new FunctionNodeImpl(getFunction(functionString),functionString,terminalList);
             } else{ // single function Node
                 strings = Arrays.asList(clojureString.replaceAll("[()]","").split(" "));
-                List<Node> terminalList = strings.stream().skip(1).map(string -> createNode(string)).collect(Collectors.toList());
+                List<Node> terminalList = strings.stream().skip(1).map(GPUtils::createNode).collect(Collectors.toList());
                 return new FunctionNodeImpl(getFunction(strings.get(0)),strings.get(0),terminalList);
             }
         }
