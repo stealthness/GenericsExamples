@@ -51,4 +51,65 @@ class FunctionNodeImplTest {
         assertEquals(twoNode.toClojureString(), addNode.getSubtree(2).toClojureString());
         assertEquals(twoNode, addNode.getSubtree(2));
     }
+
+    @Test
+    void testCalculateOnFunctionOfDepth2WithAdd(){
+        testCalculationStrings(TEST_CASE_ADD_DEPTH_2.split("\n"));
+    }
+
+    @Test
+    void testCalculateOnFunctionOfDepth2WithMultiple(){
+        testCalculationStrings(TEST_CASE_MULTI_DEPTH_2.split("\n"));
+    }
+
+    @Test
+    void testCalculateOnFunctionOfDepth2WithDivide(){
+        testCalculationStrings(TEST_CASE_MULTI_DEPTH_3.split("\n"));
+    }
+
+    @Test
+    void testCalculateOnFunctionOfDepth2WithSubtract(){
+        testCalculationStrings(TEST_CASE_MULTI_DEPTH_4.split("\n"));
+    }
+
+    private void testCalculationStrings(String[] strings) {
+        for (String string : strings) {
+            String[] stringParts = string.split(";");
+            if (!stringParts[2].equals("none")){
+                // to do
+            }
+            Double[] inputs = new Double[]{1.0,2.0,-0.5};
+            Node actNode = GPUtils.createNode(stringParts[0]);
+            assertEquals(Double.parseDouble(stringParts[1]), actNode.calculate(inputs), TestUtils.TOL, "testcase :" + string);
+        }
+    }
+
+
+    private static final String TEST_CASE_ADD_DEPTH_2 = """
+            (+ 1.0 2.0);3.0;none
+            (+ x0 2.0);3.0;none
+            (+ 1.0 x1);3.0;none
+            (+ x0 x1);3.0;none
+            (+ -1.0 -2.0);-3.0;none""";
+    
+    private static final String TEST_CASE_MULTI_DEPTH_2 = """
+            (* 1.0 2.0);2.0;none
+            (* x0 2.0);2.0;none
+            (* 1.0 x1);2.0;none
+            (* x0 x1);2.0;none
+            (* -1.0 -2.0);2.0;none""";
+    
+    private static final String TEST_CASE_MULTI_DEPTH_3 = """
+            (/ 1.0 2.0);0.5;none
+            (/ x0 2.0);0.5;none
+            (/ 1.0 x1);0.5;none
+            (/ x0 x1);0.5;none
+            (/ -1.0 -2.0);0.5;none""";
+    
+    private static final String TEST_CASE_MULTI_DEPTH_4 = """
+            (- 1.0 2.0);-1.0;none
+            (- x0 2.0);-1.0;none
+            (- 1.0 x1);-1.0;none
+            (- x0 x1);-1.0;none
+            (- -1.0 -2.0);1.0;none""";
 }
