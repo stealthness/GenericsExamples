@@ -12,6 +12,7 @@ public class GPUtils {
     static BiFunction<Double[], List<Node>, Double> abs = ((inputs, nodes) -> -nodes.get(0).calculate(inputs));
     static BiFunction<Double[], List<Node>, Double> reciprocal = ((inputs, nodes) -> 1/nodes.get(0).calculate(inputs));
     static BiFunction<Double[], List<Node>, Double> sin  = ((inputs, nodes) ->Math.sin(nodes.get(0).calculate(inputs)));
+    static BiFunction<Double[], List<Node>, Double> cos  = ((inputs, nodes) ->Math.cos(nodes.get(0).calculate(inputs)));
 
 
     final static BiFunction<Double[], List<Node>, Double> add =
@@ -83,6 +84,10 @@ public class GPUtils {
             case "-" -> GPUtils.subtract;
             case "*" -> GPUtils.multiply;
             case "/" -> GPUtils.divide;
+            case "sin" -> GPUtils.sin;
+            case "cos" -> GPUtils.cos;
+            case "abs" -> GPUtils.abs;
+            case "reciprocal"-> GPUtils.reciprocal;
             default -> GPUtils.identity;
         };
     }

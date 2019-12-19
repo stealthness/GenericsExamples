@@ -13,7 +13,7 @@ public class TestSingleNodeFunctions {
 
     @Test
     void testIdentity(){
-        testNode("(id 1.0);(id 3.00);2;2;3.0;(1.0,2.0,-0.5)");
+        testNode("(id 3.0);(id 3.00);2;2;3.0;(1.0,2.0,-0.5)");
     }
 
     @Test
@@ -23,8 +23,14 @@ public class TestSingleNodeFunctions {
 
     @Test
     void testSin(){
-        testNode("(asin 0.0);(sin 0.00);2;2;0.0;(1.0,2.0,-0.5)");
+        testNode("(sin 0.0);(sin 0.00);2;2;0.0;(1.0,2.0,-0.5)");
     }
+
+    @Test
+    void testCos(){
+        testNode("(cos 0.0);(cos 0.00);2;2;1.0;(1.0,2.0,-0.5)");
+    }
+
     @Test
     void testReciprocal(){
         testNode("(reciprocal 2.0);(reciprocal 2.00);2;2;0.5;(1.0,2.0,-0.5)");
