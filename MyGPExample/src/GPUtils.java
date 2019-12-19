@@ -1,3 +1,4 @@
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,6 +80,8 @@ public class GPUtils {
     }
 
     static BiFunction<Double[], List<Node>, Double> getFunction(String functionString){
+
+
         return switch (functionString){
             case "+" -> GPUtils.add;
             case "-" -> GPUtils.subtract;
