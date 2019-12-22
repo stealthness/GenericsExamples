@@ -17,18 +17,9 @@ public class TestUtils {
     }
 
     public static Node getFunctionNode(String functionString, List<Node> nodes) {
-        return new FunctionNodeImpl(getFunction(functionString), functionString, nodes);
+        return new FunctionNodeImpl(GPUtils.getFunction(functionString), functionString, nodes);
     }
 
-    static BiFunction<Double[], List<Node>, Double> getFunction(String functionString){
-        return switch (functionString){
-            case "+" -> GPUtils.add;
-            case "-" -> GPUtils.subtract;
-            case "*" -> GPUtils.multiply;
-            case "/" -> GPUtils.divide;
-            default -> GPUtils.identity;
-        };
-    }
 
 
     static void assertNode(Optional<String> expString, Optional<Integer> expDepth,Optional<Integer> expSize,
