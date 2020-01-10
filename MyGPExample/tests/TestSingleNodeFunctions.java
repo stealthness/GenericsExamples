@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -23,7 +25,8 @@ public class TestSingleNodeFunctions {
 
     @Test
     void testSin(){
-        testNode("(sin 0.0);(sin 0.00);2;2;0.0;(1.0,2.0,-0.5)");
+        // testcase "(sin 0.0);(sin 0.00);2;2;0.0;(1.0,2.0,-0.5)"
+        testNode(getTestCase(1,TEST_CASE_0));
     }
 
     @Test
@@ -37,6 +40,12 @@ public class TestSingleNodeFunctions {
     }
 
 
+    @Test
+    void testAllTestCase(){
+        Arrays.stream(TEST_CASE_0.split("/n")).forEach(testcase ->{
+            testNode(testcase);
+        });
+    }
 
 
     private void testNode(String testcase){
@@ -55,11 +64,18 @@ public class TestSingleNodeFunctions {
             Double[] input = new Double[]{1.0,2.0,-0.5};
             assertEquals(Double.parseDouble(parts[4]),actNode.calculate(input),TestUtils.TOL);
         }
-
-
     }
 
+    private String getTestCase(int n, String testCases){
+        return testCases.split("\n")[n];
+    }
+
+    // TEST_CASE format
+    // (<expr>); expClojureString; expDepth; expSize; expCaluation; input
+    // 'none' to ignore or for default value
 
     final static String TEST_CASE_0 = """
-            (abs 1.0);(abs 1.00);2;2;1.0;(1.0,2.0,-0.5)""";
+            (abs 1.0);(abs 1.00);none;none;1.0;none
+            (sin 0.0);(sin 0.00);2;2;0.0;(1.0,2.0,-0.5)
+            (abs -3.0);(abs -3.00);2;2;3.0;(1.0,2.0,-0.5)""";
 }

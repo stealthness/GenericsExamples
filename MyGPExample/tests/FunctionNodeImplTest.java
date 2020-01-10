@@ -86,6 +86,8 @@ class FunctionNodeImplTest {
         }
     }
 
+    // TEST_CASE format
+    // (<express>); expCalulation; input <'none' to use default input [1.0,2.0,-0.5]>
 
     private static final String TEST_CASE_ADD_DEPTH_2 = """
             (+ 1.0 2.0);3.0;none
